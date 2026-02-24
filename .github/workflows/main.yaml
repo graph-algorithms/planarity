@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt install -y build-essential cython3 
+          sudo apt install -y build-essential python3-dev 
 
       - name: Install python dependencies
         run: |
