@@ -1,6 +1,6 @@
 name: Python package
 
-on: [push]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -8,34 +8,27 @@ jobs:
     runs-on: ["ubuntu-latest"]
     strategy:
       matrix:
-       python-version: ["3.7","3.11"]
+       python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt install -y build-essential cython3 
+          sudo apt install -y build-essential python3-dev 
 
       - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip
-          #pip install ruff pytest
           pip install -r requirements.txt
           python --version
           python -m pip install -vvv .
-          #python setup.py install
-#      - name: Lint with ruff
-#        run: |
-#          # stop the build if there are Python syntax errors or undefined names
-#          ruff --format=github --select=E9,F63,F7,F82 --target-version=py37 .
-#          # default set of ruff rules with GitHub Annotations
-#          ruff --format=github --target-version=py37 .
+
       - name: Test with pytest
         run: |
           pytest -vv
