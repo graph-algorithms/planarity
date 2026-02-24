@@ -28,7 +28,6 @@ jobs:
           pip install -r requirements.txt
           python --version
           python -m pip install -vvv .
-          #python setup.py install
 
       - name: Test with pytest
         run: |
