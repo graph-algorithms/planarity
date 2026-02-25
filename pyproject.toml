@@ -1,0 +1,75 @@
+# Based on documentation from 
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+# and https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[build-system]
+# NOTE: Support for project.license-files and SPDX license expressions 
+# in project.license (PEP 639) were introduced in setuptools version 77.0.0.
+requires = ["setuptools>=80", "cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "planarity"
+# NOTE: https://peps.python.org/pep-0621/#drop-maintainers-to-unify-with-authors
+# states that we should drop "Maintainers" and preference "Authors"
+authors = [
+    {name = "Aric Hagberg", email = "aric.hagberg@gmail.com"},
+    {name = "Wanda B. Boyer", email = "wbkboyer@gmail.com"},
+    {name = "John M. Boyer", email = "john.boyer.phd@gmail.com"},
+]
+
+description = "Python wrapper for the Edge Addition Planarity Suite Graph Library"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = [
+    "Graph Theory",
+    "Mathematics",
+    "Discrete Mathematics",
+    "Graph Algorithms",
+    "graph",
+    "algorithms",
+    "math",
+]
+license = "BSD-3-Clause"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Visualization"
+]
+dynamic = ["version"]
+
+[tool.setuptools]
+include-package-data = false
+packages = [
+    "planarity",
+]
+
+# NOTE: This enables dynamic metadata, e.g. versioning, to be computed during 
+# the build process; see:
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata
+# NOTE: In the future, we could automatically generate the version number by
+# configuring setuptools-scm, but presently declaring a variable at the package
+# level is simplest.
+[tool.setuptools.dynamic]
+version = {attr = "planarity.__version__"}
+
+[project.urls]
+Homepage = "https://github.com/graph-algorithms/planarity"
+Documentation = "https://github.com/graph-algorithms/planarity/wiki"
+Repository = "https://github.com/graph-algorithms/planarity.git"
+Issues = "https://github.com/graph-algorithms/planarity/issues"
+Download = "https://pypi.org/project/planarity/"

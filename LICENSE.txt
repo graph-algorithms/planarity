@@ -1,13 +1,13 @@
 License
 =======
-planarity has a BSD license.
+planarity has a BSD-3-Clause license.
 
 The code in planarity/src is Copyright (c) 1997-2015, John M. Boyer.
 See planarity/src/LICENSE.TXT
 
 ::
 
-   Copyright (C) 2016
+   Copyright (C) 2026
    Aric Hagberg <aric.hagberg@gmail.com>
    All rights reserved.
 
