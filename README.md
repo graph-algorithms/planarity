@@ -1,7 +1,8 @@
 # Planarity
-Algorithms for graph planarity testing, forbidden subgraph finding, and planar embeddings.
 
-This provides a Ptyhon interface for part of Boyer's (C) planarity algorithms found at <https://github.com/graph-algorithms/edge-addition-planarity-suite>
+This repository provides the source code for the [`planarity` Python package](https://pypi.org/project/planarity/). The `planarity` package was originally developed to provide Python and [NetworkX](https://pypi.org/project/networkx/) developers with a Python API to access planar graph testing, embedding, drawing, and forbidden subgraph isolation algorithms from the [Edge Addition Planarity Suite (EAPS)](https://github.com/graph-algorithms/edge-addition-planarity-suite). 
+
+This repository has now been transferred to the [Github Graph Algorithms Organization](https://github.com/graph-algorithms) and will soon be updated with more planarity-related algorithms as well as the underlying [EAPS](https://github.com/graph-algorithms/edge-addition-planarity-suite) graph library methods that enable developing a wide range of graph algorithms and applications.
 
 ## Example
 
@@ -44,9 +45,8 @@ In [10]: print(planarity.ascii(edgelist))
  ---5----
 </pre>
 
-See <https://github.com/hagberg/planarity/tree/master/examples> for more examples.
-
+See <https://github.com/graph-algorithms/planarity/tree/master/examples> for more examples.
 
 
 ## License
-Distributed with a BSD license; see LICENSE.txt.
+Distributed with a BSD-3-Clause license; see LICENSE.txt.
