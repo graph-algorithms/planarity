@@ -3,22 +3,30 @@
 # and https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 
 [build-system]
-# NOTE: Support for project.license-files and SPDX license expressions 
-# in project.license (PEP 639) were introduced in setuptools version 77.0.0.
-requires = ["setuptools>=80", "cython"]
+requires = ["setuptools", "cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "planarity"
-# NOTE: https://peps.python.org/pep-0621/#drop-maintainers-to-unify-with-authors
-# states that we should drop "Maintainers" and preference "Authors"
+
 authors = [
     {name = "Aric Hagberg", email = "aric.hagberg@gmail.com"},
-    {name = "Wanda B. Boyer", email = "wbkboyer@gmail.com"},
+    {name = "Wanda B. K. Boyer", email = "wbkboyer@gmail.com"},
     {name = "John M. Boyer", email = "john.boyer.phd@gmail.com"},
 ]
 
-description = "Python wrapper for the Edge Addition Planarity Suite Graph Library"
+# NOTE: Only one of authors and maintainers is required, per
+# https://packaging.python.org/en/latest/specifications/pyproject-toml
+# However, also having maintainers allows a different first maintainer
+# to appear, since only the first entry shows on the package page 
+
+maintainers = [
+    {name = "Wanda B. K. Boyer", email = "wbkboyer@gmail.com"},
+    {name = "John M. Boyer", email = "john.boyer.phd@gmail.com"},
+    {name = "Aric Hagberg", email = "aric.hagberg@gmail.com"},
+]
+
+description = "Python Wrapper for the Edge Addition Planarity Suite and Graph Library"
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = [
