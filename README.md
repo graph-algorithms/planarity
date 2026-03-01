@@ -1,8 +1,8 @@
 # Planarity
 
-This repository provides the source code for the [`planarity` Python package](https://pypi.org/project/planarity/). The `planarity` package was originally developed to provide Python and [NetworkX](https://pypi.org/project/networkx/) developers with a Python API to access planar graph testing, embedding, drawing, and forbidden subgraph isolation algorithms from the [Edge Addition Planarity Suite (EAPS)](https://github.com/graph-algorithms/edge-addition-planarity-suite). 
+The [`planarity` repository](https://github.com/graph-algorithms/planarity) provides the source code for the [`planarity` Python package](https://pypi.org/project/planarity/). The `planarity` package was originally developed to provide Python and [NetworkX](https://pypi.org/project/networkx/) developers with a Python API to access planar graph testing, embedding, drawing, and forbidden subgraph isolation algorithms from the [Edge Addition Planarity Suite (EAPS)](https://github.com/graph-algorithms/edge-addition-planarity-suite). 
 
-This repository has now been transferred to the [Github Graph Algorithms Organization](https://github.com/graph-algorithms) and will soon be updated with more planarity-related algorithms as well as the underlying [EAPS](https://github.com/graph-algorithms/edge-addition-planarity-suite) graph library methods that enable developing a wide range of graph algorithms and applications.
+The `planarity` repository has now been transferred to the [Github Graph Algorithms Organization](https://github.com/graph-algorithms). The `planarity` repository and Python package will soon be updated with more planarity-related algorithms from [EAPS](https://github.com/graph-algorithms/edge-addition-planarity-suite) as well as its underlying  graph library methods that enable developing a wide range of high-performance graph algorithms and applications.
 
 ## Example
 
