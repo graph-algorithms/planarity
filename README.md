@@ -49,4 +49,4 @@ See <https://github.com/graph-algorithms/planarity/tree/master/examples> for mor
 
 
 ## License
-Distributed with a BSD-3-Clause license; see LICENSE.txt.
+Released under a [BSD-3-Clause license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
