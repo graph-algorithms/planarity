@@ -1,7 +1,8 @@
 # Planarity
-Algorithms for graph planarity testing, forbidden subgraph finding, and planar embeddings.
 
-This provides a Ptyhon interface for part of Boyer's (C) planarity algorithms found at <https://github.com/graph-algorithms/edge-addition-planarity-suite>
+The [`planarity` repository](https://github.com/graph-algorithms/planarity) provides the source code for the [`planarity` Python package](https://pypi.org/project/planarity/). The `planarity` package was originally developed to provide Python and [NetworkX](https://pypi.org/project/networkx/) developers with a Python API to access planar graph testing, embedding, drawing, and forbidden subgraph isolation algorithms from the [Edge Addition Planarity Suite (EAPS)](https://github.com/graph-algorithms/edge-addition-planarity-suite). 
+
+The `planarity` repository has now been transferred to the [Github Graph Algorithms Organization](https://github.com/graph-algorithms). The `planarity` repository and Python package will soon be updated with more planarity-related algorithms from [EAPS](https://github.com/graph-algorithms/edge-addition-planarity-suite) as well as its underlying  graph library methods that enable developing a wide range of high-performance graph algorithms and applications.
 
 ## Example
 
@@ -44,9 +45,21 @@ In [10]: print(planarity.ascii(edgelist))
  ---5----
 </pre>
 
-See <https://github.com/hagberg/planarity/tree/master/examples> for more examples.
-
+See [here](https://github.com/graph-algorithms/planarity/tree/master/examples) for more examples.
 
 
 ## License
-Distributed with a BSD license; see LICENSE.txt.
+
+Planarity (the 'planarity' Python package; the software) is released
+under [this BSD-3-Clause license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
+
+   Copyright (C) 2016-2026, Planarity Developers<br/>
+   Aric Hagberg <aric.hagberg@gmail.com><br/>
+   Wanda B. K. Boyer <wbkboyer@gmail.com><br/>
+   John M. Boyer <john.boyer.phd@gmail.com><br/>
+   All rights reserved.<br/>
+
+   Planarity includes the Edge Addition Planarity Suite, which is<br/> 
+   Copyright (c) 1997-2025, John M. Boyer.<br/>
+   The BSD-3-Clause license for the Edge Additional Planarity Suite
+   included in Planarity appears [here](https://github.com/graph-algorithms/planarity/blob/master/planarity/src/LICENSE.TXT).
