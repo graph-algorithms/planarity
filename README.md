@@ -45,8 +45,21 @@ In [10]: print(planarity.ascii(edgelist))
  ---5----
 </pre>
 
-See <https://github.com/graph-algorithms/planarity/tree/master/examples> for more examples.
+See [here](https://github.com/graph-algorithms/planarity/tree/master/examples) for more examples.
 
 
 ## License
-Released under a [BSD-3-Clause license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
+
+Planarity (the 'planarity' Python package; the software) is released
+under [this BSD-3-Clause license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
+
+   Copyright (C) 2016-2026, Planarity Developers<br/>
+   Aric Hagberg <aric.hagberg@gmail.com><br/>
+   Wanda B. K. Boyer <wbkboyer@gmail.com><br/>
+   John M. Boyer <john.boyer.phd@gmail.com><br/>
+   All rights reserved.<br/>
+
+   Planarity includes the Edge Addition Planarity Suite, which is<br/> 
+   Copyright (c) 1997-2025, John M. Boyer.<br/>
+   The BSD-3-Clause license for the Edge Additional Planarity Suite
+   included in Planarity appears [here](https://github.com/graph-algorithms/planarity/blob/master/planarity/src/LICENSE.TXT).
