@@ -615,18 +615,8 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
 
     if (context != NULL)
     {
-        (*pExtraData) = NULL;
         if (context->functions.fpWritePostprocess(theGraph, pExtraData) != OK)
             return NOTOK;
-        else if ((*pExtraData) != NULL)
-        {
-            // NOTE: We currently do not support stacking WritePostprocess calls
-            // from multiple extensions; it wouldn't be hard, we just don't ;)
-            free((*pExtraData));
-            (*pExtraData) = NULL;
-
-            return NOTOK;
-        }
         else
         {
             int v, e, EsizeOccupied;
@@ -644,8 +634,6 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
             if (theGraph->N > 2000000000)
             {
                 free(extraData);
-                extraData = NULL;
-
                 return NOTOK;
             }
 

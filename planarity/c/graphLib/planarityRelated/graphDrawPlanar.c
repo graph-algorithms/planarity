@@ -363,8 +363,6 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
     if (theEmbedding->M > 0 && (edgeList = LCNew(gp_GetFirstEdge(theEmbedding) / 2 + theEmbedding->M)) == NULL)
     {
         free(vertexOrder);
-        vertexOrder = NULL;
-
         return NOTOK;
     }
 
@@ -495,9 +493,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
 
     // Clean up and return
     LCFree(&edgeList);
-
     free(vertexOrder);
-    vertexOrder = NULL;
 
     gp_LogLine("graphDrawPlanar.c/_ComputeEdgePositions() end\n");
 
@@ -515,12 +511,12 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
 int _ComputeVertexRanges(DrawPlanarContext *context)
 {
     graphP theEmbedding = context->theGraph;
-    int v = NIL, e = NIL, min = NIL, max = NIL;
+    int v, e, min, max;
 
     for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
     {
         min = theEmbedding->M + 1;
-        max = NIL;
+        max = -1;
 
         // Iterate the edges, except in the isolated vertex case we just
         // set the min and max to 1 since there no edges controlling where
@@ -811,8 +807,6 @@ char *_RenderToString(graphP theEmbedding)
         if (sp_NonEmpty(context->theGraph->edgeHoles))
         {
             free(visRep);
-            visRep = NULL;
-
             return NULL;
         }
 
@@ -870,7 +864,6 @@ char *_RenderToString(graphP theEmbedding)
 
         // Null terminate string and return it
         visRep[(M + 1) * 2 * N] = '\0';
-
         return visRep;
     }
 
@@ -909,8 +902,6 @@ int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
  ********************************************************************/
 int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
 {
-    int Result = OK;
-
     if (theEmbedding != NULL && sp_IsEmpty(theEmbedding->edgeHoles))
     {
         FILE *outfile;
@@ -927,13 +918,10 @@ int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
             return NOTOK;
 
         theRendition = _RenderToString(theEmbedding);
-        Result = theRendition ? OK : NOTOK;
         if (theRendition != NULL)
         {
             fprintf(outfile, "%s", theRendition);
-
             free(theRendition);
-            theRendition = NULL;
         }
 
         if (strcmp(theFileName, "stdout") == 0 || strcmp(theFileName, "stderr") == 0)
@@ -942,7 +930,7 @@ int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
         else if (fclose(outfile) != 0)
             return NOTOK;
 
-        return Result;
+        return theRendition ? OK : NOTOK;
     }
 
     return NOTOK;

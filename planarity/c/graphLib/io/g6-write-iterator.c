@@ -12,16 +12,11 @@ See the LICENSE.TXT file for licensing information.
 
 int allocateG6WriteIterator(G6WriteIteratorP *ppG6WriteIterator, graphP pGraph)
 {
+    int exitCode = OK;
+
     if (ppG6WriteIterator != NULL && (*ppG6WriteIterator) != NULL)
     {
         ErrorMessage("G6WriteIterator is not NULL and therefore can't be allocated.\n");
-        return NOTOK;
-    }
-
-    if (pGraph == NULL || gp_getN(pGraph) <= 0)
-    {
-        ErrorMessage("Must allocate and initialize graph with an order greater than 0 to use the G6WriteIterator.\n");
-
         return NOTOK;
     }
 
@@ -38,9 +33,20 @@ int allocateG6WriteIterator(G6WriteIteratorP *ppG6WriteIterator, graphP pGraph)
     (*ppG6WriteIterator)->g6Output = NULL;
     (*ppG6WriteIterator)->currGraphBuff = NULL;
     (*ppG6WriteIterator)->columnOffsets = NULL;
-    (*ppG6WriteIterator)->currGraph = pGraph;
 
-    return OK;
+    if (pGraph == NULL || gp_getN(pGraph) <= 0)
+    {
+        ErrorMessage("[ERROR] Must allocate and initialize graph with an order greater than 0 to use the G6WriteIterator.\n");
+
+        exitCode = freeG6WriteIterator(ppG6WriteIterator);
+
+        if (exitCode != OK)
+            ErrorMessage("Unable to free the G6WriteIterator.\n");
+    }
+    else
+        (*ppG6WriteIterator)->currGraph = pGraph;
+
+    return exitCode;
 }
 
 bool _isG6WriteIteratorAllocated(G6WriteIteratorP pG6WriteIterator)
@@ -253,7 +259,7 @@ int _encodeAdjMatAsG6(G6WriteIteratorP pG6WriteIterator)
 
     if (!_isG6WriteIteratorAllocated(pG6WriteIterator))
     {
-        ErrorMessage("Unable to encode graph with invalid G6WriteIterator.\n");
+        ErrorMessage("Unable to encode graph with invalid G6WriteIterator\n");
         return NOTOK;
     }
 
@@ -272,11 +278,11 @@ int _encodeAdjMatAsG6(G6WriteIteratorP pG6WriteIterator)
 
     if (graphOrder > 62)
     {
-        // bytes 1 through 3 will be populated with the 18-bit representation of the graph order
-        int intermediate = -1;
+        int i, intermediate;
         g6Encoding[0] = 126;
-
-        for (int i = 0; i < 3; i++)
+        // bytes 1 through 3 will be populated with the 18-bit representation of the graph order
+        intermediate = -1;
+        for (i = 0; i < 3; i++)
         {
             intermediate = graphOrder >> (6 * i);
             g6Encoding[3 - i] = intermediate & 63;
@@ -333,7 +339,8 @@ int _encodeAdjMatAsG6(G6WriteIteratorP pG6WriteIterator)
         if (exitCode != OK)
         {
             ErrorMessage("Unable to fetch next edge in graph.\n");
-
+            free(columnOffsets);
+            free(g6Encoding);
             return exitCode;
         }
     }
@@ -354,7 +361,7 @@ int _getFirstEdge(graphP theGraph, int *e, int *u, int *v)
 
     if ((*e) >= gp_EdgeInUseIndexBound(theGraph))
     {
-        ErrorMessage("First edge is outside bounds.\n");
+        ErrorMessage("First edge is outside bounds.");
         return NOTOK;
     }
 

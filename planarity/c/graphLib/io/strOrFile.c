@@ -16,27 +16,12 @@ See the LICENSE.TXT file for licensing information.
 /********************************************************************
  sf_New()
 
- The string-or-file object supports two IO modes: reading input (ioMode ==
- READTEXT), and writing output (ioMode == WRITETEXT). The string-or-file object
- also may only contain a string (stored using a strBufP to leverage its string
- manipulation functions) XOR a FILE *.
-
- For the input mode, sf_New() should receive either a non-NULL (and preferably
- nonempty) input string (which the container *does not own*, but rather copies
- into the internal strBufP) or a non-NULL and nonempty fileName (which may
- correspond to stdin).
-
- For the output mode, theStr *must* be NULL because, if the fileName is also
- NULL, then the desired output string will be constructed internally in the
- string-or-file object and can be obtained after all output has been written
- using sf_takeTheStr(). If the fileName is non-NULL and nonempty (which may
- correspond to stdout or stderr), then the output will go to the output stream
- and an output string will not be constructed.
+ Accepts a FILE pointer XOR a string, which are owned by the container.
 
  Returns the allocated string-or-file container, or NULL on error.
  ********************************************************************/
 
-strOrFileP sf_New(char const *const theStr, char const *const fileName, char const *ioMode)
+strOrFileP sf_New(char const *theStr, char const *fileName, char const *ioMode)
 {
     strOrFileP theStrOrFile;
     int containerType = 0;

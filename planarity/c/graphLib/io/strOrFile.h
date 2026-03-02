@@ -30,7 +30,7 @@ extern "C"
 
     typedef strOrFile *strOrFileP;
 
-    strOrFileP sf_New(char const *const theStr, char const *const fileName, char const *ioMode);
+    strOrFileP sf_New(char const *theStr, char const *fileName, char const *ioMode);
     int sf_ValidateStrOrFile(strOrFileP theStrOrFile);
 
     char sf_getc(strOrFileP theStrOrFile);

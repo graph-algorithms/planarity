@@ -37,7 +37,7 @@ extern "C"
 
 #define GP_PROJECTVERSION_MAJOR 4
 #define GP_PROJECTVERSION_MINOR 0
-#define GP_PROJECTVERSION_MAINT 2
+#define GP_PROJECTVERSION_MAINT 1
 #define GP_PROJECTVERSION_TWEAK 0
 
     char *gp_GetProjectVersionFull(void);

@@ -55,8 +55,8 @@ char _GetVertexObstructionTypeChar(graphP theGraph, int v);
 int _ReadAdjMatrix(graphP theGraph, strOrFileP inputContainer)
 
 {
-    int N = 0;
-    int v = NIL, w = NIL, Flag = NIL;
+    int N = -1;
+    int v, w, Flag;
 
     if (sf_ValidateStrOrFile(inputContainer) != OK)
         return NOTOK;
@@ -129,9 +129,8 @@ int _ReadAdjMatrix(graphP theGraph, strOrFileP inputContainer)
 
 int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
 {
-    int ErrorCode = OK;
-
-    int N = 0, v = NIL, W = NIL, adjList = NIL, e = NIL, indexValue = NIL;
+    int N = -1;
+    int v, W, adjList, e, indexValue, ErrorCode;
     int zeroBased = FALSE;
 
     if (sf_ValidateStrOrFile(inputContainer) != OK)
@@ -334,14 +333,10 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
 
 int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
 {
-    int ErrorCode = OK;
-
-    int graphType = 0;
-    int N = 0, M = 0, u = NIL, v = NIL;
-    int zeroBasedOffset = gp_GetFirstVertex(theGraph) == 0 ? 1 : 0;
     char Line[MAXLINE + 1];
-
-    memset(Line, '\0', (MAXLINE + 1));
+    int N = -1;
+    int graphType, M, m, u, v, ErrorCode;
+    int zeroBasedOffset = gp_GetFirstVertex(theGraph) == 0 ? 1 : 0;
 
     if (sf_ValidateStrOrFile(inputContainer) != OK)
         return NOTOK;
@@ -389,7 +384,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
         return NOTOK;
 
     /* Read and add each edge, omitting loops and parallel edges */
-    for (int m = 0; m < M; m++)
+    for (m = 0; m < M; m++)
     {
         if (sf_ReadSkipWhitespace(inputContainer) != OK)
             return NOTOK;
@@ -440,9 +435,10 @@ int gp_Read(graphP theGraph, char const *FileName)
 
  Populates theGraph using the information stored in inputStr.
 
- The caller owns the memory of inputStr, as the contents of inputStr are copied
- into the inputContainer's internal strBuf, and therefore is responsible for
- freeing the inputStr after gp_ReadFromString().
+ The ownership of inputStr is transferred from the caller; it is
+ assigned to a strOrFile container and ownership is transferred to
+ the internal helper function _ReadGraph(), which then handles
+ freeing this memory.
 
  Returns NOTOK for any error, or OK otherwise
  ********************************************************************/
@@ -451,7 +447,12 @@ int gp_ReadFromString(graphP theGraph, char *inputStr)
 {
     strOrFileP inputContainer = sf_New(inputStr, NULL, READTEXT);
     if (inputContainer == NULL)
+    {
+        if (inputStr != NULL)
+            free(inputStr);
+        inputStr = NULL;
         return NOTOK;
+    }
 
     return _ReadGraph(theGraph, inputContainer);
 }
@@ -474,11 +475,8 @@ int gp_ReadFromString(graphP theGraph, char *inputStr)
 int _ReadGraph(graphP theGraph, strOrFileP inputContainer)
 {
     int RetVal = OK;
-
     bool extraDataAllowed = false;
     char lineBuff[MAXLINE + 1];
-
-    memset(lineBuff, '\0', (MAXLINE + 1));
 
     if (sf_ValidateStrOrFile(inputContainer) != OK)
         return NOTOK;
@@ -541,6 +539,7 @@ int _ReadGraph(graphP theGraph, strOrFileP inputContainer)
                     RetVal = NOTOK;
                 else
                 {
+                    // FIXME: how do I distinguish between "there's no more content on input stream" and "I've hit an error state"
                     while (sf_fgets(lineBuff, MAXLINE, inputContainer) != NULL)
                     {
                         if (sb_ConcatString(extraData, lineBuff) != OK)
@@ -584,10 +583,9 @@ int _ReadPostprocess(graphP theGraph, char *extraData)
 
 int _WriteAdjList(graphP theGraph, strOrFileP outputContainer)
 {
-    int v = NIL, e = NIL;
+    int v, e;
     int zeroBasedOffset = (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? gp_GetFirstVertex(theGraph) : 0;
     char numberStr[MAXCHARSFOR32BITINT + 1];
-
     memset(numberStr, '\0', (MAXCHARSFOR32BITINT + 1) * sizeof(char));
 
     if (theGraph == NULL || sf_ValidateStrOrFile(outputContainer) != OK)
@@ -646,10 +644,9 @@ int _WriteAdjList(graphP theGraph, strOrFileP outputContainer)
 
 int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer)
 {
-    int v = NIL, e = NIL;
+    int v, e, K;
     char *Row = NULL;
     char numberStr[MAXCHARSFOR32BITINT + 1];
-
     memset(numberStr, '\0', (MAXCHARSFOR32BITINT + 1) * sizeof(char));
 
     if (theGraph == NULL || sf_ValidateStrOrFile(outputContainer) != OK)
@@ -669,11 +666,10 @@ int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer)
     // Construct the upper triangular matrix representation one row at a time
     for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
     {
-        for (int i = gp_GetFirstVertex(theGraph); i <= v; i++)
-            Row[i - gp_GetFirstVertex(theGraph)] = ' ';
-
-        for (int i = v + 1; gp_VertexInRange(theGraph, i); i++)
-            Row[i - gp_GetFirstVertex(theGraph)] = '0';
+        for (K = gp_GetFirstVertex(theGraph); K <= v; K++)
+            Row[K - gp_GetFirstVertex(theGraph)] = ' ';
+        for (K = v + 1; gp_VertexInRange(theGraph, K); K++)
+            Row[K - gp_GetFirstVertex(theGraph)] = '0';
 
         e = gp_GetFirstArc(theGraph, v);
         while (gp_IsArc(e))
@@ -696,8 +692,6 @@ int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer)
     }
 
     free(Row);
-    Row = NULL;
-
     return OK;
 }
 
@@ -750,9 +744,8 @@ char _GetVertexObstructionTypeChar(graphP theGraph, int v)
 
 int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
 {
-    int v = NIL, e = NIL, EsizeOccupied = 0;
+    int v, e, EsizeOccupied;
     char lineBuf[MAXLINE + 1];
-
     memset(lineBuf, '\0', (MAXLINE + 1) * sizeof(char));
 
     if (theGraph == NULL || sf_ValidateStrOrFile(outputContainer) != OK)
@@ -892,8 +885,7 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
 
 int gp_Write(graphP theGraph, char const *FileName, int Mode)
 {
-    int RetVal = OK;
-
+    int RetVal;
     strOrFileP outputContainer = NULL;
 
     if (theGraph == NULL || FileName == NULL)
@@ -908,7 +900,9 @@ int gp_Write(graphP theGraph, char const *FileName, int Mode)
 
     RetVal = _WriteGraph(theGraph, &outputContainer, NULL, Mode);
 
-    sf_Free(&outputContainer);
+    if (outputContainer != NULL)
+        sf_Free(&outputContainer);
+    outputContainer = NULL;
 
     return RetVal;
 }
@@ -931,8 +925,7 @@ int gp_Write(graphP theGraph, char const *FileName, int Mode)
  ********************************************************************/
 int gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode)
 {
-    int RetVal = OK;
-
+    int RetVal;
     strOrFileP outputContainer = NULL;
 
     if (theGraph == NULL || pOutputStr == NULL)
@@ -960,7 +953,9 @@ int gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode)
     if ((*pOutputStr) == NULL || strlen(*pOutputStr) == 0)
         RetVal = NOTOK;
 
-    sf_Free(&outputContainer);
+    if (outputContainer != NULL)
+        sf_Free(&outputContainer);
+    outputContainer = NULL;
 
     return RetVal;
 }
@@ -1012,9 +1007,7 @@ int _WriteGraph(graphP theGraph, strOrFileP *outputContainer, char **pOutputStr,
         {
             if (sf_fputs(extraData, (*outputContainer)) == EOF)
                 RetVal = NOTOK;
-
             free(extraData);
-            extraData = NULL;
         }
     }
 

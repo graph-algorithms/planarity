@@ -140,7 +140,7 @@ int beginG6ReadIterationFromG6String(G6ReadIteratorP pG6ReadIterator, char *inpu
         sf_New(inputString, NULL, READTEXT));
 }
 
-int beginG6ReadIterationFromG6FilePath(G6ReadIteratorP pG6ReadIterator, char const *const infileName)
+int beginG6ReadIterationFromG6FilePath(G6ReadIteratorP pG6ReadIterator, char *infileName)
 {
     return beginG6ReadIterationFromG6StrOrFile(
         pG6ReadIterator,
@@ -168,7 +168,7 @@ int _beginG6ReadIteration(G6ReadIteratorP pG6ReadIterator)
     char charConfirmation = EOF;
     int firstChar = '\0';
     int lineNum = 1;
-    int graphOrder = NIL;
+    int graphOrder = -1;
     strOrFileP g6Input = pG6ReadIterator->g6Input;
     char messageContents[MAXLINE + 1];
     messageContents[0] = '\0';

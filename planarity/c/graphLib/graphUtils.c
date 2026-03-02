@@ -1086,7 +1086,7 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
 
 graphP gp_DupGraph(graphP theGraph)
 {
-    graphP result = NULL;
+    graphP result;
 
     if ((result = gp_New()) == NULL)
         return NULL;

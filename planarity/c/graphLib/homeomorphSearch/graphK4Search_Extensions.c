@@ -104,8 +104,6 @@ int gp_AttachK4Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K4Search_FreeContext(context);
-        context = NULL;
-
         return NOTOK;
     }
 
@@ -121,8 +119,6 @@ int gp_AttachK4Search(graphP theGraph)
             _K4Search_InitStructures(context) != OK)
         {
             _K4Search_FreeContext(context);
-            context = NULL;
-
             return NOTOK;
         }
     }
@@ -285,8 +281,6 @@ void *_K4Search_DupContext(void *pContext, void *theGraph)
             if (_K4Search_CreateStructures(newContext) != OK)
             {
                 _K4Search_FreeContext(newContext);
-                newContext = NULL;
-
                 return NULL;
             }
 

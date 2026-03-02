@@ -79,8 +79,6 @@ int gp_AttachK23Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K23Search_FreeContext(context);
-        context = NULL;
-
         return NOTOK;
     }
 
