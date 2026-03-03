@@ -5,7 +5,7 @@
     "distutils": {
         "depends": [],
         "include_dirs": [
-            "planarity/c/graphLib/"
+            "planarity/c/graphLib"
         ],
         "name": "planarity.planarity",
         "sources": [

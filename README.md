@@ -45,6 +45,13 @@ In [10]: print(planarity.ascii(edgelist))
  ---5----
 </pre>
 
+```python
+In [11]: # Shows correspondence between vertex labels and indices
+
+In [12]: print(planarity.mapping(edgelist))
+{1: 'd', 2: 'c', 3: 'e', 4: 'a', 5: 'b'}
+```
+
 See [here](https://github.com/graph-algorithms/planarity/tree/master/examples) for more examples.
 
 ## License
@@ -52,7 +59,7 @@ See [here](https://github.com/graph-algorithms/planarity/tree/master/examples) f
 Planarity (the 'planarity' Python package; the software) is released
 under [this BSD-3-Clause license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
 
-   Copyright (C) 2016-2026, Planarity Developers<br/>
+   Copyright (c) 2016-2026, Planarity Developers<br/>
    Aric Hagberg <aric.hagberg@gmail.com><br/>
    Wanda B. K. Boyer <wbkboyer@gmail.com><br/>
    John M. Boyer <john.boyer.phd@gmail.com><br/>
@@ -61,4 +68,4 @@ under [this BSD-3-Clause license](https://github.com/graph-algorithms/planarity/
    Planarity includes the Edge Addition Planarity Suite, which is<br/> 
    Copyright (c) 1997-2025, John M. Boyer.<br/>
    The BSD-3-Clause license for the Edge Additional Planarity Suite
-   included in Planarity appears [here](https://github.com/graph-algorithms/planarity/blob/master/planarity/src/LICENSE.TXT).
+   included in Planarity appears [here](https://github.com/graph-algorithms/planarity/blob/master/planarity/c/LICENSE.TXT).

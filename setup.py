@@ -21,7 +21,7 @@ sourcefiles.extend(glob("planarity/c/graphLib/**/*.c", recursive=True))
 
 extensions = [Extension("planarity.planarity",
                         sourcefiles,
-                        include_dirs=['planarity/c/graphLib/'],
+                        include_dirs=['planarity/c/graphLib'],
                         )]
 
 if USE_CYTHON:
