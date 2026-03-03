@@ -5,7 +5,7 @@ under the following BSD-3-Clause license.
 
 ::
 
-   Copyright (C) 2016-2026, Planarity Developers
+   Copyright (c) 2016-2026, Planarity Developers
    Aric Hagberg <aric.hagberg@gmail.com>
    Wanda B. K. Boyer <wbkboyer@gmail.com>
    John M. Boyer <john.boyer.phd@gmail.com>

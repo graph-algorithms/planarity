@@ -1,5 +1,5 @@
 """Interface for Boyer's (C) planarity algorithms."""
-cdef extern from "src/graphStructures.h":
+cdef extern from "c/graphLib/graphStructures.h":
     ctypedef struct baseGraphStructure:
         pass
     ctypedef baseGraphStructure * graphP
@@ -18,13 +18,13 @@ cdef extern from "src/graphStructures.h":
     cdef int gp_GetNextArc(graphP theGraph, int v)
     cdef int gp_GetDirection(graphP theGraph, int v)
 
-cdef extern from "src/appconst.h":
+cdef extern from "c/graphLib/lowLevelUtils/appconst.h":
     cdef int OK, NOTOK, NULL 
 
-cdef extern from "src/graph.h":
+cdef extern from "c/graphLib/graph.h":
     cdef int WRITE_ADJLIST
 
-cdef extern from "src/graphStructures.h":
+cdef extern from "c/graphLib/graphStructures.h":
     cdef int EMBEDFLAGS_PLANAR, NONEMBEDDABLE, EMBEDFLAGS_DRAWPLANAR
     cdef int EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY  
 
@@ -37,12 +37,12 @@ cdef extern from "src/graphStructures.h":
     cdef void gp_SortVertices(graphP theGraph)
 
 
-cdef extern from "src/graphDrawPlanar.h":
+cdef extern from "c/graphLib/planarityRelated/graphDrawPlanar.h":
     cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
     cdef int gp_AttachDrawPlanar(graphP theGraph)
 
 
-cdef extern from "src/graphDrawPlanar.private.h":
+cdef extern from "c/graphLib/planarityRelated/graphDrawPlanar.private.h":
     ctypedef struct DrawPlanar_VertexInfo:
        int pos
        int start
@@ -59,6 +59,6 @@ cdef extern from "src/graphDrawPlanar.private.h":
         DrawPlanar_EdgeRecP E
         DrawPlanar_VertexInfoP VI
 
-cdef extern from "src/graphExtensions.h":
+cdef extern from "c/graphLib/extensionSystem/graphExtensions.h":
     cdef void * gp_GetExtension(graphP theGraph, int moduleID)
     cdef int gp_FindExtension(graphP theGraph, int moduleID, void *pContext)

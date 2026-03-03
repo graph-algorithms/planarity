@@ -1,6 +1,8 @@
 setuptools
 wheel
 cython
+build
+twine
+pytest
 networkx
 matplotlib
-pytest

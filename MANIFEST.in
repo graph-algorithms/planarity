@@ -1,14 +1,15 @@
 include MANIFEST.in
 include setup.py
-include INSTALL.txt
+
 include LICENSE.txt
+include planarity/c/LICENSE.TXT
+
 include README.md
+include planarity/c/README
 
 include planarity/cplanarity.pxd
 include planarity/planarity.c
 include planarity/planarity.pyx
-include planarity/src/*.c
-include planarity/src/*.h
 
 recursive-include examples *.py *.gz
 recursive-include doc *.py *.rst Makefile *.html *.txt

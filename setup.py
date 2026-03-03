@@ -12,14 +12,16 @@ except ImportError:
 else:
     USE_CYTHON = True
 
-ext = '.pyx' if USE_CYTHON else '.c'
+ext = ".pyx" if USE_CYTHON else ".c"
 
-sourcefiles = ['planarity/planarity'+ext]
-sourcefiles.extend(glob("planarity/src/*.c"))
+sourcefiles = [
+    "planarity/planarity" + ext,
+    ]
+sourcefiles.extend(glob("planarity/c/graphLib/**/*.c", recursive=True))
 
 extensions = [Extension("planarity.planarity",
                         sourcefiles,
-                        include_dirs=['planarity/src/'],
+                        include_dirs=['planarity/c/graphLib'],
                         )]
 
 if USE_CYTHON:
