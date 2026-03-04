@@ -72,6 +72,7 @@ dynamic = ["version"]
 include-package-data = false
 packages = [
     "planarity",
+    "planarity.classic",
 ]
 
 # NOTE: This enables dynamic metadata, e.g. versioning, to be computed during 

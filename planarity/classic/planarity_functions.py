@@ -1,7 +1,13 @@
 """Functional interface to planarity."""
 import planarity
 
-__all__ = ['is_planar', 'kuratowski_edges', 'ascii', 'write', 'mapping']
+__all__ = [
+    'is_planar',
+    'kuratowski_edges',
+    'ascii',
+    'write',
+    'mapping'
+    ]
 
 def is_planar(graph):
     """Test planarity of graph."""
