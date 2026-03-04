@@ -16,12 +16,36 @@ classic_sourcefiles = [
 ]
 classic_sourcefiles.extend(glob("planarity/c/graphLib/**/*.c", recursive=True))
 
+g6IterationUtils_sourcefiles = [
+    "planarity/full/g6IterationUtils" + ext,
+]
+g6IterationUtils_sourcefiles.extend(
+    glob("planarity/c/graphLib/**/*.c", recursive=True)
+)
+
+graph_sourcefiles = [
+    "planarity/full/graph" + ext,
+]
+graph_sourcefiles.extend(
+    glob("planarity/c/graphLib/**/*.c", recursive=True)
+)
+
 extensions = [
     Extension(
         "planarity.classic.planarity",
         classic_sourcefiles,
         include_dirs=['planarity/c/graphLib'],
-    )
+    ),
+    Extension(
+        "planarity.full.g6IterationUtils",
+        g6IterationUtils_sourcefiles,
+        include_dirs=["planarity/c/graphLib"],
+    ),
+    Extension(
+        "planarity.full.graph",
+        graph_sourcefiles,
+        include_dirs=["planarity/c/graphLib"],
+    ),
 ]
 
 if USE_CYTHON:
