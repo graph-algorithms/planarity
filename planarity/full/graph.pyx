@@ -5,10 +5,6 @@ Cython wrapper for the Edge Addition Planarity Suite Graph Library
 
 Wraps a graphP struct using a Cython class and wraps functions and macros that
 operate over graphP structs.
-
-Copyright (c) 1997-2025, John M. Boyer
-All rights reserved.
-See the LICENSE.TXT file for licensing information.
 """
 
 from planarity.full cimport cappconst
@@ -43,8 +39,6 @@ cdef class Graph:
         return self._theGraph == NULL
 
     def is_vertex(self, int v):
-        # FIXME: Is this a function I want to expose to Python consumers, or
-        # just use for internal bounds checking?
         return v >= self.gp_GetFirstVertex() and self.gp_VertexInRange(v)
 
     def get_wrapper_for_graphP(self) -> Graph:
@@ -58,20 +52,48 @@ cdef class Graph:
         return new_wrapper
 
     def gp_IsArc(self, int e):
-        # FIXME: this macro only returns the value e for 1-based, checks it's 
-        # not NIL in zero-based.... Do we need better bounds checking?
-        # NOTE: theGraph->ESize is initialized in gp_Init() using
-        # gp_GetEdgeIndexBound(), but is only used for allocation, not bounds
-        # checking
-        return cgraphLib.gp_IsArc(e)
+        return (
+            cgraphLib.gp_IsArc(e) and
+            (e >= self.gp_GetFirstEdge()) and
+            (e <= self.gp_EdgeInUseIndexBound())
+        )
+
+    def gp_GetFirstEdge(self):
+        return cgraphLib.gp_GetFirstEdge(self._theGraph)
+
+    def gp_EdgeInUse(self, int e):
+        if not self.gp_IsArc(e):
+            raise RuntimeError(
+                f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+            )
+
+        return cgraphLib.gp_EdgeInUse(self._theGraph, e)
+
+    def gp_EdgeInUseIndexBound(self):
+        return cgraphLib.gp_EdgeInUseIndexBound(self._theGraph)
 
     def gp_GetFirstArc(self, int v):
+        if not self.is_vertex(v):
+            raise RuntimeError(
+                f"gp_GetFirstArc() failed: invalid vertex intex '{v}'."
+            )
+
         return cgraphLib.gp_GetFirstArc(self._theGraph, v)
 
     def gp_GetNextArc(self, int e):
+        if not self.gp_IsArc(e):
+            raise RuntimeError(
+                f"gp_GetNextArc() failed: invalid edge index '{e}'."
+            )
+
         return cgraphLib.gp_GetNextArc(self._theGraph, e)
 
     def gp_GetNeighbor(self, int e):
+        if not self.gp_IsArc(e):
+            raise RuntimeError(
+                f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+            )
+
         return cgraphLib.gp_GetNeighbor(self._theGraph, e)
 
     def gp_GetFirstVertex(self):
@@ -81,8 +103,10 @@ cdef class Graph:
         return cgraphLib.gp_GetLastVertex(self._theGraph)
 
     def gp_VertexInRange(self, int v):
-        # TODO: Might need to return a boolean here instead?
-        return cgraphLib.gp_VertexInRange(self._theGraph, v)
+        return (
+            v >= self.gp_GetFirstVertex() and
+            cgraphLib.gp_VertexInRange(self._theGraph, v)
+        )
 
     def gp_getN(self)-> int:
         """
@@ -102,9 +126,6 @@ cdef class Graph:
     def gp_CopyGraph(self, Graph src_graph):
         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
         # the Graph wrapper that is passed in as the srcGraph
-        # NOTE: It is expected that one must already have called
-        # self.gp_ReinitializeGraph() before trying to copy a source graph
-        # into this destination graph.
         if src_graph.is_graph_NULL() or src_graph.gp_getN() == 0:
             raise ValueError(
                 "Source graph either has not been allocated or not been "
@@ -161,8 +182,6 @@ cdef class Graph:
                 )
 
     def gp_GetNeighborEdgeRecord(self, int u, int v):
-        # FIXME: Added validation, since the macro doesn't check whether u and v 
-        # are valid... should I revert this for speed reasons?
         if not self.is_vertex(u):
             raise RuntimeError(f"'{u}' is not a valid vertex label.")
         if not self.is_vertex(v):
@@ -171,14 +190,13 @@ cdef class Graph:
         return cgraphLib.gp_GetNeighborEdgeRecord(self._theGraph, u, v)
 
     def gp_GetVertexDegree(self, int v):
-        # NOTE: gp_GetVertexDegree() only produces debug output when compiled
-        # with -DDEBUG flag, which would require overriding compiler flags.
-        # TODO: Should a docstring be added to instruct users to call is_vertex()
-        # at the application layer rather than forcing validation at this layer?
         if not self.is_vertex(v):
             raise RuntimeError(f"'{v}' is not a valid vertex label.")
 
         return cgraphLib.gp_GetVertexDegree(self._theGraph, v)
+
+    def gp_GetArcCapacity(self):
+        return cgraphLib.gp_GetArcCapacity(self._theGraph)
 
     def gp_EnsureArcCapacity(self, int new_arc_capacity):
         if cgraphLib.gp_EnsureArcCapacity(self._theGraph, new_arc_capacity) != cappconst.OK:
@@ -187,6 +205,14 @@ cdef class Graph:
                 f"{new_arc_capacity}.")
 
     def gp_AddEdge(self, int u, int ulink, int v, int vlink):
+        if ulink != 0 and ulink != 1:
+            raise RuntimeError(
+                f"Invalid link index for ulink: '{ulink}'."
+            )
+        if vlink != 0 and vlink != 1:
+            raise RuntimeError(
+                f"Invalid link index for vlink: '{vlink}'."
+            )
         if cgraphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink) != cappconst.OK:
             raise RuntimeError(
                 f"Unable to add edge (u, v) = ({u}, {v}) with ulink = {ulink} "
@@ -194,13 +220,16 @@ cdef class Graph:
             )
 
     def gp_DeleteEdge(self, int e, int nextLink):
-        # NOTE: nextLink argument seems to always be 0 within graphLib; if using
-        # 1, then make sure you *consistently* use this value as your nextLink
-        # throughout the application code.
-        # FIXME: gp_DeleteEdge() returns the next arc in the adjacency list,
-        # which we don't need for EDA; need to decide whether to return it here,
-        # since that's what's returned at the graphLib layer
-        cgraphLib.gp_DeleteEdge(self._theGraph, e, nextLink)
+        if not self.gp_IsArc(e):
+            raise RuntimeError(
+                f"gp_DeleteEdge() failed: invalid arc '{e}'."
+            )
+        if nextLink != 0 and nextLink != 1:
+            raise RuntimeError(
+                f"Invalid link index for nextLink: '{nextLink}'."
+            )
+        
+        return cgraphLib.gp_DeleteEdge(self._theGraph, e, nextLink)
 
     def gp_AttachDrawPlanar(self):
         if cgraphLib.gp_AttachDrawPlanar(self._theGraph) != cappconst.OK:

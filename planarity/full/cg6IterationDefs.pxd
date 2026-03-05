@@ -5,10 +5,6 @@ to interact with .g6 graph files.
 
     N.B. The definition for graphP must be exposed by cimport of cgraph.pxd
     definition file.
-
-Copyright (c) 1997-2025, John M. Boyer
-All rights reserved.
-See the LICENSE.TXT file for licensing information.
 """
 
 from planarity.full.cgraphLib cimport graphP

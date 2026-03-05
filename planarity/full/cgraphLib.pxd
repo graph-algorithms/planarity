@@ -2,21 +2,19 @@
 
 Specifically provides definitions for functions and macros that are required
 to interact with graphP structs.
-
-Copyright (c) 1997-2025, John M. Boyer
-All rights reserved.
-See the LICENSE.TXT file for licensing information.
 """
 
 cdef extern from "../c/graphLib/graphStructures.h":
     cdef int NONEMBEDDABLE
-    cdef int EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY
 
     ctypedef struct baseGraphStructure:
         pass
     ctypedef baseGraphStructure * graphP
 
     int gp_IsArc(int e)
+    int gp_GetFirstEdge(graphP theGraph)
+    int gp_EdgeInUse(graphP theGraph, int e)
+    int gp_EdgeInUseIndexBound(graphP theGraph)
     int gp_GetFirstArc(graphP theGraph, int v)
     int gp_GetNextArc(graphP theGraph, int e)
 

@@ -1565,7 +1565,7 @@ struct __pyx_obj_9planarity_4full_5graph_Graph;
 struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator;
 struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator;
 
-/* "graph.pxd":16
+/* "graph.pxd":12
  * from planarity.full cimport cgraphLib
  * 
  * cdef class Graph:             # <<<<<<<<<<<<<<
@@ -1579,7 +1579,7 @@ struct __pyx_obj_9planarity_4full_5graph_Graph {
 };
 
 
-/* "planarity/full/g6IterationUtils.pyx":21
+/* "planarity/full/g6IterationUtils.pyx":17
  * 
  * 
  * cdef class G6ReadIterator:             # <<<<<<<<<<<<<<
@@ -1593,7 +1593,7 @@ struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator {
 };
 
 
-/* "planarity/full/g6IterationUtils.pyx":69
+/* "planarity/full/g6IterationUtils.pyx":65
  * 
  * 
  * cdef class G6WriteIterator:             # <<<<<<<<<<<<<<
@@ -2420,7 +2420,7 @@ int __pyx_module_is_main_planarity__full__g6IterationUtils = 0;
 /* Implementation of "planarity.full.g6IterationUtils" */
 /* #### Code section: global_var ### */
 /* #### Code section: string_decls ### */
-static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper for the Edge Addition Planarity Suite Graph Library\n\nWraps structs pertaining to G6 file iteration using a Cython class and wraps\npertinent functions and macros.\n\nCopyright (c) 1997-2025, John M. Boyer\nAll rights reserved.\nSee the LICENSE.TXT file for licensing information.\n";
+static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper for the Edge Addition Planarity Suite Graph Library\n\nWraps structs pertaining to G6 file iteration using a Cython class and wraps\npertinent functions and macros.\n";
 /* #### Code section: decls ### */
 static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit__(struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator *__pyx_v_self); /* proto */
 static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dealloc__(struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator *__pyx_v_self); /* proto */
@@ -2672,7 +2672,7 @@ return 0;
 #endif
 /* #### Code section: module_code ### */
 
-/* "planarity/full/g6IterationUtils.pyx":25
+/* "planarity/full/g6IterationUtils.pyx":21
  *     cdef graph.Graph _currGraph
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -2718,7 +2718,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":26
+  /* "planarity/full/g6IterationUtils.pyx":22
  * 
  *     def __cinit__(self):
  *         self._g6ReadIterator = NULL             # <<<<<<<<<<<<<<
@@ -2727,7 +2727,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
 */
   __pyx_v_self->_g6ReadIterator = NULL;
 
-  /* "planarity/full/g6IterationUtils.pyx":28
+  /* "planarity/full/g6IterationUtils.pyx":24
  *         self._g6ReadIterator = NULL
  * 
  *         cdef graph.Graph currGraph = graph.Graph()             # <<<<<<<<<<<<<<
@@ -2740,13 +2740,13 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (__pyx_t_3*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF((PyObject *)__pyx_t_1);
   }
   __pyx_v_currGraph = ((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":30
+  /* "planarity/full/g6IterationUtils.pyx":26
  *         cdef graph.Graph currGraph = graph.Graph()
  * 
  *         if cg6IterationDefs.allocateG6ReadIterator(&self._g6ReadIterator, currGraph._theGraph) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -2756,7 +2756,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
   __pyx_t_4 = (allocateG6ReadIterator((&__pyx_v_self->_g6ReadIterator), __pyx_v_currGraph->_theGraph) != OK);
   if (unlikely(__pyx_t_4)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":31
+    /* "planarity/full/g6IterationUtils.pyx":27
  * 
  *         if cg6IterationDefs.allocateG6ReadIterator(&self._g6ReadIterator, currGraph._theGraph) != cappconst.OK:
  *             raise MemoryError("allocateG6ReadIterator() failed.")             # <<<<<<<<<<<<<<
@@ -2769,14 +2769,14 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
       PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_mstate_global->__pyx_kp_u_allocateG6ReadIterator_failed};
       __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_MemoryError)), __pyx_callargs+__pyx_t_3, (2-__pyx_t_3) | (__pyx_t_3*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     }
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 31, __pyx_L1_error)
+    __PYX_ERR(0, 27, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":30
+    /* "planarity/full/g6IterationUtils.pyx":26
  *         cdef graph.Graph currGraph = graph.Graph()
  * 
  *         if cg6IterationDefs.allocateG6ReadIterator(&self._g6ReadIterator, currGraph._theGraph) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -2785,7 +2785,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":33
+  /* "planarity/full/g6IterationUtils.pyx":29
  *             raise MemoryError("allocateG6ReadIterator() failed.")
  * 
  *         self._currGraph = currGraph             # <<<<<<<<<<<<<<
@@ -2798,7 +2798,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
   __Pyx_DECREF((PyObject *)__pyx_v_self->_currGraph);
   __pyx_v_self->_currGraph = __pyx_v_currGraph;
 
-  /* "planarity/full/g6IterationUtils.pyx":25
+  /* "planarity/full/g6IterationUtils.pyx":21
  *     cdef graph.Graph _currGraph
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -2820,7 +2820,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":35
+/* "planarity/full/g6IterationUtils.pyx":31
  *         self._currGraph = currGraph
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2852,7 +2852,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":36
+  /* "planarity/full/g6IterationUtils.pyx":32
  * 
  *     def __dealloc__(self):
  *         if self._g6ReadIterator != NULL:             # <<<<<<<<<<<<<<
@@ -2862,7 +2862,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
   __pyx_t_1 = (__pyx_v_self->_g6ReadIterator != NULL);
   if (__pyx_t_1) {
 
-    /* "planarity/full/g6IterationUtils.pyx":37
+    /* "planarity/full/g6IterationUtils.pyx":33
  *     def __dealloc__(self):
  *         if self._g6ReadIterator != NULL:
  *             if cg6IterationDefs.endG6ReadIteration(self._g6ReadIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -2872,7 +2872,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
     __pyx_t_1 = (endG6ReadIteration(__pyx_v_self->_g6ReadIterator) != OK);
     if (unlikely(__pyx_t_1)) {
 
-      /* "planarity/full/g6IterationUtils.pyx":38
+      /* "planarity/full/g6IterationUtils.pyx":34
  *         if self._g6ReadIterator != NULL:
  *             if cg6IterationDefs.endG6ReadIteration(self._g6ReadIterator) != cappconst.OK:
  *                 raise RuntimeError("endG6ReadIteration() failed.")             # <<<<<<<<<<<<<<
@@ -2885,14 +2885,14 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
         PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_endG6ReadIteration_failed};
         __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       }
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(0, 38, __pyx_L1_error)
+      __PYX_ERR(0, 34, __pyx_L1_error)
 
-      /* "planarity/full/g6IterationUtils.pyx":37
+      /* "planarity/full/g6IterationUtils.pyx":33
  *     def __dealloc__(self):
  *         if self._g6ReadIterator != NULL:
  *             if cg6IterationDefs.endG6ReadIteration(self._g6ReadIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -2901,7 +2901,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
 */
     }
 
-    /* "planarity/full/g6IterationUtils.pyx":44
+    /* "planarity/full/g6IterationUtils.pyx":40
  *             # by calling their respective __dealloc__, so at that point the
  *             # graphP will be cleaned up with gp_Free()
  *             if cg6IterationDefs.freeG6ReadIterator(&self._g6ReadIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -2911,7 +2911,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
     __pyx_t_1 = (freeG6ReadIterator((&__pyx_v_self->_g6ReadIterator)) != OK);
     if (unlikely(__pyx_t_1)) {
 
-      /* "planarity/full/g6IterationUtils.pyx":45
+      /* "planarity/full/g6IterationUtils.pyx":41
  *             # graphP will be cleaned up with gp_Free()
  *             if cg6IterationDefs.freeG6ReadIterator(&self._g6ReadIterator) != cappconst.OK:
  *                 raise MemoryError("freeG6ReadIterator() failed.")             # <<<<<<<<<<<<<<
@@ -2924,14 +2924,14 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
         PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_freeG6ReadIterator_failed};
         __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_MemoryError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       }
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(0, 45, __pyx_L1_error)
+      __PYX_ERR(0, 41, __pyx_L1_error)
 
-      /* "planarity/full/g6IterationUtils.pyx":44
+      /* "planarity/full/g6IterationUtils.pyx":40
  *             # by calling their respective __dealloc__, so at that point the
  *             # graphP will be cleaned up with gp_Free()
  *             if cg6IterationDefs.freeG6ReadIterator(&self._g6ReadIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -2940,7 +2940,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
 */
     }
 
-    /* "planarity/full/g6IterationUtils.pyx":36
+    /* "planarity/full/g6IterationUtils.pyx":32
  * 
  *     def __dealloc__(self):
  *         if self._g6ReadIterator != NULL:             # <<<<<<<<<<<<<<
@@ -2949,7 +2949,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":35
+  /* "planarity/full/g6IterationUtils.pyx":31
  *         self._currGraph = currGraph
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2967,7 +2967,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
   __Pyx_RefNannyFinishContext();
 }
 
-/* "planarity/full/g6IterationUtils.pyx":47
+/* "planarity/full/g6IterationUtils.pyx":43
  *                 raise MemoryError("freeG6ReadIterator() failed.")
  * 
  *     def contents_exhausted(self):             # <<<<<<<<<<<<<<
@@ -3027,7 +3027,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("contents_exhausted", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":48
+  /* "planarity/full/g6IterationUtils.pyx":44
  * 
  *     def contents_exhausted(self):
  *         return cg6IterationDefs.contentsExhausted(self._g6ReadIterator)             # <<<<<<<<<<<<<<
@@ -3035,13 +3035,13 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4
  *     def get_currGraph(self) -> graph.Graph:
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(contentsExhausted(__pyx_v_self->_g6ReadIterator)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(contentsExhausted(__pyx_v_self->_g6ReadIterator)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/g6IterationUtils.pyx":47
+  /* "planarity/full/g6IterationUtils.pyx":43
  *                 raise MemoryError("freeG6ReadIterator() failed.")
  * 
  *     def contents_exhausted(self):             # <<<<<<<<<<<<<<
@@ -3060,7 +3060,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":50
+/* "planarity/full/g6IterationUtils.pyx":46
  *         return cg6IterationDefs.contentsExhausted(self._g6ReadIterator)
  * 
  *     def get_currGraph(self) -> graph.Graph:             # <<<<<<<<<<<<<<
@@ -3122,7 +3122,7 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_currGraph", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":51
+  /* "planarity/full/g6IterationUtils.pyx":47
  * 
  *     def get_currGraph(self) -> graph.Graph:
  *         return self._currGraph.get_wrapper_for_graphP()             # <<<<<<<<<<<<<<
@@ -3137,15 +3137,15 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_get_wrapper_for_graphP, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph))))) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph))))) __PYX_ERR(0, 47, __pyx_L1_error)
   __pyx_r = ((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/g6IterationUtils.pyx":50
+  /* "planarity/full/g6IterationUtils.pyx":46
  *         return cg6IterationDefs.contentsExhausted(self._g6ReadIterator)
  * 
  *     def get_currGraph(self) -> graph.Graph:             # <<<<<<<<<<<<<<
@@ -3165,7 +3165,7 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":53
+/* "planarity/full/g6IterationUtils.pyx":49
  *         return self._currGraph.get_wrapper_for_graphP()
  * 
  *     def duplicate_currGraph(self) -> graph.Graph:             # <<<<<<<<<<<<<<
@@ -3227,7 +3227,7 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("duplicate_currGraph", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":54
+  /* "planarity/full/g6IterationUtils.pyx":50
  * 
  *     def duplicate_currGraph(self) -> graph.Graph:
  *         return self._currGraph.gp_DupGraph()             # <<<<<<<<<<<<<<
@@ -3242,15 +3242,15 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_DupGraph, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph))))) __PYX_ERR(0, 54, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph))))) __PYX_ERR(0, 50, __pyx_L1_error)
   __pyx_r = ((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/g6IterationUtils.pyx":53
+  /* "planarity/full/g6IterationUtils.pyx":49
  *         return self._currGraph.get_wrapper_for_graphP()
  * 
  *     def duplicate_currGraph(self) -> graph.Graph:             # <<<<<<<<<<<<<<
@@ -3270,7 +3270,7 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":56
+/* "planarity/full/g6IterationUtils.pyx":52
  *         return self._currGraph.gp_DupGraph()
  * 
  *     def begin_iteration(self, str infile_name):             # <<<<<<<<<<<<<<
@@ -3318,32 +3318,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_infile_name,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 56, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 52, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 56, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 52, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "begin_iteration", 0) < (0)) __PYX_ERR(0, 56, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "begin_iteration", 0) < (0)) __PYX_ERR(0, 52, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, i); __PYX_ERR(0, 56, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, i); __PYX_ERR(0, 52, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 56, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 52, __pyx_L3_error)
     }
     __pyx_v_infile_name = ((PyObject*)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 56, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 52, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3354,7 +3354,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_infile_name), (&PyUnicode_Type), 1, "infile_name", 1))) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_infile_name), (&PyUnicode_Type), 1, "infile_name", 1))) __PYX_ERR(0, 52, __pyx_L1_error)
   __pyx_r = __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_10begin_iteration(((struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator *)__pyx_v_self), __pyx_v_infile_name);
 
   /* function exit code */
@@ -3389,7 +3389,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("begin_iteration", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":58
+  /* "planarity/full/g6IterationUtils.pyx":54
  *     def begin_iteration(self, str infile_name):
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
  *         cdef bytes encoded = infile_name.encode('utf-8')             # <<<<<<<<<<<<<<
@@ -3398,24 +3398,24 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
 */
   if (unlikely(__pyx_v_infile_name == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(0, 58, __pyx_L1_error)
+    __PYX_ERR(0, 54, __pyx_L1_error)
   }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_infile_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_infile_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_encoded = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":59
+  /* "planarity/full/g6IterationUtils.pyx":55
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
  *         cdef bytes encoded = infile_name.encode('utf-8')
  *         cdef const char *FileName = encoded             # <<<<<<<<<<<<<<
  * 
  *         if cg6IterationDefs.beginG6ReadIterationFromG6FilePath(self._g6ReadIterator, FileName) != cappconst.OK:
 */
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_encoded); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_encoded); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
   __pyx_v_FileName = __pyx_t_2;
 
-  /* "planarity/full/g6IterationUtils.pyx":61
+  /* "planarity/full/g6IterationUtils.pyx":57
  *         cdef const char *FileName = encoded
  * 
  *         if cg6IterationDefs.beginG6ReadIterationFromG6FilePath(self._g6ReadIterator, FileName) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -3425,7 +3425,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   __pyx_t_3 = (beginG6ReadIterationFromG6FilePath(__pyx_v_self->_g6ReadIterator, __pyx_v_FileName) != OK);
   if (unlikely(__pyx_t_3)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":62
+    /* "planarity/full/g6IterationUtils.pyx":58
  * 
  *         if cg6IterationDefs.beginG6ReadIterationFromG6FilePath(self._g6ReadIterator, FileName) != cappconst.OK:
  *             raise RuntimeError(f"beginG6ReadIteration() failed.")             # <<<<<<<<<<<<<<
@@ -3438,14 +3438,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
       PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_mstate_global->__pyx_kp_u_beginG6ReadIteration_failed};
       __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     }
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 62, __pyx_L1_error)
+    __PYX_ERR(0, 58, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":61
+    /* "planarity/full/g6IterationUtils.pyx":57
  *         cdef const char *FileName = encoded
  * 
  *         if cg6IterationDefs.beginG6ReadIterationFromG6FilePath(self._g6ReadIterator, FileName) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -3454,7 +3454,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":56
+  /* "planarity/full/g6IterationUtils.pyx":52
  *         return self._currGraph.gp_DupGraph()
  * 
  *     def begin_iteration(self, str infile_name):             # <<<<<<<<<<<<<<
@@ -3477,7 +3477,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":64
+/* "planarity/full/g6IterationUtils.pyx":60
  *             raise RuntimeError(f"beginG6ReadIteration() failed.")
  * 
  *     def read_graph(self):             # <<<<<<<<<<<<<<
@@ -3540,7 +3540,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("read_graph", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":65
+  /* "planarity/full/g6IterationUtils.pyx":61
  * 
  *     def read_graph(self):
  *         if cg6IterationDefs.readGraphUsingG6ReadIterator(self._g6ReadIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -3550,7 +3550,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   __pyx_t_1 = (readGraphUsingG6ReadIterator(__pyx_v_self->_g6ReadIterator) != OK);
   if (unlikely(__pyx_t_1)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":66
+    /* "planarity/full/g6IterationUtils.pyx":62
  *     def read_graph(self):
  *         if cg6IterationDefs.readGraphUsingG6ReadIterator(self._g6ReadIterator) != cappconst.OK:
  *             raise RuntimeError(f"readGraphUsingG6ReadIterator() failed.")             # <<<<<<<<<<<<<<
@@ -3563,14 +3563,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_readGraphUsingG6ReadIterator_fai};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 66, __pyx_L1_error)
+    __PYX_ERR(0, 62, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":65
+    /* "planarity/full/g6IterationUtils.pyx":61
  * 
  *     def read_graph(self):
  *         if cg6IterationDefs.readGraphUsingG6ReadIterator(self._g6ReadIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -3579,7 +3579,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":64
+  /* "planarity/full/g6IterationUtils.pyx":60
  *             raise RuntimeError(f"beginG6ReadIteration() failed.")
  * 
  *     def read_graph(self):             # <<<<<<<<<<<<<<
@@ -3807,7 +3807,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":73
+/* "planarity/full/g6IterationUtils.pyx":69
  *     cdef graph.Graph _currGraph
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):             # <<<<<<<<<<<<<<
@@ -3837,32 +3837,32 @@ static int __pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_1__cin
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_graph_to_write,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_VARARGS(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 73, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 69, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_VARARGS(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 73, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 69, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__cinit__", 0) < (0)) __PYX_ERR(0, 73, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__cinit__", 0) < (0)) __PYX_ERR(0, 69, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, i); __PYX_ERR(0, 73, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, i); __PYX_ERR(0, 69, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_VARARGS(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 73, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 69, __pyx_L3_error)
     }
     __pyx_v_graph_to_write = ((struct __pyx_obj_9planarity_4full_5graph_Graph *)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 73, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 69, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3873,7 +3873,7 @@ static int __pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_1__cin
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph_to_write), __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, 1, "graph_to_write", 0))) __PYX_ERR(0, 73, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph_to_write), __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, 1, "graph_to_write", 0))) __PYX_ERR(0, 69, __pyx_L1_error)
   __pyx_r = __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cinit__(((struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator *)__pyx_v_self), __pyx_v_graph_to_write);
 
   /* function exit code */
@@ -3906,7 +3906,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":74
+  /* "planarity/full/g6IterationUtils.pyx":70
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):
  *         self._g6WriteIterator = NULL             # <<<<<<<<<<<<<<
@@ -3915,7 +3915,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
   __pyx_v_self->_g6WriteIterator = NULL;
 
-  /* "planarity/full/g6IterationUtils.pyx":76
+  /* "planarity/full/g6IterationUtils.pyx":72
  *         self._g6WriteIterator = NULL
  * 
  *         if graph_to_write.is_graph_NULL() or graph_to_write.gp_getN() == 0:             # <<<<<<<<<<<<<<
@@ -3929,10 +3929,10 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_is_graph_NULL, __pyx_callargs+__pyx_t_4, (1-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_5) {
   } else {
@@ -3946,16 +3946,16 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_getN, __pyx_callargs+__pyx_t_4, (1-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   }
-  __pyx_t_5 = (__Pyx_PyLong_BoolEqObjC(__pyx_t_2, __pyx_mstate_global->__pyx_int_0, 0, 0)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyLong_BoolEqObjC(__pyx_t_2, __pyx_mstate_global->__pyx_int_0, 0, 0)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_5;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":77
+    /* "planarity/full/g6IterationUtils.pyx":73
  * 
  *         if graph_to_write.is_graph_NULL() or graph_to_write.gp_getN() == 0:
  *             raise ValueError(             # <<<<<<<<<<<<<<
@@ -3968,14 +3968,14 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_Graph_to_write_is_invalid_either};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 77, __pyx_L1_error)
+    __PYX_ERR(0, 73, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":76
+    /* "planarity/full/g6IterationUtils.pyx":72
  *         self._g6WriteIterator = NULL
  * 
  *         if graph_to_write.is_graph_NULL() or graph_to_write.gp_getN() == 0:             # <<<<<<<<<<<<<<
@@ -3984,7 +3984,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":81
+  /* "planarity/full/g6IterationUtils.pyx":77
  *                 "initialized.")
  * 
  *         self._currGraph = graph_to_write             # <<<<<<<<<<<<<<
@@ -3997,7 +3997,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   __Pyx_DECREF((PyObject *)__pyx_v_self->_currGraph);
   __pyx_v_self->_currGraph = __pyx_v_graph_to_write;
 
-  /* "planarity/full/g6IterationUtils.pyx":83
+  /* "planarity/full/g6IterationUtils.pyx":79
  *         self._currGraph = graph_to_write
  * 
  *         if cg6IterationDefs.allocateG6WriteIterator(&self._g6WriteIterator, graph_to_write._theGraph) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4007,7 +4007,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   __pyx_t_1 = (allocateG6WriteIterator((&__pyx_v_self->_g6WriteIterator), __pyx_v_graph_to_write->_theGraph) != OK);
   if (unlikely(__pyx_t_1)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":84
+    /* "planarity/full/g6IterationUtils.pyx":80
  * 
  *         if cg6IterationDefs.allocateG6WriteIterator(&self._g6WriteIterator, graph_to_write._theGraph) != cappconst.OK:
  *             raise MemoryError("allocateG6WriteIterator() failed.")             # <<<<<<<<<<<<<<
@@ -4020,14 +4020,14 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_allocateG6WriteIterator_failed};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_MemoryError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 84, __pyx_L1_error)
+    __PYX_ERR(0, 80, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":83
+    /* "planarity/full/g6IterationUtils.pyx":79
  *         self._currGraph = graph_to_write
  * 
  *         if cg6IterationDefs.allocateG6WriteIterator(&self._g6WriteIterator, graph_to_write._theGraph) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4036,7 +4036,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":73
+  /* "planarity/full/g6IterationUtils.pyx":69
  *     cdef graph.Graph _currGraph
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):             # <<<<<<<<<<<<<<
@@ -4057,7 +4057,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":86
+/* "planarity/full/g6IterationUtils.pyx":82
  *             raise MemoryError("allocateG6WriteIterator() failed.")
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4089,7 +4089,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":87
+  /* "planarity/full/g6IterationUtils.pyx":83
  * 
  *     def __dealloc__(self):
  *         if self._g6WriteIterator != NULL:             # <<<<<<<<<<<<<<
@@ -4099,7 +4099,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   __pyx_t_1 = (__pyx_v_self->_g6WriteIterator != NULL);
   if (__pyx_t_1) {
 
-    /* "planarity/full/g6IterationUtils.pyx":88
+    /* "planarity/full/g6IterationUtils.pyx":84
  *     def __dealloc__(self):
  *         if self._g6WriteIterator != NULL:
  *             if cg6IterationDefs.endG6WriteIteration(self._g6WriteIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4109,7 +4109,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
     __pyx_t_1 = (endG6WriteIteration(__pyx_v_self->_g6WriteIterator) != OK);
     if (unlikely(__pyx_t_1)) {
 
-      /* "planarity/full/g6IterationUtils.pyx":89
+      /* "planarity/full/g6IterationUtils.pyx":85
  *         if self._g6WriteIterator != NULL:
  *             if cg6IterationDefs.endG6WriteIteration(self._g6WriteIterator) != cappconst.OK:
  *                 raise RuntimeError("endG6WriteIteration() failed.")             # <<<<<<<<<<<<<<
@@ -4122,14 +4122,14 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
         PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_endG6WriteIteration_failed};
         __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       }
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(0, 89, __pyx_L1_error)
+      __PYX_ERR(0, 85, __pyx_L1_error)
 
-      /* "planarity/full/g6IterationUtils.pyx":88
+      /* "planarity/full/g6IterationUtils.pyx":84
  *     def __dealloc__(self):
  *         if self._g6WriteIterator != NULL:
  *             if cg6IterationDefs.endG6WriteIteration(self._g6WriteIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4138,7 +4138,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
     }
 
-    /* "planarity/full/g6IterationUtils.pyx":91
+    /* "planarity/full/g6IterationUtils.pyx":87
  *                 raise RuntimeError("endG6WriteIteration() failed.")
  * 
  *             if cg6IterationDefs.freeG6WriteIterator(&self._g6WriteIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4148,7 +4148,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
     __pyx_t_1 = (freeG6WriteIterator((&__pyx_v_self->_g6WriteIterator)) != OK);
     if (unlikely(__pyx_t_1)) {
 
-      /* "planarity/full/g6IterationUtils.pyx":92
+      /* "planarity/full/g6IterationUtils.pyx":88
  * 
  *             if cg6IterationDefs.freeG6WriteIterator(&self._g6WriteIterator) != cappconst.OK:
  *                 raise MemoryError("freeG6WriteIterator() failed.")             # <<<<<<<<<<<<<<
@@ -4161,14 +4161,14 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
         PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_freeG6WriteIterator_failed};
         __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_MemoryError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       }
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(0, 92, __pyx_L1_error)
+      __PYX_ERR(0, 88, __pyx_L1_error)
 
-      /* "planarity/full/g6IterationUtils.pyx":91
+      /* "planarity/full/g6IterationUtils.pyx":87
  *                 raise RuntimeError("endG6WriteIteration() failed.")
  * 
  *             if cg6IterationDefs.freeG6WriteIterator(&self._g6WriteIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4177,7 +4177,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
     }
 
-    /* "planarity/full/g6IterationUtils.pyx":87
+    /* "planarity/full/g6IterationUtils.pyx":83
  * 
  *     def __dealloc__(self):
  *         if self._g6WriteIterator != NULL:             # <<<<<<<<<<<<<<
@@ -4186,7 +4186,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":86
+  /* "planarity/full/g6IterationUtils.pyx":82
  *             raise MemoryError("allocateG6WriteIterator() failed.")
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4204,7 +4204,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   __Pyx_RefNannyFinishContext();
 }
 
-/* "planarity/full/g6IterationUtils.pyx":94
+/* "planarity/full/g6IterationUtils.pyx":90
  *                 raise MemoryError("freeG6WriteIterator() failed.")
  * 
  *     def begin_iteration(self, str outfile_name):             # <<<<<<<<<<<<<<
@@ -4252,32 +4252,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_outfile_name,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 94, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 90, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 94, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 90, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "begin_iteration", 0) < (0)) __PYX_ERR(0, 94, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "begin_iteration", 0) < (0)) __PYX_ERR(0, 90, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, i); __PYX_ERR(0, 94, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, i); __PYX_ERR(0, 90, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 94, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 90, __pyx_L3_error)
     }
     __pyx_v_outfile_name = ((PyObject*)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 94, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("begin_iteration", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 90, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4288,7 +4288,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outfile_name), (&PyUnicode_Type), 1, "outfile_name", 1))) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outfile_name), (&PyUnicode_Type), 1, "outfile_name", 1))) __PYX_ERR(0, 90, __pyx_L1_error)
   __pyx_r = __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4begin_iteration(((struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator *)__pyx_v_self), __pyx_v_outfile_name);
 
   /* function exit code */
@@ -4323,7 +4323,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("begin_iteration", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":96
+  /* "planarity/full/g6IterationUtils.pyx":92
  *     def begin_iteration(self, str outfile_name):
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
  *         cdef bytes encoded = outfile_name.encode('utf-8')             # <<<<<<<<<<<<<<
@@ -4332,24 +4332,24 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   if (unlikely(__pyx_v_outfile_name == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(0, 96, __pyx_L1_error)
+    __PYX_ERR(0, 92, __pyx_L1_error)
   }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_outfile_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_outfile_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_encoded = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":97
+  /* "planarity/full/g6IterationUtils.pyx":93
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
  *         cdef bytes encoded = outfile_name.encode('utf-8')
  *         cdef const char *FileName = encoded             # <<<<<<<<<<<<<<
  * 
  *         if cg6IterationDefs.beginG6WriteIterationToG6FilePath(self._g6WriteIterator, FileName) != cappconst.OK:
 */
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_encoded); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_encoded); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
   __pyx_v_FileName = __pyx_t_2;
 
-  /* "planarity/full/g6IterationUtils.pyx":99
+  /* "planarity/full/g6IterationUtils.pyx":95
  *         cdef const char *FileName = encoded
  * 
  *         if cg6IterationDefs.beginG6WriteIterationToG6FilePath(self._g6WriteIterator, FileName) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4359,7 +4359,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   __pyx_t_3 = (beginG6WriteIterationToG6FilePath(__pyx_v_self->_g6WriteIterator, __pyx_v_FileName) != OK);
   if (unlikely(__pyx_t_3)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":100
+    /* "planarity/full/g6IterationUtils.pyx":96
  * 
  *         if cg6IterationDefs.beginG6WriteIterationToG6FilePath(self._g6WriteIterator, FileName) != cappconst.OK:
  *             raise RuntimeError(f"beginG6WriteIteration() failed.")             # <<<<<<<<<<<<<<
@@ -4372,14 +4372,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_mstate_global->__pyx_kp_u_beginG6WriteIteration_failed};
       __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     }
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 100, __pyx_L1_error)
+    __PYX_ERR(0, 96, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":99
+    /* "planarity/full/g6IterationUtils.pyx":95
  *         cdef const char *FileName = encoded
  * 
  *         if cg6IterationDefs.beginG6WriteIterationToG6FilePath(self._g6WriteIterator, FileName) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4388,7 +4388,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":94
+  /* "planarity/full/g6IterationUtils.pyx":90
  *                 raise MemoryError("freeG6WriteIterator() failed.")
  * 
  *     def begin_iteration(self, str outfile_name):             # <<<<<<<<<<<<<<
@@ -4411,7 +4411,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":102
+/* "planarity/full/g6IterationUtils.pyx":98
  *             raise RuntimeError(f"beginG6WriteIteration() failed.")
  * 
  *     def write_graph(self):             # <<<<<<<<<<<<<<
@@ -4474,7 +4474,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("write_graph", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":103
+  /* "planarity/full/g6IterationUtils.pyx":99
  * 
  *     def write_graph(self):
  *         if cg6IterationDefs.writeGraphUsingG6WriteIterator(self._g6WriteIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4484,7 +4484,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   __pyx_t_1 = (writeGraphUsingG6WriteIterator(__pyx_v_self->_g6WriteIterator) != OK);
   if (unlikely(__pyx_t_1)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":104
+    /* "planarity/full/g6IterationUtils.pyx":100
  *     def write_graph(self):
  *         if cg6IterationDefs.writeGraphUsingG6WriteIterator(self._g6WriteIterator) != cappconst.OK:
  *             raise RuntimeError(f"writeGraphUsingG6WriteIterator() failed.")             # <<<<<<<<<<<<<<
@@ -4497,14 +4497,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_writeGraphUsingG6WriteIterator_f};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 104, __pyx_L1_error)
+    __PYX_ERR(0, 100, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":103
+    /* "planarity/full/g6IterationUtils.pyx":99
  * 
  *     def write_graph(self):
  *         if cg6IterationDefs.writeGraphUsingG6WriteIterator(self._g6WriteIterator) != cappconst.OK:             # <<<<<<<<<<<<<<
@@ -4513,7 +4513,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":102
+  /* "planarity/full/g6IterationUtils.pyx":98
  *             raise RuntimeError(f"beginG6WriteIteration() failed.")
  * 
  *     def write_graph(self):             # <<<<<<<<<<<<<<
@@ -4535,7 +4535,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":106
+/* "planarity/full/g6IterationUtils.pyx":102
  *             raise RuntimeError(f"writeGraphUsingG6WriteIterator() failed.")
  * 
  *     def reinitialize_currGraph(self):             # <<<<<<<<<<<<<<
@@ -4597,7 +4597,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("reinitialize_currGraph", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":107
+  /* "planarity/full/g6IterationUtils.pyx":103
  * 
  *     def reinitialize_currGraph(self):
  *         self._currGraph.gp_ReinitializeGraph()             # <<<<<<<<<<<<<<
@@ -4611,12 +4611,12 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_ReinitializeGraph, __pyx_callargs+__pyx_t_3, (1-__pyx_t_3) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":106
+  /* "planarity/full/g6IterationUtils.pyx":102
  *             raise RuntimeError(f"writeGraphUsingG6WriteIterator() failed.")
  * 
  *     def reinitialize_currGraph(self):             # <<<<<<<<<<<<<<
@@ -4638,7 +4638,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":109
+/* "planarity/full/g6IterationUtils.pyx":105
  *         self._currGraph.gp_ReinitializeGraph()
  * 
  *     def update_graph_to_write(self, graph.Graph next_graph):             # <<<<<<<<<<<<<<
@@ -4686,32 +4686,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_next_graph,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 109, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 105, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 109, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 105, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "update_graph_to_write", 0) < (0)) __PYX_ERR(0, 109, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "update_graph_to_write", 0) < (0)) __PYX_ERR(0, 105, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("update_graph_to_write", 1, 1, 1, i); __PYX_ERR(0, 109, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("update_graph_to_write", 1, 1, 1, i); __PYX_ERR(0, 105, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 109, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 105, __pyx_L3_error)
     }
     __pyx_v_next_graph = ((struct __pyx_obj_9planarity_4full_5graph_Graph *)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("update_graph_to_write", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 109, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("update_graph_to_write", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 105, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4722,7 +4722,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_next_graph), __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, 1, "next_graph", 0))) __PYX_ERR(0, 109, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_next_graph), __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, 1, "next_graph", 0))) __PYX_ERR(0, 105, __pyx_L1_error)
   __pyx_r = __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10update_graph_to_write(((struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator *)__pyx_v_self), __pyx_v_next_graph);
 
   /* function exit code */
@@ -4771,7 +4771,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_graph_to_write", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":110
+  /* "planarity/full/g6IterationUtils.pyx":106
  * 
  *     def update_graph_to_write(self, graph.Graph next_graph):
  *         if next_graph.is_graph_NULL() or next_graph.gp_getN() == 0:             # <<<<<<<<<<<<<<
@@ -4785,10 +4785,10 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_is_graph_NULL, __pyx_callargs+__pyx_t_4, (1-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_5) {
   } else {
@@ -4802,16 +4802,16 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_getN, __pyx_callargs+__pyx_t_4, (1-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   }
-  __pyx_t_5 = (__Pyx_PyLong_BoolEqObjC(__pyx_t_2, __pyx_mstate_global->__pyx_int_0, 0, 0)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyLong_BoolEqObjC(__pyx_t_2, __pyx_mstate_global->__pyx_int_0, 0, 0)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_5;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "planarity/full/g6IterationUtils.pyx":111
+    /* "planarity/full/g6IterationUtils.pyx":107
  *     def update_graph_to_write(self, graph.Graph next_graph):
  *         if next_graph.is_graph_NULL() or next_graph.gp_getN() == 0:
  *             raise ValueError(             # <<<<<<<<<<<<<<
@@ -4824,14 +4824,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_Graph_to_write_is_invalid_either};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 111, __pyx_L1_error)
+    __PYX_ERR(0, 107, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":110
+    /* "planarity/full/g6IterationUtils.pyx":106
  * 
  *     def update_graph_to_write(self, graph.Graph next_graph):
  *         if next_graph.is_graph_NULL() or next_graph.gp_getN() == 0:             # <<<<<<<<<<<<<<
@@ -4840,7 +4840,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":115
+  /* "planarity/full/g6IterationUtils.pyx":111
  *                 "initialized.")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -4856,7 +4856,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     __Pyx_XGOTREF(__pyx_t_8);
     /*try:*/ {
 
-      /* "planarity/full/g6IterationUtils.pyx":116
+      /* "planarity/full/g6IterationUtils.pyx":112
  * 
  *         try:
  *             self._currGraph.gp_CopyGraph(next_graph)             # <<<<<<<<<<<<<<
@@ -4870,12 +4870,12 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
         PyObject *__pyx_callargs[2] = {__pyx_t_3, ((PyObject *)__pyx_v_next_graph)};
         __pyx_t_2 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_CopyGraph, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L6_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L6_error)
         __Pyx_GOTREF(__pyx_t_2);
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "planarity/full/g6IterationUtils.pyx":115
+      /* "planarity/full/g6IterationUtils.pyx":111
  *                 "initialized.")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -4891,7 +4891,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "planarity/full/g6IterationUtils.pyx":117
+    /* "planarity/full/g6IterationUtils.pyx":113
  *         try:
  *             self._currGraph.gp_CopyGraph(next_graph)
  *         except RuntimeError as copy_graph_error:             # <<<<<<<<<<<<<<
@@ -4901,7 +4901,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(((PyTypeObject*)PyExc_RuntimeError))));
     if (__pyx_t_9) {
       __Pyx_AddTraceback("planarity.full.g6IterationUtils.G6WriteIterator.update_graph_to_write", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_3, &__pyx_t_10) < 0) __PYX_ERR(0, 117, __pyx_L8_except_error)
+      if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_3, &__pyx_t_10) < 0) __PYX_ERR(0, 113, __pyx_L8_except_error)
       __Pyx_XGOTREF(__pyx_t_2);
       __Pyx_XGOTREF(__pyx_t_3);
       __Pyx_XGOTREF(__pyx_t_10);
@@ -4909,7 +4909,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       __pyx_v_copy_graph_error = __pyx_t_3;
       /*try:*/ {
 
-        /* "planarity/full/g6IterationUtils.pyx":118
+        /* "planarity/full/g6IterationUtils.pyx":114
  *             self._currGraph.gp_CopyGraph(next_graph)
  *         except RuntimeError as copy_graph_error:
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -4922,21 +4922,21 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
           PyObject *__pyx_callargs[2] = {__pyx_t_12, __pyx_mstate_global->__pyx_kp_u_Failed_to_copy_next_graph_into_G};
           __pyx_t_11 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
           __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-          if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 118, __pyx_L17_error)
+          if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 114, __pyx_L17_error)
           __Pyx_GOTREF(__pyx_t_11);
         }
 
-        /* "planarity/full/g6IterationUtils.pyx":120
+        /* "planarity/full/g6IterationUtils.pyx":116
  *             raise RuntimeError(
  *                 "Failed to copy next_graph into G6WriteIterator's currGraph."
  *             ) from copy_graph_error             # <<<<<<<<<<<<<<
 */
         __Pyx_Raise(__pyx_t_11, 0, 0, __pyx_v_copy_graph_error);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-        __PYX_ERR(0, 118, __pyx_L17_error)
+        __PYX_ERR(0, 114, __pyx_L17_error)
       }
 
-      /* "planarity/full/g6IterationUtils.pyx":117
+      /* "planarity/full/g6IterationUtils.pyx":113
  *         try:
  *             self._currGraph.gp_CopyGraph(next_graph)
  *         except RuntimeError as copy_graph_error:             # <<<<<<<<<<<<<<
@@ -4979,7 +4979,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     }
     goto __pyx_L8_except_error;
 
-    /* "planarity/full/g6IterationUtils.pyx":115
+    /* "planarity/full/g6IterationUtils.pyx":111
  *                 "initialized.")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -4995,7 +4995,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
     __pyx_L11_try_end:;
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":109
+  /* "planarity/full/g6IterationUtils.pyx":105
  *         self._currGraph.gp_ReinitializeGraph()
  * 
  *     def update_graph_to_write(self, graph.Graph next_graph):             # <<<<<<<<<<<<<<
@@ -5621,15 +5621,15 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterator_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator)) __PYX_ERR(0, 21, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterator_spec, __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterator_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator)) __PYX_ERR(0, 17, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterator_spec, __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 17, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator = &__pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterator;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 17, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator);
@@ -5639,18 +5639,18 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator->tp_getattro = PyObject_GenericGetAttr;
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_G6ReadIterator, (PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 21, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_G6ReadIterator, (PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 17, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator) < (0)) __PYX_ERR(0, 17, __pyx_L1_error)
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator)) __PYX_ERR(0, 69, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator_spec, __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator_spec, NULL); if (unlikely(!__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator)) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator_spec, __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 65, __pyx_L1_error)
   #else
   __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator = &__pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 65, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount((PyObject*)__pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator);
@@ -5660,8 +5660,8 @@ static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator->tp_getattro = PyObject_GenericGetAttr;
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_G6WriteIterator, (PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 69, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_G6WriteIterator, (PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_mstate->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator) < (0)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5678,7 +5678,7 @@ static int __Pyx_modinit_type_import_code(__pyx_mstatetype *__pyx_mstate) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("planarity.full.graph"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 16, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("planarity.full.graph"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_mstate->__pyx_ptype_9planarity_4full_5graph_Graph = __Pyx_ImportType_3_2_4(__pyx_t_1, "planarity.full.graph", "Graph",
   #if defined(PYPY_VERSION_NUM) && PYPY_VERSION_NUM < 0x050B0000
@@ -5688,7 +5688,7 @@ static int __Pyx_modinit_type_import_code(__pyx_mstatetype *__pyx_mstate) {
   #else
   sizeof(struct __pyx_obj_9planarity_4full_5graph_Graph), __PYX_GET_STRUCT_ALIGNMENT_3_2_4(struct __pyx_obj_9planarity_4full_5graph_Graph),
   #endif
-  __Pyx_ImportType_CheckSize_Warn_3_2_4); if (!__pyx_mstate->__pyx_ptype_9planarity_4full_5graph_Graph) __PYX_ERR(2, 16, __pyx_L1_error)
+  __Pyx_ImportType_CheckSize_Warn_3_2_4); if (!__pyx_mstate->__pyx_ptype_9planarity_4full_5graph_Graph) __PYX_ERR(2, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -5983,89 +5983,89 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
   (void)__Pyx_modinit_function_import_code(__pyx_mstate);
   /*--- Execution code ---*/
 
-  /* "planarity/full/g6IterationUtils.pyx":47
+  /* "planarity/full/g6IterationUtils.pyx":43
  *                 raise MemoryError("freeG6ReadIterator() failed.")
  * 
  *     def contents_exhausted(self):             # <<<<<<<<<<<<<<
  *         return cg6IterationDefs.contentsExhausted(self._g6ReadIterator)
  * 
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5contents_exhausted, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_contents_exhauste, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5contents_exhausted, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_contents_exhauste, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_contents_exhausted, __pyx_t_2) < (0)) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_contents_exhausted, __pyx_t_2) < (0)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":50
+  /* "planarity/full/g6IterationUtils.pyx":46
  *         return cg6IterationDefs.contentsExhausted(self._g6ReadIterator)
  * 
  *     def get_currGraph(self) -> graph.Graph:             # <<<<<<<<<<<<<<
  *         return self._currGraph.get_wrapper_for_graphP()
  * 
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_kp_u_graph_Graph) < (0)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7get_currGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_get_currGraph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_kp_u_graph_Graph) < (0)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7get_currGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_get_currGraph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_get_currGraph, __pyx_t_3) < (0)) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_get_currGraph, __pyx_t_3) < (0)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":53
+  /* "planarity/full/g6IterationUtils.pyx":49
  *         return self._currGraph.get_wrapper_for_graphP()
  * 
  *     def duplicate_currGraph(self) -> graph.Graph:             # <<<<<<<<<<<<<<
  *         return self._currGraph.gp_DupGraph()
  * 
 */
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_kp_u_graph_Graph) < (0)) __PYX_ERR(0, 53, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_9duplicate_currGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_duplicate_currGra, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_kp_u_graph_Graph) < (0)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_9duplicate_currGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_duplicate_currGra, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_duplicate_currGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_duplicate_currGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":56
+  /* "planarity/full/g6IterationUtils.pyx":52
  *         return self._currGraph.gp_DupGraph()
  * 
  *     def begin_iteration(self, str infile_name):             # <<<<<<<<<<<<<<
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
  *         cdef bytes encoded = infile_name.encode('utf-8')
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_11begin_iteration, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_begin_iteration, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_11begin_iteration, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_begin_iteration, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_begin_iteration, __pyx_t_2) < (0)) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_begin_iteration, __pyx_t_2) < (0)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":64
+  /* "planarity/full/g6IterationUtils.pyx":60
  *             raise RuntimeError(f"beginG6ReadIteration() failed.")
  * 
  *     def read_graph(self):             # <<<<<<<<<<<<<<
  *         if cg6IterationDefs.readGraphUsingG6ReadIterator(self._g6ReadIterator) != cappconst.OK:
  *             raise RuntimeError(f"readGraphUsingG6ReadIterator() failed.")
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_13read_graph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_read_graph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[4])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_13read_graph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6ReadIterator_read_graph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[4])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_read_graph, __pyx_t_2) < (0)) __PYX_ERR(0, 64, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6ReadIterator, __pyx_mstate_global->__pyx_n_u_read_graph, __pyx_t_2) < (0)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "(tree fragment)":1
@@ -6095,64 +6095,64 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_2) < (0)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":94
+  /* "planarity/full/g6IterationUtils.pyx":90
  *                 raise MemoryError("freeG6WriteIterator() failed.")
  * 
  *     def begin_iteration(self, str outfile_name):             # <<<<<<<<<<<<<<
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
  *         cdef bytes encoded = outfile_name.encode('utf-8')
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5begin_iteration, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_begin_iteration, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[7])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5begin_iteration, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_begin_iteration, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[7])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_begin_iteration, __pyx_t_2) < (0)) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_begin_iteration, __pyx_t_2) < (0)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":102
+  /* "planarity/full/g6IterationUtils.pyx":98
  *             raise RuntimeError(f"beginG6WriteIteration() failed.")
  * 
  *     def write_graph(self):             # <<<<<<<<<<<<<<
  *         if cg6IterationDefs.writeGraphUsingG6WriteIterator(self._g6WriteIterator) != cappconst.OK:
  *             raise RuntimeError(f"writeGraphUsingG6WriteIterator() failed.")
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7write_graph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_write_graph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[8])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7write_graph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_write_graph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[8])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_write_graph, __pyx_t_2) < (0)) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_write_graph, __pyx_t_2) < (0)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":106
+  /* "planarity/full/g6IterationUtils.pyx":102
  *             raise RuntimeError(f"writeGraphUsingG6WriteIterator() failed.")
  * 
  *     def reinitialize_currGraph(self):             # <<<<<<<<<<<<<<
  *         self._currGraph.gp_ReinitializeGraph()
  * 
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9reinitialize_currGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_reinitialize_cur, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[9])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9reinitialize_currGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_reinitialize_cur, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[9])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_reinitialize_currGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 106, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_reinitialize_currGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":109
+  /* "planarity/full/g6IterationUtils.pyx":105
  *         self._currGraph.gp_ReinitializeGraph()
  * 
  *     def update_graph_to_write(self, graph.Graph next_graph):             # <<<<<<<<<<<<<<
  *         if next_graph.is_graph_NULL() or next_graph.gp_getN() == 0:
  *             raise ValueError(
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11update_graph_to_write, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_update_graph_to, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[10])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11update_graph_to_write, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_update_graph_to, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[10])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_update_graph_to_write, __pyx_t_2) < (0)) __PYX_ERR(0, 109, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_update_graph_to_write, __pyx_t_2) < (0)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "(tree fragment)":1
@@ -6387,27 +6387,27 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   PyObject* tuple_dedup_map = PyDict_New();
   if (unlikely(!tuple_dedup_map)) return -1;
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 47};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 43};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
     __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_contents_exhausted, __pyx_mstate->__pyx_kp_b_iso88591_A_1_a, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 50};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 46};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
     __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_get_currGraph, __pyx_mstate->__pyx_kp_b_iso88591_q_t_5Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 53};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 49};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
     __pyx_mstate_global->__pyx_codeobj_tab[2] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_duplicate_currGraph, __pyx_mstate->__pyx_kp_b_iso88591_Q_t_l, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[2])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 56};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 52};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_infile_name, __pyx_mstate->__pyx_n_u_encoded, __pyx_mstate->__pyx_n_u_FileName};
     __pyx_mstate_global->__pyx_codeobj_tab[3] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_begin_iteration, __pyx_mstate->__pyx_kp_b_iso88591_A_q_A_atCUU__kkl_aq, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[3])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 64};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 60};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
     __pyx_mstate_global->__pyx_codeobj_tab[4] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_read_graph, __pyx_mstate->__pyx_kp_b_iso88591_A_8_O_aq, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[4])) goto bad;
   }
@@ -6422,22 +6422,22 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate_global->__pyx_codeobj_tab[6] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_stringsource, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[6])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 94};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 90};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_outfile_name, __pyx_mstate->__pyx_n_u_encoded, __pyx_mstate->__pyx_n_u_FileName};
     __pyx_mstate_global->__pyx_codeobj_tab[7] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_begin_iteration, __pyx_mstate->__pyx_kp_b_iso88591_A_A_QdBUU__kkl_aq, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[7])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 102};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 98};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
     __pyx_mstate_global->__pyx_codeobj_tab[8] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_write_graph, __pyx_mstate->__pyx_kp_b_iso88591_A_4_RR___aq, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[8])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 106};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 102};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
     __pyx_mstate_global->__pyx_codeobj_tab[9] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_reinitialize_currGraph, __pyx_mstate->__pyx_kp_b_iso88591_A_K_A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[9])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 109};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 105};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_next_graph, __pyx_mstate->__pyx_n_u_copy_graph_error};
     __pyx_mstate_global->__pyx_codeobj_tab[10] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_update_graph_to_write, __pyx_mstate->__pyx_kp_b_iso88591_A_3c_83c_A_q_a, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[10])) goto bad;
   }

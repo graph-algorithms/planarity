@@ -5,10 +5,6 @@ Cython wrapper for the Edge Addition Planarity Suite Graph Library
 
 Wraps structs pertaining to G6 file iteration using a Cython class and wraps
 pertinent functions and macros.
-
-Copyright (c) 1997-2025, John M. Boyer
-All rights reserved.
-See the LICENSE.TXT file for licensing information.
 """
 
 from planarity.full cimport cappconst
