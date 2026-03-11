@@ -14,12 +14,14 @@ cdef extern from "../c/graphLib/graphStructures.h":
     int gp_IsArc(int e)
     int gp_GetFirstEdge(graphP theGraph)
     int gp_EdgeInUse(graphP theGraph, int e)
+    int gp_EdgeIndexBound(graphP theGraph)
     int gp_EdgeInUseIndexBound(graphP theGraph)
     int gp_GetFirstArc(graphP theGraph, int v)
     int gp_GetNextArc(graphP theGraph, int e)
 
     int gp_GetNeighbor(graphP theGraph, int e)
 
+    int gp_IsVertex(int v)
     int gp_GetFirstVertex(graphP theGraph)
     int gp_GetLastVertex(graphP theGraph)
     int gp_VertexInRange(graphP theGraph, int v)

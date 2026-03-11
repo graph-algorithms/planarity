@@ -38,8 +38,12 @@ cdef class Graph:
     def is_graph_NULL(self):
         return self._theGraph == NULL
 
-    def is_vertex(self, int v):
-        return v >= self.gp_GetFirstVertex() and self.gp_VertexInRange(v)
+    def gp_IsVertex(self, int v):
+        return (
+            (v >= self.gp_GetFirstVertex()) and
+            self.gp_VertexInRange(v) and
+            cgraphLib.gp_IsVertex(v)
+        )
 
     def get_wrapper_for_graphP(self) -> Graph:
         cdef Graph new_wrapper = Graph()
@@ -53,9 +57,9 @@ cdef class Graph:
 
     def gp_IsArc(self, int e):
         return (
-            cgraphLib.gp_IsArc(e) and
             (e >= self.gp_GetFirstEdge()) and
-            (e <= self.gp_EdgeInUseIndexBound())
+            (e < self.gp_EdgeIndexBound()) and
+            cgraphLib.gp_IsArc(e)
         )
 
     def gp_GetFirstEdge(self):
@@ -69,11 +73,14 @@ cdef class Graph:
 
         return cgraphLib.gp_EdgeInUse(self._theGraph, e)
 
+    def gp_EdgeIndexBound(self):
+        return cgraphLib.gp_EdgeIndexBound(self._theGraph)
+    
     def gp_EdgeInUseIndexBound(self):
         return cgraphLib.gp_EdgeInUseIndexBound(self._theGraph)
 
     def gp_GetFirstArc(self, int v):
-        if not self.is_vertex(v):
+        if not self.gp_IsVertex(v):
             raise RuntimeError(
                 f"gp_GetFirstArc() failed: invalid vertex intex '{v}'."
             )
@@ -150,6 +157,7 @@ cdef class Graph:
             cgraphLib.gp_Free(&new_graph._theGraph)
         
         new_graph._theGraph = theGraph_dup
+        new_graph.owns_graphP = True
 
         return new_graph
 
@@ -182,15 +190,15 @@ cdef class Graph:
                 )
 
     def gp_GetNeighborEdgeRecord(self, int u, int v):
-        if not self.is_vertex(u):
+        if not self.gp_IsVertex(u):
             raise RuntimeError(f"'{u}' is not a valid vertex label.")
-        if not self.is_vertex(v):
+        if not self.gp_IsVertex(v):
             raise RuntimeError(f"'{v}' is not a valid vertex label.")
         
         return cgraphLib.gp_GetNeighborEdgeRecord(self._theGraph, u, v)
 
     def gp_GetVertexDegree(self, int v):
-        if not self.is_vertex(v):
+        if not self.gp_IsVertex(v):
             raise RuntimeError(f"'{v}' is not a valid vertex label.")
 
         return cgraphLib.gp_GetVertexDegree(self._theGraph, v)

@@ -26,4 +26,4 @@ from .full.planarity_app_utils import (
 
 # NOTE: In the future, we could automatically generate the version number by
 # configuring setuptools-scm, but presently this seems simpler.
-__version__ = "0.7.9"
+__version__ = "0.7.10"

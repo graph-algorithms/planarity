@@ -2,9 +2,6 @@
 
 Specifically provides definitions for functions and macros that are required
 to interact with .g6 graph files.
-
-    N.B. The definition for graphP must be exposed by cimport of cgraph.pxd
-    definition file.
 """
 
 from planarity.full.cgraphLib cimport graphP

@@ -1,6 +1,6 @@
 """C-level interface for the Edge Addition Planarity Suite Graph Library
 
-Specifically exposes contents of appconst.h.
+Specifically exposes contents from appconst.h.
 """
 
 cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
