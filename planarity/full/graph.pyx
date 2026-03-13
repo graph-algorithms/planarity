@@ -38,13 +38,6 @@ cdef class Graph:
     def is_graph_NULL(self):
         return self._theGraph == NULL
 
-    def gp_IsVertex(self, int v):
-        return (
-            (v >= self.gp_GetFirstVertex()) and
-            self.gp_VertexInRange(v) and
-            cgraphLib.gp_IsVertex(v)
-        )
-
     def get_wrapper_for_graphP(self) -> Graph:
         cdef Graph new_wrapper = Graph()
 
@@ -102,6 +95,13 @@ cdef class Graph:
             )
 
         return cgraphLib.gp_GetNeighbor(self._theGraph, e)
+
+    def gp_IsVertex(self, int v):
+        return (
+            (v >= self.gp_GetFirstVertex()) and
+            (v <= self.gp_GetLastVertex()) and
+            cgraphLib.gp_IsVertex(v)
+        )
 
     def gp_GetFirstVertex(self):
         return cgraphLib.gp_GetFirstVertex(self._theGraph)
