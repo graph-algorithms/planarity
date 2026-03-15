@@ -7,9 +7,17 @@ include planarity/c/LICENSE.TXT
 include README.md
 include planarity/c/README
 
-include planarity/cplanarity.pxd
-include planarity/planarity.c
-include planarity/planarity.pyx
+include planarity/classic/cplanarity.pxd
+include planarity/classic/planarity.c
+include planarity/classic/planarity.pyx
+
+include planarity/full/cappconst.pxd
+include planarity/full/cg6IterationDefs.pxd
+include planarity/full/cgraphLib.pxd
+include planarity/full/graph.c
+include planarity/full/g6IterationUtils.c
+include planarity/full/graph.pyx
+include planarity/full/g6IterationUtils.pyx
 
 recursive-include examples *.py *.gz
 recursive-include doc *.py *.rst Makefile *.html *.txt

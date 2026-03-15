@@ -1,11 +1,13 @@
 #!python
 #cython: embedsignature=True
 """
-Wrapper for Boyer's (C) planarity algorithms.
+Wrapper for Boyer's (c) planarity algorithms.
 """
-from planarity cimport cplanarity
 from libc.stdlib cimport free
 import warnings
+
+from planarity.classic cimport cplanarity
+
 
 cdef class PGraph:
     cdef cplanarity.graphP theGraph

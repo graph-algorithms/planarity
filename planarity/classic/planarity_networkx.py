@@ -1,8 +1,12 @@
 """NetworkX interface to planarity."""
 import planarity
 
-__all__ = ['kuratowski_subgraph', 'pgraph_graph',
-           'networkx_graph', 'draw']
+__all__ = [
+    'kuratowski_subgraph',
+    'networkx_graph',
+    'pgraph_graph',
+    'draw',
+    ]
 
 def kuratowski_subgraph(graph):
     """Return forbidden subgraph of nonplanar graph G."""
