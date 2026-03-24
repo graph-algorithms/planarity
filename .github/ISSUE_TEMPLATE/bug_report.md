@@ -8,33 +8,44 @@ type: Bug
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Describe the bug
 
-**To Reproduce**
-Steps to reproduce the behaviour:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+_A clear and concise description of the defect._
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
 
-**Terminal logs**
-If applicable, upload a logfile of your terminal output to help explain your problem.
+## Reproduction steps
 
-**Environment (please complete the following information):**
+1. _Update with reproduction steps_
+
+
+## Expected behavior
+
+_A clear and concise description of what you expected to happen._
+
+
+## Terminal logs
+
+_If applicable, upload a logfile of your terminal output to help explain your problem._
+
+
+## Environment
  - OS: [e.g. Debian Linux Trixie 13.4]
  - Python Version [e.g. 3.14.3]
  - Installation mechanism:
     - [ ] PyPI via `pip`
     - [ ] Built from Source
         - Paste result of `pip freeze` here:
-              ```
-               > pip freeze
-               ...
-              ```
+            ```
+            > pip freeze
+            ...
+            ```
+        - Paste **compiler version information** here:
+            ```
+            > gcc --version
+            ...
+            ```
 
-**Additional context**
-Add any other context about the problem here.
+
+## Additional context
+
+_Add any other context about the problem here, including issues or bugs on related projects and supporting documentation._
