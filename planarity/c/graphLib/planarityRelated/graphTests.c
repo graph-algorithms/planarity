@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -9,7 +9,7 @@ See the LICENSE.TXT file for licensing information.
 #include "../graph.h"
 #include "../lowLevelUtils/stack.h"
 
-extern void _ClearVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
 
 /* Private function declarations (some exported to system) */
 
@@ -182,7 +182,7 @@ int _CheckEmbeddingFacialIntegrity(graphP theGraph)
 
     /* Push all arcs and set them to unvisited */
 
-    EsizeOccupied = gp_EdgeInUseIndexBound(theGraph);
+    EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
     for (e = gp_GetFirstEdge(theGraph); e < EsizeOccupied; e += 2)
     {
         // Except skip edge holes
@@ -230,7 +230,7 @@ int _CheckEmbeddingFacialIntegrity(graphP theGraph)
         so we do not subtract one. */
 
     connectedComponents = 0;
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
         if (gp_IsDFSTreeRoot(theGraph, v))
         {
@@ -268,11 +268,11 @@ int _CheckAllVerticesOnExternalFace(graphP theGraph)
     int v;
 
     // Mark all vertices unvisited
-    _ClearVertexVisitedFlags(theGraph, FALSE);
+    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
 
     // For each connected component, walk its external face and
     // mark the vertices as visited
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
         if (gp_IsDFSTreeRoot(theGraph, v))
             _MarkExternalFaceVertices(theGraph, v);
@@ -280,8 +280,8 @@ int _CheckAllVerticesOnExternalFace(graphP theGraph)
 
     // If any vertex is unvisited, then the embedding is not an outerplanar
     // embedding, so we return NOTOK
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
-        if (!gp_GetVertexVisited(theGraph, v))
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+        if (!gp_GetVisited(theGraph, v))
             return NOTOK;
 
     // All vertices were found on external faces of the connected components
@@ -310,16 +310,16 @@ void _MarkExternalFaceVertices(graphP theGraph, int startVertex)
     int eTwin;
 
     // Handle the case of an isolated vertex
-    if (gp_IsNotArc(e))
+    if (gp_IsNotArc(theGraph, e))
     {
-        gp_SetVertexVisited(theGraph, startVertex);
+        gp_SetVisited(theGraph, startVertex);
         return;
     }
 
     // Process a non-trivial connected component
     do
     {
-        gp_SetVertexVisited(theGraph, nextVertex);
+        gp_SetVisited(theGraph, nextVertex);
 
         // The arc out of the vertex just visited points to the next vertex
         nextVertex = gp_GetNeighbor(theGraph, e);
@@ -424,7 +424,7 @@ int _getImageVertices(graphP theGraph, int *degrees, int maxDegree,
 
     imageVertPos = 0;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
         degree = gp_GetVertexDegree(theGraph, v);
         if (degree == 1)
@@ -481,7 +481,7 @@ int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
         return FALSE;
 
     // We clear all the vertex visited flags
-    _ClearVertexVisitedFlags(theGraph, FALSE);
+    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
 
     // For each pair of image vertices, we test that there is a path
     // between the two vertices.  If so, the visited flags of the
@@ -497,8 +497,8 @@ int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
     // The visited flags should have marked only degree two vertices,
     // so for every marked vertex, we subtract one from the count of
     // the degree two vertices.
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
-        if (gp_GetVertexVisited(theGraph, v))
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+        if (gp_GetVisited(theGraph, v))
             degrees[2]--;
 
     /* If every degree 2 vertex is used in a path between image
@@ -562,7 +562,7 @@ int _TestForK33GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
     /* Now test the paths between each of the first three vertices and
            each of the last three vertices */
 
-    _ClearVertexVisitedFlags(theGraph, FALSE);
+    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
 
     for (imageVertPos = 0; imageVertPos < 3; imageVertPos++)
         for (K = 3; K < 6; K++)
@@ -570,8 +570,8 @@ int _TestForK33GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
                           imageVerts[K]) != TRUE)
                 return FALSE;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
-        if (gp_GetVertexVisited(theGraph, v))
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+        if (gp_GetVisited(theGraph, v))
             degrees[2]--;
 
     /* If every degree 2 vertex is used in a path between image
@@ -674,7 +674,7 @@ int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
     // and hence must not be adjacent.
 
     e = gp_GetFirstArc(theGraph, imageVerts[0]);
-    while (gp_IsArc(e))
+    while (gp_IsArc(theGraph, e))
     {
         imageVerts[imageVertPos] = gp_GetNeighbor(theGraph, e);
         if (imageVerts[imageVertPos] == imageVerts[1])
@@ -688,7 +688,7 @@ int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
          Now test the paths between each of the degree 2 image
          vertices and imageVerts[1]. */
 
-    _ClearVertexVisitedFlags(theGraph, FALSE);
+    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
 
     for (imageVertPos = 2; imageVertPos < 5; imageVertPos++)
     {
@@ -696,11 +696,11 @@ int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
                       imageVerts[1]) != TRUE)
             return FALSE;
 
-        gp_SetVertexVisited(theGraph, imageVerts[imageVertPos]);
+        gp_SetVisited(theGraph, imageVerts[imageVertPos]);
     }
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
-        if (gp_GetVertexVisited(theGraph, v))
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+        if (gp_GetVisited(theGraph, v))
             degrees[2]--;
 
     /* If every degree 2 vertex is used in a path between the
@@ -777,7 +777,7 @@ int _TestPath(graphP theGraph, int U, int V)
 {
     int e = gp_GetFirstArc(theGraph, U);
 
-    while (gp_IsArc(e))
+    while (gp_IsArc(theGraph, e))
     {
         if (_TryPath(theGraph, e, V) == OK)
         {
@@ -809,8 +809,8 @@ int _TryPath(graphP theGraph, int e, int V)
     nextVertex = gp_GetNeighbor(theGraph, e);
 
     // while nextVertex is strictly degree 2
-    while (gp_IsArc(gp_GetFirstArc(theGraph, nextVertex)) &&
-           gp_IsArc(gp_GetLastArc(theGraph, nextVertex)) &&
+    while (gp_IsArc(theGraph, gp_GetFirstArc(theGraph, nextVertex)) &&
+           gp_IsArc(theGraph, gp_GetLastArc(theGraph, nextVertex)) &&
            gp_GetNextArc(theGraph, gp_GetFirstArc(theGraph, nextVertex)) == gp_GetLastArc(theGraph, nextVertex))
     {
         eTwin = gp_GetTwinArc(theGraph, e);
@@ -838,11 +838,11 @@ void _MarkPath(graphP theGraph, int e)
 
     nextVertex = gp_GetNeighbor(theGraph, e);
     // while nextVertex is strictly degree 2
-    while (gp_IsArc(gp_GetFirstArc(theGraph, nextVertex)) &&
-           gp_IsArc(gp_GetLastArc(theGraph, nextVertex)) &&
+    while (gp_IsArc(theGraph, gp_GetFirstArc(theGraph, nextVertex)) &&
+           gp_IsArc(theGraph, gp_GetLastArc(theGraph, nextVertex)) &&
            gp_GetNextArc(theGraph, gp_GetFirstArc(theGraph, nextVertex)) == gp_GetLastArc(theGraph, nextVertex))
     {
-        gp_SetVertexVisited(theGraph, nextVertex);
+        gp_SetVisited(theGraph, nextVertex);
 
         eTwin = gp_GetTwinArc(theGraph, e);
         e = gp_GetFirstArc(theGraph, nextVertex);
@@ -894,24 +894,24 @@ int _TestSubgraph(graphP theSubgraph, graphP theGraph)
 
     /* We clear all visitation flags */
 
-    _ClearVertexVisitedFlags(theGraph, FALSE);
+    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
 
     /* For each vertex... */
-    for (v = gp_GetFirstVertex(theSubgraph), degreeCount = 0; gp_VertexInRange(theSubgraph, v); v++)
+    for (v = gp_GetFirstVertex(theSubgraph), degreeCount = 0; gp_VertexInRangeAscending(theSubgraph, v); v++)
     {
         /* For each neighbor w in the adjacency list of vertex v in the
               subgraph, set the visited flag in w in the graph */
 
         e = gp_GetFirstArc(theSubgraph, v);
-        while (gp_IsArc(e))
+        while (gp_IsArc(theGraph, e))
         {
-            if (gp_IsNotVertex(gp_GetNeighbor(theSubgraph, e)))
+            if (gp_IsNotVertex(theSubgraph, gp_GetNeighbor(theSubgraph, e)))
             {
                 Result = FALSE;
                 break;
             }
             degreeCount++;
-            gp_SetVertexVisited(theGraph, gp_GetNeighbor(theSubgraph, e));
+            gp_SetVisited(theGraph, gp_GetNeighbor(theSubgraph, e));
             e = gp_GetNextArc(theSubgraph, e);
         }
 
@@ -922,14 +922,14 @@ int _TestSubgraph(graphP theSubgraph, graphP theGraph)
               clear the visited flag in w in the graph */
 
         e = gp_GetFirstArc(theGraph, v);
-        while (gp_IsArc(e))
+        while (gp_IsArc(theGraph, e))
         {
-            if (gp_IsNotVertex(gp_GetNeighbor(theGraph, e)))
+            if (gp_IsNotVertex(theGraph, gp_GetNeighbor(theGraph, e)))
             {
                 Result = FALSE;
                 break;
             }
-            gp_ClearVertexVisited(theGraph, gp_GetNeighbor(theGraph, e));
+            gp_ClearVisited(theGraph, gp_GetNeighbor(theGraph, e));
             e = gp_GetNextArc(theGraph, e);
         }
 
@@ -941,9 +941,9 @@ int _TestSubgraph(graphP theSubgraph, graphP theGraph)
            would incorrectly contain an adjacency not contained in the ("super") graph) */
 
         e = gp_GetFirstArc(theSubgraph, v);
-        while (gp_IsArc(e))
+        while (gp_IsArc(theGraph, e))
         {
-            if (gp_GetVertexVisited(theGraph, gp_GetNeighbor(theSubgraph, e)))
+            if (gp_GetVisited(theGraph, gp_GetNeighbor(theSubgraph, e)))
             {
                 Result = FALSE;
                 break;

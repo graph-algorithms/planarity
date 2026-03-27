@@ -136,7 +136,7 @@ cdef class PGraph:
         last=cplanarity.gp_GetLastVertex(self.theGraph)+1
         for n in range(first,last):
             e=cplanarity.gp_GetFirstArc(self.theGraph,n)
-            isarc=cplanarity.gp_IsArc(e)
+            isarc=cplanarity.gp_IsArc(self.theGraph, e)
             while isarc > 0:
                 nbr=cplanarity.gp_GetNeighbor(self.theGraph,e)
                 if nbr > n:
@@ -150,7 +150,7 @@ cdef class PGraph:
                     else:
                         edges.append((r[n],r[nbr]))
                 e=cplanarity.gp_GetNextArc(self.theGraph,e)
-                isarc=cplanarity.gp_IsArc(e)
+                isarc=cplanarity.gp_IsArc(self.theGraph, e)
         return edges
 
 

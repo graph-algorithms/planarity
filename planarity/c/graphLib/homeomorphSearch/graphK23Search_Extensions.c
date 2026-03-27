@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -79,6 +79,8 @@ int gp_AttachK23Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K23Search_FreeContext(context);
+        context = NULL;
+
         return NOTOK;
     }
 

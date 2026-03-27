@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -12,6 +12,7 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #include "../lowLevelUtils/stack.h"
@@ -30,8 +31,8 @@ extern "C"
 
     typedef strOrFile *strOrFileP;
 
-    strOrFileP sf_New(char const *theStr, char const *fileName, char const *ioMode);
-    int sf_ValidateStrOrFile(strOrFileP theStrOrFile);
+    strOrFileP sf_New(char const *const theStr, char const *const fileName, char const *ioMode);
+    bool sf_IsValidStrOrFile(strOrFileP theStrOrFile);
 
     char sf_getc(strOrFileP theStrOrFile);
     int sf_ReadSkipChar(strOrFileP theStrOrFile);

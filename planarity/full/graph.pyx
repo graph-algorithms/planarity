@@ -51,8 +51,8 @@ cdef class Graph:
     def gp_IsArc(self, int e):
         return (
             (e >= self.gp_GetFirstEdge()) and
-            (e < self.gp_EdgeIndexBound()) and
-            cgraphLib.gp_IsArc(e)
+            (e < self.gp_EdgeArraySize()) and
+            cgraphLib.gp_IsArc(self._theGraph, e)
         )
 
     def gp_GetFirstEdge(self):
@@ -66,11 +66,11 @@ cdef class Graph:
 
         return cgraphLib.gp_EdgeInUse(self._theGraph, e)
 
-    def gp_EdgeIndexBound(self):
-        return cgraphLib.gp_EdgeIndexBound(self._theGraph)
+    def gp_EdgeArraySize(self):
+        return cgraphLib.gp_EdgeArraySize(self._theGraph)
     
-    def gp_EdgeInUseIndexBound(self):
-        return cgraphLib.gp_EdgeInUseIndexBound(self._theGraph)
+    def gp_EdgeInUseArraySize(self):
+        return cgraphLib.gp_EdgeInUseArraySize(self._theGraph)
 
     def gp_GetFirstArc(self, int v):
         if not self.gp_IsVertex(v):
@@ -100,7 +100,7 @@ cdef class Graph:
         return (
             (v >= self.gp_GetFirstVertex()) and
             (v <= self.gp_GetLastVertex()) and
-            cgraphLib.gp_IsVertex(v)
+            cgraphLib.gp_IsVertex(self._theGraph, v)
         )
 
     def gp_GetFirstVertex(self):
@@ -109,19 +109,20 @@ cdef class Graph:
     def gp_GetLastVertex(self):
         return cgraphLib.gp_GetLastVertex(self._theGraph)
 
-    def gp_VertexInRange(self, int v):
+    def gp_VertexInRangeAscending(self, int v):
         return (
             v >= self.gp_GetFirstVertex() and
-            cgraphLib.gp_VertexInRange(self._theGraph, v)
+            cgraphLib.gp_VertexInRangeAscending(self._theGraph, v)
         )
 
-    def gp_getN(self)-> int:
+    def gp_GetN(self)-> int:
         """
         Returns the number of vertices in the graph.
         """
         if self._theGraph == NULL:
             raise RuntimeError("Graph is not initialized.")
-        return cgraphLib.gp_getN(self._theGraph)
+        
+        return cgraphLib.gp_GetN(self._theGraph)
 
     def gp_InitGraph(self, int n):
         if cgraphLib.gp_InitGraph(self._theGraph, n) != cappconst.OK:
@@ -133,11 +134,11 @@ cdef class Graph:
     def gp_CopyGraph(self, Graph src_graph):
         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
         # the Graph wrapper that is passed in as the srcGraph
-        if src_graph.is_graph_NULL() or src_graph.gp_getN() == 0:
+        if src_graph.is_graph_NULL() or src_graph.gp_GetN() == 0:
             raise ValueError(
                 "Source graph either has not been allocated or not been "
                 "initialized.")
-        if self.gp_getN() != src_graph.gp_getN():
+        if self.gp_GetN() != src_graph.gp_GetN():
             raise ValueError(
                 "Source and destination graphs must have the same order "
                 "to copy graphP struct.")
@@ -227,17 +228,13 @@ cdef class Graph:
                 f"and vlink = {vlink}."
             )
 
-    def gp_DeleteEdge(self, int e, int nextLink):
+    def gp_DeleteEdge(self, int e):
         if not self.gp_IsArc(e):
             raise RuntimeError(
                 f"gp_DeleteEdge() failed: invalid arc '{e}'."
             )
-        if nextLink != 0 and nextLink != 1:
-            raise RuntimeError(
-                f"Invalid link index for nextLink: '{nextLink}'."
-            )
-        
-        return cgraphLib.gp_DeleteEdge(self._theGraph, e, nextLink)
+
+        return cgraphLib.gp_DeleteEdge(self._theGraph, e)
 
     def gp_AttachDrawPlanar(self):
         if cgraphLib.gp_AttachDrawPlanar(self._theGraph) != cappconst.OK:

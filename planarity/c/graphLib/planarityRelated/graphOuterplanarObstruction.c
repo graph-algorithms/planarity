@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -8,7 +8,7 @@ See the LICENSE.TXT file for licensing information.
 
 /* Imported functions */
 
-extern void _ClearVisitedFlags(graphP);
+extern void _ClearAllVisitedFlagsInGraph(graphP);
 
 extern int _JoinBicomps(graphP theGraph);
 
@@ -58,7 +58,7 @@ int _ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
 
     // If the root copy is not a root copy of the current vertex v,
     // then the Walkdown terminated on a descendant bicomp, which is Minor A.
-    if (gp_GetPrimaryVertexFromRoot(theGraph, R) != v)
+    if (gp_GetVertexFromBicompRoot(theGraph, R) != v)
     {
         theGraph->IC.minorType |= MINORTYPE_A;
         return OK;
@@ -67,7 +67,9 @@ int _ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
     // If W has a pertinent child bicomp, then we've found Minor B.
     // Notice this is different from planarity, in which minor B is indicated
     // only if the pertinent child bicomp is also future pertinent.
-    if (gp_IsVertex(gp_GetVertexPertinentRootsList(theGraph, W)))
+    // NOTE: Each pertinent root is stored as the DFS child with which it is
+    //       associated, so we test gp_IsVertex, not gp_IsVirtualVertex here.
+    if (gp_IsVertex(theGraph, gp_GetVertexPertinentRootsList(theGraph, W)))
     {
         theGraph->IC.minorType |= MINORTYPE_B;
         return OK;
@@ -90,7 +92,7 @@ int _IsolateOuterplanarObstruction(graphP theGraph, int v, int R)
        flags, set=keep edge/vertex and clear=omit. Here we initialize to omit all, then we
        subsequently set visited on all edges and vertices in the homeomorph. */
 
-    _ClearVisitedFlags(theGraph);
+    _ClearAllVisitedFlagsInGraph(theGraph);
 
     /* Next we determineg which of the non-outerplanarity Minors was encountered
             and the principal bicomp on which the isolator will focus attention. */

@@ -11,22 +11,22 @@ cdef extern from "../c/graphLib/graphStructures.h":
         pass
     ctypedef baseGraphStructure * graphP
 
-    int gp_IsArc(int e)
+    int gp_IsArc(graphP theGraph, int e)
     int gp_GetFirstEdge(graphP theGraph)
     int gp_EdgeInUse(graphP theGraph, int e)
-    int gp_EdgeIndexBound(graphP theGraph)
-    int gp_EdgeInUseIndexBound(graphP theGraph)
+    int gp_EdgeArraySize(graphP theGraph)
+    int gp_EdgeInUseArraySize(graphP theGraph)
     int gp_GetFirstArc(graphP theGraph, int v)
     int gp_GetNextArc(graphP theGraph, int e)
 
     int gp_GetNeighbor(graphP theGraph, int e)
 
-    int gp_IsVertex(int v)
+    int gp_IsVertex(graphP theGraph, int v)
     int gp_GetFirstVertex(graphP theGraph)
     int gp_GetLastVertex(graphP theGraph)
-    int gp_VertexInRange(graphP theGraph, int v)
+    int gp_VertexInRangeAscending(graphP theGraph, int v)
 
-    int gp_getN(graphP theGraph)
+    int gp_GetN(graphP theGraph)
 
 
 cdef extern from "../c/graphLib/graph.h":
@@ -56,7 +56,7 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_EnsureArcCapacity(graphP theGraph, int requiredArcCapacity)
 
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
-    int gp_DeleteEdge(graphP theGraph, int e, int nextLink)
+    int gp_DeleteEdge(graphP theGraph, int e)
     
     int gp_Embed(graphP theGraph, int embedFlags)
     int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult)

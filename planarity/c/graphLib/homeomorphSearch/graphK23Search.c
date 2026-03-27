@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -8,7 +8,7 @@ See the LICENSE.TXT file for licensing information.
 
 /* Imported functions */
 
-extern void _ClearVisitedFlags(graphP);
+extern void _ClearAllVisitedFlagsInGraph(graphP);
 
 extern int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns);
@@ -55,7 +55,7 @@ int _SearchForK23InBicomp(graphP theGraph, int v, int R)
 
     if (theGraph->IC.minorType & (MINORTYPE_A | MINORTYPE_B))
     {
-        _ClearVisitedFlags(theGraph);
+        _ClearAllVisitedFlagsInGraph(theGraph);
 
         if (theGraph->IC.minorType & MINORTYPE_A)
         {
@@ -97,7 +97,7 @@ int _SearchForK23InBicomp(graphP theGraph, int v, int R)
     if (IC->w != _GetNeighborOnExtFace(theGraph, X, &XPrevLink) ||
         IC->w != _GetNeighborOnExtFace(theGraph, Y, &YPrevLink))
     {
-        _ClearVisitedFlags(theGraph);
+        _ClearAllVisitedFlagsInGraph(theGraph);
 
         if (_IsolateOuterplanarityObstructionE1orE2(theGraph) != OK)
             return NOTOK;
@@ -121,7 +121,7 @@ int _SearchForK23InBicomp(graphP theGraph, int v, int R)
         FUTUREPERTINENT(theGraph, Y, v) ||
         FUTUREPERTINENT(theGraph, IC->w, v))
     {
-        _ClearVisitedFlags(theGraph);
+        _ClearAllVisitedFlagsInGraph(theGraph);
 
         if (_IsolateOuterplanarityObstructionE3orE4(theGraph) != OK)
             return NOTOK;

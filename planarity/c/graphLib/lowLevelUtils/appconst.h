@@ -2,7 +2,7 @@
 #define APPCONST_H
 
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -73,13 +73,16 @@ extern int debugNOTOK(void);
 #define NULL 0L
 #endif
 
-/* Array indices are used as pointers, and NIL means bad pointer */
+// Define one of these to use faster 1-based arrays or
+// the slower original 0-based arrays
 #define USE_FASTER_1BASEDARRAYS
+// #define USE_0BASEDARRAYS
 
 #ifdef USE_0BASEDARRAYS
 #undef USE_FASTER_1BASEDARRAYS
 #endif
 
+/* Array indices are used as pointers, and NIL means bad pointer */
 #ifdef USE_FASTER_1BASEDARRAYS
 // This definition is used with 1-based array indexing
 #define NIL 0

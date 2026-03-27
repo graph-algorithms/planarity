@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -15,7 +15,7 @@ extern int DRAWPLANAR_ID;
 #include <stdlib.h>
 #include <stdio.h>
 
-extern void _ClearVisitedFlags(graphP theGraph);
+extern void _ClearAllVisitedFlagsInGraph(graphP theGraph);
 
 /* Private functions exported to system */
 
@@ -81,7 +81,7 @@ int _ComputeVertexPositions(DrawPlanarContext *context)
     int v, vertpos;
 
     vertpos = 0;
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
     {
         // For each DFS tree root in the embedding, we
         // compute the vertex positions
@@ -191,7 +191,7 @@ int _ComputeVertexPositions(DrawPlanarContext *context)
 int _ComputeVertexPositionsInComponent(DrawPlanarContext *context, int root, int *pVertpos)
 {
     graphP theEmbedding = context->theGraph;
-    listCollectionP theOrder = LCNew(gp_PrimaryVertexIndexBound(theEmbedding));
+    listCollectionP theOrder = LCNew(gp_VertexArraySize(theEmbedding));
     int W, P, C, V, e;
 
     if (theOrder == NULL)
@@ -212,7 +212,7 @@ int _ComputeVertexPositionsInComponent(DrawPlanarContext *context, int root, int
 
         // For the special case that we just popped the DFS tree root,
         // we simply add the root to its own position.
-        if (gp_IsNotVertex(P))
+        if (gp_IsNotVertex(theEmbedding, P))
         {
             // Put the DFS root in the list by itself
             LCAppend(theOrder, NIL, W);
@@ -237,7 +237,7 @@ int _ComputeVertexPositionsInComponent(DrawPlanarContext *context, int root, int
             // which is equal to or descendant to C. If C below V, then P below V,
             // so interpret 'W between P and V' as 'W above P', and interpret
             // 'W beyond P relative to V' as 'W below P'.
-            if (gp_IsNotVertex(C) || context->VI[C].drawingFlag == DRAWINGFLAG_BELOW)
+            if (gp_IsNotVertex(theEmbedding, C) || context->VI[C].drawingFlag == DRAWINGFLAG_BELOW)
             {
                 if (context->VI[W].drawingFlag == DRAWINGFLAG_BETWEEN)
                     context->VI[W].drawingFlag = DRAWINGFLAG_ABOVE;
@@ -264,7 +264,7 @@ int _ComputeVertexPositionsInComponent(DrawPlanarContext *context, int root, int
 
         // Push DFS children
         e = gp_GetFirstArc(theEmbedding, W);
-        while (gp_IsArc(e))
+        while (gp_IsArc(theEmbedding, e))
         {
             if (gp_GetEdgeType(theEmbedding, e) == EDGE_TYPE_CHILD)
                 sp_Push(theEmbedding->theStack, gp_GetNeighbor(theEmbedding, e));
@@ -275,7 +275,7 @@ int _ComputeVertexPositionsInComponent(DrawPlanarContext *context, int root, int
 
     // Use the order to assign vertical positions
     V = root;
-    while (gp_IsVertex(V))
+    while (gp_IsVertex(theEmbedding, V))
     {
         context->VI[V].pos = *pVertpos;
         (*pVertpos)++;
@@ -299,14 +299,14 @@ void _LogEdgeList(graphP theEmbedding, listCollectionP edgeList, int edgeListHea
 
     gp_Log("EdgeList: [ ");
 
-    while (gp_IsArc(eIndex))
+    while (gp_IsArc(theGraph, eIndex))
     {
         e = (eIndex << 1);
         eTwin = gp_GetTwinArc(theEmbedding, e);
 
         gp_Log(gp_MakeLogStr2("(%d, %d) ",
-                              gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e)),
-                              gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eTwin))));
+                              gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e)),
+                              gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eTwin))));
 
         eIndex = LCGetNext(edgeList, edgeListHead, eIndex);
     }
@@ -350,7 +350,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
         return NOTOK;
     }
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
         vertexOrder[context->VI[v].pos] = v;
 
     // Allocate the edge list of size M.
@@ -363,6 +363,8 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
     if (theEmbedding->M > 0 && (edgeList = LCNew(gp_GetFirstEdge(theEmbedding) / 2 + theEmbedding->M)) == NULL)
     {
         free(vertexOrder);
+        vertexOrder = NULL;
+
         return NOTOK;
     }
 
@@ -370,7 +372,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
 
     // Each vertex starts out with a NIL generator edge.
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
         gp_SetVertexVisitedInfo(theEmbedding, v, NIL);
 
     // Perform the vertical sweep of the combinatorial embedding, using
@@ -384,7 +386,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
         // Get the vertex associated with the position
         v = vertexOrder[vpos];
         gp_LogLine(gp_MakeLogStr3("Processing vertex %d with DFI=%d at position=%d",
-                                  gp_GetVertexIndex(theEmbedding, v), v, vpos));
+                                  gp_GetIndex(theEmbedding, v), v, vpos));
 
         // The DFS tree root of a connected component is always the least
         // number vertex in the vertex ordering.  We have to give it a
@@ -402,13 +404,13 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
             // Now we traverse the adjacency list of the DFS tree root and
             // record each edge as the generator edge of the neighbors
             e = gp_GetFirstArc(theEmbedding, v);
-            while (gp_IsArc(e))
+            while (gp_IsArc(theEmbedding, e))
             {
                 eIndex = (e >> 1); // div by 2 since each edge is a pair of arcs
 
                 edgeListHead = LCAppend(edgeList, edgeListHead, eIndex);
                 gp_LogLine(gp_MakeLogStr2("Append generator edge (%d, %d) to edgeList",
-                                          gp_GetVertexIndex(theEmbedding, v), gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e))));
+                                          gp_GetIndex(theEmbedding, v), gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e))));
 
                 // Set the generator edge for the root's neighbor
                 gp_SetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, e), e);
@@ -424,7 +426,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
             // Get the generator edge of the vertex
             // Note that this never gets the false generator edge of a DFS tree root
             eTwin = gp_GetVertexVisitedInfo(theEmbedding, v);
-            if (gp_IsNotArc(eTwin))
+            if (gp_IsNotArc(theEmbedding, eTwin))
                 return NOTOK;
             e = gp_GetTwinArc(theEmbedding, eTwin);
 
@@ -447,22 +449,22 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
                     LCInsertAfter(edgeList, edgeListInsertPoint, eIndex);
 
                     gp_LogLine(gp_MakeLogStr4("Insert (%d, %d) after (%d, %d)",
-                                              gp_GetVertexIndex(theEmbedding, v),
-                                              gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur)),
-                                              gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, gp_GetTwinArc(theEmbedding, e))),
-                                              gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e))));
+                                              gp_GetIndex(theEmbedding, v),
+                                              gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur)),
+                                              gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, gp_GetTwinArc(theEmbedding, e))),
+                                              gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e))));
 
                     edgeListInsertPoint = eIndex;
 
                     // If the vertex does not yet have a generator edge, then set it.
                     // Note that a DFS tree root has a false generator edge, so this if
                     // test avoids setting a generator edge for a DFS tree root
-                    if (gp_IsNotArc(gp_GetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))))
+                    if (gp_IsNotArc(theEmbedding, gp_GetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))))
                     {
                         gp_SetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, eCur), eCur);
                         gp_LogLine(gp_MakeLogStr2("Generator edge (%d, %d)",
-                                                  gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, gp_GetTwinArc(theEmbedding, e))),
-                                                  gp_GetVertexIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))));
+                                                  gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, gp_GetTwinArc(theEmbedding, e))),
+                                                  gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))));
                     }
                 }
 
@@ -479,9 +481,10 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
     // Now iterate through the edgeList and assign positions to the edges.
     epos = 0;
     eIndex = edgeListHead;
-    while (gp_IsArc(eIndex))
+    e = eIndex == NIL ? NIL : (eIndex << 1);
+
+    while (gp_IsArc(theEmbedding, e))
     {
-        e = (eIndex << 1);
         eTwin = gp_GetTwinArc(theEmbedding, e);
 
         context->E[e].pos = context->E[eTwin].pos = epos;
@@ -489,11 +492,14 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
         epos++;
 
         eIndex = LCGetNext(edgeList, edgeListHead, eIndex);
+        e = eIndex == NIL ? NIL : (eIndex << 1);
     }
 
     // Clean up and return
     LCFree(&edgeList);
+
     free(vertexOrder);
+    vertexOrder = NULL;
 
     gp_LogLine("graphDrawPlanar.c/_ComputeEdgePositions() end\n");
 
@@ -511,24 +517,24 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
 int _ComputeVertexRanges(DrawPlanarContext *context)
 {
     graphP theEmbedding = context->theGraph;
-    int v, e, min, max;
+    int v = NIL, e = NIL, min = NIL, max = NIL;
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
     {
         min = theEmbedding->M + 1;
-        max = -1;
+        max = NIL;
 
         // Iterate the edges, except in the isolated vertex case we just
         // set the min and max to 1 since there no edges controlling where
         // it gets drawn.
         e = gp_GetFirstArc(theEmbedding, v);
-        if (gp_IsNotArc(e))
+        if (gp_IsNotArc(theEmbedding, e))
         {
             min = max = 0;
         }
         else
         {
-            while (gp_IsArc(e))
+            while (gp_IsArc(theEmbedding, e))
             {
                 if (min > context->E[e].pos)
                     min = context->E[e].pos;
@@ -564,7 +570,7 @@ int _ComputeEdgeRanges(DrawPlanarContext *context)
     if (sp_NonEmpty(theEmbedding->edgeHoles))
         return NOTOK;
 
-    EsizeOccupied = gp_EdgeInUseIndexBound(theEmbedding);
+    EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
     for (e = gp_GetFirstEdge(theEmbedding); e < EsizeOccupied; e += 2)
     {
         eTwin = gp_GetTwinArc(theEmbedding, e);
@@ -647,7 +653,7 @@ void _CollectDrawingData(DrawPlanarContext *context, int RootVertex, int W, int 
            the 4-tuple in the merge stack */
         Parent = theEmbedding->theStack->S[K];
         BicompRoot = theEmbedding->theStack->S[K + 2];
-        DFSChild = gp_GetDFSChildFromRoot(theEmbedding, BicompRoot);
+        DFSChild = gp_GetDFSChildFromBicompRoot(theEmbedding, BicompRoot);
 
         /* We get the active descendant vertex in the child bicomp that
            will be adjacent to the parent along the external face.
@@ -737,15 +743,15 @@ int _BreakTie(DrawPlanarContext *context, int BicompRoot, int W, int WPrevLink)
         return NOTOK;
 
     /* If there is a tie, it can now be resolved. */
-    if (gp_IsVertex(context->VI[W].tie[WPrevLink]))
+    if (gp_IsVertex(theEmbedding, context->VI[W].tie[WPrevLink]))
     {
         int DFSChild = context->VI[W].tie[WPrevLink];
 
         /* Set the two ancestor variables that contextualize putting W 'between'
             or 'beyond' its parent relative to what. */
 
-        context->VI[DFSChild].ancestorChild = gp_GetDFSChildFromRoot(theEmbedding, BicompRoot);
-        context->VI[DFSChild].ancestor = gp_GetPrimaryVertexFromRoot(theEmbedding, BicompRoot);
+        context->VI[DFSChild].ancestorChild = gp_GetDFSChildFromBicompRoot(theEmbedding, BicompRoot);
+        context->VI[DFSChild].ancestor = gp_GetVertexFromBicompRoot(theEmbedding, BicompRoot);
 
         gp_LogLine(gp_MakeLogStr4("V[child=%d]=.ancestorChild = %d, V[child=%d]=.ancestor = %d",
                                   DFSChild, context->VI[DFSChild].ancestorChild, DFSChild, context->VI[DFSChild].ancestor));
@@ -796,7 +802,7 @@ char *_RenderToString(graphP theEmbedding)
     {
         int N = theEmbedding->N;
         int M = theEmbedding->M;
-        int zeroBasedVertexOffset = (theEmbedding->internalFlags & FLAGS_ZEROBASEDIO) ? gp_GetFirstVertex(theEmbedding) : 0;
+        int zeroBasedVertexOffset = 0;
         int n, m, EsizeOccupied, v, vRange, e, eRange, Mid, Pos;
         char *visRep = (char *)malloc(sizeof(char) * ((M + 1) * 2 * N + 1));
         char numBuffer[32];
@@ -804,11 +810,25 @@ char *_RenderToString(graphP theEmbedding)
         if (visRep == NULL)
             return NULL;
 
-        if (sp_NonEmpty(context->theGraph->edgeHoles))
+        // If edges were deleted from the embedding, then the visibility representation is
+        // no longer valid. (This is a necessary condition but not sufficient to guarantee
+        // no embedding mutations, because adding edges uses the holes, and other APIs
+        // allow edge changes).
+        if (sp_NonEmpty(theEmbedding->edgeHoles))
         {
             free(visRep);
+            visRep = NULL;
+
             return NULL;
         }
+
+        // If we are supposed to write 0-based output, then we have to set this variable to indicate
+        // how much to subtract from each vertex index based on whether this library has been
+        // compiled with 0-based or 1-based array indexing for the in-memory data structure (i.e.,
+        // compiled with USE_FASTER_1BASEDARRAYS USE_0BASEDARRAYS).
+        // The macro invoked is responsive to the compile-time difference.
+        if (theEmbedding->internalFlags & FLAGS_ZEROBASEDIO)
+            zeroBasedVertexOffset = gp_GetFirstVertex(theGraph);
 
         // Clear the space
         for (n = 0; n < N; n++)
@@ -824,7 +844,7 @@ char *_RenderToString(graphP theEmbedding)
         }
 
         // Draw the vertices
-        for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+        for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
         {
             Pos = context->VI[v].pos;
             for (vRange = context->VI[v].start; vRange <= context->VI[v].end; vRange++)
@@ -850,7 +870,7 @@ char *_RenderToString(graphP theEmbedding)
         }
 
         // Draw the edges
-        EsizeOccupied = gp_EdgeInUseIndexBound(theEmbedding);
+        EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
         for (e = gp_GetFirstEdge(theEmbedding); e < EsizeOccupied; e += 2)
         {
             Pos = context->E[e].pos;
@@ -864,6 +884,7 @@ char *_RenderToString(graphP theEmbedding)
 
         // Null terminate string and return it
         visRep[(M + 1) * 2 * N] = '\0';
+
         return visRep;
     }
 
@@ -902,6 +923,8 @@ int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
  ********************************************************************/
 int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
 {
+    int Result = OK;
+
     if (theEmbedding != NULL && sp_IsEmpty(theEmbedding->edgeHoles))
     {
         FILE *outfile;
@@ -918,10 +941,13 @@ int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
             return NOTOK;
 
         theRendition = _RenderToString(theEmbedding);
+        Result = theRendition ? OK : NOTOK;
         if (theRendition != NULL)
         {
             fprintf(outfile, "%s", theRendition);
+
             free(theRendition);
+            theRendition = NULL;
         }
 
         if (strcmp(theFileName, "stdout") == 0 || strcmp(theFileName, "stderr") == 0)
@@ -930,7 +956,7 @@ int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
         else if (fclose(outfile) != 0)
             return NOTOK;
 
-        return theRendition ? OK : NOTOK;
+        return Result;
     }
 
     return NOTOK;
@@ -948,12 +974,12 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
     if (sp_NonEmpty(context->theGraph->edgeHoles))
         return NOTOK;
 
-    _ClearVisitedFlags(theEmbedding);
+    _ClearAllVisitedFlagsInGraph(theEmbedding);
 
     /* Test whether the vertex values make sense and
             whether the vertex positions are unique. */
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
     {
         if (theEmbedding->M > 0)
         {
@@ -966,20 +992,20 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
         }
 
         // Has the vertex position been used by a vertex before vertex v?
-        if (gp_GetVertexVisited(theEmbedding, context->VI[v].pos + gp_GetFirstVertex(theEmbedding)))
+        if (gp_GetVisited(theEmbedding, context->VI[v].pos + gp_GetFirstVertex(theEmbedding)))
             return NOTOK;
 
         // Mark the vertex position as used by vertex v.
         // Note that this marking is made on some other vertex unrelated to v
         // We're just reusing the vertex visited array as cheap storage for a
         // detector of reusing vertex position integers.
-        gp_SetVertexVisited(theEmbedding, context->VI[v].pos + gp_GetFirstVertex(theEmbedding));
+        gp_SetVisited(theEmbedding, context->VI[v].pos + gp_GetFirstVertex(theEmbedding));
     }
 
     /* Test whether the edge values make sense and
             whether the edge positions are unique */
 
-    EsizeOccupied = gp_EdgeInUseIndexBound(theEmbedding);
+    EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
     for (e = gp_GetFirstEdge(theEmbedding); e < EsizeOccupied; e += 2)
     {
         /* Each edge has two index locations in the edge information array */
@@ -1017,12 +1043,12 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
     /* Test whether any edge intersects any vertex position
         for a vertex that is not an endpoint of the edge. */
 
-    EsizeOccupied = gp_EdgeInUseIndexBound(theEmbedding);
+    EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
     for (e = gp_GetFirstEdge(theEmbedding); e < EsizeOccupied; e += 2)
     {
         eTwin = gp_GetTwinArc(theEmbedding, e);
 
-        for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRange(theEmbedding, v); v++)
+        for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
         {
             /* If the vertex is an endpoint of the edge, then... */
 

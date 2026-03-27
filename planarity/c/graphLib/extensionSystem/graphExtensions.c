@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -108,31 +108,26 @@ static int moduleIDGenerator = 0;
         the graph, vertex or edge levels, then an overload of
         fpInitGraph() will be needed.
 
-     b) If any data must be associated with primary and virtual vertices,
-        then an overload of fpInitVertexRec() is needed.  If data must be
-        associated only with primary vertices (0 to N-1), then one can
-        overload fpInitVertexInfo() instead.
-        The overload function should be named _Feature_InitVertexRec()
-        or _Feature_InitVertexInfo().
-        It will invoke the base fpInitVertexRec() or fpInitVertexInfo()
-        but then also invoke a second function named _InitFeatureVertexRec()
-        or _InitFeatureVertexInfo() thatinitializes the custom VertexRec
-        or VertexInfo data members.
+     b) If any data must be associated with vertices and virtual vertices,
+        then it is necessary to perform initialization parallel to the
+        initialization of anyTypeVertexRec instances. Similarly, if data
+        must be associated only with vertices (and not virtual vertices),
+        then initialization parallel to VertexInfo initialization is
+        required. At this time, there do not exist overloadable functions
+        for fpInitAnyTypeVertexRec() and fpInitVertexInfo().
+        Instead, overload fpInitGraph() and fpReinitializeGraph(). Also
+        if an extension must delete an edge, it should have its own
 
-     c) If any data must be associated with the edges, then an overload
-        of fpInitEdgeRec() is needed.
-        This overload function should be named _Feature_InitEdgeRec().
-        It will invoke the base fpInitEdgeRec() and also invoke
-        a second function named_InitFeatureEdgeRec() that
-        initializes the custom EdgeRec data members
+     c) If any data must be associated with the edges, then the extension
+        creates a parallel array that is initialized and reinitialized
+        in overloads of fpInitGraph() and fpReinitializeGraph().
+        Also, if the extension deletes edges, then the extension provides
+        its own _Feature_DeleteEdge() that initializes its edge
+        extension data along with calling gp_DeleteEdge().
 
      d) If any graph-level data structures are needed, then an
         overload of fpReinitializeGraph() will also be needed, not just the
-        overload of fpInitGraph().  However, if only vertex-level and/or
-        edge level data members are needed, then the overloads of
-        fpInitVertexRec(), fpInitVertexInfo() and/or fpInitEdgeRec() are
-        invoked by the basic fpReinitializeGraph without needing to overload
-        it as well.
+        overload of fpInitGraph().
 
      e) If any data must be persisted in the file format, then overloads
         of fpReadPostprocess() and fpWritePostprocess() are needed.
@@ -154,15 +149,15 @@ static int moduleIDGenerator = 0;
         list collection, should be created _and_ initialized.
 
      c) The _Feature_InitStructures() should invoke just the functions
-        needed to initialize the custom VertexRec, VertexInfo and EdgeRec
-        data members, if any.
+        needed to initialize the custom AnyTypeVertexRec, VertexInfo and 
+        EdgeRec data members, if any.
 
   8) Define a function gp_DetachFeature() that invokes gp_RemoveExtension()
      This should be done for consistency, so that users of a feature
      do not attach it with gp_AttachFeature() and remove it with
      gp_RemoveExtension().  However, it may sometimes be necessary to
      run more code than just gp_RemoveExtension() when detaching a feature,
-     e.g. some final result values of a feature may be saved to data
+     e.g., some final result values of a feature may be saved to data
      available in the core graph or in other features.
  ********************************************************************/
 

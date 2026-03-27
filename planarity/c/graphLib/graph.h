@@ -2,7 +2,7 @@
 #define GRAPH_H
 
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -62,12 +62,12 @@ extern "C"
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink);
     int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink,
                       int v, int e_v, int e_vlink);
+    int gp_DeleteEdge(graphP theGraph, int e);
 
     void gp_HideEdge(graphP theGraph, int e);
     void gp_RestoreEdge(graphP theGraph, int e);
     int gp_HideVertex(graphP theGraph, int vertex);
     int gp_RestoreVertex(graphP theGraph);
-    int gp_DeleteEdge(graphP theGraph, int e, int nextLink);
 
     int gp_ContractEdge(graphP theGraph, int e);
     int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore);
@@ -77,13 +77,13 @@ extern "C"
     int gp_SortVertices(graphP theGraph);
     int gp_LowpointAndLeastAncestor(graphP theGraph);
     int gp_LeastAncestor(graphP theGraph);
-    int gp_PreprocessForEmbedding(graphP theGraph);
 
     int gp_Embed(graphP theGraph, int embedFlags);
     int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult);
 
-    /* Possible Flags for gp_Embed.  The planar and outerplanar settings are supported
-        natively.  The rest require extension modules. */
+    /* Possible graph embedFlags for gp_Embed.
+        The planar and outerplanar settings are supported natively
+        The rest are supported via  extension modules. */
 
 #define EMBEDFLAGS_PLANAR 1
 #define EMBEDFLAGS_OUTERPLANAR 2
@@ -94,8 +94,8 @@ extern "C"
 #define EMBEDFLAGS_SEARCHFORK4 (32 | EMBEDFLAGS_OUTERPLANAR)
 #define EMBEDFLAGS_SEARCHFORK33 (64 | EMBEDFLAGS_PLANAR)
 
+// Reserved for the future possible extension modules
 #define EMBEDFLAGS_SEARCHFORK5 (128 | EMBEDFLAGS_PLANAR)
-
 #define EMBEDFLAGS_MAXIMALPLANARSUBGRAPH 256
 #define EMBEDFLAGS_PROJECTIVEPLANAR 512
 #define EMBEDFLAGS_TOROIDAL 1024

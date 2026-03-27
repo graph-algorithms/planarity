@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -104,6 +104,8 @@ int gp_AttachK4Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K4Search_FreeContext(context);
+        context = NULL;
+
         return NOTOK;
     }
 
@@ -119,6 +121,8 @@ int gp_AttachK4Search(graphP theGraph)
             _K4Search_InitStructures(context) != OK)
         {
             _K4Search_FreeContext(context);
+            context = NULL;
+
             return NOTOK;
         }
     }
@@ -169,7 +173,7 @@ void _K4Search_ClearStructures(K4SearchContext *context)
  ********************************************************************/
 int _K4Search_CreateStructures(K4SearchContext *context)
 {
-    int Esize = gp_EdgeIndexBound(context->theGraph);
+    int Esize = gp_EdgeArraySize(context->theGraph);
 
     if (context->theGraph->N <= 0)
         return NOTOK;
@@ -188,12 +192,12 @@ int _K4Search_CreateStructures(K4SearchContext *context)
  ********************************************************************/
 int _K4Search_InitStructures(K4SearchContext *context)
 {
-    memset(context->E, NIL_CHAR, gp_EdgeIndexBound(context->theGraph) * sizeof(K4Search_EdgeRec));
+    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(K4Search_EdgeRec));
     // N.B. This is the legacy API-based approach to initializing the structures
     // required for the K_4 search graph algorithm extension.
     // int e, Esize;
 
-    // Esize = gp_EdgeIndexBound(context->theGraph);
+    // Esize = gp_EdgeArraySize(context->theGraph);
     // for (e = gp_GetFirstEdge(context->theGraph); e < Esize; e++)
     //     _K4Search_InitEdgeRec(context, e);
 
@@ -268,7 +272,7 @@ void *_K4Search_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int Esize = gp_EdgeIndexBound((graphP)theGraph);
+        int Esize = gp_EdgeArraySize((graphP)theGraph);
 
         *newContext = *context;
 
@@ -281,6 +285,8 @@ void *_K4Search_DupContext(void *pContext, void *theGraph)
             if (_K4Search_CreateStructures(newContext) != OK)
             {
                 _K4Search_FreeContext(newContext);
+                newContext = NULL;
+
                 return NULL;
             }
 

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -180,7 +180,7 @@ void sb_ReadSkipInteger(strBufP theStrBuf)
  small concatenations).
  Returns OK on success, NOTOK on error
  ********************************************************************/
-int sb_ConcatString(strBufP theStrBuf, char const*s)
+int sb_ConcatString(strBufP theStrBuf, char const *s)
 {
     int slen = s == NULL ? 0 : strlen(s);
 

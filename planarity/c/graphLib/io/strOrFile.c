@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -7,7 +7,6 @@ See the LICENSE.TXT file for licensing information.
 #include <ctype.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
 #include "../lowLevelUtils/appconst.h"
@@ -16,12 +15,27 @@ See the LICENSE.TXT file for licensing information.
 /********************************************************************
  sf_New()
 
- Accepts a FILE pointer XOR a string, which are owned by the container.
+ The string-or-file object supports two IO modes: reading input (ioMode ==
+ READTEXT), and writing output (ioMode == WRITETEXT). The string-or-file object
+ also may only contain a string (stored using a strBufP to leverage its string
+ manipulation functions) XOR a FILE *.
+
+ For the input mode, sf_New() should receive either a non-NULL (and preferably
+ nonempty) input string (which the container *does not own*, but rather copies
+ into the internal strBufP) or a non-NULL and nonempty fileName (which may
+ correspond to stdin).
+
+ For the output mode, theStr *must* be NULL because, if the fileName is also
+ NULL, then the desired output string will be constructed internally in the
+ string-or-file object and can be obtained after all output has been written
+ using sf_takeTheStr(). If the fileName is non-NULL and nonempty (which may
+ correspond to stdout or stderr), then the output will go to the output stream
+ and an output string will not be constructed.
 
  Returns the allocated string-or-file container, or NULL on error.
  ********************************************************************/
 
-strOrFileP sf_New(char const *theStr, char const *fileName, char const *ioMode)
+strOrFileP sf_New(char const *const theStr, char const *const fileName, char const *ioMode)
 {
     strOrFileP theStrOrFile;
     int containerType = 0;
@@ -167,10 +181,10 @@ strOrFileP sf_New(char const *theStr, char const *fileName, char const *ioMode)
     should only contain one source).
  5. containerType is either set to INPUT_CONTAINER or OUTPUT_CONTAINER
 
- Returns NOTOK if any of these conditions are not met, otherwise OK.
+ Returns false if any of these conditions are not met, otherwise true.
  ********************************************************************/
 
-int sf_ValidateStrOrFile(strOrFileP theStrOrFile)
+bool sf_IsValidStrOrFile(strOrFileP theStrOrFile)
 {
     if (theStrOrFile == NULL ||
         theStrOrFile->ungetBuf == NULL ||
@@ -178,9 +192,9 @@ int sf_ValidateStrOrFile(strOrFileP theStrOrFile)
         (theStrOrFile->pFile != NULL && theStrOrFile->theStr != NULL) ||
         (theStrOrFile->containerType != INPUT_CONTAINER &&
          theStrOrFile->containerType != OUTPUT_CONTAINER))
-        return NOTOK;
+        return false;
 
-    return OK;
+    return true;
 }
 
 /********************************************************************
@@ -196,7 +210,7 @@ char sf_getc(strOrFileP theStrOrFile)
 {
     char theChar = EOF;
 
-    if (sf_ValidateStrOrFile(theStrOrFile) != OK ||
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
         return EOF;
 
@@ -230,7 +244,7 @@ char sf_getc(strOrFileP theStrOrFile)
 
 int sf_ReadSkipChar(strOrFileP theStrOrFile)
 {
-    if (sf_ValidateStrOrFile(theStrOrFile) != OK ||
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
         return NOTOK;
 
@@ -251,7 +265,7 @@ int sf_ReadSkipWhitespace(strOrFileP theStrOrFile)
 {
     char currChar = EOF;
 
-    if (sf_ValidateStrOrFile(theStrOrFile) != OK ||
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
         return NOTOK;
 
@@ -280,7 +294,7 @@ int sf_ReadSingleDigit(int *digitToRead, strOrFileP theStrOrFile)
 {
     int candidateDigit = EOF;
 
-    if (sf_ValidateStrOrFile(theStrOrFile) != OK ||
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
         return NOTOK;
 
@@ -314,7 +328,7 @@ int sf_ReadInteger(int *intToRead, strOrFileP theStrOrFile)
     char intCandidateStr[MAXCHARSFOR32BITINT + 1];
     memset(intCandidateStr, '\0', (MAXCHARSFOR32BITINT + 1) * sizeof(char));
 
-    if (sf_ValidateStrOrFile(theStrOrFile) != OK ||
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
         return NOTOK;
 
@@ -463,7 +477,7 @@ int sf_ReadSkipLineRemainder(strOrFileP theStrOrFile)
 char sf_ungetc(char theChar, strOrFileP theStrOrFile)
 {
     if (theChar == EOF ||
-        sf_ValidateStrOrFile(theStrOrFile) != OK ||
+        !sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER ||
         sp_GetCurrentSize(theStrOrFile->ungetBuf) >= sp_GetCapacity(theStrOrFile->ungetBuf))
         return EOF; // Acceptable downcast, allowing char rather than int return type
@@ -484,7 +498,7 @@ char sf_ungetc(char theChar, strOrFileP theStrOrFile)
 
 int sf_ungets(char *strToUnget, strOrFileP theStrOrFile)
 {
-    if (sf_ValidateStrOrFile(theStrOrFile) != OK ||
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER ||
         (int)strlen(strToUnget) > (sp_GetCapacity(theStrOrFile->ungetBuf) - sp_GetCurrentSize(theStrOrFile->ungetBuf)))
         return NOTOK;
@@ -518,7 +532,7 @@ char *sf_fgets(char *str, int count, strOrFileP theStrOrFile)
     int charsToReadFromStrOrFile = count;
 
     if (str == NULL || count < 0 ||
-        sf_ValidateStrOrFile(theStrOrFile) != OK ||
+        !sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
         return NULL;
 
@@ -603,7 +617,7 @@ int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile)
     int outputLen = EOF;
 
     if (strToWrite == NULL ||
-        sf_ValidateStrOrFile(theStrOrFile) != OK ||
+        !sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != OUTPUT_CONTAINER)
         return EOF;
 

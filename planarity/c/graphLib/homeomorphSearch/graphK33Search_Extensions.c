@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -116,6 +116,8 @@ int gp_AttachK33Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K33Search_FreeContext(context);
+        context = NULL;
+
         return NOTOK;
     }
 
@@ -131,6 +133,8 @@ int gp_AttachK33Search(graphP theGraph)
             _K33Search_InitStructures(context) != OK)
         {
             _K33Search_FreeContext(context);
+            context = NULL;
+
             return NOTOK;
         }
     }
@@ -196,8 +200,8 @@ void _K33Search_ClearStructures(K33SearchContext *context)
  ********************************************************************/
 int _K33Search_CreateStructures(K33SearchContext *context)
 {
-    int VIsize = gp_PrimaryVertexIndexBound(context->theGraph);
-    int Esize = gp_EdgeIndexBound(context->theGraph);
+    int VIsize = gp_VertexArraySize(context->theGraph);
+    int Esize = gp_EdgeArraySize(context->theGraph);
 
     if (context->theGraph->N <= 0)
         return NOTOK;
@@ -219,8 +223,8 @@ int _K33Search_CreateStructures(K33SearchContext *context)
  ********************************************************************/
 int _K33Search_InitStructures(K33SearchContext *context)
 {
-    memset(context->VI, NIL_CHAR, gp_PrimaryVertexIndexBound(context->theGraph) * sizeof(K33Search_VertexInfo));
-    memset(context->E, NIL_CHAR, gp_EdgeIndexBound(context->theGraph) * sizeof(K33Search_EdgeRec));
+    memset(context->VI, NIL_CHAR, gp_VertexArraySize(context->theGraph) * sizeof(K33Search_VertexInfo));
+    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(K33Search_EdgeRec));
     // N.B. This is the legacy API-based approach to initializing the structures
     // required for the K_{3, 3} search graph algorithm extension.
     // graphP theGraph = context->theGraph;
@@ -229,10 +233,10 @@ int _K33Search_InitStructures(K33SearchContext *context)
     // if (theGraph->N <= 0)
     //     return OK;
 
-    // for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    // for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     //     _K33Search_InitVertexInfo(context, v);
 
-    // Esize = gp_EdgeIndexBound(theGraph);
+    // Esize = gp_EdgeArraySize(theGraph);
     // for (e = gp_GetFirstEdge(theGraph); e < Esize; e++)
     //     _K33Search_InitEdgeRec(context, e);
 
@@ -311,8 +315,8 @@ void *_K33Search_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int VIsize = gp_PrimaryVertexIndexBound((graphP)theGraph);
-        int Esize = gp_EdgeIndexBound((graphP)theGraph);
+        int VIsize = gp_VertexArraySize((graphP)theGraph);
+        int Esize = gp_EdgeArraySize((graphP)theGraph);
 
         *newContext = *context;
 
@@ -325,6 +329,8 @@ void *_K33Search_DupContext(void *pContext, void *theGraph)
             if (_K33Search_CreateStructures(newContext) != OK)
             {
                 _K33Search_FreeContext(newContext);
+                newContext = NULL;
+
                 return NULL;
             }
 
@@ -387,17 +393,17 @@ void _CreateBackArcLists(graphP theGraph, K33SearchContext *context)
 {
     int v, e, eTwin, ancestor;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
         e = gp_GetVertexFwdArcList(theGraph, v);
-        while (gp_IsArc(e))
+        while (gp_IsArc(theGraph, e))
         {
             // Get the ancestor endpoint and the associated back arc
             ancestor = gp_GetNeighbor(theGraph, e);
             eTwin = gp_GetTwinArc(theGraph, e);
 
             // Put it into the back arc list of the ancestor
-            if (gp_IsNotArc(context->VI[ancestor].backArcList))
+            if (gp_IsNotArc(theGraph, context->VI[ancestor].backArcList))
             {
                 context->VI[ancestor].backArcList = eTwin;
                 gp_SetPrevArc(theGraph, eTwin, eTwin);
@@ -438,12 +444,12 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
 
     // Initialize the bin and all the buckets to be empty
     LCReset(bin);
-    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, L); L++)
+    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, L); L++)
         buckets[L] = NIL;
 
     // For each vertex, add it to the bucket whose index is equal to the lowpoint of the vertex.
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
         L = gp_GetVertexLowpoint(theGraph, v);
         buckets[L] = LCAppend(bin, buckets[L], v);
@@ -453,16 +459,16 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
     // Since lower numbered buckets are processed before higher numbered buckets, vertices with lower
     // lowpoint values are added before those with higher lowpoint values, so the separatedDFSChildList
     // of each vertex is sorted by lowpoint
-    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, L); L++)
+    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, L); L++)
     {
         v = buckets[L];
 
         // Loop through all the vertices with lowpoint L, putting each in the list of its parent
-        while (gp_IsVertex(v))
+        while (gp_IsVertex(theGraph, v))
         {
             DFSParent = gp_GetVertexParent(theGraph, v);
 
-            if (gp_IsVertex(DFSParent) && DFSParent != v)
+            if (gp_IsVertex(theGraph, DFSParent) && DFSParent != v)
             {
                 theList = context->VI[DFSParent].separatedDFSChildList;
                 theList = LCAppend(context->separatedDFSChildLists, theList, v);
@@ -551,7 +557,7 @@ int _K33Search_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int W
             if (_SearchForMergeBlocker(theGraph, context, v, &mergeBlocker) != OK)
                 return NOTOK;
 
-            if (gp_IsVertex(mergeBlocker))
+            if (gp_IsVertex(theGraph, mergeBlocker))
             {
                 if (_FindK33WithMergeBlocker(theGraph, context, v, mergeBlocker) != OK)
                     return NOTOK;
@@ -593,7 +599,7 @@ void _K33Search_MergeVertex(graphP theGraph, int W, int WPrevLink, int R)
         if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
         {
             int theList = context->VI[W].separatedDFSChildList;
-            theList = LCDelete(context->separatedDFSChildLists, theList, gp_GetDFSChildFromRoot(theGraph, R));
+            theList = LCDelete(context->separatedDFSChildLists, theList, gp_GetDFSChildFromBicompRoot(theGraph, R));
             context->VI[W].separatedDFSChildList = theList;
         }
 

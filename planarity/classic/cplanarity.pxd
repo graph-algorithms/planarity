@@ -12,7 +12,7 @@ cdef extern from "../c/graphLib/graphStructures.h":
     cdef int gp_GetLastVertex(graphP theGraph) 
     cdef int gp_GetFirstArc(graphP theGraph, int v)
     cdef int gp_GetLastArc(graphP theGraph, int v)
-    cdef int gp_IsArc(int v) 
+    cdef int gp_IsArc(graphP theGraph, int v) 
     cdef int gp_GetNeighbor(graphP theGraph, int v) 
     cdef int gp_GetPrevArc(graphP theGraph, int v)
     cdef int gp_GetNextArc(graphP theGraph, int v)
