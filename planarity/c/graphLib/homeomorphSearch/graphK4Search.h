@@ -16,8 +16,8 @@ extern "C"
 
 #define K4SEARCH_NAME "K4Search"
 
-    int gp_AttachK4Search(graphP theGraph);
-    int gp_DetachK4Search(graphP theGraph);
+    int gp_ExtendWith_K4Search(graphP theGraph);
+    int gp_Detach_K4Search(graphP theGraph);
 
 #ifdef __cplusplus
 }

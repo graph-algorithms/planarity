@@ -48,18 +48,18 @@ cdef class Graph:
         new_wrapper.owns_graphP = False
         return new_wrapper
 
-    def gp_IsArc(self, int e):
+    def gp_IsEdge(self, int e):
         return (
-            (e >= self.gp_GetFirstEdge()) and
+            (e >= self.gp_EdgeArrayStart()) and
             (e < self.gp_EdgeArraySize()) and
-            cgraphLib.gp_IsArc(self._theGraph, e)
+            cgraphLib.gp_IsEdge(self._theGraph, e)
         )
 
-    def gp_GetFirstEdge(self):
-        return cgraphLib.gp_GetFirstEdge(self._theGraph)
+    def gp_EdgeArrayStart(self):
+        return cgraphLib.gp_EdgeArrayStart(self._theGraph)
 
     def gp_EdgeInUse(self, int e):
-        if not self.gp_IsArc(e):
+        if not self.gp_IsEdge(e):
             raise RuntimeError(
                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
             )
@@ -72,24 +72,24 @@ cdef class Graph:
     def gp_EdgeInUseArraySize(self):
         return cgraphLib.gp_EdgeInUseArraySize(self._theGraph)
 
-    def gp_GetFirstArc(self, int v):
+    def gp_GetFirstEdge(self, int v):
         if not self.gp_IsVertex(v):
             raise RuntimeError(
-                f"gp_GetFirstArc() failed: invalid vertex intex '{v}'."
+                f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
             )
 
-        return cgraphLib.gp_GetFirstArc(self._theGraph, v)
+        return cgraphLib.gp_GetFirstEdge(self._theGraph, v)
 
-    def gp_GetNextArc(self, int e):
-        if not self.gp_IsArc(e):
+    def gp_GetNextEdge(self, int e):
+        if not self.gp_IsEdge(e):
             raise RuntimeError(
-                f"gp_GetNextArc() failed: invalid edge index '{e}'."
+                f"gp_GetNextEdge() failed: invalid edge index '{e}'."
             )
 
-        return cgraphLib.gp_GetNextArc(self._theGraph, e)
+        return cgraphLib.gp_GetNextEdge(self._theGraph, e)
 
     def gp_GetNeighbor(self, int e):
-        if not self.gp_IsArc(e):
+        if not self.gp_IsEdge(e):
             raise RuntimeError(
                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
             )
@@ -190,13 +190,13 @@ cdef class Graph:
                 f"gp_Write() of graph to '{outfile_name}' failed."
                 )
 
-    def gp_GetNeighborEdgeRecord(self, int u, int v):
+    def gp_FindEdge(self, int u, int v):
         if not self.gp_IsVertex(u):
             raise RuntimeError(f"'{u}' is not a valid vertex label.")
         if not self.gp_IsVertex(v):
             raise RuntimeError(f"'{v}' is not a valid vertex label.")
         
-        return cgraphLib.gp_GetNeighborEdgeRecord(self._theGraph, u, v)
+        return cgraphLib.gp_FindEdge(self._theGraph, u, v)
 
     def gp_GetVertexDegree(self, int v):
         if not self.gp_IsVertex(v):
@@ -204,14 +204,14 @@ cdef class Graph:
 
         return cgraphLib.gp_GetVertexDegree(self._theGraph, v)
 
-    def gp_GetArcCapacity(self):
-        return cgraphLib.gp_GetArcCapacity(self._theGraph)
+    def gp_GetEdgeCapacity(self):
+        return cgraphLib.gp_GetEdgeCapacity(self._theGraph)
 
-    def gp_EnsureArcCapacity(self, int new_arc_capacity):
-        if cgraphLib.gp_EnsureArcCapacity(self._theGraph, new_arc_capacity) != cappconst.OK:
+    def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
+        if cgraphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != cappconst.OK:
             raise RuntimeError(
-                "gp_EnsureArcCapacity() failed to set capacity to "
-                f"{new_arc_capacity}.")
+                "gp_EnsureEdgeCapacity() failed to set edge capacity to "
+                f"{new_edge_capacity}.")
 
     def gp_AddEdge(self, int u, int ulink, int v, int vlink):
         if ulink != 0 and ulink != 1:
@@ -229,28 +229,36 @@ cdef class Graph:
             )
 
     def gp_DeleteEdge(self, int e):
-        if not self.gp_IsArc(e):
+        if not self.gp_IsEdge(e):
             raise RuntimeError(
-                f"gp_DeleteEdge() failed: invalid arc '{e}'."
+                f"gp_DeleteEdge() failed: invalid edge '{e}'."
             )
 
         return cgraphLib.gp_DeleteEdge(self._theGraph, e)
 
-    def gp_AttachDrawPlanar(self):
-        if cgraphLib.gp_AttachDrawPlanar(self._theGraph) != cappconst.OK:
-            raise RuntimeError("Failed to attach DrawPlanar algorithm.")
+    def gp_ExtendWith_Planarity(self):
+        if cgraphLib.gp_ExtendWith_Planarity(self._theGraph) != cappconst.OK:
+            raise RuntimeError("Failed to extend graph with Planarity structures.")
     
-    def gp_AttachK23Search(self):
-        if cgraphLib.gp_AttachK23Search(self._theGraph) != cappconst.OK:
-            raise RuntimeError("Failed to attach K23Search algorithm.")
+    def gp_ExtendWith_DrawPlanar(self):
+        if cgraphLib.gp_ExtendWith_DrawPlanar(self._theGraph) != cappconst.OK:
+            raise RuntimeError("Failed to extend graph with DrawPlanar structures.")
     
-    def gp_AttachK33Search(self):
-        if cgraphLib.gp_AttachK33Search(self._theGraph) != cappconst.OK:
-            raise RuntimeError("Failed to attach K33Search algorithm.")
+    def gp_ExtendWith_Outerplanarity(self):
+        if cgraphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != cappconst.OK:
+            raise RuntimeError("Failed to extend graph with Outerplanarity structures.")
     
-    def gp_AttachK4Search(self):
-        if cgraphLib.gp_AttachK4Search(self._theGraph) != cappconst.OK:
-            raise RuntimeError("Failed to attach K4Search algorithm.")
+    def gp_ExtendWith_K23Search(self):
+        if cgraphLib.gp_ExtendWith_K23Search(self._theGraph) != cappconst.OK:
+            raise RuntimeError("Failed to extend graph with K23Search structures.")
+    
+    def gp_ExtendWith_K33Search(self):
+        if cgraphLib.gp_ExtendWith_K33Search(self._theGraph) != cappconst.OK:
+            raise RuntimeError("Failed to extend graph with K33Search structures.")
+    
+    def gp_ExtendWith_K4Search(self):
+        if cgraphLib.gp_ExtendWith_K4Search(self._theGraph) != cappconst.OK:
+            raise RuntimeError("Failed to extend graph with K4Search structures.")
         
     def gp_Embed(self, int embedFlags) -> int:
         return cgraphLib.gp_Embed(self._theGraph, embedFlags)

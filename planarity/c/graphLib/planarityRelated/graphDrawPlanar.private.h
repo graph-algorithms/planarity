@@ -84,6 +84,8 @@ extern "C"
 
         } DrawPlanarContext;
 
+        extern int DRAWPLANAR_ID;
+
 #ifdef __cplusplus
 }
 #endif

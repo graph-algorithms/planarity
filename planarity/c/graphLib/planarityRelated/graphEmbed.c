@@ -8,6 +8,12 @@ See the LICENSE.TXT file for licensing information.
 
 #include "../graph.h"
 
+// Includes needed by _gp_EmbedFlagsValid(), until it become overloadable
+#include "graphDrawPlanar.private.h"
+#include "../homeomorphSearch/graphK23Search.private.h"
+#include "../homeomorphSearch/graphK33Search.private.h"
+#include "../homeomorphSearch/graphK4Search.private.h"
+
 /* Imported functions */
 
 extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
@@ -17,8 +23,11 @@ extern int _IsolateOuterplanarObstruction(graphP theGraph, int v, int R);
 
 extern void _InitAnyTypeVertexRec(graphP theGraph, int v);
 
+extern int _gp_FindEdge(graphP theGraph, int u, int v);
+
 /* Private functions (some are exported to system only) */
 
+int _gp_EmbedFlagsValid(graphP theGraph, int embedFlags);
 int _EmbeddingInitialize(graphP theGraph);
 
 void _EmbedBackEdgeToDescendant(graphP theGraph, int RootSide, int RootVertex, int W, int WPrevLink);
@@ -33,7 +42,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex);
 int _HandleInactiveVertex(graphP theGraph, int BicompRoot, int *pW, int *pWPrevLink);
 
 int _HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R);
-void _AdvanceFwdArcList(graphP theGraph, int v, int child, int nextChild);
+void _AdvanceFwdEdgeList(graphP theGraph, int v, int child, int nextChild);
 
 int _EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult);
 int _OrientVerticesInEmbedding(graphP theGraph);
@@ -55,7 +64,8 @@ int _JoinBicomps(graphP theGraph);
  return OK if the embedding was successfully created or no subgraph
             homeomorphic to a topological obstruction was found.
 
-        NOTOK on internal failure
+        NOTOK on failure (e.g., NULL graph, gp_Embed already called,
+                          failure to attach algorithm extension)
 
         NONEMBEDDABLE if the embedding couldn't be created due to
                 the existence of a subgraph homeomorphic to a
@@ -84,14 +94,18 @@ int gp_Embed(graphP theGraph, int embedFlags)
     int v, e, c;
     int RetVal = OK;
 
-    // Basic parameter checks
-    if (theGraph == NULL)
+    // Basic safety checks
+    if (theGraph == NULL || embedFlags == 0 || gp_GetEmbedFlags(theGraph) != 0)
         return NOTOK;
 
     // Preprocessing
+    if (!_gp_EmbedFlagsValid(theGraph, embedFlags))
+        return NOTOK;
+
     theGraph->embedFlags = embedFlags;
 
-    // Allow extension algorithms to postprocess the DFS
+    // Initialize embedding data structures and allow extension algorithms
+    // that overload the function to postprocess the DFS
     if (theGraph->functions.fpEmbeddingInitialize(theGraph) != OK)
         return NOTOK;
 
@@ -102,13 +116,13 @@ int gp_Embed(graphP theGraph, int embedFlags)
 
         // Walkup calls establish Pertinence in Step v
         // Do the Walkup for each cycle edge from v to a DFS descendant W.
-        e = gp_GetVertexFwdArcList(theGraph, v);
-        while (gp_IsArc(theGraph, e))
+        e = gp_GetVertexFwdEdgeList(theGraph, v);
+        while (gp_IsEdge(theGraph, e))
         {
             theGraph->functions.fpWalkUp(theGraph, v, e);
 
-            e = gp_GetNextArc(theGraph, e);
-            if (e == gp_GetVertexFwdArcList(theGraph, v))
+            e = gp_GetNextEdge(theGraph, e);
+            if (e == gp_GetVertexFwdEdgeList(theGraph, v))
                 e = NIL;
         }
         gp_SetVertexPertinentRootsList(theGraph, v, NIL);
@@ -142,13 +156,71 @@ int gp_Embed(graphP theGraph, int embedFlags)
 }
 
 /********************************************************************
+ _gp_EmbedFlagsValid()
+
+ Returns TRUE the theGraph has been extended to a subclass that
+ supports the value in embedFlags and if embedFlags has a value
+ that is supportable by extensions available in the graphLib.
+ Returns FALSE otherwise.
+
+ NOTE: Returns TRUE/FALSE rather than OK/NOTOK so the caller can
+       decide if it is an error or if they want to try to take
+       corrective actions on theGraph.
+ ********************************************************************/
+
+int _gp_EmbedFlagsValid(graphP theGraph, int embedFlags)
+{
+    // Currently, planar and outerplanar graph embedding and obstruction
+    // isolation do not require an explicit extension.
+    if (embedFlags == EMBEDFLAGS_PLANAR || embedFlags == EMBEDFLAGS_OUTERPLANAR)
+        return TRUE;
+
+    // For other algorithms that are supported by explicit extensions, we
+    // ensure they are attached (the attach methods exit early if it has
+    // already been done).
+    else if (embedFlags == EMBEDFLAGS_DRAWPLANAR)
+    {
+        DrawPlanarContext *context = NULL;
+        gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
+        if (context != NULL)
+            return TRUE;
+    }
+    else if (embedFlags == EMBEDFLAGS_SEARCHFORK23)
+    {
+        K23SearchContext *context = NULL;
+        gp_FindExtension(theGraph, K23SEARCH_ID, (void *)&context);
+        if (context != NULL)
+            return TRUE;
+    }
+    else if (embedFlags == EMBEDFLAGS_SEARCHFORK33)
+    {
+        K33SearchContext *context = NULL;
+        gp_FindExtension(theGraph, K33SEARCH_ID, (void *)&context);
+        if (context != NULL)
+            return TRUE;
+    }
+    else if (embedFlags == EMBEDFLAGS_SEARCHFORK4)
+    {
+        K4SearchContext *context = NULL;
+        gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
+        if (context != NULL)
+            return TRUE;
+    }
+
+    // The embedFlags are not valid if they indicate an algorithm for
+    // which there is no graph extension, or even if they indicate
+    // multiple supported algorithm extensions at the same time.
+    return FALSE;
+}
+
+/********************************************************************
  _EmbeddingInitialize()
 
  This method performs the following tasks:
  (1) Assign depth first index (DFI) and DFS parentvalues to vertices
  (2) Assign DFS edge types
  (3) Create a sortedDFSChildList for each vertex, sorted by child DFI
- (4) Create a sortedFwdArcList for each vertex, sorted by descendant DFI
+ (4) Create a sorted fwdEdgeList for each vertex, sorted by descendant DFI
  (5) Assign leastAncestor values to vertices
  (6) Sort the vertices by their DFIs
  (7) Initialize for pertinence and future pertinence management
@@ -170,21 +242,22 @@ int _EmbeddingInitialize(graphP theGraph)
     platform_GetTime(start);
 #endif
 
-    gp_LogLine("graphEmbed.c/_EmbeddingInitialize() start\n");
+    _gp_LogLine("graphEmbed.c/_EmbeddingInitialize() start\n");
 
     theStack = theGraph->theStack;
 
     // At most we push 2 integers per edge from a vertex to each *unvisited* neighbor
-    // plus one additional integer to help detect post-processing.  This is less
-    // than the 2 * arcCapacity integer stack that is already in theGraph structure,
-    // so we make sure it's still there and cleared, then we clear all vertex
-    // visited flags in prep for the Depth first search operation. */
+    // plus one extra (NIL, NIL) at the beginning to represent arriving at a DFS tree
+    // root. We ensure that theGraph's stack has this capacity and, if so, we clear
+    // the stack for use in the depth-first search (DFS).
 
-    if (sp_GetCapacity(theStack) < 2 * gp_GetArcCapacity(theGraph))
+    if (sp_GetCapacity(theStack) < 2 * 2 * gp_GetM(theGraph) + 2)
         return NOTOK;
 
     sp_ClearStack(theStack);
 
+    // We clear the visited flags of vertices because they are used to determine
+    // which vertices have already been visited as the DFS traverses theGraph.
     _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
 
     // This outer loop processes each connected component of a disconnected graph
@@ -212,39 +285,39 @@ int _EmbeddingInitialize(graphP theGraph)
             // or a false edge to the DFS tree root (u).
             if (!gp_GetVisited(theGraph, u))
             {
-                gp_LogLine(gp_MakeLogStr3("v=%d, DFI=%d, parent=%d", u, DFI, uparent));
+                _gp_LogLine(_gp_MakeLogStr3("v=%d, DFI=%d, parent=%d", u, DFI, uparent));
 
                 // (1) Set the DFI and DFS parent
                 gp_SetVisited(theGraph, u);
                 gp_SetIndex(theGraph, u, DFI++);
                 gp_SetVertexParent(theGraph, u, uparent);
 
-                if (gp_IsArc(theGraph, e))
+                if (gp_IsEdge(theGraph, e))
                 {
                     // (2) Set the edge type values for tree edges
                     gp_SetEdgeType(theGraph, e, EDGE_TYPE_CHILD);
-                    gp_SetEdgeType(theGraph, gp_GetTwinArc(theGraph, e), EDGE_TYPE_PARENT);
+                    gp_SetEdgeType(theGraph, gp_GetTwin(theGraph, e), EDGE_TYPE_PARENT);
 
                     // (3) Record u in the sortedDFSChildList of uparent
                     gp_SetVertexSortedDFSChildList(theGraph, uparent,
                                                    gp_AppendDFSChild(theGraph, uparent, gp_GetIndex(theGraph, u)));
 
-                    // (8) Record e as the first and last arc of the virtual vertex R,
+                    // (8) Record e as the first and last edges of the virtual vertex R,
                     //     a root copy of uparent uniquely associated with child u
                     R = gp_GetBicompRootFromDFSChild(theGraph, gp_GetIndex(theGraph, u));
-                    gp_SetFirstArc(theGraph, R, e);
-                    gp_SetLastArc(theGraph, R, e);
+                    gp_SetFirstEdge(theGraph, R, e);
+                    gp_SetLastEdge(theGraph, R, e);
                 }
 
                 // (5) Initialize the least ancestor value
                 gp_SetVertexLeastAncestor(theGraph, u, gp_GetIndex(theGraph, u));
 
                 // Push edges to all unvisited neighbors. These will be either
-                // tree edges to children or forward arcs of back edges
-                // Edges not pushed are marked as back edges here, except the
-                // edge leading back to the immediate DFS parent.
-                e = gp_GetFirstArc(theGraph, u);
-                while (gp_IsArc(theGraph, e))
+                // tree edges to children or forward edge records to descendants
+                // Edges that are not pushed are either marked as back edges or as
+                // a tree edge if it leads back to the immediate DFS parent.
+                e = gp_GetFirstEdge(theGraph, u);
+                while (gp_IsEdge(theGraph, e))
                 {
                     if (!gp_GetVisited(theGraph, gp_GetNeighbor(theGraph, e)))
                     {
@@ -254,36 +327,36 @@ int _EmbeddingInitialize(graphP theGraph)
                     {
                         // (2) Set the edge type values for back edges
                         gp_SetEdgeType(theGraph, e, EDGE_TYPE_BACK);
-                        eTwin = gp_GetTwinArc(theGraph, e);
+                        eTwin = gp_GetTwin(theGraph, e);
                         gp_SetEdgeType(theGraph, eTwin, EDGE_TYPE_FORWARD);
 
-                        // (4) Move the twin of back edge record e to the sortedFwdArcList of the ancestor
+                        // (4) Move the twin of back edge record e to the sorted FwdEdgeList of the ancestor
                         uneighbor = gp_GetNeighbor(theGraph, e);
-                        ePrev = gp_GetPrevArc(theGraph, eTwin);
-                        eNext = gp_GetNextArc(theGraph, eTwin);
+                        ePrev = gp_GetPrevEdge(theGraph, eTwin);
+                        eNext = gp_GetNextEdge(theGraph, eTwin);
 
-                        if (gp_IsArc(theGraph, ePrev))
-                            gp_SetNextArc(theGraph, ePrev, eNext);
+                        if (gp_IsEdge(theGraph, ePrev))
+                            gp_SetNextEdge(theGraph, ePrev, eNext);
                         else
-                            gp_SetFirstArc(theGraph, uneighbor, eNext);
-                        if (gp_IsArc(theGraph, eNext))
-                            gp_SetPrevArc(theGraph, eNext, ePrev);
+                            gp_SetFirstEdge(theGraph, uneighbor, eNext);
+                        if (gp_IsEdge(theGraph, eNext))
+                            gp_SetPrevEdge(theGraph, eNext, ePrev);
                         else
-                            gp_SetLastArc(theGraph, uneighbor, ePrev);
+                            gp_SetLastEdge(theGraph, uneighbor, ePrev);
 
-                        if (gp_IsArc(theGraph, f = gp_GetVertexFwdArcList(theGraph, uneighbor)))
+                        if (gp_IsEdge(theGraph, f = gp_GetVertexFwdEdgeList(theGraph, uneighbor)))
                         {
-                            ePrev = gp_GetPrevArc(theGraph, f);
-                            gp_SetPrevArc(theGraph, eTwin, ePrev);
-                            gp_SetNextArc(theGraph, eTwin, f);
-                            gp_SetPrevArc(theGraph, f, eTwin);
-                            gp_SetNextArc(theGraph, ePrev, eTwin);
+                            ePrev = gp_GetPrevEdge(theGraph, f);
+                            gp_SetPrevEdge(theGraph, eTwin, ePrev);
+                            gp_SetNextEdge(theGraph, eTwin, f);
+                            gp_SetPrevEdge(theGraph, f, eTwin);
+                            gp_SetNextEdge(theGraph, ePrev, eTwin);
                         }
                         else
                         {
-                            gp_SetVertexFwdArcList(theGraph, uneighbor, eTwin);
-                            gp_SetPrevArc(theGraph, eTwin, eTwin);
-                            gp_SetNextArc(theGraph, eTwin, eTwin);
+                            gp_SetVertexFwdEdgeList(theGraph, uneighbor, eTwin);
+                            gp_SetPrevEdge(theGraph, eTwin, eTwin);
+                            gp_SetNextEdge(theGraph, eTwin, eTwin);
                         }
 
                         // (5) Update the leastAncestor value for the vertex u
@@ -292,14 +365,14 @@ int _EmbeddingInitialize(graphP theGraph)
                             gp_SetVertexLeastAncestor(theGraph, u, uneighbor);
                     }
 
-                    e = gp_GetNextArc(theGraph, e);
+                    e = gp_GetNextEdge(theGraph, e);
                 }
             }
         }
     }
 
     // The graph is now DFS numbered
-    theGraph->internalFlags |= FLAGS_DFSNUMBERED;
+    theGraph->graphFlags |= FLAGS_DFSNUMBERED;
 
     // (6) Now that all vertices have a DFI in the index member, we can sort vertices
     if (gp_SortVertices(theGraph) != OK)
@@ -309,7 +382,7 @@ int _EmbeddingInitialize(graphP theGraph)
     for (v = gp_GetLastVertex(theGraph); gp_VertexInRangeDescending(theGraph, v); v--)
     {
         // (7) Initialize for pertinence management
-        gp_SetVertexVisitedInfo(theGraph, v, theGraph->N);
+        gp_SetVertexVisitedInfo(theGraph, v, gp_GetN(theGraph));
 
         // (7) Initialize for future pertinence management
         child = gp_GetVertexSortedDFSChildList(theGraph, v);
@@ -329,27 +402,27 @@ int _EmbeddingInitialize(graphP theGraph)
         //     in the singleton bicomp with v is at location v + N in the vertex array.
         if (gp_IsDFSTreeRoot(theGraph, v))
         {
-            gp_SetFirstArc(theGraph, v, NIL);
-            gp_SetLastArc(theGraph, v, NIL);
+            gp_SetFirstEdge(theGraph, v, NIL);
+            gp_SetLastEdge(theGraph, v, NIL);
         }
         else
         {
             R = gp_GetBicompRootFromDFSChild(theGraph, v);
 
             // Make the child edge the only edge in the virtual vertex adjacency list
-            e = gp_GetFirstArc(theGraph, R);
-            gp_SetPrevArc(theGraph, e, NIL);
-            gp_SetNextArc(theGraph, e, NIL);
+            e = gp_GetFirstEdge(theGraph, R);
+            gp_SetPrevEdge(theGraph, e, NIL);
+            gp_SetNextEdge(theGraph, e, NIL);
 
             // Reset the twin's neighbor value to point to the virtual vertex
-            eTwin = gp_GetTwinArc(theGraph, e);
+            eTwin = gp_GetTwin(theGraph, e);
             gp_SetNeighbor(theGraph, eTwin, R);
 
             // Make its twin the only edge in the child's adjacency list
-            gp_SetFirstArc(theGraph, v, eTwin);
-            gp_SetLastArc(theGraph, v, eTwin);
-            gp_SetPrevArc(theGraph, eTwin, NIL);
-            gp_SetNextArc(theGraph, eTwin, NIL);
+            gp_SetFirstEdge(theGraph, v, eTwin);
+            gp_SetLastEdge(theGraph, v, eTwin);
+            gp_SetPrevEdge(theGraph, eTwin, NIL);
+            gp_SetNextEdge(theGraph, eTwin, NIL);
 
             // Set up the external face management data structure to match
             gp_SetExtFaceVertex(theGraph, R, 0, v);
@@ -359,7 +432,7 @@ int _EmbeddingInitialize(graphP theGraph)
         }
     }
 
-    gp_LogLine("graphEmbed.c/_EmbeddingInitialize() end\n");
+    _gp_LogLine("graphEmbed.c/_EmbeddingInitialize() end\n");
 
 #ifdef PROFILE
     platform_GetTime(end);
@@ -379,48 +452,48 @@ int _EmbeddingInitialize(graphP theGraph)
 
 void _EmbedBackEdgeToDescendant(graphP theGraph, int RootSide, int RootVertex, int W, int WPrevLink)
 {
-    int fwdArc, backArc, parentCopy;
+    int fwdEdgeRec, backEdgeRec, parentCopy;
 
     /* We get the two edge records of the back edge (v, W) to embed.
-        The Walkup recorded in W's adjacentTo the index of the forward arc
+        The Walkup recorded in W's adjacentTo the index of the forward edge record
         that goes from the root's parent copy, v, to the descendant W. */
 
-    fwdArc = gp_GetVertexPertinentEdge(theGraph, W);
-    backArc = gp_GetTwinArc(theGraph, fwdArc);
+    fwdEdgeRec = gp_GetVertexPertinentEdge(theGraph, W);
+    backEdgeRec = gp_GetTwin(theGraph, fwdEdgeRec);
 
-    /* The forward arc is removed from the fwdArcList of the root's parent copy. */
+    /* The forward edge record is removed from the fwdEdgeList of the root's parent copy. */
 
     parentCopy = gp_GetVertexFromBicompRoot(theGraph, RootVertex);
 
-    gp_LogLine(gp_MakeLogStr5("graphEmbed.c/_EmbedBackEdgeToDescendant() V=%d, R=%d, R_out=%d, W=%d, W_in=%d",
-                              parentCopy, RootVertex, RootSide, W, WPrevLink));
+    _gp_LogLine(_gp_MakeLogStr5("graphEmbed.c/_EmbedBackEdgeToDescendant() V=%d, R=%d, R_out=%d, W=%d, W_in=%d",
+                                parentCopy, RootVertex, RootSide, W, WPrevLink));
 
-    if (gp_GetVertexFwdArcList(theGraph, parentCopy) == fwdArc)
+    if (gp_GetVertexFwdEdgeList(theGraph, parentCopy) == fwdEdgeRec)
     {
-        gp_SetVertexFwdArcList(theGraph, parentCopy, gp_GetNextArc(theGraph, fwdArc));
-        if (gp_GetVertexFwdArcList(theGraph, parentCopy) == fwdArc)
-            gp_SetVertexFwdArcList(theGraph, parentCopy, NIL);
+        gp_SetVertexFwdEdgeList(theGraph, parentCopy, gp_GetNextEdge(theGraph, fwdEdgeRec));
+        if (gp_GetVertexFwdEdgeList(theGraph, parentCopy) == fwdEdgeRec)
+            gp_SetVertexFwdEdgeList(theGraph, parentCopy, NIL);
     }
 
-    gp_SetNextArc(theGraph, gp_GetPrevArc(theGraph, fwdArc), gp_GetNextArc(theGraph, fwdArc));
-    gp_SetPrevArc(theGraph, gp_GetNextArc(theGraph, fwdArc), gp_GetPrevArc(theGraph, fwdArc));
+    gp_SetNextEdge(theGraph, gp_GetPrevEdge(theGraph, fwdEdgeRec), gp_GetNextEdge(theGraph, fwdEdgeRec));
+    gp_SetPrevEdge(theGraph, gp_GetNextEdge(theGraph, fwdEdgeRec), gp_GetPrevEdge(theGraph, fwdEdgeRec));
 
-    // The forward arc is added to the adjacency list of the RootVertex.
+    // The forward edge record is added to the adjacency list of the RootVertex.
     // Note that we're guaranteed that the RootVertex adjacency list is non-empty,
     // so tests for NIL are not needed
-    gp_SetAdjacentArc(theGraph, fwdArc, 1 ^ RootSide, NIL);
-    gp_SetAdjacentArc(theGraph, fwdArc, RootSide, gp_GetArc(theGraph, RootVertex, RootSide));
-    gp_SetAdjacentArc(theGraph, gp_GetArc(theGraph, RootVertex, RootSide), 1 ^ RootSide, fwdArc);
-    gp_SetArc(theGraph, RootVertex, RootSide, fwdArc);
+    gp_SetAdjacentEdge(theGraph, fwdEdgeRec, 1 ^ RootSide, NIL);
+    gp_SetAdjacentEdge(theGraph, fwdEdgeRec, RootSide, gp_GetEdgeByLink(theGraph, RootVertex, RootSide));
+    gp_SetAdjacentEdge(theGraph, gp_GetEdgeByLink(theGraph, RootVertex, RootSide), 1 ^ RootSide, fwdEdgeRec);
+    gp_SetEdgeByLink(theGraph, RootVertex, RootSide, fwdEdgeRec);
 
-    // The back arc is added to the adjacency list of W.
+    // The back edge record is added to the adjacency list of W.
     // The adjacency list of W is also guaranteed non-empty
-    gp_SetAdjacentArc(theGraph, backArc, 1 ^ WPrevLink, NIL);
-    gp_SetAdjacentArc(theGraph, backArc, WPrevLink, gp_GetArc(theGraph, W, WPrevLink));
-    gp_SetAdjacentArc(theGraph, gp_GetArc(theGraph, W, WPrevLink), 1 ^ WPrevLink, backArc);
-    gp_SetArc(theGraph, W, WPrevLink, backArc);
+    gp_SetAdjacentEdge(theGraph, backEdgeRec, 1 ^ WPrevLink, NIL);
+    gp_SetAdjacentEdge(theGraph, backEdgeRec, WPrevLink, gp_GetEdgeByLink(theGraph, W, WPrevLink));
+    gp_SetAdjacentEdge(theGraph, gp_GetEdgeByLink(theGraph, W, WPrevLink), 1 ^ WPrevLink, backEdgeRec);
+    gp_SetEdgeByLink(theGraph, W, WPrevLink, backEdgeRec);
 
-    gp_SetNeighbor(theGraph, backArc, RootVertex);
+    gp_SetNeighbor(theGraph, backEdgeRec, RootVertex);
 
     /* Link the two endpoint vertices together on the external face */
 
@@ -439,23 +512,23 @@ void _InvertVertex(graphP theGraph, int W)
 {
     int e, temp;
 
-    gp_LogLine(gp_MakeLogStr1("graphEmbed.c/_InvertVertex() W=%d", W));
+    _gp_LogLine(_gp_MakeLogStr1("graphEmbed.c/_InvertVertex() W=%d", W));
 
-    // Swap the links in all the arcs of the adjacency list
-    e = gp_GetFirstArc(theGraph, W);
-    while (gp_IsArc(theGraph, e))
+    // Swap the links in all of the edge records of the adjacency list
+    e = gp_GetFirstEdge(theGraph, W);
+    while (gp_IsEdge(theGraph, e))
     {
-        temp = gp_GetNextArc(theGraph, e);
-        gp_SetNextArc(theGraph, e, gp_GetPrevArc(theGraph, e));
-        gp_SetPrevArc(theGraph, e, temp);
+        temp = gp_GetNextEdge(theGraph, e);
+        gp_SetNextEdge(theGraph, e, gp_GetPrevEdge(theGraph, e));
+        gp_SetPrevEdge(theGraph, e, temp);
 
         e = temp;
     }
 
     // Swap the first/last edge record indicators in the vertex
-    temp = gp_GetFirstArc(theGraph, W);
-    gp_SetFirstArc(theGraph, W, gp_GetLastArc(theGraph, W));
-    gp_SetLastArc(theGraph, W, temp);
+    temp = gp_GetFirstEdge(theGraph, W);
+    gp_SetFirstEdge(theGraph, W, gp_GetLastEdge(theGraph, W));
+    gp_SetLastEdge(theGraph, W, temp);
 
     // Swap the first/last external face indicators in the vertex
     temp = gp_GetExtFaceVertex(theGraph, W, 0);
@@ -492,51 +565,51 @@ void _MergeVertex(graphP theGraph, int W, int WPrevLink, int R)
 {
     int e, eTwin, e_w, e_r, e_ext;
 
-    gp_LogLine(gp_MakeLogStr4("graphEmbed.c/_MergeVertex() W=%d, W_in=%d, R=%d, R_out=%d",
-                              W, WPrevLink, R, 1 ^ WPrevLink));
+    _gp_LogLine(_gp_MakeLogStr4("graphEmbed.c/_MergeVertex() W=%d, W_in=%d, R=%d, R_out=%d",
+                                W, WPrevLink, R, 1 ^ WPrevLink));
 
-    // All arcs leading into R from its neighbors must be changed
-    // to say that they are leading into W
-    e = gp_GetFirstArc(theGraph, R);
-    while (gp_IsArc(theGraph, e))
+    // All edge records leading _into_ R _from_ its neighbors must be changed
+    // to say that they are leading into W.
+    e = gp_GetFirstEdge(theGraph, R);
+    while (gp_IsEdge(theGraph, e))
     {
-        eTwin = gp_GetTwinArc(theGraph, e);
+        eTwin = gp_GetTwin(theGraph, e);
         gp_GetNeighbor(theGraph, eTwin) = W;
 
-        e = gp_GetNextArc(theGraph, e);
+        e = gp_GetNextEdge(theGraph, e);
     }
 
-    // Obtain the edge records involved in the list union
-    e_w = gp_GetArc(theGraph, W, WPrevLink);
-    e_r = gp_GetArc(theGraph, R, 1 ^ WPrevLink);
-    e_ext = gp_GetArc(theGraph, R, WPrevLink);
+    // Obtain the edge records that will be involved in the adjacency list union
+    e_w = gp_GetEdgeByLink(theGraph, W, WPrevLink);
+    e_r = gp_GetEdgeByLink(theGraph, R, 1 ^ WPrevLink);
+    e_ext = gp_GetEdgeByLink(theGraph, R, WPrevLink);
 
-    // If W has any edges, then join the list with that of R
-    if (gp_IsArc(theGraph, e_w))
+    // If W has any edges, then join its adjacency list with that of R
+    if (gp_IsEdge(theGraph, e_w))
     {
-        // The WPrevLink arc of W is e_w, so the 1^WPrevLink arc in e_w leads back to W.
+        // The WPrevLink edge of W is e_w, so the 1^WPrevLink edge in e_w leads back to W.
         // Now it must lead to e_r.  Likewise, e_r needs to lead back to e_w with the
         // opposing link, which is WPrevLink
         // Note that the adjacency lists of W and R are guaranteed non-empty, which is
         // why these linkages can be made without NIL tests.
-        gp_SetAdjacentArc(theGraph, e_w, 1 ^ WPrevLink, e_r);
-        gp_SetAdjacentArc(theGraph, e_r, WPrevLink, e_w);
+        gp_SetAdjacentEdge(theGraph, e_w, 1 ^ WPrevLink, e_r);
+        gp_SetAdjacentEdge(theGraph, e_r, WPrevLink, e_w);
 
-        // Cross-link W's WPrevLink arc and the 1^WPrevLink arc in e_ext
-        gp_SetArc(theGraph, W, WPrevLink, e_ext);
-        gp_SetAdjacentArc(theGraph, e_ext, 1 ^ WPrevLink, NIL);
+        // Cross-link W's WPrevLink edge record and the 1^WPrevLink edge record in e_ext
+        gp_SetEdgeByLink(theGraph, W, WPrevLink, e_ext);
+        gp_SetAdjacentEdge(theGraph, e_ext, 1 ^ WPrevLink, NIL);
     }
-    // Otherwise, W just receives R's list.  This happens, for example, on a
-    // DFS tree root vertex during JoinBicomps()
+    // Otherwise, W just receives R's adjacency list.  This can happen, for example, on
+    // a DFS tree root vertex during JoinBicomps()
     else
     {
-        // Cross-link W's 1^WPrevLink arc and the WPrevLink arc in e_r
-        gp_SetArc(theGraph, W, 1 ^ WPrevLink, e_r);
-        gp_SetAdjacentArc(theGraph, e_r, WPrevLink, NIL);
+        // Cross-link W's 1^WPrevLink edge record and the WPrevLink edge record in e_r
+        gp_SetEdgeByLink(theGraph, W, 1 ^ WPrevLink, e_r);
+        gp_SetAdjacentEdge(theGraph, e_r, WPrevLink, NIL);
 
-        // Cross-link W's WPrevLink arc and the 1^WPrevLink arc in e_ext
-        gp_SetArc(theGraph, W, WPrevLink, e_ext);
-        gp_SetAdjacentArc(theGraph, e_ext, 1 ^ WPrevLink, NIL);
+        // Cross-link W's WPrevLink edge record and the 1^WPrevLink edge record in e_ext
+        gp_SetEdgeByLink(theGraph, W, WPrevLink, e_ext);
+        gp_SetAdjacentEdge(theGraph, e_ext, 1 ^ WPrevLink, NIL);
     }
 
     // Erase the entries in R, which is a root copy that is no longer needed
@@ -595,11 +668,11 @@ int _MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int WPrevLink)
         {
             Rout = 1 ^ ZPrevLink;
 
-            if (gp_GetFirstArc(theGraph, R) != gp_GetLastArc(theGraph, R))
+            if (gp_GetFirstEdge(theGraph, R) != gp_GetLastEdge(theGraph, R))
                 _InvertVertex(theGraph, R);
 
-            e = gp_GetFirstArc(theGraph, R);
-            while (gp_IsArc(theGraph, e))
+            e = gp_GetFirstEdge(theGraph, R);
+            while (gp_IsEdge(theGraph, e))
             {
                 if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_CHILD)
                 {
@@ -614,7 +687,7 @@ int _MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int WPrevLink)
                     break;
                 }
 
-                e = gp_GetNextArc(theGraph, e);
+                e = gp_GetNextEdge(theGraph, e);
             }
         }
 
@@ -640,7 +713,8 @@ int _MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int WPrevLink)
 /********************************************************************
  _WalkUp()
  v is the vertex currently being embedded
- e is the forward arc of the back edge to a descendant W of v
+ e is the forward edge record of the "back" edge between v and
+   a descendant W of v
 
  The Walkup establishes pertinence for step v.  It marks W with e
  as a way of indicating it is pertinent because it should be made
@@ -784,7 +858,7 @@ void _WalkUp(graphP theGraph, int v, int e)
  vertices.  The root vertex is a root copy of v, the vertex currently being processed.
 
  The Walkup previously marked all vertices adjacent to v by setting their
- pertinentEdge members with the forward arcs of the back edges to embed.
+ pertinentEdge members with the forward edge records of the back edges to embed.
  Two Walkdown traversals are performed to visit all reachable vertices
  along each of the external face paths emanating from RootVertex (a root
  copy of vertex v) to embed back edges to descendants of vertex v that
@@ -865,7 +939,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
         while (W != RootVertex)
         {
             // Detect unembedded back edge descendant endpoint W
-            if (gp_IsArc(theGraph, gp_GetVertexPertinentEdge(theGraph, W)))
+            if (gp_IsEdge(theGraph, gp_GetVertexPertinentEdge(theGraph, W)))
             {
                 // Merge any bicomps whose cut vertices were traversed to reach W, then add the
                 // edge to W to form a new proper face in the embedding.
@@ -876,7 +950,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
                 }
                 theGraph->functions.fpEmbedBackEdgeToDescendant(theGraph, RootSide, RootVertex, W, WPrevLink);
 
-                // Clear W's pertinentEdge since the forward arc it contained has been embedded
+                // Clear W's pertinentEdge since the forward edge record it contained has been embedded
                 gp_SetVertexPertinentEdge(theGraph, W, NIL);
             }
 
@@ -944,7 +1018,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
                 // (or if the algorithm is based on outerplanarity), then the vertex is
                 // a stopping vertex for the Walkdown traversal.
                 gp_UpdateVertexFuturePertinentChild(theGraph, W, v);
-                if (FUTUREPERTINENT(theGraph, W, v) || (theGraph->embedFlags & EMBEDFLAGS_OUTERPLANAR))
+                if (FUTUREPERTINENT(theGraph, W, v) || (gp_GetEmbedFlags(theGraph) & EMBEDFLAGS_OUTERPLANAR))
                 {
                     // Create an external face short-circuit between RootVertex and the stopping vertex W
                     // so that future steps do not walk down a long path of inactive vertices between them.
@@ -982,19 +1056,19 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
 
     // Detect and handle the case in which Walkdown was blocked from embedding all the back edges from v
     // to descendants in the subtree of the child of v associated with the bicomp RootVertex.
-    if (gp_IsArc(theGraph, e = gp_GetVertexFwdArcList(theGraph, v)) && RootEdgeChild < gp_GetNeighbor(theGraph, e))
+    if (gp_IsEdge(theGraph, e = gp_GetVertexFwdEdgeList(theGraph, v)) && RootEdgeChild < gp_GetNeighbor(theGraph, e))
     {
         int nextChild = gp_GetVertexNextDFSChild(theGraph, v, RootEdgeChild);
 
-        // The Walkdown was blocked from embedding all forward arcs into the RootEdgeChild subtree
-        // if there the next child's DFI is greater than the descendant endpoint of the next forward arc,
-        // or if there is no next child.
+        // We finish detecting  that the Walkdown was blocked from embedding all forward edge records into
+        // the RootEdgeChild subtree if there the next child's DFI is greater than the descendant endpoint
+        // of the next forward edge record, or if there is no next child.
         if (gp_IsNotVertex(theGraph, nextChild) || nextChild > gp_GetNeighbor(theGraph, e))
         {
-            // If an extension indicates it is OK to proceed despite the unembedded forward arcs, then
-            // advance to the forward arcs for the next child, if any
+            // If an extension to core planarity indicates it is OK to proceed despite having detected
+            // unembedded forward edges, then advance to the forward edges for the next child, if any
             if ((RetVal = theGraph->functions.fpHandleBlockedBicomp(theGraph, v, RootVertex, RootVertex)) == OK)
-                _AdvanceFwdArcList(theGraph, v, RootEdgeChild, nextChild);
+                _AdvanceFwdEdgeList(theGraph, v, RootEdgeChild, nextChild);
 
             return RetVal;
         }
@@ -1031,12 +1105,12 @@ int _HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
     if (R != RootVertex)
         sp_Push2(theGraph->theStack, R, 0);
 
-    if (theGraph->embedFlags == EMBEDFLAGS_PLANAR)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_PLANAR)
     {
         if (_IsolateKuratowskiSubgraph(theGraph, v, RootVertex) != OK)
             RetVal = NOTOK;
     }
-    else if (theGraph->embedFlags == EMBEDFLAGS_OUTERPLANAR)
+    else if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_OUTERPLANAR)
     {
         if (_IsolateOuterplanarObstruction(theGraph, v, RootVertex) != OK)
             RetVal = NOTOK;
@@ -1046,78 +1120,78 @@ int _HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
 }
 
 /********************************************************************
- _AdvanceFwdArcList()
+ _AdvanceFwdEdgeList()
 
- If an extension determines that it is OK to leave some forward arcs
- unembedded, then we advance the forward arc list head pointer past
- the unembedded arcs for the current child so that it points to the
- first forward arc for the next child, if any.
+ If an extension determines that it is OK to leave some forward edges
+ unembedded, then we advance the forward edge list head pointer past
+ the unembedded edges for the current child so that it points to the
+ first forward edge for the next child, if any.
 
  There are two meanings of the phrase "if any".  First, there may be
- no next child, in which case nextChild is NIL, and the forward arc
+ no next child, in which case nextChild is NIL, and the forward edge
  list need not be advanced.
 
- If there is a next child, then the forward arc list head needs to
- be advanced to the first arc whose descendant endpoint is greater
- than the nextChild, if any. However, the tail end of the forward arc
- list may include unembedded forward arcs to a preceding sibling
+ If there is a next child, then the forward edge list head needs to
+ be advanced to the first edge whose descendant endpoint is greater
+ than the nextChild, if any. However, the tail end of the forward edge
+ list may include unembedded forward edge records to a preceding sibling
  of the child vertex.  So, we advance an edge pointer e until one of
  the following happens:
 
- 1) e gets all the way around to the forward arc list head
+ 1) e gets all the way around to the head of the forward edge list
  2) e finds an edge whose descendant endpoint is less than the child
  3) e finds an edge whose descendant endpoint is greater than the next child
 
- In case 1, all the forward arcs belong in the subtree of the child, so
- there is no need to change the forward arc list head.
+ In case 1, all the forward edges belong in the subtree of the child, so
+ there is no need to change the forward edge list head.
 
- In case 2, there are no more forward arcs to any following siblings of
- the child, only left-behind unembedded forward arcs that we advanced
+ In case 2, there are no more forward edges to any following siblings of
+ the child, only left-behind unembedded forward edges that we advanced
  past in previous calls to this method from Walkdowns of the preceding
- children of v.  So the forward arc list head should be set to e so that
- it is set to the forward arc with the least numbered descendant endpoint.
+ children of v.  So the forward edge list head should be set to e so that
+ it is set to the forward edge with the least numbered descendant endpoint.
 
- In case 3, the desired forward arc into the subtree of a following sibling
- of the child has been found, so again the forward arc list head should be
+ In case 3, the desired forward edge into the subtree of a following sibling
+ of the child has been found, so again the forward edge list head should be
  set to e to indicate that edge.
 
- After all Walkdowns of the children of a vertex, the forward arc list will
+ After all Walkdowns of the children of a vertex, the forward edge list will
  be NIL if all edges were embedded, or it will indicate the unembedded
- forward arc whose descendant endpoint has the least number.  Cases 1 and 2
+ forward edge whose descendant endpoint has the least number.  Cases 1 and 2
  directly implement this in cases where a Walkdown for the given child
  fails to embed an edge, and case 3 indirectly finishes the job by making
- sure the forward arc list head has the right value at the beginning of
+ sure the forward edge list head has the right value at the beginning of
  a Walkdown for a particular child.  If the Walkdown of that child succeeds
  at embedding all the forward edges into that child's subtree, then each
- embedding advances the forward arc list head.  So, even if the Walkdown
- of the last pertinent child embeds all forward arcs, then the Walkdown
- itself advances the forward arc list head to the first unembedded forward
- arc, or to NIL.
+ embedding advances the forward edge list head.  So, even if the Walkdown
+ of the last pertinent child embeds all forward edges, then the Walkdown
+ itself advances the head of the forward edge list to the first unembedded
+ forward edge, or to NIL.
  ********************************************************************/
 
-void _AdvanceFwdArcList(graphP theGraph, int v, int child, int nextChild)
+void _AdvanceFwdEdgeList(graphP theGraph, int v, int child, int nextChild)
 {
-    int e = gp_GetVertexFwdArcList(theGraph, v);
+    int e = gp_GetVertexFwdEdgeList(theGraph, v);
 
-    while (gp_IsArc(theGraph, e))
+    while (gp_IsEdge(theGraph, e))
     {
         // 2) e finds an edge whose descendant endpoint is less than the child
         if (gp_GetNeighbor(theGraph, e) < child)
         {
-            gp_SetVertexFwdArcList(theGraph, v, e);
+            gp_SetVertexFwdEdgeList(theGraph, v, e);
             break;
         }
 
         // 3) e finds an edge whose descendant endpoint is greater than the next child
         else if (gp_IsVertex(theGraph, nextChild) && nextChild < gp_GetNeighbor(theGraph, e))
         {
-            gp_SetVertexFwdArcList(theGraph, v, e);
+            gp_SetVertexFwdEdgeList(theGraph, v, e);
             break;
         }
 
-        e = gp_GetNextArc(theGraph, e);
-        // 1) e gets all the way around to the forward arc list head
-        if (e == gp_GetVertexFwdArcList(theGraph, v))
+        e = gp_GetNextEdge(theGraph, e);
+        // 1) e gets all the way around to the head of the forward edge list
+        if (e == gp_GetVertexFwdEdgeList(theGraph, v))
             e = NIL;
     }
 }
@@ -1268,8 +1342,8 @@ int _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns)
             _InvertVertex(theGraph, W);
 
         /* Push the vertex's DFS children that are in the bicomp */
-        e = gp_GetFirstArc(theGraph, W);
-        while (gp_IsArc(theGraph, e))
+        e = gp_GetFirstEdge(theGraph, W);
+        while (gp_IsEdge(theGraph, e))
         {
             if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_CHILD)
             {
@@ -1280,7 +1354,7 @@ int _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns)
                     gp_ClearEdgeFlagInverted(theGraph, e);
             }
 
-            e = gp_GetNextArc(theGraph, e);
+            e = gp_GetNextEdge(theGraph, e);
         }
     }
     return OK;
@@ -1326,10 +1400,10 @@ int _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x)
 {
     int e_u, e_v, e_ulink, e_vlink;
 
-    // Get the edge record in u that indicates v; uses the twinarc method to
-    // ensure the cost is dominated by the degree of v (which is 2), not u
+    // Get the edge record in u that indicates v; uses the "get twin" method
+    // to ensure the cost is dominated by the degree of v (which is 2), not u
     // (which can be any degree).
-    e_u = gp_GetTwinArc(theGraph, gp_GetNeighborEdgeRecord(theGraph, v, u));
+    e_u = gp_GetTwin(theGraph, _gp_FindEdge(theGraph, v, u));
 
     do
     {
@@ -1338,9 +1412,9 @@ int _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x)
         // As a sanity check, we determine whether e_u is an
         // external face edge, because there would be an internal
         // implementation error if not
-        if (gp_GetFirstArc(theGraph, u) == e_u)
+        if (gp_GetFirstEdge(theGraph, u) == e_u)
             e_ulink = 0;
-        else if (gp_GetLastArc(theGraph, u) == e_u)
+        else if (gp_GetLastEdge(theGraph, u) == e_u)
             e_ulink = 1;
         else
             return NOTOK;
@@ -1349,11 +1423,11 @@ int _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x)
 
         // Now get the external face link in vertex v that indicates the
         // edge e_v which connects back to the prior vertex u.
-        e_v = gp_GetTwinArc(theGraph, e_u);
+        e_v = gp_GetTwin(theGraph, e_u);
 
-        if (gp_GetFirstArc(theGraph, v) == e_v)
+        if (gp_GetFirstEdge(theGraph, v) == e_v)
             e_vlink = 0;
-        else if (gp_GetLastArc(theGraph, v) == e_v)
+        else if (gp_GetLastEdge(theGraph, v) == e_v)
             e_vlink = 1;
         else
             return NOTOK;
@@ -1373,7 +1447,7 @@ int _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x)
         gp_SetExtFaceVertex(theGraph, v, e_vlink, u);
 
         u = v;
-        e_u = gp_GetArc(theGraph, v, 1 ^ e_vlink);
+        e_u = gp_GetEdgeByLink(theGraph, v, 1 ^ e_vlink);
     } while (u != x);
 
     return OK;

@@ -42,7 +42,7 @@ extern "C"
         // of the behaviors of gp_* function in the public API
         int (*fpInitGraph)(graphP, int);
         void (*fpReinitializeGraph)(graphP);
-        int (*fpEnsureArcCapacity)(graphP, int);
+        int (*fpEnsureEdgeCapacity)(graphP, int);
         int (*fpSortVertices)(graphP);
 
         int (*fpReadPostprocess)(graphP, char *);

@@ -21,6 +21,8 @@ extern "C"
 
     } K23SearchContext;
 
+extern int K23SEARCH_ID;
+
 #ifdef __cplusplus
 }
 #endif

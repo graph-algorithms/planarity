@@ -22,16 +22,18 @@ extern "C"
 #define OUTPUT_CONTAINER 2
     typedef struct
     {
-        strBufP theStr;
+        char **pOutputStr;
+        strBufP theStrBuf;
         FILE *pFile;
         int containerType;
         stackP ungetBuf;
-
     } strOrFile;
 
     typedef strOrFile *strOrFileP;
 
-    strOrFileP sf_New(char const *const theStr, char const *const fileName, char const *ioMode);
+    strOrFileP sf_NewInputContainer(char const *const inputStr, char const *const fileName);
+    strOrFileP sf_NewOutputContainer(char **pOutputStr, char const *const fileName);
+
     bool sf_IsValidStrOrFile(strOrFileP theStrOrFile);
 
     char sf_getc(strOrFileP theStrOrFile);
@@ -48,8 +50,6 @@ extern "C"
     char *sf_fgets(char *str, int count, strOrFileP theStrOrFile);
 
     int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile);
-
-    char *sf_takeTheStr(strOrFileP theStrOrFile);
 
     int sf_closeFile(strOrFileP theStrOrFile);
 

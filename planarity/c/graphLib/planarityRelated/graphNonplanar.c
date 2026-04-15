@@ -12,7 +12,7 @@ See the LICENSE.TXT file for licensing information.
 
 extern void _InitIsolatorContext(graphP theGraph);
 extern int _ClearAllVisitedFlagsInBicomp(graphP theGraph, int BicompRoot);
-extern int _ClearObstructionMarkInBicomp(graphP theGraph, int BicompRoot);
+extern int _ClearObstructionMarksInBicomp(graphP theGraph, int BicompRoot);
 extern int _HideInternalEdges(graphP theGraph, int vertex);
 extern int _RestoreInternalEdges(graphP theGraph, int stackBottom);
 
@@ -128,7 +128,7 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
 
  If R is NIL, the routine first determines which bicomp produced non-planarity
  condition.  If the stack is non-empty, then R is on the top of the stack.
- Otherwise, an unembedded fwdArc from the fwdArcList of vertex v is used in
+ Otherwise, an unembedded edge from the fwdEdgeList of vertex v is used in
  combination with the sortedDFSChildList of v to determine R.
 
  If the parameter R was not NIL, then this method assumes it must operate
@@ -202,19 +202,22 @@ int _InitializeNonplanarityContext(graphP theGraph, int v, int R)
  _GetNeighborOnExtFace()
 
  Each vertex contains two 'link' index pointers that indicate the
- first and last adjacency list arc.  If the vertex is on the external face,
- then these two arcs are also on the external face.  We want to take one of
- those edges to get to the next vertex on the external face.
+ first and last adjacency list edges.  If the vertex is on the
+ external face, then these two edges are also on the external face.
+ We want to take one of those edges to get to the next vertex on the
+ external face.
+
  On input *pPrevLink indicates which link we followed to arrive at
  curVertex.  On output *pPrevLink will be set to the link we follow to
  get into the next vertex.
+
  To get to the next vertex, we use the opposite link from the one used
- to get into curVertex.  This takes us to an edge node.  The twinArc
- of that edge node, carries us to an edge node in the next vertex.
- At least one of the two links in that edge node will lead to a vertex
+ to get into curVertex.  This takes us to an edge record.  The twin
+ of that edge record carries us to an edge record in the next vertex.
+ At least one of the two links in that edge record will lead to a vertex
  node in G, which is the next vertex.  Once we arrive at the next
- vertex, at least one of its links will lead back to the edge node, and
- that link becomes the output value of *pPrevLink.
+ vertex, at least one of its links will lead back to the edge record,
+ and that link becomes the output value of *pPrevLink.
 
  NOTE: This method intentionally ignores the extFace optimization
        links. It is invoked when the "real" external face must be
@@ -228,24 +231,24 @@ int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink)
 {
     /* Exit curVertex from whichever link was not previously used to enter it */
 
-    int arc = gp_GetArc(theGraph, curVertex, 1 ^ (*pPrevLink));
-    int nextVertex = gp_GetNeighbor(theGraph, arc);
+    int e = gp_GetEdgeByLink(theGraph, curVertex, 1 ^ (*pPrevLink));
+    int nextVertex = gp_GetNeighbor(theGraph, e);
 
     /* This if stmt assigns the new prev link that tells us which edge
        record was used to enter nextVertex (so that we exit from the
        opposing edge record).
 
        However, if we are in a singleton bicomp, then both links in nextVertex
-       lead back to curVertex.  We want the two arcs of a singleton bicomp to
-       act like a cycle, so we just don't change the prev link in this case.
+       lead back to curVertex.  We want the two edge records of a singleton bicomp
+       to act like a cycle, so we just don't change the prev link in this case.
 
        But when nextVertex has more than one edge, we need to figure out
        whether the first edge or last edge (which are the two on the external
        face) was used to enter nextVertex so we can exit from the other one
        as traversal of the external face continues later. */
 
-    if (gp_GetFirstArc(theGraph, nextVertex) != gp_GetLastArc(theGraph, nextVertex))
-        *pPrevLink = gp_GetTwinArc(theGraph, arc) == gp_GetFirstArc(theGraph, nextVertex) ? 0 : 1;
+    if (gp_GetFirstEdge(theGraph, nextVertex) != gp_GetLastEdge(theGraph, nextVertex))
+        *pPrevLink = gp_GetTwin(theGraph, e) == gp_GetFirstEdge(theGraph, nextVertex) ? 0 : 1;
 
     return nextVertex;
 }
@@ -254,8 +257,8 @@ int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink)
  _FindActiveVertices()
 
  Descends from the root of a bicomp R along both external face paths (which
- are indicated by the first and last arcs in R's adjacency list), returning
- the first active vertex appearing in each direction.
+ are indicated by the first and last edge records in R's adjacency list),
+ returning the first active vertex appearing in each direction.
  ****************************************************************************/
 
 void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY)
@@ -268,7 +271,7 @@ void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY)
     // For planarity algorithms, advance past inactive vertices
     // For outerplanarity algorithms, ignore the notion of inactive vertices
     // since all vertices must remain on the external face.
-    if (!(theGraph->embedFlags & EMBEDFLAGS_OUTERPLANAR))
+    if (!(gp_GetEmbedFlags(theGraph) & EMBEDFLAGS_OUTERPLANAR))
     {
         gp_UpdateVertexFuturePertinentChild(theGraph, *pX, v);
         while (INACTIVE(theGraph, *pX, v))
@@ -337,7 +340,7 @@ int _SetVertexTypesForMarkingXYPath(graphP theGraph)
     }
 
     // Clear the type member of each vertex in the bicomp
-    if (_ClearObstructionMarkInBicomp(theGraph, R) != OK)
+    if (_ClearObstructionMarksInBicomp(theGraph, R) != OK)
         return NOTOK;
 
     // Traverse from R to W in the X direction
@@ -400,7 +403,7 @@ int _PopAndUnmarkVerticesAndEdges(graphP theGraph, int Z, int stackBottom)
         // Now unmark the vertex and edge (i.e. revert to "unvisited")
         gp_ClearVisited(theGraph, V);
         gp_ClearEdgeVisited(theGraph, e);
-        gp_ClearEdgeVisited(theGraph, gp_GetTwinArc(theGraph, e));
+        gp_ClearEdgeVisited(theGraph, gp_GetTwin(theGraph, e));
     }
 
     return OK;
@@ -499,16 +502,16 @@ int _MarkLowestXYPath(graphP theGraph)
  that only the desired path is identified.
 
  To walk the proper face containing the targetVertex, we first identify an
- arc that will be considered to be the one used to enter the targetVertex.
+ edge record that will be considered to be the one used to enter the targetVertex.
  When the first loop iteration exits the targetVertex, it comes out on the
  RXW side (even though it may be an internal vertex not marked RXW).
- Then we take either the next arc (if targetVertex==W) or predecessor arc
- (if targetVertex==R) at every subsequent corner to determine the exit arc
- for the vertex. Then, we use the twin arc of the exit arc to determine the
- entry arc for the next vertex.
+ Then we take either the next edge (if targetVertex==W) or previous edge
+ (if targetVertex==R) at every subsequent corner to determine the edge record
+ to use to exit the vertex. Then, we use the twin of the exit edge record to
+ determine the edge record to use to enter the next vertex.
 
- For each vertex, we mark as visited the vertex as well as both arcs of
- the edge used to enter the vertex. We also push the visited vertices and
+ For each vertex, we mark as visited the vertex as well as both edge records
+ of the edge used to enter the vertex. We also push the visited vertices and
  edges onto a stack. Each time the traversal lands on an external face
  vertex on the RXW side, it is recorded as a candidate point of attachment Px.
  We also pop and unmark all previously visited vertices and edges because they
@@ -598,26 +601,28 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
 
     Z = targetVertex;
 
-    // Now we will get the arc that we consider to be the arc used to enter
-    // the targetVertex (which will be an edge on the RYW side, and the
-    // first line of the loop code will get the previous or next arc to exit
-    // the targetVertex on the RXW side of the bicomp)
-    e = targetVertex == R ? gp_GetLastArc(theGraph, R) : gp_GetFirstArc(theGraph, W);
+    // Now we will get the edge considered to be the one used to enter
+    // the targetVertex. This will be an edge on the RYW side, and the
+    // first line of the loop code will get the previous or next edge
+    // that will be used to exit the targetVertex on the RXW side of the
+    // bicomp (that one operation to get previous or next, circular, will
+    // switch sides because all internal edges of targetVertex are hidden).
+    e = targetVertex == R ? gp_GetLastEdge(theGraph, R) : gp_GetFirstEdge(theGraph, W);
 
     while (gp_GetObstructionMark(theGraph, Z) != ANYVERTEX_OBSTRUCTIONMARK_HIGH_RYW &&
            gp_GetObstructionMark(theGraph, Z) != ANYVERTEX_OBSTRUCTIONMARK_LOW_RYW)
     {
         /* Advance e and Z along the proper face containing the targetVertex */
 
-        // Get the opposing arc of the corner at vertex Z, as the arc to exit Z
-        e = targetVertex == R ? gp_GetPrevArcCircular(theGraph, e)
-                              : gp_GetNextArcCircular(theGraph, e);
+        // Get the opposing edge of the corner at vertex Z, as the edge to exit Z
+        e = targetVertex == R ? gp_GetPrevEdgeCircular(theGraph, e)
+                              : gp_GetNextEdgeCircular(theGraph, e);
 
-        // Now use the exit arc to get the next Z to visit
+        // Now use the exit edge record to get the next Z to visit
         Z = gp_GetNeighbor(theGraph, e);
 
-        // And get the entry arc of the new Z being visited
-        e = gp_GetTwinArc(theGraph, e);
+        // And get the entry edge record of the new Z being visited
+        e = gp_GetTwin(theGraph, e);
 
         /* If Z is already visited, then pop everything since the last time
               we visited Z because its all part of a separable component. */
@@ -669,7 +674,7 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
             if (Z != theGraph->IC.px)
             {
                 gp_SetEdgeVisited(theGraph, e);
-                gp_SetEdgeVisited(theGraph, gp_GetTwinArc(theGraph, e));
+                gp_SetEdgeVisited(theGraph, gp_GetTwin(theGraph, e));
             }
 
             /* If we found an RYW vertex, then we have successfully finished
@@ -707,33 +712,36 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
  This function assumes that _MarkHighestXYPath() has already been called,
  which marked as visited the vertices and edges along the X-Y path.
 
- We begin at the point of attachment P_x, take the last arc and traverse
- the predecessor arcs until we find one marked visited, which leads to the
+ We begin at the point of attachment P_x, take its last edge and traverse
+ the predecessor edges until we find one marked visited, which leads to the
  first internal vertex along the X-Y path.  We begin with this vertex
  (and its edge of entry), and we run until we find P_y. For each internal
- vertex Z and its edge of entry ZPrevArc, we take the predecessor edge record
- of ZPrevArc.  This is called ZNextArc.  If ZNextArc is marked visited
- then it is along the X-Y path, so we use it to exit Z and go to the next
- vertex on the X-Y path.
+ vertex Z and its edge of entry ZPrevEdge, we take the predecessor edge record
+ of ZPrevEdge, called ZNextEdge. If ZNextEdge is marked visited then it is
+ along the X-Y path, so we use it to exit Z and go to the next vertex on the
+ X-Y path.
 
- If ZNextArc is not visited, then when _MarkHighestXYPath() ran, it exited
- Z from ZNextArc, then eventually reentered Z.  In other words, Z became a
- cut vertex when we removed the internal edges incident to R. Thus, ZNextArc
+ If ZNextEdge is not visited, then when _MarkHighestXYPath() ran, it exited
+ Z from ZNextedge, then eventually reentered Z.  In other words, Z became a
+ cut vertex when we removed the internal edges incident to R. Thus, ZNextEdge
  indicates the first edge in an internal path to R.
 
- When we find an unvisited ZNextArc, we stop running the X-Y path and instead
+ When we find an unvisited ZNextEdge, we stop running the X-Y path and instead
  begin marking the Z to R path.  We move to successive vertices using a
- twin arc then its predecessor arc in the adjacency list, only this time
+ twin edge record then its predecessor in the adjacency list, only this time
  we have not removed the internal edges incident to R, so this technique does
  eventually lead us all the way to R.
 
- If we do not find an unvisited ZNextArc for any vertex Z on the X-Y path and
+ If we do not find an unvisited ZNextEdge for any vertex Z on the X-Y path and
  inside the bicomp, then there is no Z to R path, so we return.
+
+ Returns OK if a Z-to-R path has been marked or if it has been found that
+            there is not a Z-to-R path; returns NOTOK on error
  ****************************************************************************/
 
 int _MarkZtoRPath(graphP theGraph)
 {
-    int ZPrevArc, ZNextArc, Z, R, Px, Py;
+    int ZPrevEdge, ZNextEdge, Z, R, Px, Py;
 
     /* Initialize */
 
@@ -746,28 +754,28 @@ int _MarkZtoRPath(graphP theGraph)
        the first internal vertex of the X-Y path. */
 
     Z = Px;
-    ZNextArc = gp_GetLastArc(theGraph, Z);
-    while (ZNextArc != gp_GetFirstArc(theGraph, Z))
+    ZNextEdge = gp_GetLastEdge(theGraph, Z);
+    while (ZNextEdge != gp_GetFirstEdge(theGraph, Z))
     {
-        if (gp_GetEdgeVisited(theGraph, ZNextArc))
+        if (gp_GetEdgeVisited(theGraph, ZNextEdge))
             break;
 
-        ZNextArc = gp_GetPrevArc(theGraph, ZNextArc);
+        ZNextEdge = gp_GetPrevEdge(theGraph, ZNextEdge);
     }
 
-    if (!gp_GetEdgeVisited(theGraph, ZNextArc))
+    if (!gp_GetEdgeVisited(theGraph, ZNextEdge))
         return NOTOK;
 
     /* For each internal vertex Z, determine whether it has a path to root. */
 
-    while (gp_GetEdgeVisited(theGraph, ZNextArc))
+    while (gp_GetEdgeVisited(theGraph, ZNextEdge))
     {
-        ZPrevArc = gp_GetTwinArc(theGraph, ZNextArc);
-        ZNextArc = gp_GetPrevArcCircular(theGraph, ZPrevArc);
+        ZPrevEdge = gp_GetTwin(theGraph, ZNextEdge);
+        ZNextEdge = gp_GetPrevEdgeCircular(theGraph, ZPrevEdge);
     }
 
-    ZPrevArc = gp_GetTwinArc(theGraph, ZNextArc);
-    Z = gp_GetNeighbor(theGraph, ZPrevArc);
+    ZPrevEdge = gp_GetTwin(theGraph, ZNextEdge);
+    Z = gp_GetNeighbor(theGraph, ZPrevEdge);
 
     /* If there is no Z to R path, return */
 
@@ -778,7 +786,7 @@ int _MarkZtoRPath(graphP theGraph)
 
     theGraph->IC.z = Z;
 
-    /* Walk the proper face starting with (Z, ZNextArc) until we reach R, marking
+    /* Walk the proper face starting with (Z, ZNextEdge) until we reach R, marking
             the vertices and edges encountered along the way, then Return OK. */
 
     while (Z != R)
@@ -789,20 +797,20 @@ int _MarkZtoRPath(graphP theGraph)
         if (gp_GetObstructionMark(theGraph, Z) != ANYVERTEX_OBSTRUCTIONMARK_UNMARKED)
             return NOTOK;
 
-        /* Go to the next vertex indicated by ZNextArc */
+        /* Go to the next vertex indicated by ZNextEdge */
 
-        Z = gp_GetNeighbor(theGraph, ZNextArc);
+        Z = gp_GetNeighbor(theGraph, ZNextEdge);
 
         /* Mark the next vertex and the edge leading to it as visited. */
 
-        gp_SetEdgeVisited(theGraph, ZNextArc);
-        gp_SetEdgeVisited(theGraph, ZPrevArc);
+        gp_SetEdgeVisited(theGraph, ZNextEdge);
+        gp_SetEdgeVisited(theGraph, ZPrevEdge);
         gp_SetVisited(theGraph, Z);
 
         /* Go to the next edge in the proper face */
 
-        ZNextArc = gp_GetPrevArcCircular(theGraph, ZPrevArc);
-        ZPrevArc = gp_GetTwinArc(theGraph, ZNextArc);
+        ZNextEdge = gp_GetPrevEdgeCircular(theGraph, ZPrevEdge);
+        ZPrevEdge = gp_GetTwin(theGraph, ZNextEdge);
     }
 
     /* Found Z to R path, so indicate as much to caller */

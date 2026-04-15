@@ -18,8 +18,8 @@ from .full.graph import (
 )
 from .full.planarity_app_utils import (
     PLANARITY_ALGORITHM_SPECIFIERS,
-    ENSURE_ARC_CAPACITY_SPECIFIERS,
-    attach_algorithm,
+    ENSURE_EDGE_CAPACITY_SPECIFIERS,
+    extend_graph,
     get_embed_flags,
     max_num_edges_for_order,
 )

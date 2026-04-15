@@ -20,7 +20,7 @@ extern "C"
 
     typedef struct
     {
-        strOrFileP g6Output;
+        strOrFileP outputContainer;
         int numGraphsWritten;
 
         int order;
@@ -36,18 +36,18 @@ extern "C"
 
     typedef G6WriteIterator *G6WriteIteratorP;
 
-    int g6_NewWriter(G6WriteIteratorP *ppG6WriteIterator, graphP theGraph);
+    int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph);
 
-    int g6_GetNumGraphsWritten(G6WriteIteratorP pG6WriteIterator, int *pNumGraphsWritten);
-    int g6_GetOrderFromWriter(G6WriteIteratorP pG6WriteIterator, int *pOrder);
-    int g6_GetGraphFromWriter(G6WriteIteratorP pG6WriteIterator, graphP *pTheGraph);
+    int g6_GetNumGraphsWritten(G6WriteIteratorP theG6WriteIterator, int *pNumGraphsWritten);
+    int g6_GetOrderFromWriter(G6WriteIteratorP theG6WriteIterator, int *pOrder);
+    int g6_GetGraphFromWriter(G6WriteIteratorP theG6WriteIterator, graphP *pGraph);
 
-    int g6_InitWriterWithString(G6WriteIteratorP pG6WriteIterator);
-    int g6_InitWriterWithFileName(G6WriteIteratorP pG6WriteIterator, char *outputFileName);
+    int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString);
+    int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName);
 
-    int g6_WriteGraph(G6WriteIteratorP pG6WriteIterator);
+    int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator);
 
-    void g6_FreeWriter(G6WriteIteratorP *ppG6WriteIterator);
+    void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator);
 
 #ifdef __cplusplus
 }

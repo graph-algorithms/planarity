@@ -13,157 +13,158 @@ See the LICENSE.TXT file for licensing information.
 #include "strOrFile.h"
 
 /********************************************************************
- sf_New()
+ sf_NewInputContainer()
 
  The string-or-file object supports two IO modes: reading input (ioMode ==
  READTEXT), and writing output (ioMode == WRITETEXT). The string-or-file object
  also may only contain a string (stored using a strBufP to leverage its string
  manipulation functions) XOR a FILE *.
 
- For the input mode, sf_New() should receive either a non-NULL (and preferably
- nonempty) input string (which the container *does not own*, but rather copies
- into the internal strBufP) or a non-NULL and nonempty fileName (which may
+ For the input mode, sf_NewInputContainer() should either receive a non-NULL and
+ nonempty input string (which the container *does not own*, but rather copies
+ into the internal strBufP) XOR a non-NULL and nonempty fileName (which may
  correspond to stdin).
-
- For the output mode, theStr *must* be NULL because, if the fileName is also
- NULL, then the desired output string will be constructed internally in the
- string-or-file object and can be obtained after all output has been written
- using sf_takeTheStr(). If the fileName is non-NULL and nonempty (which may
- correspond to stdout or stderr), then the output will go to the output stream
- and an output string will not be constructed.
 
  Returns the allocated string-or-file container, or NULL on error.
  ********************************************************************/
 
-strOrFileP sf_New(char const *const theStr, char const *const fileName, char const *ioMode)
+strOrFileP sf_NewInputContainer(char const *const inputStr, char const *const fileName)
 {
     strOrFileP theStrOrFile;
-    int containerType = 0;
 
-    if ((fileName != NULL) && (theStr != NULL))
+    if (
+        ((fileName != NULL) && (inputStr != NULL)) ||
+        ((fileName == NULL) && (inputStr == NULL)))
         return NULL;
 
     theStrOrFile = (strOrFileP)calloc(1, sizeof(strOrFile));
     if (theStrOrFile != NULL)
     {
+        theStrOrFile->containerType = INPUT_CONTAINER;
+
         if (fileName != NULL)
         {
-            FILE *pFile = NULL;
-
-            // N.B. If the ioMode is specified but is neither
-            // READTEXT nor WRITETEXT, error out
-            if (ioMode != NULL &&
-                strncmp(ioMode, READTEXT, strlen(READTEXT)) != 0 &&
-                strncmp(ioMode, WRITETEXT, strlen(WRITETEXT)) != 0)
+            // N.B. If the fileName indicates a stream, then input containers
+            // may only contain stdin.
+            if (strcmp(fileName, "stdin") == 0)
+                theStrOrFile->pFile = stdin;
+            else if (
+                (strcmp(fileName, "stdout") == 0) ||
+                (strcmp(fileName, "stderr") == 0))
             {
                 sf_Free(&theStrOrFile);
+                theStrOrFile = NULL;
                 return NULL;
-            }
-
-            // N.B. If the fileName indicates a stream, then make sure
-            // ioMode is correct. Since we previously made sure that
-            // non-NULL ioMode must either refer to READTEXT or WRITETEXT,
-            // we don't have to worry about freeing up the former string
-            // before re-assigning.
-            if (strcmp(fileName, "stdin") == 0)
-            {
-                if (ioMode != NULL && strncmp(ioMode, READTEXT, strlen(READTEXT)) != 0)
-                {
-                    sf_Free(&theStrOrFile);
-                    return NULL;
-                }
-
-                pFile = stdin;
-                containerType = INPUT_CONTAINER;
-            }
-            else if (strcmp(fileName, "stdout") == 0)
-            {
-                if (ioMode != NULL && strncmp(ioMode, WRITETEXT, strlen(WRITETEXT)) != 0)
-                {
-                    sf_Free(&theStrOrFile);
-                    return NULL;
-                }
-
-                pFile = stdout;
-                containerType = OUTPUT_CONTAINER;
-            }
-            else if (strcmp(fileName, "stderr") == 0)
-            {
-                if (ioMode != NULL && strncmp(ioMode, WRITETEXT, strlen(WRITETEXT)) != 0)
-                {
-                    sf_Free(&theStrOrFile);
-                    return NULL;
-                }
-
-                pFile = stderr;
-                containerType = OUTPUT_CONTAINER;
             }
             else
             {
-                // N.B. Clean up and return NULL if:
-                // - fileName is not one of stdin/stdout/stderr, and
-                // if the ioMode is not given
-                // - ioMode is given but is neither READTEXT nor
-                // WRITETEXT
-                if (ioMode == NULL ||
-                    (pFile = fopen(fileName, ioMode)) == NULL)
+                if ((theStrOrFile->pFile = fopen(fileName, READTEXT)) == NULL)
                 {
                     sf_Free(&theStrOrFile);
+                    theStrOrFile = NULL;
                     return NULL;
                 }
-
-                if (strncmp(ioMode, READTEXT, strlen(READTEXT)) == 0)
-                    containerType = INPUT_CONTAINER;
-                else if (strncmp(ioMode, WRITETEXT, strlen(WRITETEXT)) == 0)
-                    containerType = OUTPUT_CONTAINER;
             }
-
-            theStrOrFile->pFile = pFile;
         }
         else
         {
-            strBufP strBufToAssign = NULL;
-
-            if (strncmp(ioMode, READTEXT, strlen(READTEXT)) == 0)
-                containerType = INPUT_CONTAINER;
-            else if (strncmp(ioMode, WRITETEXT, strlen(WRITETEXT)) == 0)
-                containerType = OUTPUT_CONTAINER;
-
-            // N.B. If you're writing to string (since fileName == NULL), but
-            // theStr has already been assigned some pointer, the container is
-            // invalid. One must sf_New(NULL, NULL, WRITETEXT) before handing
-            // off ownership of the container; when processing is done, before
-            // you free the owner of the output container, you must
-            // sf_takeTheStr(theStrOrFile) and return that pointer to the caller
-            if (containerType != INPUT_CONTAINER && theStr != NULL)
+            if ((theStrOrFile->theStrBuf = sb_New(0)) == NULL)
             {
                 sf_Free(&theStrOrFile);
+                theStrOrFile = NULL;
                 return NULL;
             }
-
-            if ((strBufToAssign = sb_New(0)) == NULL)
+            if (
+                (inputStr == NULL || (strlen(inputStr) == 0)) ||
+                sb_ConcatString(theStrOrFile->theStrBuf, inputStr) != OK)
             {
                 sf_Free(&theStrOrFile);
+                theStrOrFile = NULL;
                 return NULL;
             }
-
-            if (theStr != NULL && sb_ConcatString(strBufToAssign, theStr) != OK)
-            {
-                sb_Free(&strBufToAssign);
-                sf_Free(&theStrOrFile);
-                return NULL;
-            }
-
-            theStrOrFile->theStr = strBufToAssign;
         }
-
-        theStrOrFile->containerType = containerType;
 
         theStrOrFile->ungetBuf = sp_New(MAXLINE);
         if (theStrOrFile->ungetBuf == NULL)
         {
             sf_Free(&theStrOrFile);
+            theStrOrFile = NULL;
             return NULL;
+        }
+    }
+
+    return theStrOrFile;
+}
+
+/********************************************************************
+ sf_NewOutputContainer()
+
+ The string-or-file object supports two IO modes: reading input (ioMode ==
+ READTEXT), and writing output (ioMode == WRITETEXT). The string-or-file object
+ also may only contain a string (stored using a strBufP to leverage its string
+ manipulation functions) XOR a FILE *.
+
+ For the output mode, sf_NewOutputContainer() should receive either a non-NULL
+ pointer-pointer that initially points to NULL (to which we will assign the
+ output string upon freeing the container) XOR a non-NULL and nonempty fileName
+ (which may correspond to stdout or stderr). If theStr is not NULL, then the
+ desired output string will be constructed internally in the string-or-file
+ object, which will only be returned to the caller when freeing the strOrFile
+ via this pointer-pointer. Note that if the fileName is not NULL, then the
+ internal
+ strBufP will not be constructed.
+
+ Returns the allocated string-or-file container, or NULL on error.
+ ********************************************************************/
+
+strOrFileP sf_NewOutputContainer(char **pOutputStr, char const *const fileName)
+{
+    strOrFileP theStrOrFile;
+
+    if (
+        ((fileName != NULL) && (pOutputStr != NULL)) ||
+        ((fileName == NULL) && (pOutputStr == NULL)) ||
+        ((pOutputStr != NULL) && ((*pOutputStr) != NULL)))
+        return NULL;
+
+    theStrOrFile = (strOrFileP)calloc(1, sizeof(strOrFile));
+    if (theStrOrFile != NULL)
+    {
+        theStrOrFile->containerType = OUTPUT_CONTAINER;
+
+        if (fileName != NULL)
+        {
+            if (strcmp(fileName, "stdin") == 0)
+            {
+                sf_Free(&theStrOrFile);
+                theStrOrFile = NULL;
+                return NULL;
+            }
+            else if (strcmp(fileName, "stdout") == 0)
+                theStrOrFile->pFile = stdout;
+            else if (strcmp(fileName, "stderr") == 0)
+                theStrOrFile->pFile = stderr;
+            else
+            {
+                if (
+                    (theStrOrFile->pFile = fopen(fileName, WRITETEXT)) == NULL)
+                {
+                    sf_Free(&theStrOrFile);
+                    theStrOrFile = NULL;
+                    return NULL;
+                }
+            }
+        }
+        else
+        {
+            if ((theStrOrFile->theStrBuf = sb_New(0)) == NULL)
+            {
+                sf_Free(&theStrOrFile);
+                theStrOrFile = NULL;
+                return NULL;
+            }
+
+            theStrOrFile->pOutputStr = pOutputStr;
         }
     }
 
@@ -176,8 +177,8 @@ strOrFileP sf_New(char const *const theStr, char const *const fileName, char con
  Ensures that theStrOrFile:
  1. Is not NULL
  2. Has ungetBuf allocated
- 3. Both pFile and theStr are not NULL
- 4. Both pFile and theStr are not both assigned (since this container
+ 3. Both pFile and theStrBuf are not NULL
+ 4. Both pFile and theStrBuf are not both assigned (since this container
     should only contain one source).
  5. containerType is either set to INPUT_CONTAINER or OUTPUT_CONTAINER
 
@@ -187,12 +188,29 @@ strOrFileP sf_New(char const *const theStr, char const *const fileName, char con
 bool sf_IsValidStrOrFile(strOrFileP theStrOrFile)
 {
     if (theStrOrFile == NULL ||
-        theStrOrFile->ungetBuf == NULL ||
-        (theStrOrFile->pFile == NULL && theStrOrFile->theStr == NULL) ||
-        (theStrOrFile->pFile != NULL && theStrOrFile->theStr != NULL) ||
+        (theStrOrFile->pFile == NULL && theStrOrFile->theStrBuf == NULL) ||
+        (theStrOrFile->pFile != NULL && theStrOrFile->theStrBuf != NULL) ||
         (theStrOrFile->containerType != INPUT_CONTAINER &&
          theStrOrFile->containerType != OUTPUT_CONTAINER))
         return false;
+
+    if (theStrOrFile->containerType == INPUT_CONTAINER)
+    {
+        if (
+            (theStrOrFile->ungetBuf == NULL) ||
+            (theStrOrFile->theStrBuf != NULL && sb_GetSize(theStrOrFile->theStrBuf) == 0))
+
+        {
+            return false;
+        }
+    }
+    else // Otherwise, due to the above validation, can only be an output container
+    {
+        if (theStrOrFile->ungetBuf != NULL)
+        {
+            return false;
+        }
+    }
 
     return true;
 }
@@ -202,7 +220,7 @@ bool sf_IsValidStrOrFile(strOrFileP theStrOrFile)
 
  If strOrFileP has a non-empty ungetBuf, pop and return the character.
  If the ungetBuf is empty, then we'll read from pFile using getc() OR
- from theStr by fetching the character at theStrPos and incrementing
+ from theStrBuf by fetching the character at theStrPos and incrementing
  theStrPos.
  ********************************************************************/
 
@@ -224,13 +242,13 @@ char sf_getc(strOrFileP theStrOrFile)
     }
     else if (theStrOrFile->pFile != NULL)
         theChar = (char)getc(theStrOrFile->pFile);
-    else if (theStrOrFile->theStr != NULL && sb_GetUnreadCharCount(theStrOrFile->theStr) > 0)
+    else if (theStrOrFile->theStrBuf != NULL && sb_GetUnreadCharCount(theStrOrFile->theStrBuf) > 0)
     {
-        theChar = sb_GetReadString(theStrOrFile->theStr) != NULL
-                      ? sb_GetReadString(theStrOrFile->theStr)[0]
+        theChar = sb_GetReadString(theStrOrFile->theStrBuf) != NULL
+                      ? sb_GetReadString(theStrOrFile->theStrBuf)[0]
                       : EOF;
         if (theChar != EOF)
-            sb_ReadSkipChar(theStrOrFile->theStr);
+            sb_ReadSkipChar(theStrOrFile->theStrBuf);
     }
 
     return theChar;
@@ -579,10 +597,10 @@ char *sf_fgets(char *str, int count, strOrFileP theStrOrFile)
                     return NULL;
             }
         }
-        else if (theStrOrFile->theStr != NULL)
+        else if (theStrOrFile->theStrBuf != NULL)
         {
-            char *theStrBuf = sb_GetReadString(theStrOrFile->theStr);
-            if (theStrBuf != NULL && sb_GetUnreadCharCount(theStrOrFile->theStr) > 0)
+            char *theStrBuf = sb_GetReadString(theStrOrFile->theStrBuf);
+            if (theStrBuf != NULL && sb_GetUnreadCharCount(theStrOrFile->theStrBuf) > 0)
             {
                 if (strncpy(
                         str + charsToReadFromUngetBuf,
@@ -590,7 +608,7 @@ char *sf_fgets(char *str, int count, strOrFileP theStrOrFile)
                         charsToReadFromStrOrFile) == NULL)
                     return NULL;
 
-                sb_SetReadPos(theStrOrFile->theStr, (sb_GetReadPos(theStrOrFile->theStr) + charsToReadFromStrOrFile));
+                sb_SetReadPos(theStrOrFile->theStrBuf, (sb_GetReadPos(theStrOrFile->theStrBuf) + charsToReadFromStrOrFile));
             }
             else if (charsToReadFromUngetBuf == 0)
                 return NULL;
@@ -625,38 +643,15 @@ int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile)
     // to an output stream
     if (theStrOrFile->pFile != NULL)
         outputLen = fputs(strToWrite, theStrOrFile->pFile);
-    else if (theStrOrFile->theStr != NULL)
+    else if (theStrOrFile->theStrBuf != NULL)
     {
-        if (sb_ConcatString(theStrOrFile->theStr, strToWrite) == OK)
+        if (sb_ConcatString(theStrOrFile->theStrBuf, strToWrite) == OK)
             outputLen = strlen(strToWrite);
         else
             outputLen = EOF;
     }
 
     return outputLen;
-}
-
-/********************************************************************
- sf_takeTheStr()
-
- Returns the char * stored in the string-or-file container and NULLs
- out the internal reference so ownership of the memory is transferred
- to the caller.
-
- The pointer returned will be NULL if the strOrFile contains a FILE *.
- ********************************************************************/
-
-char *sf_takeTheStr(strOrFileP theStrOrFile)
-{
-    char *theStr = NULL;
-    if (theStrOrFile->theStr != NULL)
-    {
-        theStr = sb_TakeString(theStrOrFile->theStr);
-        sb_Free((&theStrOrFile->theStr));
-        theStrOrFile->theStr = NULL;
-    }
-
-    return theStr;
 }
 
 /********************************************************************
@@ -689,11 +684,7 @@ int sf_closeFile(strOrFileP theStrOrFile)
             return NOTOK;
     }
 
-    if (theStrOrFile->ungetBuf != NULL)
-    {
-        sp_Free(&(theStrOrFile->ungetBuf));
-    }
-    theStrOrFile->ungetBuf = NULL;
+    sp_Free(&(theStrOrFile->ungetBuf));
 
     return OK;
 }
@@ -705,7 +696,7 @@ int sf_closeFile(strOrFileP theStrOrFile)
 
  If the strOrFile contains a string which has not yet been "taken"
  using sf_takeTheStr() (i.e. we want inputStr to be freed, and in an
- error state we want to free outputStr), the string is freed, the
+ error state we want to free pOutputStr), the string is freed, the
  internal pointer is set to NULL, and theStrPos is set to 0.
 
  If the strOrFile contains a FILE pointer, we call sf_closeFile()
@@ -721,9 +712,17 @@ void sf_Free(strOrFileP *pStrOrFile)
 {
     if (pStrOrFile != NULL && (*pStrOrFile) != NULL)
     {
-        if ((*pStrOrFile)->theStr != NULL)
-            sb_Free((&(*pStrOrFile)->theStr));
-        (*pStrOrFile)->theStr = NULL;
+        if ((*pStrOrFile)->theStrBuf != NULL)
+        {
+            // TODO: (#56) If in an error state, just don't sb_TakeString()
+            // before freeing it
+            if ((*pStrOrFile)->pOutputStr != NULL)
+            {
+                (*((*pStrOrFile)->pOutputStr)) = sb_TakeString((*pStrOrFile)->theStrBuf);
+                (*pStrOrFile)->pOutputStr = NULL;
+            }
+            sb_Free(&((*pStrOrFile)->theStrBuf));
+        }
 
         // TODO: (#56) if the strOrFile container's FILE pointer
         // corresponds to an output file, i.e. ioMode is 'w',

@@ -75,7 +75,7 @@ static int moduleIDGenerator = 0;
      parameter to gp_AddExtension()
 
   5) The expected method of attaching your feature to a graph is to
-     create a function called gp_AttachFeature(), where 'Feature' is
+     create a function called gp_ExtendWith_Feature(), where 'Feature' is
      the name of your module.  The attach function allocates your context
      data structure, initializes the extension data, assigns overload
      function pointers, and invokes gp_AddExtension().
@@ -138,8 +138,8 @@ static int moduleIDGenerator = 0;
      a) The _Feature_ClearStructures() should simply null out pointers
         to extra structures on its first invocation, but thereafter it
         should free them and then null them.  Since the null-only step
-        is done only once in gp_AttachFeature(), it seems reasonable to
-        not bother with a more complicated _Feature_ClearStructures().
+        is done only once in gp_ExtendWith_Feature(), it seems reasonable
+        to not bother with a more complicated _Feature_ClearStructures().
         But, as an extension is developed, the data structures change,
         so it is best to keep all this logic in one place.
 
@@ -149,12 +149,12 @@ static int moduleIDGenerator = 0;
         list collection, should be created _and_ initialized.
 
      c) The _Feature_InitStructures() should invoke just the functions
-        needed to initialize the custom AnyTypeVertexRec, VertexInfo and 
+        needed to initialize the custom AnyTypeVertexRec, VertexInfo and
         EdgeRec data members, if any.
 
-  8) Define a function gp_DetachFeature() that invokes gp_RemoveExtension()
+  8) Define a function gp_Detach_Feature() that invokes gp_RemoveExtension()
      This should be done for consistency, so that users of a feature
-     do not attach it with gp_AttachFeature() and remove it with
+     do not attach it with gp_ExtendWith_Feature() and remove it with
      gp_RemoveExtension().  However, it may sometimes be necessary to
      run more code than just gp_RemoveExtension() when detaching a feature,
      e.g., some final result values of a feature may be saved to data

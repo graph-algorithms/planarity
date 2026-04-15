@@ -66,16 +66,21 @@ cdef class PGraph:
 
 
     def embed_planar(self):
-        if self.embedding == 0:
-            self.embedding = cplanarity.gp_Embed(self.theGraph, 
-                                             cplanarity.EMBEDFLAGS_PLANAR)
-            cplanarity.gp_SortVertices(self.theGraph)                  
+        if self.embedding != 0:
+            return
+        
+        status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)
+        if status == cplanarity.NOTOK:
+            raise RuntimeError("planarity: failed to extend graph with planarity structures.")
+        self.embedding = cplanarity.gp_Embed(self.theGraph, 
+                                            cplanarity.EMBEDFLAGS_PLANAR)
+        cplanarity.gp_SortVertices(self.theGraph)                  
 
 
     def embed_drawplanar(self):
-        status = cplanarity.gp_AttachDrawPlanar(self.theGraph)
+        status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
         if status == cplanarity.NOTOK:
-            raise RuntimeError("planarity: failed attaching drawplanar.")
+            raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
         status = cplanarity.gp_Embed(self.theGraph, 
                                              cplanarity.EMBEDFLAGS_DRAWPLANAR)
         if status == cplanarity.NONEMBEDDABLE:
@@ -135,9 +140,9 @@ cdef class PGraph:
         first=cplanarity.gp_GetFirstVertex(self.theGraph)
         last=cplanarity.gp_GetLastVertex(self.theGraph)+1
         for n in range(first,last):
-            e=cplanarity.gp_GetFirstArc(self.theGraph,n)
-            isarc=cplanarity.gp_IsArc(self.theGraph, e)
-            while isarc > 0:
+            e=cplanarity.gp_GetFirstEdge(self.theGraph,n)
+            is_edge=cplanarity.gp_IsEdge(self.theGraph, e)
+            while is_edge > 0:
                 nbr=cplanarity.gp_GetNeighbor(self.theGraph,e)
                 if nbr > n:
                     if data:
@@ -149,8 +154,8 @@ cdef class PGraph:
                         edges.append((r[n],r[nbr],data))
                     else:
                         edges.append((r[n],r[nbr]))
-                e=cplanarity.gp_GetNextArc(self.theGraph,e)
-                isarc=cplanarity.gp_IsArc(self.theGraph, e)
+                e=cplanarity.gp_GetNextEdge(self.theGraph,e)
+                is_edge=cplanarity.gp_IsEdge(self.theGraph, e)
         return edges
 
 

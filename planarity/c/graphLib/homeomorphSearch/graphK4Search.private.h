@@ -17,7 +17,7 @@ extern "C"
     /* Additional equipment for each EdgeRec
 
        pathConnector:
-          Used in the edge records (arcs) of a reduction edge to indicate the
+          Used in the edge records of a reduction edge to indicate the
           endpoints of a path that has been reduced from (removed from) the
           embedding so that the search for a K4 can continue.
           We only need a pathConnector because we reduce subgraphs that are
@@ -53,6 +53,8 @@ extern "C"
         int handlingBlockedBicomp;
 
     } K4SearchContext;
+
+    extern int K4SEARCH_ID;
 
 #ifdef __cplusplus
 }
