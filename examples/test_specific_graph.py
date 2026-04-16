@@ -80,7 +80,7 @@ def specific_graph(
         outdir = infile.parent
     if outdir.is_file():
         raise argparse.ArgumentTypeError(
-            f"Output directory {outdir} corresponds to a file."
+            f"Output directory '{outdir}' corresponds to a file."
         )
     
     outdir = Path.joinpath(outdir, f"{infile.stem}")
@@ -159,7 +159,7 @@ def print_embed_result(command: str, embed_result: int) -> None:
     if command in ("p", "d", "o"):
         print(
             f"\tThe graph is {'non-' if embed_result == NONEMBEDDABLE else ''}"
-            f"{'outer' if command == "o" else ''}planar."
+            f"{'outer' if command == 'o' else ''}planar."
         )
     else:
         print(
@@ -198,7 +198,7 @@ if __name__ == "__main__":
         "will contain the output from running all chosen graph algorithm "
         "commands on the input graph. Defaults to:\n"
         "\t{infile_parent_dir}/{infile_stem}/\n"
-        "Where output files will be of the form:\n"
+        "Where output filenames will be of the form:\n"
         "\t{infile_stem}.s.{command}.out.txt\n"
         "For each specified graph algorithm command.",
     )
