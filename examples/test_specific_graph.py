@@ -149,7 +149,7 @@ def print_embed_result(command: str, embed_result: int) -> None:
     
     print(
         f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)}"
-        f"{' Search' if command in ("2", "3", "4") else ''} embed result was "
+        f"{' Search' if command in ('2', '3', '4') else ''} embed result was "
         f"{EMBED_RESULT_NAME_CORRESPONDENCE().get(embed_result)}."
     )
 
