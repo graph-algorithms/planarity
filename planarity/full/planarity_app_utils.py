@@ -36,11 +36,7 @@ def PLANARITY_PACKAGE_INFO() -> str:
         "\nThe planarity package is based on the Edge Addition"
         f"\nPlanarity Suite version {gp_GetProjectVersionFull()}"
         " which contains the\nlibPlanarity graph library version "
-        f"{gp_GetLibPlanarityVersionFull()}\n"
-        "\nCopyright (c) 1997-2026 by John M. Boyer"
-        "\nAll rights reserved."
-        "\nSee the LICENSE.TXT file for licensing information."
-        "\nContact info: jboyer at acm.org"
+        f"{gp_GetLibPlanarityVersionFull()}"
         "\n===================================================\n"
     )
 

@@ -165,7 +165,8 @@ def print_embed_result(command: str, embed_result: int) -> None:
         print(
             f"\tThe graph {'does not ' if embed_result == OK else ''}contain"
             f"{'s' if embed_result == NONEMBEDDABLE else ''} a "
-           f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)}."
+           f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)} "
+           "homeomorph."
         )
 
 
