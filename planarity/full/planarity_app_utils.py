@@ -1,6 +1,11 @@
 """Utilities to support planarity app implementation"""
 
-from planarity import Graph
+from planarity import (
+    gp_GetProjectVersionFull,
+    gp_GetLibPlanarityVersionFull,
+    Graph,
+)
+
 from planarity import (
     EMBEDFLAGS_PLANAR,
     EMBEDFLAGS_DRAWPLANAR,
@@ -8,25 +13,66 @@ from planarity import (
     EMBEDFLAGS_SEARCHFORK23,
     EMBEDFLAGS_SEARCHFORK33,
     EMBEDFLAGS_SEARCHFORK4,
+    OK,
+    NONEMBEDDABLE,
+    NOTOK,
 )
 
 __all__ = [
+    "PLANARITY_PACKAGE_INFO",
     "PLANARITY_ALGORITHM_SPECIFIERS",
+    "ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE",
     "ENSURE_EDGE_CAPACITY_SPECIFIERS",
+    "EMBED_RESULT_NAME_CORRESPONDENCE",
     "extend_graph",
     "get_embed_flags",
     "max_num_edges_for_order",
 ]
 
 
+def PLANARITY_PACKAGE_INFO() -> str:
+    return (
+        "\n==================================================="
+        "\nThe planarity package is based on the Edge Addition"
+        f"\nPlanarity Suite version {gp_GetProjectVersionFull()}"
+        " which contains the\nlibPlanarity graph library version "
+        f"{gp_GetLibPlanarityVersionFull()}\n"
+        "\nCopyright (c) 1997-2026 by John M. Boyer"
+        "\nAll rights reserved."
+        "\nSee the LICENSE.TXT file for licensing information."
+        "\nContact info: jboyer at acm.org"
+        "\n===================================================\n"
+    )
+
 def PLANARITY_ALGORITHM_SPECIFIERS() -> tuple[str, ...]:
     """Returns immutable tuple containing algorithm command specifiers"""
     return ("p", "d", "o", "2", "3", "4")
 
 
+def ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE() -> dict[str, str]:
+    """Returns mapping of command specifier to name"""
+    return {
+            "p": "Planarity",
+            "d": "Draw Planar",
+            "o": "Outerplanarity",
+            "2": "K_{2, 3}",
+            "3": "K_{3, 3}",
+            "4": "K_4",
+        }
+
+
 def ENSURE_EDGE_CAPACITY_SPECIFIERS() -> tuple[str, ...]:
     """Graph algorithm extensions requiring ensure edge capacity before extending"""
     return ("d", "3", "4")
+
+
+def EMBED_RESULT_NAME_CORRESPONDENCE() -> dict[int, str]:
+    """Returns mapping of embed result to name"""
+    return {
+        OK: "OK",
+        NONEMBEDDABLE: "NONEMBEDDABLE",
+        NOTOK: "NOTOK",
+    }
 
 
 def extend_graph(theGraph: Graph, command: str) -> None:

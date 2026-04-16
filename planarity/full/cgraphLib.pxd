@@ -4,6 +4,11 @@ Specifically provides definitions for functions and macros that are required
 to interact with graphP structs.
 """
 
+cdef extern from "../c/graphLib/graphLib.h":
+    char *gp_GetProjectVersionFull()
+    char *gp_GetLibPlanarityVersionFull()
+
+
 cdef extern from "../c/graphLib/graphStructures.h":
     int NONEMBEDDABLE
 

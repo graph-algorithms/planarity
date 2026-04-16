@@ -23,6 +23,16 @@ EMBEDFLAGS_SEARCHFORK33 = cgraphLib.EMBEDFLAGS_SEARCHFORK33
 EMBEDFLAGS_SEARCHFORK4 = cgraphLib.EMBEDFLAGS_SEARCHFORK4
 
 
+def gp_GetProjectVersionFull():
+    cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
+    return encoded_version.decode('utf-8')
+
+
+def gp_GetLibPlanarityVersionFull():
+    cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
+    return encoded_version.decode('utf-8')
+
+
 cdef class Graph:
     def __cinit__(self):
         global global_id_count

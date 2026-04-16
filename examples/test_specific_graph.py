@@ -9,7 +9,7 @@ Functions:
         outdir: Optional[Path],
         command: str,
         output_mode: str,
-    ) -> None
+    ) -> int
 """
 #!/usr/bin/env python
 
@@ -26,12 +26,18 @@ from typing import Optional
 ## Cython package members
 from planarity import (
     Graph,
+    OK,
+    NONEMBEDDABLE,
+    NOTOK,
 )
 
 ## Pure Python package members
 from planarity import (
+    PLANARITY_PACKAGE_INFO,
     PLANARITY_ALGORITHM_SPECIFIERS,
+    ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE,
     ENSURE_EDGE_CAPACITY_SPECIFIERS,
+    EMBED_RESULT_NAME_CORRESPONDENCE,
     extend_graph,
     get_embed_flags,
     max_num_edges_for_order,
@@ -44,7 +50,7 @@ def specific_graph(
         outdir: Optional[Path],
         command: str,
         output_mode: str,
-) -> None:
+) -> int:
     """Run gp_Embed() for the specified algorithm and output the result to file
     
     When the embed result is OK, writes the embedding (po), planar drawing (d),
@@ -59,7 +65,10 @@ def specific_graph(
         command: algorithm command specifier
         output_mode: desired output format: .g6 (g), Adjacency List (a), or
             Adjacency Matrix (m)
-        
+    
+    Returns:
+        OK, NONEMBEDDABLE, or NOTOK based on the embed_result
+    
     Raises:
         ValueError: If invalid command specifier provided
         RuntimeError: If unable to extend graph for the specified command, or if
@@ -111,6 +120,54 @@ def specific_graph(
     # homeomorph search, the graph contents are thrown away by their respective
     # EmbedPostprocess, so the output will be 
     graph_for_embedding.gp_Write(str(outfile), output_mode)
+
+    return embed_result
+
+def print_embed_result(command: str, embed_result: int) -> None:
+    """Renders the embed result for the given algorithm extension
+
+    Args:
+        command:
+        embed_result: OK, NONEMBEDDABLE, or NOTOK based on the embed_result from
+            specific_graph()
+    
+    Raises:
+        ValueError: If the command is not a valid algorithm extension specifier,
+            or if the embed_result does not correspond to a valid return code.
+    """
+    if command not in PLANARITY_ALGORITHM_SPECIFIERS():
+        raise ValueError(
+            f"Command '{command}' is not one of "
+            f"({', '.join(PLANARITY_ALGORITHM_SPECIFIERS())})"
+        )
+
+    if embed_result not in (OK, NONEMBEDDABLE, NOTOK):
+        raise ValueError(
+            f"Embed result '{embed_result}' does not correspond to OK ({OK}), "
+            f"NONEMBEDDABLE ({NONEMBEDDABLE}), or NOTOK ({NOTOK})."
+        )
+    
+    print(
+        f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)}"
+        f"{' Search' if command in ("2", "3", "4") else ''} embed result was "
+        f"{EMBED_RESULT_NAME_CORRESPONDENCE().get(embed_result)}."
+    )
+
+    if embed_result == NOTOK:
+        return
+    
+    if command in ("p", "d", "o"):
+        print(
+            f"\tThe graph is {'non-' if embed_result == NONEMBEDDABLE else ''}"
+            f"{'outer' if command == "o" else ''}planar."
+        )
+    else:
+        print(
+            f"\tThe graph {'does not ' if embed_result == OK else ''}contain"
+            f"{'s' if embed_result == NONEMBEDDABLE else ''} a "
+           f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)}."
+        )
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -168,14 +225,18 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    print(PLANARITY_PACKAGE_INFO())
+    
     commands = [
         command.strip() for command in re.split(r'[ ,.;]', args.commands)
     ] if args.commands else PLANARITY_ALGORITHM_SPECIFIERS()
 
     for command in commands:
-        specific_graph(
-            infile=args.infile,
-            outdir=args.outdir,
-            command=command,
-            output_mode=args.mode,
-        )
+        embed_result = specific_graph(
+                                        infile=args.infile,
+                                        outdir=args.outdir,
+                                        command=command,
+                                        output_mode=args.mode,
+                                    )
+        print_embed_result(command=command, embed_result=embed_result)
+
