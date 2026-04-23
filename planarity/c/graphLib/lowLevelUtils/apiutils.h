@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -29,8 +29,8 @@ extern "C"
     extern int getQuietModeSetting(void);
     extern void setQuietModeSetting(int);
 
-    extern void Message(char const*message);
-    extern void ErrorMessage(char const*message);
+    extern void Message(char const *message);
+    extern void ErrorMessage(char const *message);
 
     int GetNumCharsToReprInt(int theNum, int *numCharsRequired);
 #ifdef __cplusplus

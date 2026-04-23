@@ -23,25 +23,18 @@ cdef class G6ReadIterator:
         
         cdef graph.Graph currGraph = graph.Graph()
 
-        if cg6IterationDefs.allocateG6ReadIterator(&self._g6ReadIterator, currGraph._theGraph) != cappconst.OK:
-            raise MemoryError("allocateG6ReadIterator() failed.")
+        if cg6IterationDefs.g6_NewReader(&self._g6ReadIterator, currGraph._theGraph) != cappconst.OK:
+            raise MemoryError("Unable to initialize G6ReadIterator, as call to g6_NewReader() in EAPS graphLib failed.")
 
         self._currGraph = currGraph
         
     def __dealloc__(self):
         if self._g6ReadIterator != NULL:
-            if cg6IterationDefs.endG6ReadIteration(self._g6ReadIterator) != cappconst.OK:
-                raise RuntimeError("endG6ReadIteration() failed.")
-            
-            # NOTE: freeG6ReadIterator() NULLs out the pointer to currGraph on
-            # the C layer; when Python will then clean up the instance variables
+            # NOTE: g6_FreeReader() NULLs out the pointer to currGraph on
+            # the C layer; Python will then clean up the instance variables
             # by calling their respective __dealloc__, so at that point the
             # graphP will be cleaned up with gp_Free()
-            if cg6IterationDefs.freeG6ReadIterator(&self._g6ReadIterator) != cappconst.OK:
-                raise MemoryError("freeG6ReadIterator() failed.")
-    
-    def contents_exhausted(self):
-        return cg6IterationDefs.contentsExhausted(self._g6ReadIterator)
+            cg6IterationDefs.g6_FreeReader(&self._g6ReadIterator)
     
     def get_currGraph(self) -> graph.Graph:
         return self._currGraph.get_wrapper_for_graphP()
@@ -49,17 +42,20 @@ cdef class G6ReadIterator:
     def duplicate_currGraph(self) -> graph.Graph:
         return self._currGraph.gp_DupGraph()
 
-    def begin_iteration(self, str infile_name):
+    def g6_EndReached(self):
+        return cg6IterationDefs.g6_EndReached(self._g6ReadIterator)
+
+    def g6_InitReaderWithFileName(self, str infile_name):
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = infile_name.encode('utf-8')
         cdef const char *FileName = encoded
 
-        if cg6IterationDefs.beginG6ReadIterationFromG6FilePath(self._g6ReadIterator, FileName) != cappconst.OK:
-            raise RuntimeError(f"beginG6ReadIteration() failed.")
+        if cg6IterationDefs.g6_InitReaderWithFileName(self._g6ReadIterator, FileName) != cappconst.OK:
+            raise RuntimeError(f"Unable to initialize reader with filename, as g6_InitReaderWithFileName() in EAPS graphLib failed.")
 
-    def read_graph(self):
-        if cg6IterationDefs.readGraphUsingG6ReadIterator(self._g6ReadIterator) != cappconst.OK:
-            raise RuntimeError(f"readGraphUsingG6ReadIterator() failed.")
+    def g6_ReadGraph(self):
+        if cg6IterationDefs.g6_ReadGraph(self._g6ReadIterator) != cappconst.OK:
+            raise RuntimeError(f"Unable to read graph, as g6_ReadGraph() in EAPS graphLib failed.")
         
 
 cdef class G6WriteIterator:
@@ -69,41 +65,25 @@ cdef class G6WriteIterator:
     def __cinit__(self, graph.Graph graph_to_write):
         self._g6WriteIterator = NULL
 
-        if graph_to_write.is_graph_NULL() or graph_to_write.gp_getN() == 0:
+        if graph_to_write.is_graph_NULL() or graph_to_write.gp_GetN() == 0:
             raise ValueError(
                 "Graph to write is invalid: either not allocated or not "
                 "initialized.")
         
         self._currGraph = graph_to_write
 
-        if cg6IterationDefs.allocateG6WriteIterator(&self._g6WriteIterator, graph_to_write._theGraph) != cappconst.OK:
-            raise MemoryError("allocateG6WriteIterator() failed.")
+        if cg6IterationDefs.g6_NewWriter(&self._g6WriteIterator, graph_to_write._theGraph) != cappconst.OK:
+            raise MemoryError("Unable to initialize G6WriteIterator, as g6_NewWriter() in EAPS graphLib failed.")
 
     def __dealloc__(self):
         if self._g6WriteIterator != NULL:
-            if cg6IterationDefs.endG6WriteIteration(self._g6WriteIterator) != cappconst.OK:
-                raise RuntimeError("endG6WriteIteration() failed.")
-            
-            if cg6IterationDefs.freeG6WriteIterator(&self._g6WriteIterator) != cappconst.OK:
-                raise MemoryError("freeG6WriteIterator() failed.")
+            cg6IterationDefs.g6_FreeWriter(&self._g6WriteIterator)
 
-    def begin_iteration(self, str outfile_name):
-        # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = outfile_name.encode('utf-8')
-        cdef const char *FileName = encoded
-
-        if cg6IterationDefs.beginG6WriteIterationToG6FilePath(self._g6WriteIterator, FileName) != cappconst.OK:
-            raise RuntimeError(f"beginG6WriteIteration() failed.")
-
-    def write_graph(self):
-        if cg6IterationDefs.writeGraphUsingG6WriteIterator(self._g6WriteIterator) != cappconst.OK:
-            raise RuntimeError(f"writeGraphUsingG6WriteIterator() failed.")
-        
     def reinitialize_currGraph(self):
         self._currGraph.gp_ReinitializeGraph()
     
     def update_graph_to_write(self, graph.Graph next_graph):
-        if next_graph.is_graph_NULL() or next_graph.gp_getN() == 0:
+        if next_graph.is_graph_NULL() or next_graph.gp_GetN() == 0:
             raise ValueError(
                 "Graph to write is invalid: either not allocated or not "
                 "initialized.")
@@ -114,3 +94,15 @@ cdef class G6WriteIterator:
             raise RuntimeError(
                 "Failed to copy next_graph into G6WriteIterator's currGraph."
             ) from copy_graph_error
+
+    def g6_InitWriterWithFileName(self, str outfile_name):
+        # Convert Python str to UTF-8 encoded bytes, and then to const char *
+        cdef bytes encoded = outfile_name.encode('utf-8')
+        cdef const char *FileName = encoded
+
+        if cg6IterationDefs.g6_InitWriterWithFileName(self._g6WriteIterator, FileName) != cappconst.OK:
+            raise RuntimeError(f"Unable to initialize writer with filename, as g6_InitWriterWithFileName() in EAPS graphLib failed.")
+
+    def g6_WriteGraph(self):
+        if cg6IterationDefs.g6_WriteGraph(self._g6WriteIterator) != cappconst.OK:
+            raise RuntimeError(f"Unable to write graph, as g6_WriteGraph() in EAPS graphLib failed.")

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -49,7 +49,7 @@ extern "C"
                 theStrBuf->readPos++; \
         }
 
-        int sb_ConcatString(strBufP, char const*);
+        int sb_ConcatString(strBufP, char const *);
         int sb_ConcatChar(strBufP, char);
 
         char *sb_TakeString(strBufP);

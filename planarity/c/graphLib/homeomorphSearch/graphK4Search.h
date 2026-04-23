@@ -2,7 +2,7 @@
 #define GRAPH_K4SEARCH_H
 
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -16,8 +16,8 @@ extern "C"
 
 #define K4SEARCH_NAME "K4Search"
 
-    int gp_AttachK4Search(graphP theGraph);
-    int gp_DetachK4Search(graphP theGraph);
+    int gp_ExtendWith_K4Search(graphP theGraph);
+    int gp_Detach_K4Search(graphP theGraph);
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -9,7 +9,7 @@ See the LICENSE.TXT file for licensing information.
 #include "graphDrawPlanar.private.h"
 #include "graphDrawPlanar.h"
 
-extern void _ClearVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
 
 extern void _CollectDrawingData(DrawPlanarContext *context, int RootVertex, int W, int WPrevLink);
 extern int _BreakTie(DrawPlanarContext *context, int BicompRoot, int W, int WPrevLink);
@@ -36,7 +36,7 @@ int _DrawPlanar_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
 int _DrawPlanar_InitGraph(graphP theGraph, int N);
 void _DrawPlanar_ReinitializeGraph(graphP theGraph);
-int _DrawPlanar_EnsureArcCapacity(graphP theGraph, int requiredArcCapacity);
+int _DrawPlanar_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 int _DrawPlanar_SortVertices(graphP theGraph);
 
 int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData);
@@ -56,7 +56,7 @@ void _DrawPlanar_FreeContext(void *);
 int DRAWPLANAR_ID = 0;
 
 /****************************************************************************
- gp_AttachDrawPlanar()
+ gp_ExtendWith_DrawPlanar()
 
  This function adjusts the graph data structure to attach the planar graph
  drawing feature.
@@ -74,7 +74,7 @@ int DRAWPLANAR_ID = 0;
  Returns OK for success, NOTOK for failure.
  ****************************************************************************/
 
-int gp_AttachDrawPlanar(graphP theGraph)
+int gp_ExtendWith_DrawPlanar(graphP theGraph)
 {
     DrawPlanarContext *context = NULL;
 
@@ -112,7 +112,7 @@ int gp_AttachDrawPlanar(graphP theGraph)
 
     context->functions.fpInitGraph = _DrawPlanar_InitGraph;
     context->functions.fpReinitializeGraph = _DrawPlanar_ReinitializeGraph;
-    context->functions.fpEnsureArcCapacity = _DrawPlanar_EnsureArcCapacity;
+    context->functions.fpEnsureEdgeCapacity = _DrawPlanar_EnsureEdgeCapacity;
     context->functions.fpSortVertices = _DrawPlanar_SortVertices;
 
     context->functions.fpReadPostprocess = _DrawPlanar_ReadPostprocess;
@@ -138,7 +138,7 @@ int gp_AttachDrawPlanar(graphP theGraph)
     // occur when N==0 in the case of gp_Read().
     // But if a feature is attached after gp_InitGraph(), then N > 0 and so we
     // need to create and initialize all the custom data structures
-    if (theGraph->N > 0)
+    if (gp_GetN(theGraph) > 0)
     {
         if (_DrawPlanar_CreateStructures(context) != OK ||
             _DrawPlanar_InitStructures(context) != OK)
@@ -152,10 +152,10 @@ int gp_AttachDrawPlanar(graphP theGraph)
 }
 
 /********************************************************************
- gp_DetachDrawPlanar()
+ gp_Detach_DrawPlanar()
  ********************************************************************/
 
-int gp_DetachDrawPlanar(graphP theGraph)
+int gp_Detach_DrawPlanar(graphP theGraph)
 {
     return gp_RemoveExtension(theGraph, DRAWPLANAR_ID);
 }
@@ -198,10 +198,10 @@ void _DrawPlanar_ClearStructures(DrawPlanarContext *context)
 int _DrawPlanar_CreateStructures(DrawPlanarContext *context)
 {
     graphP theGraph = context->theGraph;
-    int VIsize = gp_PrimaryVertexIndexBound(theGraph);
-    int Esize = gp_EdgeIndexBound(theGraph);
+    int VIsize = gp_VertexArraySize(theGraph);
+    int Esize = gp_EdgeArraySize(theGraph);
 
-    if (theGraph->N <= 0)
+    if (gp_GetN(theGraph) <= 0)
         return NOTOK;
 
     if ((context->E = (DrawPlanar_EdgeRecP)malloc(Esize * sizeof(DrawPlanar_EdgeRec))) == NULL ||
@@ -222,20 +222,20 @@ int _DrawPlanar_CreateStructures(DrawPlanarContext *context)
 int _DrawPlanar_InitStructures(DrawPlanarContext *context)
 {
 #ifdef USE_FASTER_1BASEDARRAYS
-    memset(context->VI, NIL_CHAR, gp_PrimaryVertexIndexBound(context->theGraph) * sizeof(DrawPlanar_VertexInfo));
-    memset(context->E, NIL_CHAR, gp_EdgeIndexBound(context->theGraph) * sizeof(DrawPlanar_EdgeRec));
+    memset(context->VI, NIL_CHAR, gp_VertexArraySize(context->theGraph) * sizeof(DrawPlanar_VertexInfo));
+    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(DrawPlanar_EdgeRec));
 #else
     int v, e, Esize;
     graphP theGraph = context->theGraph;
 
-    if (theGraph->N <= 0)
+    if (gp_GetN(theGraph) <= 0)
         return NOTOK;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
         _DrawPlanar_InitVertexInfo(context, v);
 
-    Esize = gp_EdgeIndexBound(theGraph);
-    for (e = gp_GetFirstEdge(theGraph); e < Esize; e++)
+    Esize = gp_EdgeArraySize(theGraph);
+    for (e = gp_EdgeArrayStart(theGraph); e < Esize; e++)
         _DrawPlanar_InitEdgeRec(context, e);
 #endif
 
@@ -253,8 +253,8 @@ void *_DrawPlanar_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int VIsize = gp_PrimaryVertexIndexBound((graphP)theGraph);
-        int Esize = gp_EdgeIndexBound((graphP)theGraph);
+        int VIsize = gp_VertexArraySize((graphP)theGraph);
+        int Esize = gp_EdgeArraySize((graphP)theGraph);
 
         *newContext = *context;
 
@@ -306,8 +306,8 @@ int _DrawPlanar_InitGraph(graphP theGraph, int N)
 
     theGraph->N = N;
     theGraph->NV = N;
-    if (theGraph->arcCapacity == 0)
-        theGraph->arcCapacity = 2 * DEFAULT_EDGE_LIMIT * N;
+    if (theGraph->edgeCapacity == 0)
+        theGraph->edgeCapacity = DEFAULT_EDGE_LIMIT * N;
 
     if (_DrawPlanar_CreateStructures(context) != OK ||
         _DrawPlanar_InitStructures(context) != OK)
@@ -337,15 +337,16 @@ void _DrawPlanar_ReinitializeGraph(graphP theGraph)
 }
 
 /********************************************************************
- The current implementation does not support an increase of arc
- (edge record) capacity once the extension is attached to the graph
- data structure.  This is only due to not being necessary to support.
+ The current implementation does not support an increase of edge
+ capacity once the extension is attached to the graph data structure.
+ This is only due to not being necessary to support.
+
  For now, it is easy to ensure the correct capacity before attaching
  the extension, but support could be added later if there is some
  reason to do so.
  ********************************************************************/
 
-int _DrawPlanar_EnsureArcCapacity(graphP theGraph, int requiredArcCapacity)
+int _DrawPlanar_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
 {
     return NOTOK;
 }
@@ -362,18 +363,18 @@ int _DrawPlanar_SortVertices(graphP theGraph)
     {
         // If this is a planarity-based algorithm to which graph drawing has been attached,
         // and if the embedding process has already been completed
-        if (theGraph->embedFlags == EMBEDFLAGS_DRAWPLANAR)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
         {
             int v, vIndex;
             DrawPlanar_VertexInfo temp;
 
             // Relabel the context data members that indicate vertices
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
             {
-                if (gp_IsVertex(context->VI[v].ancestor))
+                if (gp_IsVertex(theGraph, context->VI[v].ancestor))
                 {
-                    context->VI[v].ancestor = gp_GetVertexIndex(theGraph, context->VI[v].ancestor);
-                    context->VI[v].ancestorChild = gp_GetVertexIndex(theGraph, context->VI[v].ancestorChild);
+                    context->VI[v].ancestor = gp_GetIndex(theGraph, context->VI[v].ancestor);
+                    context->VI[v].ancestorChild = gp_GetIndex(theGraph, context->VI[v].ancestorChild);
                 }
             }
 
@@ -381,20 +382,20 @@ int _DrawPlanar_SortVertices(graphP theGraph)
             // to the index values of the vertices.  This could be done very easily with an extra array in
             // which, for each v, newVI[index of v] = VI[v].  However, this loop avoids memory allocation
             // by performing the operation (almost) in-place, except for the pre-existing visitation flags.
-            _ClearVertexVisitedFlags(theGraph, FALSE);
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+            _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
             {
                 // If the correct data has already been placed into position v
                 // by prior steps, then skip to the next vertex
-                if (gp_GetVertexVisited(theGraph, v))
+                if (gp_GetVisited(theGraph, v))
                     continue;
 
                 // At the beginning of processing position v, the data in position v
                 // corresponds to data that belongs at the index of v.
-                vIndex = gp_GetVertexIndex(theGraph, v);
+                vIndex = gp_GetIndex(theGraph, v);
 
                 // Iterate on position v until it receives the correct data
-                while (!gp_GetVertexVisited(theGraph, v))
+                while (!gp_GetVisited(theGraph, v))
                 {
                     // Place the data at position v into its proper location at position
                     // vIndex, and move vIndex's data into position v.
@@ -403,11 +404,11 @@ int _DrawPlanar_SortVertices(graphP theGraph)
                     context->VI[vIndex] = temp;
 
                     // The data at position vIndex is now marked as being correct.
-                    gp_SetVertexVisited(theGraph, vIndex);
+                    gp_SetVisited(theGraph, vIndex);
 
                     // The data now in position v is the data from position vIndex,
                     // whose index we now take as the new vIndex
-                    vIndex = gp_GetVertexIndex(theGraph, vIndex);
+                    vIndex = gp_GetIndex(theGraph, vIndex);
                 }
             }
         }
@@ -433,7 +434,7 @@ int _DrawPlanar_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int 
 
     if (context != NULL)
     {
-        if (theGraph->embedFlags == EMBEDFLAGS_DRAWPLANAR)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
         {
             _CollectDrawingData(context, RootVertex, W, WPrevLink);
         }
@@ -456,7 +457,7 @@ int _DrawPlanar_HandleInactiveVertex(graphP theGraph, int BicompRoot, int *pW, i
     {
         int RetVal = context->functions.fpHandleInactiveVertex(theGraph, BicompRoot, pW, pWPrevLink);
 
-        if (theGraph->embedFlags == EMBEDFLAGS_DRAWPLANAR)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
         {
             if (_BreakTie(context, BicompRoot, *pW, *pWPrevLink) != OK)
                 return NOTOK;
@@ -506,7 +507,7 @@ int _DrawPlanar_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult
     {
         int RetVal = context->functions.fpEmbedPostprocess(theGraph, v, edgeEmbeddingResult);
 
-        if (theGraph->embedFlags == EMBEDFLAGS_DRAWPLANAR)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
         {
             if (RetVal == OK)
             {
@@ -576,7 +577,7 @@ int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData)
             extraData = extraData + strlen(line) + 1;
 
             // Read the N lines of vertex information
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
             {
                 sscanf(extraData, " %d%c %d %d %d", &tempInt, &tempChar,
                        &context->VI[v].pos,
@@ -587,8 +588,8 @@ int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData)
             }
 
             // Read the lines that contain edge information
-            EsizeOccupied = gp_EdgeInUseIndexBound(theGraph);
-            for (e = gp_GetFirstEdge(theGraph); e < EsizeOccupied; e++)
+            EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
+            for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e++)
             {
                 sscanf(extraData, " %d%c %d %d %d", &tempInt, &tempChar,
                        &context->E[e].pos,
@@ -615,25 +616,47 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
 
     if (context != NULL)
     {
+        (*pExtraData) = NULL;
         if (context->functions.fpWritePostprocess(theGraph, pExtraData) != OK)
             return NOTOK;
+        else if ((*pExtraData) != NULL)
+        {
+            // NOTE: We currently do not support stacking WritePostprocess calls
+            // from multiple extensions; it wouldn't be hard, we just don't ;)
+            free((*pExtraData));
+            (*pExtraData) = NULL;
+
+            return NOTOK;
+        }
         else
         {
             int v, e, EsizeOccupied;
             char line[64];
             int maxLineSize = 64, extraDataPos = 0;
-            char *extraData = (char *)calloc((1 + theGraph->N + 2 * theGraph->M + 1) * maxLineSize, sizeof(char));
-            int zeroBasedVertexOffset = (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? gp_GetFirstVertex(theGraph) : 0;
-            int zeroBasedEdgeOffset = (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? gp_GetFirstEdge(theGraph) : 0;
+            char *extraData = (char *)calloc((1 + gp_GetN(theGraph) + 2 * gp_GetM(theGraph) + 1) * maxLineSize, sizeof(char));
+            int zeroBasedVertexOffset = 0;
+            int zeroBasedEdgeOffset = 0;
 
             if (extraData == NULL)
                 return NOTOK;
 
+            // If we are supposed to write 0-based output, then we have to set these two variables to indicate
+            // how much to subtract from each vertex and edge index based on whether this library has been
+            // compiled with 0-based or 1-based array indexing for the in-memory data structure (i.e., compiled
+            // with USE_FASTER_1BASEDARRAYS USE_0BASEDARRAYS). The macros invoked are responsive to the difference.
+            if (gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO)
+            {
+                zeroBasedVertexOffset = gp_GetFirstVertex(theGraph);
+                zeroBasedEdgeOffset = gp_EdgeArrayStart(theGraph);
+            }
+
             // Bit of an unlikely case, but for safety, a bigger maxLineSize
             // and line array size are needed to handle very large graphs
-            if (theGraph->N > 2000000000)
+            if (gp_GetN(theGraph) > 2000000000)
             {
                 free(extraData);
+                extraData = NULL;
+
                 return NOTOK;
             }
 
@@ -641,7 +664,7 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
             strcpy(extraData + extraDataPos, line);
             extraDataPos += (int)strlen(line);
 
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
             {
                 sprintf(line, "%d: %d %d %d\n", v - zeroBasedVertexOffset,
                         context->VI[v].pos,
@@ -651,8 +674,8 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
                 extraDataPos += (int)strlen(line);
             }
 
-            EsizeOccupied = gp_EdgeInUseIndexBound(theGraph);
-            for (e = gp_GetFirstEdge(theGraph); e < EsizeOccupied; e++)
+            EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
+            for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e++)
             {
                 if (gp_EdgeInUse(theGraph, e))
                 {

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -37,13 +37,13 @@ void _K23Search_FreeContext(void *);
 int K23SEARCH_ID = 0;
 
 /****************************************************************************
- gp_AttachK23Search()
+ gp_ExtendWith_K23Search()
 
  This function adjusts the graph data structure to attach the K2,3 search
  feature.
  ****************************************************************************/
 
-int gp_AttachK23Search(graphP theGraph)
+int gp_ExtendWith_K23Search(graphP theGraph)
 {
     K23SearchContext *context = NULL;
 
@@ -79,6 +79,8 @@ int gp_AttachK23Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K23Search_FreeContext(context);
+        context = NULL;
+
         return NOTOK;
     }
 
@@ -86,10 +88,10 @@ int gp_AttachK23Search(graphP theGraph)
 }
 
 /********************************************************************
- gp_DetachK23Search()
+ gp_Detach_K23Search()
  ********************************************************************/
 
-int gp_DetachK23Search(graphP theGraph)
+int gp_Detach_K23Search(graphP theGraph)
 {
     return gp_RemoveExtension(theGraph, K23SEARCH_ID);
 }
@@ -125,7 +127,7 @@ void _K23Search_FreeContext(void *pContext)
 
 int _K23Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
 {
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK23)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK23)
     {
         // If R is the root of a descendant bicomp of v, we push it, but then we know the search for K2,3
         // will be successful and return NONEMBEDDABLE because this condition corresponds to minor A, which
@@ -164,18 +166,18 @@ int _K23Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
 
     // For K2,3 search, we just return the edge embedding result because the
     // search result has been obtained already.
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK23)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK23)
     {
         if (edgeEmbeddingResult == OK)
         {
             // When a graph does not contain a K2,3 homeomorph, the embedding
             // is meaningless, so we empty it out. We preserve the embedFlags
             // to ensure post-processing continues as expected.
-            savedEmbedFlags = theGraph->embedFlags;
-            savedZEROBASEDIO = theGraph->internalFlags & FLAGS_ZEROBASEDIO;
+            savedEmbedFlags = gp_GetEmbedFlags(theGraph);
+            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO;
             gp_ReinitializeGraph(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
-            theGraph->internalFlags &= savedZEROBASEDIO;
+            theGraph->graphFlags &= savedZEROBASEDIO;
         }
 
         return edgeEmbeddingResult;
@@ -201,7 +203,7 @@ int _K23Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
 
 int _K23Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph)
 {
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK23)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK23)
     {
         return OK;
     }
@@ -228,7 +230,7 @@ int _K23Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph)
 {
     // When searching for K2,3, we ensure that theGraph is a subgraph of
     // the original graph and that it contains a K2,3 homeomorph
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK23)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK23)
     {
         int degrees[4], imageVerts[5];
 

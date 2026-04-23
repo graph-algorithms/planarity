@@ -12,14 +12,14 @@ cdef extern from "../c/graphLib/io/g6-read-iterator.h":
         pass
     ctypedef G6ReadIterator * G6ReadIteratorP
 
-    bint contentsExhausted(G6ReadIteratorP)
+    int g6_NewReader(G6ReadIteratorP *, graphP)
+    bint g6_EndReached(G6ReadIteratorP)
 
-    int allocateG6ReadIterator(G6ReadIteratorP *, graphP)
-    int beginG6ReadIterationFromG6FilePath(G6ReadIteratorP, char *)
+    int g6_InitReaderWithFileName(G6ReadIteratorP, char *)
 
-    int readGraphUsingG6ReadIterator(G6ReadIteratorP)
-    int endG6ReadIteration(G6ReadIteratorP)
-    int freeG6ReadIterator(G6ReadIteratorP *)
+    int g6_ReadGraph(G6ReadIteratorP)
+
+    int g6_FreeReader(G6ReadIteratorP *)
 
 
 cdef extern from "../c/graphLib/io/g6-write-iterator.h":
@@ -27,9 +27,9 @@ cdef extern from "../c/graphLib/io/g6-write-iterator.h":
         pass
     ctypedef G6WriteIterator * G6WriteIteratorP
 
-    int allocateG6WriteIterator(G6WriteIteratorP *, graphP)
-    int beginG6WriteIterationToG6FilePath(G6WriteIteratorP, char *)
+    int g6_NewWriter(G6WriteIteratorP *, graphP)
+    int g6_InitWriterWithFileName(G6WriteIteratorP, char *)
 
-    int writeGraphUsingG6WriteIterator(G6WriteIteratorP)
-    int endG6WriteIteration(G6WriteIteratorP)
-    int freeG6WriteIterator(G6WriteIteratorP *)
+    int g6_WriteGraph(G6WriteIteratorP)
+    
+    int g6_FreeWriter(G6WriteIteratorP *)

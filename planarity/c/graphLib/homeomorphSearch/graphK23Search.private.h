@@ -2,7 +2,7 @@
 #define GRAPH_K23SEARCH_PRIVATE_H
 
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -20,6 +20,8 @@ extern "C"
         graphFunctionTable functions;
 
     } K23SearchContext;
+
+extern int K23SEARCH_ID;
 
 #ifdef __cplusplus
 }

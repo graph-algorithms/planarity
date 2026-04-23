@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -30,7 +30,7 @@ void _K33Search_InitVertexInfo(K33SearchContext *context, int v);
 /* Forward declarations of overloading functions */
 
 int _K33Search_EmbeddingInitialize(graphP theGraph);
-void _CreateBackArcLists(graphP theGraph, K33SearchContext *context);
+void _CreateBackEdgeLists(graphP theGraph, K33SearchContext *context);
 void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context);
 void _K33Search_EmbedBackEdgeToDescendant(graphP theGraph, int RootSide, int RootVertex, int W, int WPrevLink);
 int _K33Search_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int WPrevLink);
@@ -42,7 +42,7 @@ int _K33Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
 int _K33Search_InitGraph(graphP theGraph, int N);
 void _K33Search_ReinitializeGraph(graphP theGraph);
-int _K33Search_EnsureArcCapacity(graphP theGraph, int requiredArcCapacity);
+int _K33Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 /* Forward declarations of functions used by the extension system */
 
@@ -58,13 +58,13 @@ void _K33Search_FreeContext(void *);
 int K33SEARCH_ID = 0;
 
 /****************************************************************************
- gp_AttachK33Search()
+ gp_ExtendWith_K33Search()
 
  This function adjusts the graph data structure to attach the K3,3 search
  feature.
  ****************************************************************************/
 
-int gp_AttachK33Search(graphP theGraph)
+int gp_ExtendWith_K33Search(graphP theGraph)
 {
     K33SearchContext *context = NULL;
 
@@ -105,7 +105,7 @@ int gp_AttachK33Search(graphP theGraph)
 
     context->functions.fpInitGraph = _K33Search_InitGraph;
     context->functions.fpReinitializeGraph = _K33Search_ReinitializeGraph;
-    context->functions.fpEnsureArcCapacity = _K33Search_EnsureArcCapacity;
+    context->functions.fpEnsureEdgeCapacity = _K33Search_EnsureEdgeCapacity;
 
     _K33Search_ClearStructures(context);
 
@@ -116,6 +116,8 @@ int gp_AttachK33Search(graphP theGraph)
                         &context->functions) != OK)
     {
         _K33Search_FreeContext(context);
+        context = NULL;
+
         return NOTOK;
     }
 
@@ -125,12 +127,14 @@ int gp_AttachK33Search(graphP theGraph)
     // also happens before gp_InitGraph(), which means N==0.
     // However, sometimes a feature is attached after gp_InitGraph(), in
     // which case N > 0
-    if (theGraph->N > 0)
+    if (gp_GetN(theGraph) > 0)
     {
         if (_K33Search_CreateStructures(context) != OK ||
             _K33Search_InitStructures(context) != OK)
         {
             _K33Search_FreeContext(context);
+            context = NULL;
+
             return NOTOK;
         }
     }
@@ -139,10 +143,10 @@ int gp_AttachK33Search(graphP theGraph)
 }
 
 /********************************************************************
- gp_DetachK33Search()
+ gp_Detach_K33Search()
  ********************************************************************/
 
-int gp_DetachK33Search(graphP theGraph)
+int gp_Detach_K33Search(graphP theGraph)
 {
     return gp_RemoveExtension(theGraph, K33SEARCH_ID);
 }
@@ -196,10 +200,10 @@ void _K33Search_ClearStructures(K33SearchContext *context)
  ********************************************************************/
 int _K33Search_CreateStructures(K33SearchContext *context)
 {
-    int VIsize = gp_PrimaryVertexIndexBound(context->theGraph);
-    int Esize = gp_EdgeIndexBound(context->theGraph);
+    int VIsize = gp_VertexArraySize(context->theGraph);
+    int Esize = gp_EdgeArraySize(context->theGraph);
 
-    if (context->theGraph->N <= 0)
+    if (gp_GetN(context->theGraph) <= 0)
         return NOTOK;
 
     if ((context->E = (K33Search_EdgeRecP)malloc(Esize * sizeof(K33Search_EdgeRec))) == NULL ||
@@ -219,21 +223,21 @@ int _K33Search_CreateStructures(K33SearchContext *context)
  ********************************************************************/
 int _K33Search_InitStructures(K33SearchContext *context)
 {
-    memset(context->VI, NIL_CHAR, gp_PrimaryVertexIndexBound(context->theGraph) * sizeof(K33Search_VertexInfo));
-    memset(context->E, NIL_CHAR, gp_EdgeIndexBound(context->theGraph) * sizeof(K33Search_EdgeRec));
+    memset(context->VI, NIL_CHAR, gp_VertexArraySize(context->theGraph) * sizeof(K33Search_VertexInfo));
+    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(K33Search_EdgeRec));
     // N.B. This is the legacy API-based approach to initializing the structures
     // required for the K_{3, 3} search graph algorithm extension.
     // graphP theGraph = context->theGraph;
     // int v, e, Esize;
 
-    // if (theGraph->N <= 0)
+    // if (gp_GetN(theGraph) <= 0)
     //     return OK;
 
-    // for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    // for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     //     _K33Search_InitVertexInfo(context, v);
 
-    // Esize = gp_EdgeIndexBound(theGraph);
-    // for (e = gp_GetFirstEdge(theGraph); e < Esize; e++)
+    // Esize = gp_EdgeArraySize(theGraph);
+    // for (e = gp_EdgeArrayStart(theGraph); e < Esize; e++)
     //     _K33Search_InitEdgeRec(context, e);
 
     return OK;
@@ -254,8 +258,8 @@ int _K33Search_InitGraph(graphP theGraph, int N)
 
     theGraph->N = N;
     theGraph->NV = N;
-    if (theGraph->arcCapacity == 0)
-        theGraph->arcCapacity = 2 * DEFAULT_EDGE_LIMIT * N;
+    if (theGraph->edgeCapacity == 0)
+        theGraph->edgeCapacity = DEFAULT_EDGE_LIMIT * N;
 
     if (_K33Search_CreateStructures(context) != OK ||
         _K33Search_InitStructures(context) != OK)
@@ -287,15 +291,16 @@ void _K33Search_ReinitializeGraph(graphP theGraph)
 }
 
 /********************************************************************
- The current implementation does not support an increase of arc
- (edge record) capacity once the extension is attached to the graph
- data structure.  This is only due to not being necessary to support.
+ The current implementation does not support an increase of edge
+ capacity once the extension is attached to the graph data structure.
+ This is only due to not being necessary to support.
+
  For now, it is easy to ensure the correct capacity before attaching
  the extension, but support could be added later if there is some
  reason to do so.
  ********************************************************************/
 
-int _K33Search_EnsureArcCapacity(graphP theGraph, int requiredArcCapacity)
+int _K33Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
 {
     return NOTOK;
 }
@@ -311,8 +316,8 @@ void *_K33Search_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int VIsize = gp_PrimaryVertexIndexBound((graphP)theGraph);
-        int Esize = gp_EdgeIndexBound((graphP)theGraph);
+        int VIsize = gp_VertexArraySize((graphP)theGraph);
+        int Esize = gp_EdgeArraySize((graphP)theGraph);
 
         *newContext = *context;
 
@@ -325,6 +330,8 @@ void *_K33Search_DupContext(void *pContext, void *theGraph)
             if (_K33Search_CreateStructures(newContext) != OK)
             {
                 _K33Search_FreeContext(newContext);
+                newContext = NULL;
+
                 return NULL;
             }
 
@@ -354,7 +361,7 @@ void _K33Search_FreeContext(void *pContext)
 
  This method overloads the embedding initialization phase of the
  core planarity algorithm to provide post-processing that creates
- the back arcs list and separated DFS child list (sorted by
+ the back edges list and separated DFS child list (sorted by
  lowpoint) for each vertex.
  ********************************************************************/
 
@@ -368,9 +375,9 @@ int _K33Search_EmbeddingInitialize(graphP theGraph)
         if (context->functions.fpEmbeddingInitialize(theGraph) != OK)
             return NOTOK;
 
-        if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
         {
-            _CreateBackArcLists(theGraph, context);
+            _CreateBackEdgeLists(theGraph, context);
             _CreateSeparatedDFSChildLists(theGraph, context);
         }
 
@@ -381,41 +388,41 @@ int _K33Search_EmbeddingInitialize(graphP theGraph)
 }
 
 /********************************************************************
- _CreateBackArcLists()
+ _CreateBackEdgeLists()
  ********************************************************************/
-void _CreateBackArcLists(graphP theGraph, K33SearchContext *context)
+void _CreateBackEdgeLists(graphP theGraph, K33SearchContext *context)
 {
     int v, e, eTwin, ancestor;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
-        e = gp_GetVertexFwdArcList(theGraph, v);
-        while (gp_IsArc(e))
+        e = gp_GetVertexFwdEdgeList(theGraph, v);
+        while (gp_IsEdge(theGraph, e))
         {
-            // Get the ancestor endpoint and the associated back arc
+            // Get the ancestor endpoint and the associated back edge record
             ancestor = gp_GetNeighbor(theGraph, e);
-            eTwin = gp_GetTwinArc(theGraph, e);
+            eTwin = gp_GetTwin(theGraph, e);
 
-            // Put it into the back arc list of the ancestor
-            if (gp_IsNotArc(context->VI[ancestor].backArcList))
+            // Put it into the back edge list of the ancestor
+            if (gp_IsNotEdge(theGraph, context->VI[ancestor].backEdgeList))
             {
-                context->VI[ancestor].backArcList = eTwin;
-                gp_SetPrevArc(theGraph, eTwin, eTwin);
-                gp_SetNextArc(theGraph, eTwin, eTwin);
+                context->VI[ancestor].backEdgeList = eTwin;
+                gp_SetPrevEdge(theGraph, eTwin, eTwin);
+                gp_SetNextEdge(theGraph, eTwin, eTwin);
             }
             else
             {
-                int eHead = context->VI[ancestor].backArcList;
-                int eTail = gp_GetPrevArc(theGraph, eHead);
-                gp_SetPrevArc(theGraph, eTwin, eTail);
-                gp_SetNextArc(theGraph, eTwin, eHead);
-                gp_SetPrevArc(theGraph, eHead, eTwin);
-                gp_SetNextArc(theGraph, eTail, eTwin);
+                int eHead = context->VI[ancestor].backEdgeList;
+                int eTail = gp_GetPrevEdge(theGraph, eHead);
+                gp_SetPrevEdge(theGraph, eTwin, eTail);
+                gp_SetNextEdge(theGraph, eTwin, eHead);
+                gp_SetPrevEdge(theGraph, eHead, eTwin);
+                gp_SetNextEdge(theGraph, eTail, eTwin);
             }
 
-            // Advance to the next forward edge
-            e = gp_GetNextArc(theGraph, e);
-            if (e == gp_GetVertexFwdArcList(theGraph, v))
+            // Advance to the next forward edge record of v (or NIL if done)
+            e = gp_GetNextEdge(theGraph, e);
+            if (e == gp_GetVertexFwdEdgeList(theGraph, v))
                 e = NIL;
         }
     }
@@ -438,12 +445,12 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
 
     // Initialize the bin and all the buckets to be empty
     LCReset(bin);
-    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, L); L++)
+    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, L); L++)
         buckets[L] = NIL;
 
     // For each vertex, add it to the bucket whose index is equal to the lowpoint of the vertex.
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
+    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
     {
         L = gp_GetVertexLowpoint(theGraph, v);
         buckets[L] = LCAppend(bin, buckets[L], v);
@@ -453,16 +460,16 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
     // Since lower numbered buckets are processed before higher numbered buckets, vertices with lower
     // lowpoint values are added before those with higher lowpoint values, so the separatedDFSChildList
     // of each vertex is sorted by lowpoint
-    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, L); L++)
+    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, L); L++)
     {
         v = buckets[L];
 
         // Loop through all the vertices with lowpoint L, putting each in the list of its parent
-        while (gp_IsVertex(v))
+        while (gp_IsVertex(theGraph, v))
         {
             DFSParent = gp_GetVertexParent(theGraph, v);
 
-            if (gp_IsVertex(DFSParent) && DFSParent != v)
+            if (gp_IsVertex(theGraph, DFSParent) && DFSParent != v)
             {
                 theList = context->VI[DFSParent].separatedDFSChildList;
                 theList = LCAppend(context->separatedDFSChildLists, theList, v);
@@ -477,10 +484,10 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
 /********************************************************************
  _K33Search_EmbedBackEdgeToDescendant()
 
- The forward and back arcs of the cycle edge are embedded by the planarity
- version of this function.
- However, for K_{3,3} subgraph homeomorphism, we also maintain the
- list of unembedded back arcs, so we need to remove the back arc from
+ The forward and back edge records of a back edge (cycle edge, co-tree
+ edge, etc.) are embedded by the planarity version of this function.
+ For K_{3,3} subgraph homeomorphism, we also maintain the list of
+ unembedded back edges, so we need to remove the back edge from
  that list since it is now being put back into the adjacency list.
  ********************************************************************/
 
@@ -492,22 +499,23 @@ void _K33Search_EmbedBackEdgeToDescendant(graphP theGraph, int RootSide, int Roo
     if (context != NULL)
     {
         // K33 search may have been attached, but not enabled
-        if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
         {
-            // Get the fwdArc from the adjacentTo field, and use it to get the backArc
-            int backArc = gp_GetTwinArc(theGraph, gp_GetVertexPertinentEdge(theGraph, W));
+            // Get the forward edge record from the adjacentTo field, and
+            // use it to get the back edge record
+            int backEdgeRec = gp_GetTwin(theGraph, gp_GetVertexPertinentEdge(theGraph, W));
 
-            // Remove the backArc from the backArcList
-            if (context->VI[W].backArcList == backArc)
+            // Remove the backEdgeRecfrom the backEdgeList
+            if (context->VI[W].backEdgeList == backEdgeRec)
             {
-                if (gp_GetNextArc(theGraph, backArc) == backArc)
-                    context->VI[W].backArcList = NIL;
+                if (gp_GetNextEdge(theGraph, backEdgeRec) == backEdgeRec)
+                    context->VI[W].backEdgeList = NIL;
                 else
-                    context->VI[W].backArcList = gp_GetNextArc(theGraph, backArc);
+                    context->VI[W].backEdgeList = gp_GetNextEdge(theGraph, backEdgeRec);
             }
 
-            gp_SetNextArc(theGraph, gp_GetPrevArc(theGraph, backArc), gp_GetNextArc(theGraph, backArc));
-            gp_SetPrevArc(theGraph, gp_GetNextArc(theGraph, backArc), gp_GetPrevArc(theGraph, backArc));
+            gp_SetNextEdge(theGraph, gp_GetPrevEdge(theGraph, backEdgeRec), gp_GetNextEdge(theGraph, backEdgeRec));
+            gp_SetPrevEdge(theGraph, gp_GetNextEdge(theGraph, backEdgeRec), gp_GetPrevEdge(theGraph, backEdgeRec));
         }
 
         // Invoke the superclass version of the function
@@ -538,7 +546,7 @@ int _K33Search_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int W
         /* If the merge is blocked, then a K_{3,3} homeomorph is isolated,
            and NONEMBEDDABLE is returned so that the Walkdown terminates */
 
-        if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
         {
             int mergeBlocker;
 
@@ -551,7 +559,7 @@ int _K33Search_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int W
             if (_SearchForMergeBlocker(theGraph, context, v, &mergeBlocker) != OK)
                 return NOTOK;
 
-            if (gp_IsVertex(mergeBlocker))
+            if (gp_IsVertex(theGraph, mergeBlocker))
             {
                 if (_FindK33WithMergeBlocker(theGraph, context, v, mergeBlocker) != OK)
                     return NOTOK;
@@ -590,10 +598,10 @@ void _K33Search_MergeVertex(graphP theGraph, int W, int WPrevLink, int R)
 
     if (context != NULL)
     {
-        if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
         {
             int theList = context->VI[W].separatedDFSChildList;
-            theList = LCDelete(context->separatedDFSChildLists, theList, gp_GetDFSChildFromRoot(theGraph, R));
+            theList = LCDelete(context->separatedDFSChildLists, theList, gp_GetDFSChildFromBicompRoot(theGraph, R));
             context->VI[W].separatedDFSChildList = theList;
         }
 
@@ -616,7 +624,7 @@ void _K33Search_InitEdgeRec(K33SearchContext *context, int e)
 void _K33Search_InitVertexInfo(K33SearchContext *context, int v)
 {
     context->VI[v].separatedDFSChildList = NIL;
-    context->VI[v].backArcList = NIL;
+    context->VI[v].backEdgeList = NIL;
     context->VI[v].mergeBlocker = NIL;
 }
 
@@ -631,7 +639,7 @@ int _K33Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R
     if (context == NULL)
         return NOTOK;
 
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
     {
         // If R is the root of a descendant bicomp of v, we push it, but then we know the search for K3,3
         // will be successful and return NONEMBEDDABLE because this condition corresponds to minor A, which
@@ -664,18 +672,18 @@ int _K33Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
 
     // For K3,3 search, we just return the edge embedding result because the
     // search result has been obtained already.
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
     {
         if (edgeEmbeddingResult == OK)
         {
             // When a graph does not contain a K3,3 homeomorph, the embedding
             // is meaningless, so we empty it out. We preserve the embedFlags
             // to ensure post-processing continues as expected.
-            savedEmbedFlags = theGraph->embedFlags;
-            savedZEROBASEDIO = theGraph->internalFlags & FLAGS_ZEROBASEDIO;
+            savedEmbedFlags = gp_GetEmbedFlags(theGraph);
+            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO;
             gp_ReinitializeGraph(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
-            theGraph->internalFlags &= savedZEROBASEDIO;
+            theGraph->graphFlags &= savedZEROBASEDIO;
         }
 
         return edgeEmbeddingResult;
@@ -701,7 +709,7 @@ int _K33Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
 
 int _K33Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph)
 {
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
     {
         return OK;
     }
@@ -728,7 +736,7 @@ int _K33Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph)
 {
     // When searching for K3,3, we ensure that theGraph is a subgraph of
     // the original graph and that it contains a K3,3 homeomorph
-    if (theGraph->embedFlags == EMBEDFLAGS_SEARCHFORK33)
+    if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_SEARCHFORK33)
     {
         int degrees[5], imageVerts[6];
 

@@ -2,7 +2,7 @@
 #define GRAPHFUNCTIONTABLE_H
 
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -42,7 +42,7 @@ extern "C"
         // of the behaviors of gp_* function in the public API
         int (*fpInitGraph)(graphP, int);
         void (*fpReinitializeGraph)(graphP);
-        int (*fpEnsureArcCapacity)(graphP, int);
+        int (*fpEnsureEdgeCapacity)(graphP, int);
         int (*fpSortVertices)(graphP);
 
         int (*fpReadPostprocess)(graphP, char *);

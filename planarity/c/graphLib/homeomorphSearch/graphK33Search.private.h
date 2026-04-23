@@ -2,7 +2,7 @@
 #define GRAPH_K33SEARCH_PRIVATE_H
 
 /*
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -22,10 +22,10 @@ extern "C"
 
     typedef K33Search_EdgeRec *K33Search_EdgeRecP;
 
-    // Additional equipment for each primary vertex
+    // Additional equipment for each vertex (non-virtual only)
     typedef struct
     {
-        int separatedDFSChildList, backArcList, mergeBlocker;
+        int separatedDFSChildList, backEdgeList, mergeBlocker;
     } K33Search_VertexInfo;
 
     typedef K33Search_VertexInfo *K33Search_VertexInfoP;
@@ -54,6 +54,8 @@ extern "C"
         graphFunctionTable functions;
 
     } K33SearchContext;
+
+    extern int K33SEARCH_ID;
 
 #ifdef __cplusplus
 }

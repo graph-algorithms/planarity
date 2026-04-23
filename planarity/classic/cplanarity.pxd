@@ -8,38 +8,41 @@ cdef extern from "../c/graphLib/graphStructures.h":
         pass
     ctypedef edgeRec * edgeRecP
 
-    cdef int gp_GetFirstVertex(graphP theGraph)
-    cdef int gp_GetLastVertex(graphP theGraph) 
-    cdef int gp_GetFirstArc(graphP theGraph, int v)
-    cdef int gp_GetLastArc(graphP theGraph, int v)
-    cdef int gp_IsArc(int v) 
-    cdef int gp_GetNeighbor(graphP theGraph, int v) 
-    cdef int gp_GetPrevArc(graphP theGraph, int v)
-    cdef int gp_GetNextArc(graphP theGraph, int v)
-    cdef int gp_GetDirection(graphP theGraph, int v)
+    int gp_GetFirstVertex(graphP theGraph)
+    int gp_GetLastVertex(graphP theGraph) 
+    int gp_GetFirstEdge(graphP theGraph, int v)
+    int gp_GetLastEdge(graphP theGraph, int v)
+    int gp_IsEdge(graphP theGraph, int v) 
+    int gp_GetNeighbor(graphP theGraph, int v) 
+    int gp_GetPrevEdge(graphP theGraph, int v)
+    int gp_GetNextEdge(graphP theGraph, int v)
+    int gp_GetDirection(graphP theGraph, int v)
 
 cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
-    cdef int OK, NOTOK, NULL 
+    int OK, NOTOK, NULL 
 
 cdef extern from "../c/graphLib/graph.h":
-    cdef int WRITE_ADJLIST
+    int WRITE_ADJLIST
 
 cdef extern from "../c/graphLib/graphStructures.h":
-    cdef int EMBEDFLAGS_PLANAR, NONEMBEDDABLE, EMBEDFLAGS_DRAWPLANAR
-    cdef int EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY  
+    int EMBEDFLAGS_PLANAR, NONEMBEDDABLE, EMBEDFLAGS_DRAWPLANAR
+    int EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY  
 
-    cdef graphP gp_New()
-    cdef void gp_Free(graphP *pGraph)
-    cdef int gp_InitGraph(graphP theGraph, int N)
-    cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
-    cdef int gp_Embed(graphP theGraph, int embedFlags)
-    cdef int gp_Write(graphP theGraph, char *FileName, int Mode)
-    cdef void gp_SortVertices(graphP theGraph)
+    graphP gp_New()
+    void gp_Free(graphP *pGraph)
+    int gp_InitGraph(graphP theGraph, int N)
+    int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
+    int gp_Embed(graphP theGraph, int embedFlags)
+    int gp_Write(graphP theGraph, char *FileName, int Mode)
+    void gp_SortVertices(graphP theGraph)
+
+    int gp_ExtendWith_Planarity(graphP theGraph)
+    int gp_ExtendWith_Outerplanarity(graphP theGraph)
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
-    cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
-    cdef int gp_AttachDrawPlanar(graphP theGraph)
+    int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
+    int gp_ExtendWith_DrawPlanar(graphP theGraph)
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.private.h":
@@ -60,5 +63,5 @@ cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.private.h":
         DrawPlanar_VertexInfoP VI
 
 cdef extern from "../c/graphLib/extensionSystem/graphExtensions.h":
-    cdef void * gp_GetExtension(graphP theGraph, int moduleID)
-    cdef int gp_FindExtension(graphP theGraph, int moduleID, void *pContext)
+    void * gp_GetExtension(graphP theGraph, int moduleID)
+    int gp_FindExtension(graphP theGraph, int moduleID, void *pContext)
