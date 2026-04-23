@@ -1,4 +1,6 @@
 import planarity
+
+
 # Example of the complete graph of 5 nodes, K5
 # K5 is not planar
 
@@ -8,8 +10,8 @@ edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
             ('c', 'd'), ('c', 'e'),
             ('d', 'e')]
 
-# remove an edge
-edgelist.remove(('a','b'))
-# graph is now planar
-# make text drawing
-print(planarity.ascii(edgelist))
+# write adjlist to file in "planarity adjlist" format
+planarity.write(edgelist,'k5.adjlist')
+# nodes are mapped to integers from 1 to n
+# get mapping
+print(planarity.mapping(edgelist))

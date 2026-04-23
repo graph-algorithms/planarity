@@ -1,4 +1,6 @@
 import planarity
+
+
 # Example of the complete graph of 5 nodes, K5
 # K5 is not planar
 # any of the following formats can bed used for representing the graph

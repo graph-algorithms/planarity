@@ -22,8 +22,6 @@ import re
 from typing import Optional
 
 # THIRD PARTY IMPORTS
-
-## Cython package members
 from planarity import (
     Graph,
     OK,
@@ -31,19 +29,17 @@ from planarity import (
     NOTOK,
 )
 
-## Pure Python package members
-from planarity import (
+# LOCAL IMPORTS
+from planarity_app_utils import (
     PLANARITY_PACKAGE_INFO,
     PLANARITY_ALGORITHM_SPECIFIERS,
     ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE,
-    ENSURE_EDGE_CAPACITY_SPECIFIERS,
+    ALGORITHM_SPECIFIER_OUTPUT_CORRESPONDENCE,
     EMBED_RESULT_NAME_CORRESPONDENCE,
     extend_graph,
     get_embed_flags,
-    max_num_edges_for_order,
 )
 
-# NO LOCAL IMPORTS
 
 def specific_graph(
         infile: Path,
@@ -94,10 +90,6 @@ def specific_graph(
 
     graph_for_embedding_check.gp_Read(str(infile))
     order = graph_for_embedding_check.gp_GetN()
-    if command in ENSURE_EDGE_CAPACITY_SPECIFIERS():
-        graph_for_embedding_check.gp_EnsureEdgeCapacity(
-            max_num_edges_for_order(order)
-        )
 
     graph_for_embedding.gp_InitGraph(order)
     graph_for_embedding.gp_CopyGraph(graph_for_embedding_check)
@@ -118,8 +110,23 @@ def specific_graph(
 
     # NOTE: When the embed_result is OK for K_{2,3}, K_{3,3}, and K_4
     # homeomorph search, the graph contents are thrown away by their respective
-    # EmbedPostprocess, so the output will be 
+    # EmbedPostprocess, so the output will be the empty graph, i.e. there is no
+    # subgraph homeomorphic to the target homeomorph
     graph_for_embedding.gp_Write(str(outfile), output_mode)
+
+    if embed_result == OK and command == "d":
+        choice = input(
+            "Do you wish to render the drawing to screen (s) "
+            "or file (f)? (Select any other input to dismiss.)\n\t"
+        )
+        if choice.lower() == "s":
+            print(graph_for_embedding.gp_DrawPlanar_RenderToString())
+            pass
+        elif choice.lower() == "f":
+            render_outfile = Path.joinpath(
+                outdir, f"{infile.stem}.s.{command}.render.txt"
+            )
+            graph_for_embedding.gp_DrawPlanar_RenderToFile(str(render_outfile))
 
     return embed_result
 
@@ -127,7 +134,7 @@ def print_embed_result(command: str, embed_result: int) -> None:
     """Renders the embed result for the given algorithm extension
 
     Args:
-        command:
+        command: algorithm command specifier
         embed_result: OK, NONEMBEDDABLE, or NOTOK based on the embed_result from
             specific_graph()
     
@@ -148,26 +155,18 @@ def print_embed_result(command: str, embed_result: int) -> None:
         )
     
     print(
-        f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)}"
-        f"{' Search' if command in ('2', '3', '4') else ''} embed result was "
+        f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)} "
+        "embed result was "
         f"{EMBED_RESULT_NAME_CORRESPONDENCE().get(embed_result)}."
     )
 
     if embed_result == NOTOK:
         return
     
-    if command in ("p", "d", "o"):
-        print(
-            f"\tThe graph is {'non-' if embed_result == NONEMBEDDABLE else ''}"
-            f"{'outer' if command == 'o' else ''}planar."
-        )
-    else:
-        print(
-            f"\tThe graph {'does not ' if embed_result == OK else ''}contain"
-            f"{'s' if embed_result == NONEMBEDDABLE else ''} a "
-           f"{ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE().get(command)} "
-           "homeomorph."
-        )
+    print(
+            f"\tThe graph is {'not ' if embed_result == NONEMBEDDABLE else ''}"
+            f"{ALGORITHM_SPECIFIER_OUTPUT_CORRESPONDENCE().get(command)}"
+    )
 
 
 if __name__ == "__main__":

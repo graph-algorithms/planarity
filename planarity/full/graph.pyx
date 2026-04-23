@@ -7,6 +7,8 @@ Wraps a graphP struct using a Cython class and wraps functions and macros that
 operate over graphP structs.
 """
 
+from libc.stdlib cimport free
+
 from planarity.full cimport cappconst
 from planarity.full cimport cgraphLib
 
@@ -44,9 +46,6 @@ cdef class Graph:
     def __dealloc__(self):
         if self._theGraph != NULL and self.owns_graphP:
             cgraphLib.gp_Free(&self._theGraph)
-
-    def is_graph_NULL(self):
-        return self._theGraph == NULL
 
     def get_wrapper_for_graphP(self) -> Graph:
         cdef Graph new_wrapper = Graph()
@@ -144,14 +143,24 @@ cdef class Graph:
     def gp_CopyGraph(self, Graph src_graph):
         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
         # the Graph wrapper that is passed in as the srcGraph
-        if src_graph.is_graph_NULL() or src_graph.gp_GetN() == 0:
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "Invalid destination graph: wrapped graphP is NULL."
+            )
+        
+        try:
+            if src_graph.gp_GetN() == 0:
+                raise ValueError("Source graph has not been initialized.")
+        except RuntimeError as src_graph_uninit_error:
             raise ValueError(
-                "Source graph either has not been allocated or not been "
-                "initialized.")
+                "Invalid source graph: wrapped graphP is NULL."
+            ) from src_graph_uninit_error
+        
         if self.gp_GetN() != src_graph.gp_GetN():
             raise ValueError(
                 "Source and destination graphs must have the same order "
                 "to copy graphP struct.")
+        
         if cgraphLib.gp_CopyGraph(self._theGraph, src_graph._theGraph) != cappconst.OK:
             raise RuntimeError(f"gp_CopyGraph() failed.")
 
@@ -193,9 +202,9 @@ cdef class Graph:
 
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = outfile_name.encode('utf-8')
-        cdef const char *FileName = encoded
+        cdef const char *theFileName = encoded
 
-        if cgraphLib.gp_Write(self._theGraph, FileName, mode_code) != cappconst.OK:
+        if cgraphLib.gp_Write(self._theGraph, theFileName, mode_code) != cappconst.OK:
             raise RuntimeError(
                 f"gp_Write() of graph to '{outfile_name}' failed."
                 )
@@ -254,6 +263,28 @@ cdef class Graph:
         if cgraphLib.gp_ExtendWith_DrawPlanar(self._theGraph) != cappconst.OK:
             raise RuntimeError("Failed to extend graph with DrawPlanar structures.")
     
+    def gp_DrawPlanar_RenderToFile(self, str outfile_name):
+        # Convert Python str to UTF-8 encoded bytes, and then to const char *
+        cdef bytes encoded = outfile_name.encode('utf-8')
+        cdef const char *theFileName = encoded
+
+        if cgraphLib.gp_DrawPlanar_RenderToFile(self._theGraph, theFileName) != cappconst.OK:
+            raise RuntimeError(f"Failed to render embedding to file '{outfile_name}'.")
+    
+    def gp_DrawPlanar_RenderToString(self):
+        cdef char* renditionString = NULL
+        if cgraphLib.gp_DrawPlanar_RenderToString(self._theGraph, &renditionString) != OK:
+            raise RuntimeError(f"Failed to render embedding to C string.")
+        
+        try:
+            return renditionString.decode('ascii')
+        except Exception as string_conversion_error:
+            raise RuntimeError(
+                "Failed to convert C string to Python string."
+                ) from string_conversion_error
+        finally:
+            free(renditionString)
+
     def gp_ExtendWith_Outerplanarity(self):
         if cgraphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != cappconst.OK:
             raise RuntimeError("Failed to extend graph with Outerplanarity structures.")

@@ -1,4 +1,13 @@
 """Utilities to support planarity app implementation"""
+__all__ = [
+    "PLANARITY_PACKAGE_INFO",
+    "PLANARITY_ALGORITHM_SPECIFIERS",
+    "ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE",
+    "ALGORITHM_SPECIFIER_OUTPUT_CORRESPONDENCE",
+    "EMBED_RESULT_NAME_CORRESPONDENCE",
+    "extend_graph",
+    "get_embed_flags",
+]
 
 from planarity import (
     gp_GetProjectVersionFull,
@@ -18,25 +27,15 @@ from planarity import (
     NOTOK,
 )
 
-__all__ = [
-    "PLANARITY_PACKAGE_INFO",
-    "PLANARITY_ALGORITHM_SPECIFIERS",
-    "ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE",
-    "ENSURE_EDGE_CAPACITY_SPECIFIERS",
-    "EMBED_RESULT_NAME_CORRESPONDENCE",
-    "extend_graph",
-    "get_embed_flags",
-    "max_num_edges_for_order",
-]
-
 
 def PLANARITY_PACKAGE_INFO() -> str:
     return (
-        "\n==================================================="
-        "\nThe planarity package is based on the Edge Addition"
-        f"\nPlanarity Suite version {gp_GetProjectVersionFull()}"
-        " which contains the\nlibPlanarity graph library version "
-        f"{gp_GetLibPlanarityVersionFull()}"
+        "\n===================================================\n"
+        "This program imports the planarity package, which\n"
+        "is based on the Edge Addition Planarity Suite\n"
+        f"version {gp_GetProjectVersionFull()}, which contains "
+        "the libPlanarity\ngraph library version "
+        f"{gp_GetLibPlanarityVersionFull()}."
         "\n===================================================\n"
     )
 
@@ -51,15 +50,22 @@ def ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE() -> dict[str, str]:
             "p": "Planarity",
             "d": "Draw Planar",
             "o": "Outerplanarity",
-            "2": "K_{2, 3}",
-            "3": "K_{3, 3}",
-            "4": "K_4",
+            "2": "K_{2, 3} Search",
+            "3": "K_{3, 3} Search",
+            "4": "K_4 Search",
         }
 
 
-def ENSURE_EDGE_CAPACITY_SPECIFIERS() -> tuple[str, ...]:
-    """Graph algorithm extensions requiring ensure edge capacity before extending"""
-    return ("d", "3", "4")
+def ALGORITHM_SPECIFIER_OUTPUT_CORRESPONDENCE() -> dict[str, str]:
+    """Returns mapping of command specifier to output type"""
+    return {
+            "p": "planar",
+            "d": "planar",
+            "o": "outerplanar",
+            "2": "K_{2, 3}-free",
+            "3": "K_{3, 3}-free",
+            "4": "K_4-free",
+        }
 
 
 def EMBED_RESULT_NAME_CORRESPONDENCE() -> dict[int, str]:
@@ -127,8 +133,3 @@ def get_embed_flags(command: str) -> int:
         raise ValueError(f"Unsupported algorithm specifier: {command}")
 
     return embed_flags
-
-
-def max_num_edges_for_order(order: int) -> int:
-    """Returns max number of edges possible for given graph order"""
-    return (int)((order * (order - 1)) / 2)

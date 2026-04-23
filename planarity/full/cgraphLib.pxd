@@ -73,6 +73,9 @@ cdef extern from "../c/graphLib/graph.h":
 cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
     int gp_ExtendWith_DrawPlanar(graphP theGraph)
 
+    int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
+    int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
+
 
 cdef extern from "../c/graphLib/homeomorphSearch/graphK23Search.h":
     int gp_ExtendWith_K23Search(graphP theGraph)
