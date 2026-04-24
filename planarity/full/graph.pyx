@@ -41,21 +41,10 @@ cdef class Graph:
         self._theGraph = cgraphLib.gp_New()
         if self._theGraph == NULL:
             raise MemoryError("gp_New() failed.")
-        self.owns_graphP = True
 
     def __dealloc__(self):
-        if self._theGraph != NULL and self.owns_graphP:
+        if self._theGraph != NULL:
             cgraphLib.gp_Free(&self._theGraph)
-
-    def get_wrapper_for_graphP(self) -> Graph:
-        cdef Graph new_wrapper = Graph()
-
-        if new_wrapper._theGraph != NULL:
-            cgraphLib.gp_Free(&new_wrapper._theGraph)
-        new_wrapper._theGraph = self._theGraph
-
-        new_wrapper.owns_graphP = False
-        return new_wrapper
 
     def gp_IsEdge(self, int e):
         return (
@@ -170,14 +159,8 @@ cdef class Graph:
             raise MemoryError("gp_DupGraph() failed.")
 
         cdef Graph new_graph = Graph()
-        if new_graph is None:
-            raise MemoryError("Unable to create new Graph container for duplicate.")
-        
-        if new_graph._theGraph != NULL:
-            cgraphLib.gp_Free(&new_graph._theGraph)
-        
+        cgraphLib.gp_Free(&new_graph._theGraph)
         new_graph._theGraph = theGraph_dup
-        new_graph.owns_graphP = True
 
         return new_graph
 
