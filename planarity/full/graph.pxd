@@ -11,4 +11,3 @@ from planarity.full cimport cgraphLib
 
 cdef class Graph:
     cdef cgraphLib.graphP _theGraph
-    cdef bint owns_graphP
