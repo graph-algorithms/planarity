@@ -286,7 +286,7 @@ cdef class Graph:
         
     def gp_Embed(self, int embedFlags) -> int:
         embed_result = cgraphLib.gp_Embed(self._theGraph, embedFlags)
-        if embed_result == NOTOK:
+        if embed_result != OK and embed_result != NONEMBEDDABLE:
             raise RuntimeError("Failed to perform embed operation.")
         
         return embed_result
@@ -295,7 +295,7 @@ cdef class Graph:
         check_result = cgraphLib.gp_TestEmbedResultIntegrity(
                 self._theGraph, copy_of_orig_graph._theGraph, embed_result
             )
-        if check_result == NOTOK:
+        if check_result != OK and check_result != NONEMBEDDABLE:
             raise RuntimeError("Failed embed integrity check.")
 
         return check_result
