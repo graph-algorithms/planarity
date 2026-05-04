@@ -123,7 +123,7 @@ cdef class Graph:
         return cgraphLib.gp_GetN(self._theGraph)
 
     def gp_InitGraph(self, int n):
-        if cgraphLib.gp_InitGraph(self._theGraph, n) != cappconst.OK:
+        if cgraphLib.gp_InitGraph(self._theGraph, n) != OK:
             raise RuntimeError(f"gp_InitGraph() failed.")
 
     def gp_ReinitializeGraph(self):
@@ -150,7 +150,7 @@ cdef class Graph:
                 "Source and destination graphs must have the same order "
                 "to copy graphP struct.")
         
-        if cgraphLib.gp_CopyGraph(self._theGraph, src_graph._theGraph) != cappconst.OK:
+        if cgraphLib.gp_CopyGraph(self._theGraph, src_graph._theGraph) != OK:
             raise RuntimeError(f"gp_CopyGraph() failed.")
 
     def gp_DupGraph(self) -> Graph:
@@ -169,7 +169,7 @@ cdef class Graph:
         cdef bytes encoded = infile_name.encode('utf-8')
         cdef const char *FileName = encoded
 
-        if cgraphLib.gp_Read(self._theGraph, FileName) != cappconst.OK:
+        if cgraphLib.gp_Read(self._theGraph, FileName) != OK:
             raise RuntimeError(f"gp_Read() failed.")
 
     def gp_Write(self, str outfile_name, str mode):
@@ -187,7 +187,7 @@ cdef class Graph:
         cdef bytes encoded = outfile_name.encode('utf-8')
         cdef const char *theFileName = encoded
 
-        if cgraphLib.gp_Write(self._theGraph, theFileName, mode_code) != cappconst.OK:
+        if cgraphLib.gp_Write(self._theGraph, theFileName, mode_code) != OK:
             raise RuntimeError(
                 f"gp_Write() of graph to '{outfile_name}' failed."
                 )
@@ -210,7 +210,7 @@ cdef class Graph:
         return cgraphLib.gp_GetEdgeCapacity(self._theGraph)
 
     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
-        if cgraphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != cappconst.OK:
+        if cgraphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
             raise RuntimeError(
                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "
                 f"{new_edge_capacity}.")
@@ -224,7 +224,7 @@ cdef class Graph:
             raise RuntimeError(
                 f"Invalid link index for vlink: '{vlink}'."
             )
-        if cgraphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink) != cappconst.OK:
+        if cgraphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink) != OK:
             raise RuntimeError(
                 f"Unable to add edge (u, v) = ({u}, {v}) with ulink = {ulink} "
                 f"and vlink = {vlink}."
@@ -239,11 +239,11 @@ cdef class Graph:
         return cgraphLib.gp_DeleteEdge(self._theGraph, e)
 
     def gp_ExtendWith_Planarity(self):
-        if cgraphLib.gp_ExtendWith_Planarity(self._theGraph) != cappconst.OK:
+        if cgraphLib.gp_ExtendWith_Planarity(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with Planarity structures.")
     
     def gp_ExtendWith_DrawPlanar(self):
-        if cgraphLib.gp_ExtendWith_DrawPlanar(self._theGraph) != cappconst.OK:
+        if cgraphLib.gp_ExtendWith_DrawPlanar(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with DrawPlanar structures.")
     
     def gp_DrawPlanar_RenderToFile(self, str outfile_name):
@@ -251,7 +251,7 @@ cdef class Graph:
         cdef bytes encoded = outfile_name.encode('utf-8')
         cdef const char *theFileName = encoded
 
-        if cgraphLib.gp_DrawPlanar_RenderToFile(self._theGraph, theFileName) != cappconst.OK:
+        if cgraphLib.gp_DrawPlanar_RenderToFile(self._theGraph, theFileName) != OK:
             raise RuntimeError(f"Failed to render embedding to file '{outfile_name}'.")
     
     def gp_DrawPlanar_RenderToString(self):
@@ -269,23 +269,33 @@ cdef class Graph:
             free(renditionString)
 
     def gp_ExtendWith_Outerplanarity(self):
-        if cgraphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != cappconst.OK:
+        if cgraphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with Outerplanarity structures.")
     
     def gp_ExtendWith_K23Search(self):
-        if cgraphLib.gp_ExtendWith_K23Search(self._theGraph) != cappconst.OK:
+        if cgraphLib.gp_ExtendWith_K23Search(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with K23Search structures.")
     
     def gp_ExtendWith_K33Search(self):
-        if cgraphLib.gp_ExtendWith_K33Search(self._theGraph) != cappconst.OK:
+        if cgraphLib.gp_ExtendWith_K33Search(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with K33Search structures.")
     
     def gp_ExtendWith_K4Search(self):
-        if cgraphLib.gp_ExtendWith_K4Search(self._theGraph) != cappconst.OK:
+        if cgraphLib.gp_ExtendWith_K4Search(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with K4Search structures.")
         
     def gp_Embed(self, int embedFlags) -> int:
-        return cgraphLib.gp_Embed(self._theGraph, embedFlags)
+        embed_result = cgraphLib.gp_Embed(self._theGraph, embedFlags)
+        if embed_result != OK and embed_result != NONEMBEDDABLE:
+            raise RuntimeError("Failed to perform embed operation.")
+        
+        return embed_result
 
     def gp_TestEmbedResultIntegrity(self, Graph copy_of_orig_graph, int embed_result) -> int:
-        return cgraphLib.gp_TestEmbedResultIntegrity(self._theGraph, copy_of_orig_graph._theGraph, embed_result)
+        check_result = cgraphLib.gp_TestEmbedResultIntegrity(
+                self._theGraph, copy_of_orig_graph._theGraph, embed_result
+            )
+        if check_result != OK and check_result != NONEMBEDDABLE:
+            raise RuntimeError("Failed embed integrity check.")
+
+        return check_result
