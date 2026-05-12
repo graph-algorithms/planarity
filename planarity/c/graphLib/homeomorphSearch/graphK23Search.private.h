@@ -7,7 +7,7 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#include "../graph.h"
+#include "../planarityRelated/graphOuterplanarity.private.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -17,11 +17,11 @@ extern "C"
     typedef struct
     {
         // Overloaded function pointers
-        graphFunctionTable functions;
+        graphFunctionTableStruct functions;
 
     } K23SearchContext;
 
-extern int K23SEARCH_ID;
+    extern int K23SEARCH_ID;
 
 #ifdef __cplusplus
 }

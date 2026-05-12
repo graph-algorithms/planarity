@@ -7,7 +7,7 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#include "../graph.h"
+#include "../planarityRelated/graphOuterplanarity.private.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -47,7 +47,7 @@ extern "C"
         K4Search_EdgeRecP E;
 
         // Overloaded function pointers
-        graphFunctionTable functions;
+        graphFunctionTableStruct functions;
 
         // Internal variable for converting a tail recursion into a simple loop
         int handlingBlockedBicomp;

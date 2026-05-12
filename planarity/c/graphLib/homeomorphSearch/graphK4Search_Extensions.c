@@ -6,8 +6,11 @@ See the LICENSE.TXT file for licensing information.
 
 #include <stdlib.h>
 
-#include "graphK4Search.private.h"
 #include "graphK4Search.h"
+#include "graphK4Search.private.h"
+
+// Need to save and restore a graph flag related to IO
+#include "../io/graphIO.h"
 
 extern int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R);
 
@@ -34,7 +37,7 @@ int _K4Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _K4Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
 int _K4Search_InitGraph(graphP theGraph, int N);
-void _K4Search_ReinitializeGraph(graphP theGraph);
+void _K4Search_ReinitGraph(graphP theGraph);
 int _K4Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 /* Forward declarations of functions used by the extension system */
@@ -61,6 +64,9 @@ int gp_ExtendWith_K4Search(graphP theGraph)
 {
     K4SearchContext *context = NULL;
 
+    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+        return NOTOK;
+
     // If the K4 search feature has already been attached to the graph,
     // then there is no need to attach it again
     gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
@@ -68,6 +74,10 @@ int gp_ExtendWith_K4Search(graphP theGraph)
     {
         return OK;
     }
+
+    // Ensure theGraph is an Outerplanarity Graph
+    if (gp_ExtendWith_Outerplanarity(theGraph) != OK)
+        return NOTOK;
 
     // Allocate a new extension context
     context = (K4SearchContext *)malloc(sizeof(K4SearchContext));
@@ -85,14 +95,14 @@ int gp_ExtendWith_K4Search(graphP theGraph)
     // Put the overload functions into the context function table.
     // gp_AddExtension will overload the graph's functions with these, and
     // return the base function pointers in the context function table
-    memset(&context->functions, 0, sizeof(graphFunctionTable));
+    memset(&context->functions, 0, sizeof(graphFunctionTableStruct));
     context->functions.fpHandleBlockedBicomp = _K4Search_HandleBlockedBicomp;
     context->functions.fpEmbedPostprocess = _K4Search_EmbedPostprocess;
     context->functions.fpCheckEmbeddingIntegrity = _K4Search_CheckEmbeddingIntegrity;
     context->functions.fpCheckObstructionIntegrity = _K4Search_CheckObstructionIntegrity;
 
     context->functions.fpInitGraph = _K4Search_InitGraph;
-    context->functions.fpReinitializeGraph = _K4Search_ReinitializeGraph;
+    context->functions.fpReinitGraph = _K4Search_ReinitGraph;
     context->functions.fpEnsureEdgeCapacity = _K4Search_EnsureEdgeCapacity;
 
     _K4Search_ClearStructures(context);
@@ -173,12 +183,10 @@ void _K4Search_ClearStructures(K4SearchContext *context)
  ********************************************************************/
 int _K4Search_CreateStructures(K4SearchContext *context)
 {
-    int Esize = gp_EdgeArraySize(context->theGraph);
-
     if (gp_GetN(context->theGraph) <= 0)
         return NOTOK;
 
-    if ((context->E = (K4Search_EdgeRecP)malloc(Esize * sizeof(K4Search_EdgeRec))) == NULL ||
+    if ((context->E = (K4Search_EdgeRecP)malloc(gp_UpperBoundEdgeStorage(context->theGraph) * sizeof(K4Search_EdgeRec))) == NULL ||
         0)
     {
         return NOTOK;
@@ -192,14 +200,7 @@ int _K4Search_CreateStructures(K4SearchContext *context)
  ********************************************************************/
 int _K4Search_InitStructures(K4SearchContext *context)
 {
-    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(K4Search_EdgeRec));
-    // N.B. This is the legacy API-based approach to initializing the structures
-    // required for the K_4 search graph algorithm extension.
-    // int e, Esize;
-
-    // Esize = gp_EdgeArraySize(context->theGraph);
-    // for (e = gp_EdgeArrayStart(context->theGraph); e < Esize; e++)
-    //     _K4Search_InitEdgeRec(context, e);
+    memset(context->E, NIL_CHAR, gp_UpperBoundEdgeStorage(context->theGraph) * sizeof(K4Search_EdgeRec));
 
     return OK;
 }
@@ -218,7 +219,7 @@ int _K4Search_InitGraph(graphP theGraph, int N)
     theGraph->N = N;
     theGraph->NV = N;
     if (theGraph->edgeCapacity == 0)
-        theGraph->edgeCapacity = DEFAULT_EDGE_LIMIT * N;
+        theGraph->edgeCapacity = DEFAULT_EDGE_CAPACITY_FACTOR * N;
 
     if (_K4Search_CreateStructures(context) != OK ||
         _K4Search_InitStructures(context) != OK)
@@ -232,7 +233,7 @@ int _K4Search_InitGraph(graphP theGraph, int N)
 /********************************************************************
  ********************************************************************/
 
-void _K4Search_ReinitializeGraph(graphP theGraph)
+void _K4Search_ReinitGraph(graphP theGraph)
 {
     K4SearchContext *context = NULL;
     gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
@@ -240,7 +241,7 @@ void _K4Search_ReinitializeGraph(graphP theGraph)
     if (context != NULL)
     {
         // Reinitialize the graph
-        context->functions.fpReinitializeGraph(theGraph);
+        context->functions.fpReinitGraph(theGraph);
 
         // Do the reinitialization that is specific to this module
         _K4Search_InitStructures(context);
@@ -273,7 +274,7 @@ void *_K4Search_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int Esize = gp_EdgeArraySize((graphP)theGraph);
+        int Esize = gp_UpperBoundEdgeStorage((graphP)theGraph);
 
         *newContext = *context;
 
@@ -354,7 +355,7 @@ int _K4Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
                 sp_Pop2_Discard1(theGraph->theStack, R);
 
                 // And we have to clear the indicator of the minor A that was reduced, since it was eliminated.
-                theGraph->IC.minorType = 0;
+                theGraph->IC->minorType = MINORTYPE_NONE;
             }
         }
 
@@ -386,13 +387,13 @@ int _K4Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
                 // detects that it still has not embedded all the edges to descendants of the bicomp's
                 // root edge child, then Walkdown calls this routine again, and the above non-reentrancy
                 // code returns NONEMBEDDABLE, causing this loop to search again for a K4.
-                theGraph->IC.minorType = 0;
-                RetVal = theGraph->functions.fpWalkDown(theGraph, v, RootVertex);
+                theGraph->IC->minorType = MINORTYPE_NONE;
+                RetVal = theGraph->functions->fpWalkDown(theGraph, v, RootVertex);
 
                 // Except if the Walkdown returns NONEMBEDDABLE due to finding a K4 homeomorph entangled
                 // with a descendant bicomp (the R != RootVertex case above), then it was found
                 // entangled with Minor A, so we can stop the search if minor A is detected
-                if (theGraph->IC.minorType & MINORTYPE_A)
+                if (theGraph->IC->minorType & MINORTYPE_A)
                     break;
 
             } while (RetVal == NONEMBEDDABLE);
@@ -427,8 +428,8 @@ int _K4Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
             // is meaningless, so we empty it out. We preserve the embedFlags
             // to ensure post-processing continues as expected.
             savedEmbedFlags = gp_GetEmbedFlags(theGraph);
-            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO;
-            gp_ReinitializeGraph(theGraph);
+            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO;
+            gp_ReinitGraph(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
             theGraph->graphFlags &= savedZEROBASEDIO;
         }

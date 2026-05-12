@@ -4,7 +4,8 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#include "../graph.h"
+#include "graphK23Search.h"
+#include "graphK23Search.private.h"
 
 /* Imported functions */
 
@@ -42,7 +43,7 @@ int _IsolateOuterplanarityObstructionE3orE4(graphP theGraph);
 
 int _SearchForK23InBicomp(graphP theGraph, int v, int R)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
     int X, Y, XPrevLink, YPrevLink;
 
     /* Begin by determining whether minor A, B or E is detected */
@@ -53,11 +54,11 @@ int _SearchForK23InBicomp(graphP theGraph, int v, int R)
     /* Minors A and B result in the desired K_{2,3} homeomorph,
         so we isolate it and return NONEMBEDDABLE. */
 
-    if (theGraph->IC.minorType & (MINORTYPE_A | MINORTYPE_B))
+    if (theGraph->IC->minorType & (MINORTYPE_A | MINORTYPE_B))
     {
         _ClearAllVisitedFlagsInGraph(theGraph);
 
-        if (theGraph->IC.minorType & MINORTYPE_A)
+        if (theGraph->IC->minorType & MINORTYPE_A)
         {
             if (_FindUnembeddedEdgeToCurVertex(theGraph, IC->w, &IC->dw) != TRUE)
                 return NOTOK;
@@ -65,7 +66,7 @@ int _SearchForK23InBicomp(graphP theGraph, int v, int R)
             if (_IsolateOuterplanarityObstructionA(theGraph) != OK)
                 return NOTOK;
         }
-        else if (theGraph->IC.minorType & MINORTYPE_B)
+        else if (theGraph->IC->minorType & MINORTYPE_B)
         {
             int SubtreeRoot = gp_GetVertexLastPertinentRootChild(theGraph, IC->w);
 
@@ -151,21 +152,21 @@ int _SearchForK23InBicomp(graphP theGraph, int v, int R)
 
 int _IsolateOuterplanarityObstructionE1orE2(graphP theGraph)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
     int XPrevLink = 1;
 
-    if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC.py == NIL)
+    if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC->py == NIL)
         return NOTOK;
 
     /* Isolate E1 */
 
-    if (theGraph->IC.px != theGraph->IC.x)
+    if (theGraph->IC->px != theGraph->IC->x)
     {
         if (_MarkPathAlongBicompExtFace(theGraph, IC->r, IC->w) != OK ||
             _MarkPathAlongBicompExtFace(theGraph, IC->py, IC->r) != OK)
             return NOTOK;
     }
-    else if (theGraph->IC.py != theGraph->IC.y)
+    else if (theGraph->IC->py != theGraph->IC->y)
     {
         if (_MarkPathAlongBicompExtFace(theGraph, IC->r, IC->x) != OK ||
             _MarkPathAlongBicompExtFace(theGraph, IC->w, IC->r) != OK)
@@ -189,7 +190,7 @@ int _IsolateOuterplanarityObstructionE1orE2(graphP theGraph)
     /* Final bits are in common */
 
     if (_FindUnembeddedEdgeToCurVertex(theGraph, IC->w, &IC->dw) != TRUE ||
-        theGraph->functions.fpMarkDFSPath(theGraph, IC->w, IC->dw) != OK ||
+        theGraph->functions->fpMarkDFSPath(theGraph, IC->w, IC->dw) != OK ||
         _JoinBicomps(theGraph) != OK ||
         _AddAndMarkEdge(theGraph, IC->v, IC->dw) != OK)
         return NOTOK;
@@ -203,29 +204,29 @@ int _IsolateOuterplanarityObstructionE1orE2(graphP theGraph)
 
 int _IsolateOuterplanarityObstructionE3orE4(graphP theGraph)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
     int u, d, XorY;
 
     // Minor E3
-    gp_UpdateVertexFuturePertinentChild(theGraph, theGraph->IC.x, theGraph->IC.v);
-    gp_UpdateVertexFuturePertinentChild(theGraph, theGraph->IC.y, theGraph->IC.v);
-    if (FUTUREPERTINENT(theGraph, theGraph->IC.x, theGraph->IC.v) ||
-        FUTUREPERTINENT(theGraph, theGraph->IC.y, theGraph->IC.v))
+    gp_UpdateVertexFuturePertinentChild(theGraph, theGraph->IC->x, theGraph->IC->v);
+    gp_UpdateVertexFuturePertinentChild(theGraph, theGraph->IC->y, theGraph->IC->v);
+    if (FUTUREPERTINENT(theGraph, theGraph->IC->x, theGraph->IC->v) ||
+        FUTUREPERTINENT(theGraph, theGraph->IC->y, theGraph->IC->v))
     {
-        if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC.py == NIL)
+        if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC->py == NIL)
             return NOTOK;
 
-        gp_UpdateVertexFuturePertinentChild(theGraph, theGraph->IC.x, theGraph->IC.v);
-        if (FUTUREPERTINENT(theGraph, theGraph->IC.x, theGraph->IC.v))
-            XorY = theGraph->IC.x;
+        gp_UpdateVertexFuturePertinentChild(theGraph, theGraph->IC->x, theGraph->IC->v);
+        if (FUTUREPERTINENT(theGraph, theGraph->IC->x, theGraph->IC->v))
+            XorY = theGraph->IC->x;
         else
-            XorY = theGraph->IC.y;
+            XorY = theGraph->IC->y;
 
         /* The cases of X future pertinent and Y future pertinent
                are the same except for the bicomp external face marking
                (because parameter order is important) */
 
-        if (XorY == theGraph->IC.x)
+        if (XorY == theGraph->IC->x)
         {
             if (_MarkPathAlongBicompExtFace(theGraph, IC->x, IC->w) != OK ||
                 _MarkPathAlongBicompExtFace(theGraph, IC->y, IC->r) != OK)
@@ -244,9 +245,9 @@ int _IsolateOuterplanarityObstructionE3orE4(graphP theGraph)
         if (_FindUnembeddedEdgeToAncestor(theGraph, XorY, &u, &d) != TRUE)
             return NOTOK;
 
-        if (theGraph->functions.fpMarkDFSPath(theGraph, u, IC->v) != OK ||
-            theGraph->functions.fpMarkDFSPath(theGraph, XorY, d) != OK ||
-            theGraph->functions.fpMarkDFSPath(theGraph, IC->w, IC->dw) != OK ||
+        if (theGraph->functions->fpMarkDFSPath(theGraph, u, IC->v) != OK ||
+            theGraph->functions->fpMarkDFSPath(theGraph, XorY, d) != OK ||
+            theGraph->functions->fpMarkDFSPath(theGraph, IC->w, IC->dw) != OK ||
             _JoinBicomps(theGraph) != OK ||
             _AddAndMarkEdge(theGraph, u, d) != OK ||
             _AddAndMarkEdge(theGraph, IC->v, IC->dw) != OK)

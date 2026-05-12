@@ -6,10 +6,14 @@ See the LICENSE.TXT file for licensing information.
 
 #define GRAPHTEST_C
 
-#include "../graph.h"
-#include "../lowLevelUtils/stack.h"
+// This source file implements the main graph planarity result integrity check method
+// NOTE: Integrity checks for subclasses of Planarity Graph that are extended with
+//       extensions for advanced algorithms are performed by overloads of the
+//       integrity check function in those extensions, e.g., K33Search and DrawPlanar.
+#include "graphPlanarity.h"
+#include "graphPlanarity.private.h"
 
-extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 /* Private function declarations (some exported to system) */
 
@@ -89,11 +93,11 @@ int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResu
 
     if (embedResult == OK)
     {
-        RetVal = theGraph->functions.fpCheckEmbeddingIntegrity(theGraph, origGraph);
+        RetVal = theGraph->functions->fpCheckEmbeddingIntegrity(theGraph, origGraph);
     }
     else if (embedResult == NONEMBEDDABLE)
     {
-        RetVal = theGraph->functions.fpCheckObstructionIntegrity(theGraph, origGraph);
+        RetVal = theGraph->functions->fpCheckObstructionIntegrity(theGraph, origGraph);
     }
 
     if (RetVal == OK)
@@ -169,7 +173,7 @@ int _CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph)
 int _CheckEmbeddingFacialIntegrity(graphP theGraph)
 {
     stackP theStack = theGraph->theStack;
-    int EsizeOccupied, v, e, eTwin, eStart, eNext, NumFaces, connectedComponents;
+    int v, e, eTwin, eStart, eNext, NumFaces, connectedComponents;
 
     if (theGraph == NULL)
         return NOTOK;
@@ -183,14 +187,16 @@ int _CheckEmbeddingFacialIntegrity(graphP theGraph)
 
     /* Push all edge records (both parts of each edge) and set them all to unvisited */
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
-    for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e += 2)
+    for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); e += 2)
     {
         // Except skip edge holes
         if (gp_EdgeInUse(theGraph, e))
         {
+            // Push e and clear its visited flag
             sp_Push(theStack, e);
             gp_ClearEdgeVisited(theGraph, e);
+
+            // And now the same for the twin of e
             eTwin = gp_GetTwin(theGraph, e);
             sp_Push(theStack, eTwin);
             gp_ClearEdgeVisited(theGraph, eTwin);
@@ -232,7 +238,7 @@ int _CheckEmbeddingFacialIntegrity(graphP theGraph)
         so we do not subtract one. */
 
     connectedComponents = 0;
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         if (gp_IsDFSTreeRoot(theGraph, v))
         {
@@ -270,11 +276,11 @@ int _CheckAllVerticesOnExternalFace(graphP theGraph)
     int v;
 
     // Mark all vertices unvisited
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     // For each connected component, walk its external face and
     // mark the vertices as visited
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         if (gp_IsDFSTreeRoot(theGraph, v))
             _MarkExternalFaceVertices(theGraph, v);
@@ -282,7 +288,7 @@ int _CheckAllVerticesOnExternalFace(graphP theGraph)
 
     // If any vertex is unvisited, then the embedding is not an outerplanar
     // embedding, so we return NOTOK
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         if (!gp_GetVisited(theGraph, v))
             return NOTOK;
 
@@ -426,7 +432,7 @@ int _getImageVertices(graphP theGraph, int *degrees, int maxDegree,
 
     imageVertPos = 0;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         degree = gp_GetVertexDegree(theGraph, v);
         if (degree == 1)
@@ -483,7 +489,7 @@ int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
         return FALSE;
 
     // We clear all the vertex visited flags
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     // For each pair of image vertices, we test that there is a path
     // between the two vertices.  If so, the visited flags of the
@@ -499,7 +505,7 @@ int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
     // The visited flags should have marked only degree two vertices,
     // so for every marked vertex, we subtract one from the count of
     // the degree two vertices.
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         if (gp_GetVisited(theGraph, v))
             degrees[2]--;
 
@@ -564,7 +570,7 @@ int _TestForK33GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
     /* Now test the paths between each of the first three vertices and
            each of the last three vertices */
 
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     for (imageVertPos = 0; imageVertPos < 3; imageVertPos++)
         for (K = 3; K < 6; K++)
@@ -572,7 +578,7 @@ int _TestForK33GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
                           imageVerts[K]) != TRUE)
                 return FALSE;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         if (gp_GetVisited(theGraph, v))
             degrees[2]--;
 
@@ -690,7 +696,7 @@ int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
          Now test the paths between each of the degree 2 image
          vertices and imageVerts[1]. */
 
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     for (imageVertPos = 2; imageVertPos < 5; imageVertPos++)
     {
@@ -701,7 +707,7 @@ int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
         gp_SetVisited(theGraph, imageVerts[imageVertPos]);
     }
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         if (gp_GetVisited(theGraph, v))
             degrees[2]--;
 
@@ -878,8 +884,8 @@ int _TestSubgraph(graphP theSubgraph, graphP theGraph)
 
     // If the graph is not sorted by DFI, but the alleged subgraph is,
     // then "unsort" the alleged subgraph so both have the same vertex order
-    if (!(gp_GetGraphFlags(theGraph) & FLAGS_SORTEDBYDFI) &&
-        (gp_GetGraphFlags(theSubgraph) & FLAGS_SORTEDBYDFI))
+    if (!(gp_GetGraphFlags(theGraph) & GRAPHFLAGS_SORTEDBYDFI) &&
+        (gp_GetGraphFlags(theSubgraph) & GRAPHFLAGS_SORTEDBYDFI))
     {
         invokeSortOnSubgraph = TRUE;
         gp_SortVertices(theSubgraph);
@@ -887,8 +893,8 @@ int _TestSubgraph(graphP theSubgraph, graphP theGraph)
 
     // If the graph is not sorted by DFI, but the alleged subgraph is,
     // then "unsort" the alleged subgraph so both have the same vertex order
-    if (!(gp_GetGraphFlags(theSubgraph) & FLAGS_SORTEDBYDFI) &&
-        (gp_GetGraphFlags(theGraph) & FLAGS_SORTEDBYDFI))
+    if (!(gp_GetGraphFlags(theSubgraph) & GRAPHFLAGS_SORTEDBYDFI) &&
+        (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_SORTEDBYDFI))
     {
         invokeSortOnGraph = TRUE;
         gp_SortVertices(theGraph);
@@ -896,10 +902,10 @@ int _TestSubgraph(graphP theSubgraph, graphP theGraph)
 
     /* We clear all visitation flags */
 
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     /* For each vertex... */
-    for (v = gp_GetFirstVertex(theSubgraph), degreeCount = 0; gp_VertexInRangeAscending(theSubgraph, v); v++)
+    for (v = gp_LowerBoundVertices(theSubgraph), degreeCount = 0; v < gp_UpperBoundVertices(theSubgraph); ++v)
     {
         /* For each neighbor w in the adjacency list of vertex v in the
               subgraph, set the visited flag in w in the graph */

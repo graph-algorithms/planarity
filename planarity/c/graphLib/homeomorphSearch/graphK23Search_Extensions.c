@@ -6,8 +6,11 @@ See the LICENSE.TXT file for licensing information.
 
 #include <stdlib.h>
 
-#include "graphK23Search.private.h"
 #include "graphK23Search.h"
+#include "graphK23Search.private.h"
+
+// Need to save and restore a graph flag related to IO
+#include "../io/graphIO.h"
 
 extern int _SearchForK23InBicomp(graphP theGraph, int v, int R);
 
@@ -47,6 +50,9 @@ int gp_ExtendWith_K23Search(graphP theGraph)
 {
     K23SearchContext *context = NULL;
 
+    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+        return NOTOK;
+
     // If the K2,3 search feature has already been attached to the graph
     // then there is no need to attach it again
     gp_FindExtension(theGraph, K23SEARCH_ID, (void *)&context);
@@ -54,6 +60,10 @@ int gp_ExtendWith_K23Search(graphP theGraph)
     {
         return OK;
     }
+
+    // Ensure theGraph is an Outerplanarity Graph
+    if (gp_ExtendWith_Outerplanarity(theGraph) != OK)
+        return NOTOK;
 
     // Allocate a new extension context
     context = (K23SearchContext *)malloc(sizeof(K23SearchContext));
@@ -65,7 +75,7 @@ int gp_ExtendWith_K23Search(graphP theGraph)
     // Put the overload functions into the context function table.
     // gp_AddExtension will overload the graph's functions with these, and
     // return the base function pointers in the context function table
-    memset(&context->functions, 0, sizeof(graphFunctionTable));
+    memset(&context->functions, 0, sizeof(graphFunctionTableStruct));
 
     context->functions.fpHandleBlockedBicomp = _K23Search_HandleBlockedBicomp;
     context->functions.fpEmbedPostprocess = _K23Search_EmbedPostprocess;
@@ -174,8 +184,8 @@ int _K23Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
             // is meaningless, so we empty it out. We preserve the embedFlags
             // to ensure post-processing continues as expected.
             savedEmbedFlags = gp_GetEmbedFlags(theGraph);
-            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO;
-            gp_ReinitializeGraph(theGraph);
+            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO;
+            gp_ReinitGraph(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
             theGraph->graphFlags &= savedZEROBASEDIO;
         }

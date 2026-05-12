@@ -49,7 +49,7 @@ static int moduleIDGenerator = 0;
 
   2) Define an extension context structure to contain all of the data
      and function pointers that extend the graph.  The context must
-     include a graphFunctionTable to allow overloading of functions.
+     include a graphFunctionTableStruct to allow overloading of functions.
      An instance of this context structure is passed to the "context"
      parameter of gp_AddExtension().
 
@@ -110,23 +110,22 @@ static int moduleIDGenerator = 0;
 
      b) If any data must be associated with vertices and virtual vertices,
         then it is necessary to perform initialization parallel to the
-        initialization of anyTypeVertexRec instances. Similarly, if data
+        initialization of VertexRec instances. Similarly, if data
         must be associated only with vertices (and not virtual vertices),
         then initialization parallel to VertexInfo initialization is
         required. At this time, there do not exist overloadable functions
-        for fpInitAnyTypeVertexRec() and fpInitVertexInfo().
-        Instead, overload fpInitGraph() and fpReinitializeGraph(). Also
-        if an extension must delete an edge, it should have its own
+        for fpInitVertexRec() and fpInitVertexInfo().
+        Instead, overload fpInitGraph() and fpReinitGraph().
 
      c) If any data must be associated with the edges, then the extension
         creates a parallel array that is initialized and reinitialized
-        in overloads of fpInitGraph() and fpReinitializeGraph().
+        in overloads of fpInitGraph() and fpReinitGraph().
         Also, if the extension deletes edges, then the extension provides
         its own _Feature_DeleteEdge() that initializes its edge
         extension data along with calling gp_DeleteEdge().
 
      d) If any graph-level data structures are needed, then an
-        overload of fpReinitializeGraph() will also be needed, not just the
+        overload of fpReinitGraph() will also be needed, not just the
         overload of fpInitGraph().
 
      e) If any data must be persisted in the file format, then overloads
@@ -149,7 +148,7 @@ static int moduleIDGenerator = 0;
         list collection, should be created _and_ initialized.
 
      c) The _Feature_InitStructures() should invoke just the functions
-        needed to initialize the custom AnyTypeVertexRec, VertexInfo and
+        needed to initialize the custom VertexRec, VertexInfo and
         EdgeRec data members, if any.
 
   8) Define a function gp_Detach_Feature() that invokes gp_RemoveExtension()
@@ -217,7 +216,7 @@ int gp_AddExtension(graphP theGraph,
     }
 
     // Allocate the new extension
-    if ((newExtension = (graphExtensionP)malloc(sizeof(graphExtension))) == NULL)
+    if ((newExtension = (graphExtensionP)malloc(sizeof(graphExtensionStruct))) == NULL)
     {
         return NOTOK;
     }
@@ -232,7 +231,7 @@ int gp_AddExtension(graphP theGraph,
     _OverloadFunctions(theGraph, functions);
 
     // Make the new linkages
-    newExtension->next = (struct graphExtension *)theGraph->extensions;
+    newExtension->next = (struct graphExtensionStruct *)theGraph->extensions;
     theGraph->extensions = newExtension;
 
     // The new extension was successfully added
@@ -257,9 +256,9 @@ int gp_AddExtension(graphP theGraph,
 
 void _OverloadFunctions(graphP theGraph, graphFunctionTableP functions)
 {
-    void **currFunctionTable = (void **)&theGraph->functions;
+    void **currFunctionTable = (void **)theGraph->functions;
     void **newFunctionTable = (void **)functions;
-    int numFunctions = sizeof(theGraph->functions) / sizeof(void *);
+    int numFunctions = sizeof(graphFunctionTableStruct) / sizeof(void *);
     int K;
 
     for (K = 0; K < numFunctions; K++)
@@ -383,7 +382,7 @@ int gp_RemoveExtension(graphP theGraph, int moduleID)
 
         // Unhook the curr extension
         if (prev != NULL)
-            prev->next = (struct graphExtension *)next;
+            prev->next = (struct graphExtensionStruct *)next;
         else
             theGraph->extensions = next;
 
@@ -473,7 +472,7 @@ int gp_CopyExtensions(graphP dstGraph, graphP srcGraph)
 
     while (next != NULL)
     {
-        if ((newNext = (graphExtensionP)malloc(sizeof(graphExtension))) == NULL)
+        if ((newNext = (graphExtensionP)malloc(sizeof(graphExtensionStruct))) == NULL)
         {
             gp_FreeExtensions(dstGraph);
             return NOTOK;
@@ -487,7 +486,7 @@ int gp_CopyExtensions(graphP dstGraph, graphP srcGraph)
         newNext->next = NULL;
 
         if (newLast != NULL)
-            newLast->next = (struct graphExtension *)newNext;
+            newLast->next = (struct graphExtensionStruct *)newNext;
         else
             dstGraph->extensions = newNext;
 

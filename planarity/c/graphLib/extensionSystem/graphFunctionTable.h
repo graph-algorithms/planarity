@@ -14,12 +14,12 @@ extern "C"
 
     /*
      NOTE: If you add any FUNCTION POINTERS to this function table, then you must
-           also initialize them in _InitFunctionTable() in graphUtils.c.
+           also initialize them in _InitFunctionTable() in graph.c.
     */
-    typedef struct baseGraphStructure baseGraphStructure;
-    typedef baseGraphStructure *graphP;
+    typedef struct graphStruct graphStruct;
+    typedef graphStruct *graphP;
 
-    typedef struct
+    struct graphFunctionTableStruct
     {
         // These function pointers allow extension modules to overload some of
         // the behaviors of protected functions.  Only advanced applications
@@ -41,7 +41,7 @@ extern "C"
         // These function pointers allow extension modules to overload some
         // of the behaviors of gp_* function in the public API
         int (*fpInitGraph)(graphP, int);
-        void (*fpReinitializeGraph)(graphP);
+        void (*fpReinitGraph)(graphP);
         int (*fpEnsureEdgeCapacity)(graphP, int);
         int (*fpSortVertices)(graphP);
 
@@ -54,10 +54,10 @@ extern "C"
         int (*fpRestoreVertex)(graphP);
         int (*fpContractEdge)(graphP, int);
         int (*fpIdentifyVertices)(graphP, int, int, int);
+    };
 
-    } graphFunctionTable;
-
-    typedef graphFunctionTable *graphFunctionTableP;
+    typedef struct graphFunctionTableStruct graphFunctionTableStruct;
+    typedef graphFunctionTableStruct *graphFunctionTableP;
 
 #ifdef __cplusplus
 }

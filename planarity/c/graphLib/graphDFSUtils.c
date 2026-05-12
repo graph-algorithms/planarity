@@ -6,46 +6,108 @@ See the LICENSE.TXT file for licensing information.
 
 #define GRAPHDFSUTILS_C
 
-#include "graph.h"
+#include "graphDFSUtils.h"
+#include "graphDFSUtils.private.h"
+
+// For LOGGING-related declarations
+#include "lowLevelUtils/apiutils.private.h"
+
+// Allows the default _SortVertices() to swap planarity vertex info, if present
+#include "planarityRelated/graphPlanarity.private.h"
 
 // Private methods, except exported within library
 int _SortVertices(graphP theGraph);
 
 // Imported methods
-extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 /********************************************************************
- gp_CreateDFSTree
- Assigns Depth First Index (DFI) to each vertex.  Also records parent
- of each vertex in the DFS tree, and marks DFS tree edges that connect
- parent and child. Forward edge records are also distinguished from
- edges leading from a DFS tree descendant back to an ancestor.
- The forward edge records are moved to the end of the adjacency list
- to make the set easier to find and process.
+ gp_ExtendWith_DFSUtils()
+
+ Makes any necessary preparations for supporting DFS utility methods
+ that create a DFS tree, sort vertices, and compute least ancestor.
+ and lowpoint values. Those four utility methods automatically call
+ this method to extend the graph, though this method can also be
+ called beforehand.
+
+ This method should be called after gp_InitGraph() or gp_Read()
+ because the number of vertices must be known.
+
+ On success, sets GRAPHFLAGS_EXTENDEDWITH_DFSUTILS.
+
+ Returns OK on success, NOTOK on failure.
+ ********************************************************************/
+
+int gp_ExtendWith_DFSUtils(graphP theGraph)
+{
+    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+        return NOTOK;
+
+    // if the Graph has already been extended with DFS Utils,
+    // then just return successfully
+    if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_EXTENDEDWITH_DFSUTILS)
+        return OK;
+
+    // Allocate supporting data structures as needed
+
+    // Perform "on success" operations
+    theGraph->graphFlags |= GRAPHFLAGS_EXTENDEDWITH_DFSUTILS;
+    return OK;
+}
+
+/********************************************************************
+ gp_Detach_DFSUtils()
+
+ This function is intended to disinherit the DFS Utils feature by
+ removing the extension from the graph, which also frees any
+ DFS-specific data structures.
+
+ Clears GRAPHFLAGS_EXTENDEDWITH_DFSUTILS after detaching support for
+ the DFS utility methods.
+
+ Returns OK for success, NOTOK for failure
+ ********************************************************************/
+
+int gp_Detach_DFSUtils(graphP theGraph)
+{
+    // Free any data structures allocated by the ExtendWith function
+
+    // Indicate successful detachment of DFSUtils
+    theGraph->graphFlags &= ~GRAPHFLAGS_EXTENDEDWITH_DFSUTILS;
+    return OK;
+}
+
+/********************************************************************
+ gp_DepthFirstSearch()
+
+ This depth-first search (DFS) assigns a Depth First Index (DFI) to
+ each vertex and records the DFS parent of each vertex in each DFS tree
+ that forms during the depth-first search. Also, the type of each
+ edge record of each edge is set to indicate whether the edge record's
+ neighbor value points to a DFS child or parent (a DFS tree edge) or
+ a farther DFS ancestor or descendant (the backward and forward
+ edge records of a "back" edge/"cycle" edge/"co-tree" edge).
 
  NOTE: This is a utility function provided for general use. The core
         planarity algorithm uses its own DFS so it can build related
-        data structures at the same time as the DFS tree is created.
+        data structures at the same time.
  ********************************************************************/
 
-#include "lowLevelUtils/platformTime.h"
-
-int gp_CreateDFSTree(graphP theGraph)
+int gp_DepthFirstSearch(graphP theGraph)
 {
     stackP theStack;
     int DFI, v, uparent, u, e;
 
-#ifdef PROFILE
-    platform_time start, end;
-    platform_GetTime(start);
-#endif
-
     if (theGraph == NULL)
         return NOTOK;
-    if (gp_GetGraphFlags(theGraph) & FLAGS_DFSNUMBERED)
+
+    if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_DFSNUMBERED)
         return OK;
 
-    _gp_LogLine("\ngraphDFSUtils.c/gp_CreateDFSTree() start");
+    if (gp_ExtendWith_DFSUtils(theGraph) != OK)
+        return NOTOK;
+
+    _gp_LogLine("\ngraphDFSUtils.c/gp_DepthFirstSearch() start");
 
     theStack = theGraph->theStack;
 
@@ -63,12 +125,12 @@ int gp_CreateDFSTree(graphP theGraph)
 
     /* Clear the visited flags because they are used to detect what has
         been visited as the DFS traverses the graph. */
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     /* This outer loop causes the connected subgraphs of a disconnected
             graph to be numbered */
 
-    for (DFI = v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, DFI); v++)
+    for (DFI = v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         if (gp_IsNotDFSTreeRoot(theGraph, v))
             continue;
@@ -113,20 +175,16 @@ int gp_CreateDFSTree(graphP theGraph)
         }
     }
 
-    _gp_LogLine("graphDFSUtils.c/gp_CreateDFSTree() end\n");
+    _gp_LogLine("graphDFSUtils.c/gp_DepthFirstSearch() end\n");
 
-    theGraph->graphFlags |= FLAGS_DFSNUMBERED;
-
-#ifdef PROFILE
-    platform_GetTime(end);
-    printf("DFS in %.3lf seconds.\n", platform_GetDuration(start, end));
-#endif
+    theGraph->graphFlags |= GRAPHFLAGS_DFSNUMBERED;
 
     return OK;
 }
 
 /********************************************************************
  gp_SortVertices()
+
  Once depth first numbering has been applied to the graph, the index
  member of each vertex contains the DFI.  This routine can reorder the
  vertices in linear time so that they appear in ascending order by DFI.
@@ -146,7 +204,10 @@ int gp_SortVertices(graphP theGraph)
     if (theGraph == NULL)
         return NOTOK;
 
-    return theGraph->functions.fpSortVertices(theGraph);
+    if (gp_ExtendWith_DFSUtils(theGraph) != OK)
+        return NOTOK;
+
+    return theGraph->functions->fpSortVertices(theGraph);
 }
 
 // Give macro names to swap operations used when sorting vertices
@@ -156,34 +217,37 @@ int gp_SortVertices(graphP theGraph)
 // The index values of the first N vertices are changed to hold
 // the prior locations of vertices when they are rearranged to
 // or from DFI order.
-#define _gp_SwapAnyTypeVertexRec(dstGraph, vdst, srcGraph, vsrc) \
-    {                                                            \
-        anyTypeVertexRec tempV = dstGraph->V[vdst];              \
-        dstGraph->V[vdst] = srcGraph->V[vsrc];                   \
-        srcGraph->V[vsrc] = tempV;                               \
+#define _gp_SwapVertexRec(dstGraph, vdst, srcGraph, vsrc) \
+    {                                                     \
+        vertexRec tempV = dstGraph->V[vdst];              \
+        dstGraph->V[vdst] = srcGraph->V[vsrc];            \
+        srcGraph->V[vsrc] = tempV;                        \
     }
-#define _gp_SwapVertexInfo(dstGraph, dstPos, srcGraph, srcPos) \
-    {                                                          \
-        vertexInfo tempVI = dstGraph->VI[dstPos];              \
-        dstGraph->VI[dstPos] = srcGraph->VI[srcPos];           \
-        srcGraph->VI[srcPos] = tempVI;                         \
+#define _gp_SwapDFSUtilsVertexInfo(dstGraph, dstPos, srcGraph, srcPos) \
+    {                                                                  \
+        DFSUtils_VertexInfo tempDVI = dstGraph->DVI[dstPos];           \
+        dstGraph->DVI[dstPos] = srcGraph->DVI[srcPos];                 \
+        srcGraph->DVI[srcPos] = tempDVI;                               \
+    }
+#define _gp_SwapPlanarityVertexInfo(dstGraph, dstPos, srcGraph, srcPos) \
+    if (dstGraph->PVI != NULL && srcGraph->PVI != NULL)                 \
+    {                                                                   \
+        Planarity_VertexInfo tempPVI = dstGraph->PVI[dstPos];           \
+        dstGraph->PVI[dstPos] = srcGraph->PVI[srcPos];                  \
+        srcGraph->PVI[srcPos] = tempPVI;                                \
     }
 
 // This is the default method for sorting vertices into and back
 // out of DFI order.
 int _SortVertices(graphP theGraph)
 {
-    int v, EsizeOccupied, e, srcPos, dstPos;
-
-#ifdef PROFILE
-    platform_time start, end;
-    platform_GetTime(start);
-#endif
+    int v, srcPos, dstPos;
 
     if (theGraph == NULL)
         return NOTOK;
-    if (!(gp_GetGraphFlags(theGraph) & FLAGS_DFSNUMBERED))
-        if (gp_CreateDFSTree(theGraph) != OK)
+
+    if (!(gp_GetGraphFlags(theGraph) & GRAPHFLAGS_DFSNUMBERED))
+        if (gp_DepthFirstSearch(theGraph) != OK)
             return NOTOK;
 
     _gp_LogLine("\ngraphDFSUtils.c/_SortVertices() start");
@@ -192,19 +256,30 @@ int _SortVertices(graphP theGraph)
        Also, if any links go back to locations 0 to n-1, then they
        need to be changed because we are reordering the vertices */
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
-    for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e += 2)
+    if (theGraph->numEdgeHoles == 0)
     {
-        if (gp_EdgeInUse(theGraph, e))
-        {
+        // Slightly optimized loop body, for when edge deletion has not been used
+        // (Optimization level O1 or higher hoists the upperBoundEdges calculation,
+        //  so this is mainly just a little less work in the loop body).
+        int upperBoundEdges = gp_LowerBoundEdges(theGraph) + (gp_GetM(theGraph) << 1);
+        for (int e = gp_LowerBoundEdges(theGraph); e < upperBoundEdges; ++e)
             gp_SetNeighbor(theGraph, e, gp_GetIndex(theGraph, gp_GetNeighbor(theGraph, e)));
-            gp_SetNeighbor(theGraph, e + 1, gp_GetIndex(theGraph, gp_GetNeighbor(theGraph, e + 1)));
+    }
+    else
+    {
+        for (int e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); e += 2)
+        {
+            if (gp_EdgeInUse(theGraph, e))
+            {
+                gp_SetNeighbor(theGraph, e, gp_GetIndex(theGraph, gp_GetNeighbor(theGraph, e)));
+                gp_SetNeighbor(theGraph, e + 1, gp_GetIndex(theGraph, gp_GetNeighbor(theGraph, e + 1)));
+            }
         }
     }
 
     /* Convert DFSParent from v to DFI(v) or vice versa */
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         if (gp_IsNotDFSTreeRoot(theGraph, v))
             gp_SetVertexParent(theGraph, v, gp_GetIndex(theGraph, gp_GetVertexParent(theGraph, v)));
 
@@ -216,7 +291,7 @@ int _SortVertices(graphP theGraph)
        location, so we cannot use index==v as a test for whether the
        correct vertex is in location 'index'. */
 
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     /* We visit each vertex location, skipping those marked as visited since
        we've already moved the correct vertex into that location. The
@@ -225,15 +300,16 @@ int _SortVertices(graphP theGraph)
        location as visited, then sets its index to be the location from
        whence we obtained the vertex record. */
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         srcPos = v;
         while (!gp_GetVisited(theGraph, v))
         {
             dstPos = gp_GetIndex(theGraph, v);
 
-            _gp_SwapAnyTypeVertexRec(theGraph, dstPos, theGraph, v);
-            _gp_SwapVertexInfo(theGraph, dstPos, theGraph, v);
+            _gp_SwapVertexRec(theGraph, dstPos, theGraph, v);
+            _gp_SwapDFSUtilsVertexInfo(theGraph, dstPos, theGraph, v);
+            _gp_SwapPlanarityVertexInfo(theGraph, dstPos, theGraph, v);
 
             gp_SetVisited(theGraph, dstPos);
             gp_SetIndex(theGraph, dstPos, srcPos);
@@ -244,20 +320,16 @@ int _SortVertices(graphP theGraph)
 
     /* Invert the bit that records the sort order of the graph */
 
-    theGraph->graphFlags ^= FLAGS_SORTEDBYDFI;
+    theGraph->graphFlags ^= GRAPHFLAGS_SORTEDBYDFI;
 
     _gp_LogLine("graphDFSUtils.c/_SortVertices() end\n");
-
-#ifdef PROFILE
-    platform_GetTime(end);
-    printf("SortVertices in %.3lf seconds.\n", platform_GetDuration(start, end));
-#endif
 
     return OK;
 }
 
 /********************************************************************
  gp_ComputeLowpoints()
+
         leastAncestor(v): min(v, ancestor neighbors of v, excluding parent)
         Lowpoint(v): min(leastAncestor(v), Lowpoint of DFS children of v)
 
@@ -274,7 +346,7 @@ int _SortVertices(graphP theGraph)
  values based on the childrens' lowpoints and the least ancestor from
  among the edges in the vertex's adjacency list.
 
- If they have not already been performed, gp_CreateDFSTree() and
+ If they have not already been performed, gp_DepthFirstSearch() and
  gp_SortVertices() are invoked on the graph, and it is left in the
  sorted state on completion of this method.
 
@@ -292,20 +364,18 @@ int gp_ComputeLowpoints(graphP theGraph)
     if (theGraph == NULL)
         return NOTOK;
 
+    if (gp_ExtendWith_DFSUtils(theGraph) != OK)
+        return NOTOK;
+
     theStack = theGraph->theStack;
 
-    if (!(gp_GetGraphFlags(theGraph) & FLAGS_DFSNUMBERED))
-        if (gp_CreateDFSTree(theGraph) != OK)
+    if (!(gp_GetGraphFlags(theGraph) & GRAPHFLAGS_DFSNUMBERED))
+        if (gp_DepthFirstSearch(theGraph) != OK)
             return NOTOK;
 
-    if (!(gp_GetGraphFlags(theGraph) & FLAGS_SORTEDBYDFI))
+    if (!(gp_GetGraphFlags(theGraph) & GRAPHFLAGS_SORTEDBYDFI))
         if (gp_SortVertices(theGraph) != OK)
             return NOTOK;
-
-#ifdef PROFILE
-    platform_time start, end;
-    platform_GetTime(start);
-#endif
 
     _gp_LogLine("\ngraphDFSUtils.c/gp_ComputeLowpoints() start");
 
@@ -317,10 +387,10 @@ int gp_ComputeLowpoints(graphP theGraph)
 
     sp_ClearStack(theStack);
 
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     // This outer loop causes the connected subgraphs of a disconnected graph to be processed
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v);)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph);)
     {
         if (gp_GetVisited(theGraph, v))
         {
@@ -388,11 +458,6 @@ int gp_ComputeLowpoints(graphP theGraph)
 
     _gp_LogLine("graphDFSUtils.c/gp_ComputeLowpoints() end\n");
 
-#ifdef PROFILE
-    platform_GetTime(end);
-    printf("Lowpoint in %.3lf seconds.\n", platform_GetDuration(start, end));
-#endif
-
     return OK;
 }
 
@@ -402,7 +467,7 @@ int gp_ComputeLowpoints(graphP theGraph)
  By simple pre-order visitation, compute the least ancestor of each
  vertex that is directly adjacent to the vertex by a back edge.
 
- If they have not already been performed, gp_CreateDFSTree() and
+ If they have not already been performed, gp_DepthFirstSearch() and
  gp_SortVertices() are invoked on the graph, and it is left in the
  sorted state on completion of this method.
 
@@ -418,20 +483,18 @@ int gp_ComputeLeastAncestors(graphP theGraph)
     if (theGraph == NULL)
         return NOTOK;
 
+    if (gp_ExtendWith_DFSUtils(theGraph) != OK)
+        return NOTOK;
+
     theStack = theGraph->theStack;
 
-    if (!(gp_GetGraphFlags(theGraph) & FLAGS_DFSNUMBERED))
-        if (gp_CreateDFSTree(theGraph) != OK)
+    if (!(gp_GetGraphFlags(theGraph) & GRAPHFLAGS_DFSNUMBERED))
+        if (gp_DepthFirstSearch(theGraph) != OK)
             return NOTOK;
 
-    if (!(gp_GetGraphFlags(theGraph) & FLAGS_SORTEDBYDFI))
+    if (!(gp_GetGraphFlags(theGraph) & GRAPHFLAGS_SORTEDBYDFI))
         if (gp_SortVertices(theGraph) != OK)
             return NOTOK;
-
-#ifdef PROFILE
-    platform_time start, end;
-    platform_GetTime(start);
-#endif
 
     _gp_LogLine("\ngraphDFSUtils.c/gp_ComputeLeastAncestors() start");
 
@@ -442,7 +505,7 @@ int gp_ComputeLeastAncestors(graphP theGraph)
     sp_ClearStack(theStack);
 
     // This outer loop causes the connected subgraphs of a disconnected graph to be processed
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v);)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph);)
     {
         if (gp_GetVisited(theGraph, v))
         {
@@ -484,10 +547,74 @@ int gp_ComputeLeastAncestors(graphP theGraph)
 
     _gp_LogLine("graphDFSUtils.c/gp_ComputeLeastAncestors() end\n");
 
-#ifdef PROFILE
-    platform_GetTime(end);
-    printf("LeastAncestor in %.3lf seconds.\n", platform_GetDuration(start, end));
-#endif
-
     return OK;
+}
+
+/********************************************************************
+ gp_GetParent()
+
+ Once the DFS tree has been created in theGraph, this method returns
+ the DFS parent of the given vertex v. This includes returning NIL
+ for a DFS tree root, which has no DFS parent. Also returns NIL on
+ error, such as invalid parameters or DFS tree not created yet.
+ ********************************************************************/
+int gp_GetParent(graphP theGraph, int v)
+{
+    if (theGraph == NULL ||
+        v < gp_LowerBoundVertices(theGraph) || v >= gp_UpperBoundVertices(theGraph))
+    {
+#ifdef DEBUG
+        NOTOK;
+        ;
+#endif
+        return NIL;
+    }
+
+    return gp_GetVertexParent(theGraph, v);
+}
+
+/********************************************************************
+ gp_GetLeastAncestor()
+
+ Once the least ancestors have been computed in the graph, which
+ includes when they are implicitly calculated as part of computing
+ lowpoints, this method returns the least ancestor value for the
+ given vertex v. Returns NIL on error, such as invalid parameters
+ or least ancestor values not computed yet.
+ ********************************************************************/
+int gp_GetLeastAncestor(graphP theGraph, int v)
+{
+    if (theGraph == NULL ||
+        v < gp_LowerBoundVertices(theGraph) || v >= gp_UpperBoundVertices(theGraph))
+    {
+#ifdef DEBUG
+        NOTOK;
+        ;
+#endif
+        return NIL;
+    }
+
+    return gp_GetVertexLeastAncestor(theGraph, v);
+}
+
+/********************************************************************
+ gp_GetLowpoint()
+
+ Once the lowpoints have been computed in the graph, this method
+ returns the lowpoint value for the given vertex v. Returns NIL on
+ error, such as invalid parameters or lowpoints not computed yet.
+ ********************************************************************/
+int gp_GetLowpoint(graphP theGraph, int v)
+{
+    if (theGraph == NULL ||
+        v < gp_LowerBoundVertices(theGraph) || v >= gp_UpperBoundVertices(theGraph))
+    {
+#ifdef DEBUG
+        NOTOK;
+        ;
+#endif
+        return NIL;
+    }
+
+    return gp_GetVertexLowpoint(theGraph, v);
 }

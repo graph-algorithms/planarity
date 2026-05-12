@@ -7,13 +7,15 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#include "../graphStructures.h"
+#include "../planarityRelated/graphPlanarity.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+// Create a K33Search Graph, i.e., subclass a Planarity Graph by extending it with
+// the ability to perform a search for a subgraph homeomorphic to K_{3,3}.
 #define K33SEARCH_NAME "K33Search"
 
     int gp_ExtendWith_K33Search(graphP theGraph);

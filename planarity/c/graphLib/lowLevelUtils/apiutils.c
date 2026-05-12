@@ -6,68 +6,181 @@ See the LICENSE.TXT file for licensing information.
 
 #include <limits.h>
 #include <stdarg.h>
-#include <stdint.h>
 #include <stdlib.h>
 
-#include "apiutils.h"
 #include "appconst.h"
 
-int quietMode = FALSE;
+#include "apiutils.h"
+#include "apiutils.private.h"
 
-int getQuietModeSetting(void)
+// The graphLib gp_ErrorMessage() and gp_Message() calls are suppressed by
+// default, but an application can turn them on if desired.
+int quietModeFlag = TRUE;
+
+int gp_GetQuietModeFlag(void)
 {
-    return quietMode;
+    return quietModeFlag;
 }
 
-void setQuietModeSetting(int newQuietModeSetting)
+void gp_SetQuietModeFlag(int newQuietModeFlag)
 {
-    quietMode = newQuietModeSetting;
+    quietModeFlag = newQuietModeFlag;
 }
 
-void Message(char const *message)
+void gp_Message(char const *message, ...)
 {
-    if (!getQuietModeSetting())
+    va_list args;
+    if (!gp_GetQuietModeFlag())
     {
-        fprintf(stdout, "%s", message);
+        va_start(args, message);
+        vfprintf(stdout, message, args);
+        va_end(args);
         fflush(stdout);
     }
 }
 
-void ErrorMessage(char const *message)
+void gp_ErrorMessage(char const *message, ...)
 {
-    if (!getQuietModeSetting())
+    va_list args;
+    if (!gp_GetQuietModeFlag())
     {
-        fprintf(stderr, "%s", message);
+        va_start(args, message);
+        vfprintf(stderr, message, args);
+        va_end(args);
         fflush(stderr);
     }
 }
 
-int GetNumCharsToReprInt(int theNum, int *numCharsRequired)
+/********************************************************************
+ debugNOTOK()
+
+ This function returns the literal value of NOTOK. In debug mode,
+ NOTOK is redefined to first use printf() to emit information about
+ where in the code a NOTOK has occurred. Then, this method is invoked
+ so that the debug version of NOTOK still returns the NOTOK value.
+
+ Rather than just returning 0 in the debug-mode NOTOK macro, we
+ invoke this method because it gives the option (with recompilation)
+ of having the program exit on the first NOTOK occurrence. That
+ option is off by default, so we normally get a stack trace of the
+ NOTOK occcurences, but on an exhaustive, long-run test, it can be
+ handy to stop on the first error since otherwise the error message
+ might not be seen.
+ ********************************************************************/
+
+#ifdef DEBUG
+int debugNOTOK(void)
 {
-    int charCount = 0;
-
-    if (numCharsRequired == NULL)
-        return NOTOK;
-
-    if (theNum < 0)
-    {
-        charCount++;
-        // N.B. since 32-bit signed integers are represented using twos-complement,
-        // the absolute value of INT_MIN is not defined; however, adding 1 to this
-        // min value before taking the absolute value will still require the same
-        // number of digits.
-        if ((theNum == INT_MIN) || (theNum == INT8_MAX) || (theNum == INT16_MIN) || (theNum == INT32_MIN))
-            theNum++;
-        theNum = abs(theNum);
-    }
-
-    while (theNum > 0)
-    {
-        theNum /= 10;
-        charCount++;
-    }
-
-    (*numCharsRequired) = charCount;
-
-    return OK;
+    // exit(-1);
+    return 0; // NOTOK is normally defined to be zero
 }
+#endif
+
+// LOGGING is not defined in the standard compile configuration.
+// A graphLib developer can uncomment LOGGING in apiutils.private.h
+#ifdef LOGGING
+
+/********************************************************************
+ _Log()
+
+ When the project is compiled with LOGGING enabled, this method writes
+ a string to the file Edge_Addition_Planarity_Suite.LOG in the current
+ working directory.
+
+ On first write, the file is created or cleared.
+ Call this method with NULL to close the log file.
+ ********************************************************************/
+
+void closeLogFileAtExit(void);
+
+void _Log(char const *Str)
+{
+    static FILE *logfile = NULL;
+    static int triedlogfile = FALSE;
+
+    if (logfile == NULL && !triedlogfile)
+    {
+        triedlogfile = TRUE;
+        if (atexit(closeLogFileAtExit) != 0)
+            gp_ErrorMessage("Unable to set up atexit() to close Edge_Addition_Planarity_Suite log file on exit");
+        else
+        {
+            if ((logfile = fopen("Edge_Addition_Planarity_Suite.LOG", WRITETEXT)) == NULL)
+                gp_ErrorMessage("Unable to open the Edge_Addition_Planarity_Suite log file");
+        }
+    }
+
+    if (logfile != NULL)
+    {
+        if (Str != NULL)
+        {
+            fprintf(logfile, "%s", Str);
+            fflush(logfile);
+        }
+        else
+        {
+            fclose(logfile);
+            logfile = NULL;
+        }
+    }
+}
+
+void _LogLine(char const *Str)
+{
+    _Log(Str);
+    _Log("\n");
+}
+
+void closeLogFileAtExit(void)
+{
+    _gp_Log(NULL);
+}
+
+static char LogStr[MAXLINE + 1];
+
+char *_MakeLogStr1(const char *format, int one)
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+    sprintf(LogStr, format, one);
+#pragma GCC diagnostic pop
+    return LogStr;
+}
+
+char *_MakeLogStr2(const char *format, int one, int two)
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+    sprintf(LogStr, format, one, two);
+#pragma GCC diagnostic pop
+    return LogStr;
+}
+
+char *_MakeLogStr3(const char *format, int one, int two, int three)
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+    sprintf(LogStr, format, one, two, three);
+#pragma GCC diagnostic pop
+    return LogStr;
+}
+
+char *_MakeLogStr4(const char *format, int one, int two, int three, int four)
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+    sprintf(LogStr, format, one, two, three, four);
+#pragma GCC diagnostic pop
+    return LogStr;
+}
+
+char *_MakeLogStr5(const char *format, int one, int two, int three, int four, int five)
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+    sprintf(LogStr, format, one, two, three, four, five);
+#pragma GCC diagnostic pop
+    return LogStr;
+}
+
+#endif // LOGGING

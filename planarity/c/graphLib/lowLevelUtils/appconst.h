@@ -27,14 +27,6 @@ See the LICENSE.TXT file for licensing information.
 #define FILE_DELIMITER '/'
 #endif
 
-// When PROFILE is defined, prints out run-time stats on a number of subordinate
-// routines in the embedder
-
-// #define PROFILE
-#ifdef PROFILE
-#include "platformTime.h"
-#endif
-
 /* Define DEBUG to get additional debugging. The default is to define it when MSC does */
 
 #ifdef _DEBUG
@@ -73,17 +65,22 @@ extern int debugNOTOK(void);
 #define NULL 0L
 #endif
 
-// Define one of these to use faster 1-based arrays or
-// the slower original 0-based arrays
-#define USE_FASTER_1BASEDARRAYS
+// Define one of these to use 1-based arrays or the original 0-based arrays
+// It used to be true that the 1-based arrays were faster, but compiler
+// optimizations have come a long way in two decades.
+//
+// The main advantages of 1-based arrays are readability of the data,
+// that NIL is still an index within array bounds, that 1-based supports
+// 0-based files but not the reverse, and continuing the long-time default.
+#define USE_1BASEDARRAYS
 // #define USE_0BASEDARRAYS
 
 #ifdef USE_0BASEDARRAYS
-#undef USE_FASTER_1BASEDARRAYS
+#undef USE_1BASEDARRAYS
 #endif
 
 /* Array indices are used as pointers, and NIL means bad pointer */
-#ifdef USE_FASTER_1BASEDARRAYS
+#ifdef USE_1BASEDARRAYS
 // This definition is used with 1-based array indexing
 #define NIL 0
 #define NIL_CHAR 0x00
@@ -92,15 +89,5 @@ extern int debugNOTOK(void);
 #define NIL -1
 #define NIL_CHAR 0xFF
 #endif
-
-/********************************************************************
- A few simple integer selection macros
- ********************************************************************/
-
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-#define MAX(x, y) ((x) > (y) ? (x) : (y))
-
-#define MIN3(x, y, z) MIN(MIN((x), (y)), MIN((y), (z)))
-#define MAX3(x, y, z) MAX(MAX((x), (y)), MAX((y), (z)))
 
 #endif
