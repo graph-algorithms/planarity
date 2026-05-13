@@ -105,15 +105,16 @@ cdef class PGraph:
             raise RuntimeError("planarity: Unknown error.")        
 
 
-    def nodes(self,data=False):
+    def nodes(self, data=False):
         DRAWPLANAR_ID=1
-        cdef cplanarity.DrawPlanarContext *context 
+        cdef cplanarity.DrawPlanarContext *context
+
         drawing=cplanarity.gp_FindExtension(self.theGraph, 
                                             DRAWPLANAR_ID, 
-                                            <void *> &context)        
+                                            <void **> &context)
 
-        first=cplanarity.gp_GetFirstVertex(self.theGraph)
-        last=cplanarity.gp_GetLastVertex(self.theGraph)+1
+        first=cplanarity.gp_LowerBoundVertices(self.theGraph)
+        last=cplanarity.gp_UpperBoundVertices(self.theGraph)
         r=self.reverse_nodemap
         nodes=[]
         for n in range(first,last):
@@ -134,11 +135,11 @@ cdef class PGraph:
         cdef cplanarity.DrawPlanarContext *context 
         drawing=cplanarity.gp_FindExtension(self.theGraph, 
                                             DRAWPLANAR_ID, 
-                                            <void *> &context)        
+                                            <void **> &context)
         edges=[]
         r=self.reverse_nodemap
-        first=cplanarity.gp_GetFirstVertex(self.theGraph)
-        last=cplanarity.gp_GetLastVertex(self.theGraph)+1
+        first=cplanarity.gp_LowerBoundVertices(self.theGraph)
+        last=cplanarity.gp_UpperBoundVertices(self.theGraph)
         for n in range(first,last):
             e=cplanarity.gp_GetFirstEdge(self.theGraph,n)
             is_edge=cplanarity.gp_IsEdge(self.theGraph, e)
