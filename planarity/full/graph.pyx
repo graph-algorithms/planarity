@@ -13,6 +13,7 @@ from planarity.full cimport cappconst
 from planarity.full cimport cgraphLib
 
 OK = cappconst.OK
+AT_EDGE_CAPACITY_LIMIT = cgraphLib.AT_EDGE_CAPACITY_LIMIT
 NONEMBEDDABLE = cgraphLib.NONEMBEDDABLE
 NOTOK = cappconst.NOTOK
 NIL = cappconst.NIL
@@ -23,16 +24,6 @@ EMBEDFLAGS_OUTERPLANAR = cgraphLib.EMBEDFLAGS_OUTERPLANAR
 EMBEDFLAGS_SEARCHFORK23 = cgraphLib.EMBEDFLAGS_SEARCHFORK23
 EMBEDFLAGS_SEARCHFORK33 = cgraphLib.EMBEDFLAGS_SEARCHFORK33
 EMBEDFLAGS_SEARCHFORK4 = cgraphLib.EMBEDFLAGS_SEARCHFORK4
-
-
-def gp_GetProjectVersionFull():
-    cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
-    return encoded_version.decode('utf-8')
-
-
-def gp_GetLibPlanarityVersionFull():
-    cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
-    return encoded_version.decode('utf-8')
 
 
 cdef class Graph:
@@ -46,72 +37,21 @@ cdef class Graph:
         if self._theGraph != NULL:
             cgraphLib.gp_Free(&self._theGraph)
 
-    def gp_IsEdge(self, int e):
-        return (
-            (e >= self.gp_EdgeArrayStart()) and
-            (e < self.gp_EdgeArraySize()) and
-            cgraphLib.gp_IsEdge(self._theGraph, e)
-        )
+    def gp_InitGraph(self, int n):
+        if cgraphLib.gp_InitGraph(self._theGraph, n) != OK:
+            raise RuntimeError(f"gp_InitGraph() failed.")
 
-    def gp_EdgeArrayStart(self):
-        return cgraphLib.gp_EdgeArrayStart(self._theGraph)
+    def gp_ReinitGraph(self):
+        cgraphLib.gp_ReinitGraph(self._theGraph)
 
-    def gp_EdgeInUse(self, int e):
-        if not self.gp_IsEdge(e):
+    def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
+        if cgraphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
             raise RuntimeError(
-                f"gp_EdgeInUse() failed: invalid edge index '{e}'."
-            )
+                "gp_EnsureEdgeCapacity() failed to set edge capacity to "
+                f"{new_edge_capacity}.")
 
-        return cgraphLib.gp_EdgeInUse(self._theGraph, e)
-
-    def gp_EdgeArraySize(self):
-        return cgraphLib.gp_EdgeArraySize(self._theGraph)
-    
-    def gp_EdgeInUseArraySize(self):
-        return cgraphLib.gp_EdgeInUseArraySize(self._theGraph)
-
-    def gp_GetFirstEdge(self, int v):
-        if not self.gp_IsVertex(v):
-            raise RuntimeError(
-                f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
-            )
-
-        return cgraphLib.gp_GetFirstEdge(self._theGraph, v)
-
-    def gp_GetNextEdge(self, int e):
-        if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_GetNextEdge() failed: invalid edge index '{e}'."
-            )
-
-        return cgraphLib.gp_GetNextEdge(self._theGraph, e)
-
-    def gp_GetNeighbor(self, int e):
-        if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_GetNeighbor() failed: invalid edge index '{e}'."
-            )
-
-        return cgraphLib.gp_GetNeighbor(self._theGraph, e)
-
-    def gp_IsVertex(self, int v):
-        return (
-            (v >= self.gp_GetFirstVertex()) and
-            (v <= self.gp_GetLastVertex()) and
-            cgraphLib.gp_IsVertex(self._theGraph, v)
-        )
-
-    def gp_GetFirstVertex(self):
-        return cgraphLib.gp_GetFirstVertex(self._theGraph)
-
-    def gp_GetLastVertex(self):
-        return cgraphLib.gp_GetLastVertex(self._theGraph)
-
-    def gp_VertexInRangeAscending(self, int v):
-        return (
-            v >= self.gp_GetFirstVertex() and
-            cgraphLib.gp_VertexInRangeAscending(self._theGraph, v)
-        )
+    def gp_GetEdgeCapacity(self):
+        return cgraphLib.gp_GetEdgeCapacity(self._theGraph)
 
     def gp_GetN(self)-> int:
         """
@@ -121,13 +61,6 @@ cdef class Graph:
             raise RuntimeError("Graph is not initialized.")
         
         return cgraphLib.gp_GetN(self._theGraph)
-
-    def gp_InitGraph(self, int n):
-        if cgraphLib.gp_InitGraph(self._theGraph, n) != OK:
-            raise RuntimeError(f"gp_InitGraph() failed.")
-
-    def gp_ReinitializeGraph(self):
-        cgraphLib.gp_ReinitializeGraph(self._theGraph)
 
     def gp_CopyGraph(self, Graph src_graph):
         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
@@ -164,6 +97,116 @@ cdef class Graph:
 
         return new_graph
 
+    def gp_FindEdge(self, int u, int v):
+        if not self.gp_IsVertex(u):
+            raise RuntimeError(f"'{u}' is not a valid vertex label.")
+        if not self.gp_IsVertex(v):
+            raise RuntimeError(f"'{v}' is not a valid vertex label.")
+        
+        return cgraphLib.gp_FindEdge(self._theGraph, u, v)
+
+    def gp_GetVertexDegree(self, int v):
+        if not self.gp_IsVertex(v):
+            raise RuntimeError(f"'{v}' is not a valid vertex label.")
+
+        return cgraphLib.gp_GetVertexDegree(self._theGraph, v)
+
+    def gp_AddEdge(self, int u, int ulink, int v, int vlink):
+        if ulink != 0 and ulink != 1:
+            raise RuntimeError(
+                f"Invalid link index for ulink: '{ulink}'."
+            )
+        if vlink != 0 and vlink != 1:
+            raise RuntimeError(
+                f"Invalid link index for vlink: '{vlink}'."
+            )
+        if cgraphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink) != OK:
+            raise RuntimeError(
+                f"Unable to add edge (u, v) = ({u}, {v}) with ulink = {ulink} "
+                f"and vlink = {vlink}."
+            )
+
+    def gp_DeleteEdge(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_DeleteEdge() failed: invalid edge '{e}'."
+            )
+
+        return cgraphLib.gp_DeleteEdge(self._theGraph, e)
+
+    def gp_LowerBoundEdgeStorage(self):
+        return cgraphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+    
+    def gp_UpperBoundEdgeStorage(self):
+        return cgraphLib.gp_UpperBoundEdgeStorage(self._theGraph)
+
+    def gp_IsEdge(self, int e):
+        return (
+            (e >= self.gp_LowerBoundEdgeStorage()) and
+            (e < self.gp_UpperBoundEdgeStorage()) and
+            cgraphLib.gp_IsEdge(self._theGraph, e)
+        )
+
+    def gp_EdgeInUse(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+            )
+
+        return cgraphLib.gp_EdgeInUse(self._theGraph, e)
+
+    def gp_UpperBoundEdges(self):
+        return cgraphLib.gp_UpperBoundEdges(self._theGraph)
+
+    def gp_GetNextEdge(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_GetNextEdge() failed: invalid edge index '{e}'."
+            )
+
+        return cgraphLib.gp_GetNextEdge(self._theGraph, e)
+
+    def gp_GetNeighbor(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+            )
+
+        return cgraphLib.gp_GetNeighbor(self._theGraph, e)
+
+    def gp_GetFirstEdge(self, int v):
+        if not self.gp_IsVertex(v):
+            raise RuntimeError(
+                f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
+            )
+
+        return cgraphLib.gp_GetFirstEdge(self._theGraph, v)
+
+    def gp_LowerBoundVertices(self):
+        return cgraphLib.gp_LowerBoundVertices(self._theGraph)
+
+    def gp_UpperBoundVertices(self):
+        return cgraphLib.gp_UpperBoundVertices(self._theGraph)
+
+    def gp_IsVertex(self, int v):
+        return (
+            (v >= self.gp_LowerBoundVertices()) and
+            (v < self.gp_UpperBoundVertices()) and
+            cgraphLib.gp_IsVertex(self._theGraph, v)
+        )
+
+    def gp_ExtendWith_K23Search(self):
+        if cgraphLib.gp_ExtendWith_K23Search(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with K23Search structures.")
+    
+    def gp_ExtendWith_K33Search(self):
+        if cgraphLib.gp_ExtendWith_K33Search(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with K33Search structures.")
+    
+    def gp_ExtendWith_K4Search(self):
+        if cgraphLib.gp_ExtendWith_K4Search(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with K4Search structures.")
+
     def gp_Read(self, str infile_name):
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = infile_name.encode('utf-8')
@@ -192,56 +235,6 @@ cdef class Graph:
                 f"gp_Write() of graph to '{outfile_name}' failed."
                 )
 
-    def gp_FindEdge(self, int u, int v):
-        if not self.gp_IsVertex(u):
-            raise RuntimeError(f"'{u}' is not a valid vertex label.")
-        if not self.gp_IsVertex(v):
-            raise RuntimeError(f"'{v}' is not a valid vertex label.")
-        
-        return cgraphLib.gp_FindEdge(self._theGraph, u, v)
-
-    def gp_GetVertexDegree(self, int v):
-        if not self.gp_IsVertex(v):
-            raise RuntimeError(f"'{v}' is not a valid vertex label.")
-
-        return cgraphLib.gp_GetVertexDegree(self._theGraph, v)
-
-    def gp_GetEdgeCapacity(self):
-        return cgraphLib.gp_GetEdgeCapacity(self._theGraph)
-
-    def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
-        if cgraphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
-            raise RuntimeError(
-                "gp_EnsureEdgeCapacity() failed to set edge capacity to "
-                f"{new_edge_capacity}.")
-
-    def gp_AddEdge(self, int u, int ulink, int v, int vlink):
-        if ulink != 0 and ulink != 1:
-            raise RuntimeError(
-                f"Invalid link index for ulink: '{ulink}'."
-            )
-        if vlink != 0 and vlink != 1:
-            raise RuntimeError(
-                f"Invalid link index for vlink: '{vlink}'."
-            )
-        if cgraphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink) != OK:
-            raise RuntimeError(
-                f"Unable to add edge (u, v) = ({u}, {v}) with ulink = {ulink} "
-                f"and vlink = {vlink}."
-            )
-
-    def gp_DeleteEdge(self, int e):
-        if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_DeleteEdge() failed: invalid edge '{e}'."
-            )
-
-        return cgraphLib.gp_DeleteEdge(self._theGraph, e)
-
-    def gp_ExtendWith_Planarity(self):
-        if cgraphLib.gp_ExtendWith_Planarity(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with Planarity structures.")
-    
     def gp_ExtendWith_DrawPlanar(self):
         if cgraphLib.gp_ExtendWith_DrawPlanar(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with DrawPlanar structures.")
@@ -271,19 +264,11 @@ cdef class Graph:
     def gp_ExtendWith_Outerplanarity(self):
         if cgraphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with Outerplanarity structures.")
+
+    def gp_ExtendWith_Planarity(self):
+        if cgraphLib.gp_ExtendWith_Planarity(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with Planarity structures.")
     
-    def gp_ExtendWith_K23Search(self):
-        if cgraphLib.gp_ExtendWith_K23Search(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with K23Search structures.")
-    
-    def gp_ExtendWith_K33Search(self):
-        if cgraphLib.gp_ExtendWith_K33Search(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with K33Search structures.")
-    
-    def gp_ExtendWith_K4Search(self):
-        if cgraphLib.gp_ExtendWith_K4Search(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with K4Search structures.")
-        
     def gp_Embed(self, int embedFlags) -> int:
         embed_result = cgraphLib.gp_Embed(self._theGraph, embedFlags)
         if embed_result != OK and embed_result != NONEMBEDDABLE:
@@ -299,3 +284,13 @@ cdef class Graph:
             raise RuntimeError("Failed embed integrity check.")
 
         return check_result
+
+
+def gp_GetProjectVersionFull():
+    cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
+    return encoded_version.decode('utf-8')
+
+
+def gp_GetLibPlanarityVersionFull():
+    cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
+    return encoded_version.decode('utf-8')

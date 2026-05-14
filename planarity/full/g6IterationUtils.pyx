@@ -61,7 +61,7 @@ cdef class G6ReadIterator:
                 f"Unable to read graph, as g6_ReadGraph() in EAPS graphLib "
                 "failed."
             )
-        
+
 
 cdef class G6WriteIterator:
     cdef cg6IterationDefs.G6WriteIteratorP _g6WriteIterator

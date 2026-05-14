@@ -50,19 +50,6 @@ cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
     int OK, NOTOK, NULL 
 
 
-cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
-    int NONEMBEDDABLE
-    int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR
-
-    int gp_ExtendWith_Planarity(graphP theGraph)
-
-    int gp_Embed(graphP theGraph, int embedFlags)
-
-
-cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
-    int gp_ExtendWith_Outerplanarity(graphP theGraph)
-
-
 cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
     int gp_ExtendWith_DrawPlanar(graphP theGraph)
     int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
@@ -84,3 +71,16 @@ cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.private.h":
     ctypedef struct DrawPlanarContext:
         DrawPlanar_EdgeRecP E
         DrawPlanar_VertexInfoP VI
+
+
+cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
+    int gp_ExtendWith_Outerplanarity(graphP theGraph)
+
+
+cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
+    int gp_ExtendWith_Planarity(graphP theGraph)
+
+    int gp_Embed(graphP theGraph, int embedFlags)
+
+    int NONEMBEDDABLE
+    int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR
