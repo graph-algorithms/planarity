@@ -7,6 +7,8 @@ include planarity/c/LICENSE.TXT
 include README.md
 include planarity/c/README
 
+recursive-include planarity/c/ *.h
+
 include planarity/classic/cplanarity.pxd
 include planarity/classic/planarity.c
 include planarity/classic/planarity.pyx
