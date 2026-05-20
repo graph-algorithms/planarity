@@ -49,10 +49,10 @@ cdef class PGraph:
         seen = set()
         for u,v in edges:
             if (u,v) not in seen and (v,u) not in seen:
-                status = cplanarity.gp_AddEdge(self.theGraph, 
+                status = cplanarity.gp_DynamicAddEdge(self.theGraph, 
                                                self.nodemap[u], 0, 
                                                self.nodemap[v], 0)
-                if status == cplanarity.NOTOK:
+                if status != cplanarity.OK:
                     cplanarity.gp_Free(&self.theGraph)
                     raise RuntimeError("planarity: failed adding edge.")
                 seen.add((u,v))
@@ -70,7 +70,7 @@ cdef class PGraph:
             return
         
         status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)
-        if status == cplanarity.NOTOK:
+        if status != cplanarity.OK:
             raise RuntimeError("planarity: failed to extend graph with planarity structures.")
         self.embedding = cplanarity.gp_Embed(self.theGraph, 
                                             cplanarity.EMBEDFLAGS_PLANAR)
@@ -79,7 +79,7 @@ cdef class PGraph:
 
     def embed_drawplanar(self):
         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
-        if status == cplanarity.NOTOK:
+        if status != cplanarity.OK:
             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
         status = cplanarity.gp_Embed(self.theGraph, 
                                              cplanarity.EMBEDFLAGS_DRAWPLANAR)

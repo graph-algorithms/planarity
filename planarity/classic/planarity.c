@@ -3615,7 +3615,7 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
  *         seen = set()
  *         for u,v in edges:             # <<<<<<<<<<<<<<
  *             if (u,v) not in seen and (v,u) not in seen:
- *                 status = cplanarity.gp_AddEdge(self.theGraph,
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,
 */
   if (likely(PyList_CheckExact(__pyx_v_edges)) || PyTuple_CheckExact(__pyx_v_edges)) {
     __pyx_t_12 = __pyx_v_edges; __Pyx_INCREF(__pyx_t_12);
@@ -3725,7 +3725,7 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
  *         seen = set()
  *         for u,v in edges:
  *             if (u,v) not in seen and (v,u) not in seen:             # <<<<<<<<<<<<<<
- *                 status = cplanarity.gp_AddEdge(self.theGraph,
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,
  *                                                self.nodemap[u], 0,
 */
     __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
@@ -3759,10 +3759,10 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
 
       /* "planarity/classic/planarity.pyx":53
  *             if (u,v) not in seen and (v,u) not in seen:
- *                 status = cplanarity.gp_AddEdge(self.theGraph,
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,
  *                                                self.nodemap[u], 0,             # <<<<<<<<<<<<<<
  *                                                self.nodemap[v], 0)
- *                 if status == cplanarity.NOTOK:
+ *                 if status != cplanarity.OK:
 */
       if (unlikely(__pyx_v_self->nodemap == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -3774,10 +3774,10 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
       /* "planarity/classic/planarity.pyx":54
- *                 status = cplanarity.gp_AddEdge(self.theGraph,
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,
  *                                                self.nodemap[u], 0,
  *                                                self.nodemap[v], 0)             # <<<<<<<<<<<<<<
- *                 if status == cplanarity.NOTOK:
+ *                 if status != cplanarity.OK:
  *                     cplanarity.gp_Free(&self.theGraph)
 */
       if (unlikely(__pyx_v_self->nodemap == Py_None)) {
@@ -3792,25 +3792,25 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
       /* "planarity/classic/planarity.pyx":52
  *         for u,v in edges:
  *             if (u,v) not in seen and (v,u) not in seen:
- *                 status = cplanarity.gp_AddEdge(self.theGraph,             # <<<<<<<<<<<<<<
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,             # <<<<<<<<<<<<<<
  *                                                self.nodemap[u], 0,
  *                                                self.nodemap[v], 0)
 */
-      __pyx_v_status = gp_AddEdge(__pyx_v_self->theGraph, __pyx_t_7, 0, __pyx_t_9, 0);
+      __pyx_v_status = gp_DynamicAddEdge(__pyx_v_self->theGraph, __pyx_t_7, 0, __pyx_t_9, 0);
 
       /* "planarity/classic/planarity.pyx":55
  *                                                self.nodemap[u], 0,
  *                                                self.nodemap[v], 0)
- *                 if status == cplanarity.NOTOK:             # <<<<<<<<<<<<<<
+ *                 if status != cplanarity.OK:             # <<<<<<<<<<<<<<
  *                     cplanarity.gp_Free(&self.theGraph)
  *                     raise RuntimeError("planarity: failed adding edge.")
 */
-      __pyx_t_1 = (__pyx_v_status == NOTOK);
+      __pyx_t_1 = (__pyx_v_status != OK);
       if (unlikely(__pyx_t_1)) {
 
         /* "planarity/classic/planarity.pyx":56
  *                                                self.nodemap[v], 0)
- *                 if status == cplanarity.NOTOK:
+ *                 if status != cplanarity.OK:
  *                     cplanarity.gp_Free(&self.theGraph)             # <<<<<<<<<<<<<<
  *                     raise RuntimeError("planarity: failed adding edge.")
  *                 seen.add((u,v))
@@ -3818,7 +3818,7 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
         gp_Free((&__pyx_v_self->theGraph));
 
         /* "planarity/classic/planarity.pyx":57
- *                 if status == cplanarity.NOTOK:
+ *                 if status != cplanarity.OK:
  *                     cplanarity.gp_Free(&self.theGraph)
  *                     raise RuntimeError("planarity: failed adding edge.")             # <<<<<<<<<<<<<<
  *                 seen.add((u,v))
@@ -3840,7 +3840,7 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
         /* "planarity/classic/planarity.pyx":55
  *                                                self.nodemap[u], 0,
  *                                                self.nodemap[v], 0)
- *                 if status == cplanarity.NOTOK:             # <<<<<<<<<<<<<<
+ *                 if status != cplanarity.OK:             # <<<<<<<<<<<<<<
  *                     cplanarity.gp_Free(&self.theGraph)
  *                     raise RuntimeError("planarity: failed adding edge.")
 */
@@ -3868,7 +3868,7 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
  *         seen = set()
  *         for u,v in edges:
  *             if (u,v) not in seen and (v,u) not in seen:             # <<<<<<<<<<<<<<
- *                 status = cplanarity.gp_AddEdge(self.theGraph,
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,
  *                                                self.nodemap[u], 0,
 */
       goto __pyx_L37;
@@ -3931,7 +3931,7 @@ static int __pyx_pf_9planarity_7classic_9planarity_6PGraph___init__(struct __pyx
  *         seen = set()
  *         for u,v in edges:             # <<<<<<<<<<<<<<
  *             if (u,v) not in seen and (v,u) not in seen:
- *                 status = cplanarity.gp_AddEdge(self.theGraph,
+ *                 status = cplanarity.gp_DynamicAddEdge(self.theGraph,
 */
   }
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
@@ -4124,7 +4124,7 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_4embed_planar(s
  *             return
  * 
  *         status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)             # <<<<<<<<<<<<<<
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
  *             raise RuntimeError("planarity: failed to extend graph with planarity structures.")
 */
   __pyx_v_status = gp_ExtendWith_Planarity(__pyx_v_self->theGraph);
@@ -4132,16 +4132,16 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_4embed_planar(s
   /* "planarity/classic/planarity.pyx":73
  * 
  *         status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)
- *         if status == cplanarity.NOTOK:             # <<<<<<<<<<<<<<
+ *         if status != cplanarity.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError("planarity: failed to extend graph with planarity structures.")
  *         self.embedding = cplanarity.gp_Embed(self.theGraph,
 */
-  __pyx_t_1 = (__pyx_v_status == NOTOK);
+  __pyx_t_1 = (__pyx_v_status != OK);
   if (unlikely(__pyx_t_1)) {
 
     /* "planarity/classic/planarity.pyx":74
  *         status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
  *             raise RuntimeError("planarity: failed to extend graph with planarity structures.")             # <<<<<<<<<<<<<<
  *         self.embedding = cplanarity.gp_Embed(self.theGraph,
  *                                             cplanarity.EMBEDFLAGS_PLANAR)
@@ -4162,14 +4162,14 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_4embed_planar(s
     /* "planarity/classic/planarity.pyx":73
  * 
  *         status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)
- *         if status == cplanarity.NOTOK:             # <<<<<<<<<<<<<<
+ *         if status != cplanarity.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError("planarity: failed to extend graph with planarity structures.")
  *         self.embedding = cplanarity.gp_Embed(self.theGraph,
 */
   }
 
   /* "planarity/classic/planarity.pyx":75
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
  *             raise RuntimeError("planarity: failed to extend graph with planarity structures.")
  *         self.embedding = cplanarity.gp_Embed(self.theGraph,             # <<<<<<<<<<<<<<
  *                                             cplanarity.EMBEDFLAGS_PLANAR)
@@ -4213,7 +4213,7 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_4embed_planar(s
  * 
  *     def embed_drawplanar(self):             # <<<<<<<<<<<<<<
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
 */
 
 /* Python wrapper */
@@ -4276,7 +4276,7 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_6embed_drawplan
  * 
  *     def embed_drawplanar(self):
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)             # <<<<<<<<<<<<<<
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
  *             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
 */
   __pyx_v_status = gp_ExtendWith_DrawPlanar(__pyx_v_self->theGraph);
@@ -4284,16 +4284,16 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_6embed_drawplan
   /* "planarity/classic/planarity.pyx":82
  *     def embed_drawplanar(self):
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
- *         if status == cplanarity.NOTOK:             # <<<<<<<<<<<<<<
+ *         if status != cplanarity.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
  *         status = cplanarity.gp_Embed(self.theGraph,
 */
-  __pyx_t_1 = (__pyx_v_status == NOTOK);
+  __pyx_t_1 = (__pyx_v_status != OK);
   if (unlikely(__pyx_t_1)) {
 
     /* "planarity/classic/planarity.pyx":83
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
  *             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")             # <<<<<<<<<<<<<<
  *         status = cplanarity.gp_Embed(self.theGraph,
  *                                              cplanarity.EMBEDFLAGS_DRAWPLANAR)
@@ -4314,14 +4314,14 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_6embed_drawplan
     /* "planarity/classic/planarity.pyx":82
  *     def embed_drawplanar(self):
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
- *         if status == cplanarity.NOTOK:             # <<<<<<<<<<<<<<
+ *         if status != cplanarity.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
  *         status = cplanarity.gp_Embed(self.theGraph,
 */
   }
 
   /* "planarity/classic/planarity.pyx":84
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
  *             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
  *         status = cplanarity.gp_Embed(self.theGraph,             # <<<<<<<<<<<<<<
  *                                              cplanarity.EMBEDFLAGS_DRAWPLANAR)
@@ -4382,7 +4382,7 @@ static PyObject *__pyx_pf_9planarity_7classic_9planarity_6PGraph_6embed_drawplan
  * 
  *     def embed_drawplanar(self):             # <<<<<<<<<<<<<<
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
 */
 
   /* function exit code */
@@ -6824,7 +6824,7 @@ __Pyx_RefNannySetupContext("PyInit_planarity", 0);
  * 
  *     def embed_drawplanar(self):             # <<<<<<<<<<<<<<
  *         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
- *         if status == cplanarity.NOTOK:
+ *         if status != cplanarity.OK:
 */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_7classic_9planarity_6PGraph_7embed_drawplanar, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_PGraph_embed_drawplanar, NULL, __pyx_mstate_global->__pyx_n_u_planarity_classic_planarity, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

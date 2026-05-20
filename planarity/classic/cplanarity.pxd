@@ -13,6 +13,7 @@ cdef extern from "../c/graphLib/graph.h":
     ctypedef edgeRec * edgeRecP
 
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
+    int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 
     int gp_IsEdge(graphP theGraph, int v)
 
