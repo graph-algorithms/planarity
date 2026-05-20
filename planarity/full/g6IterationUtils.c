@@ -1160,6 +1160,7 @@ static int __Pyx_init_co_variables(void) {
 #define __PYX_HAVE__planarity__full__g6IterationUtils
 #define __PYX_HAVE_API__planarity__full__g6IterationUtils
 /* Early includes */
+#include "../c/graphLib/lowLevelUtils/apiutils.h"
 #include "../c/graphLib/lowLevelUtils/appconst.h"
 #include "../c/graphLib/graph.h"
 #include "../c/graphLib/graphLib.h"

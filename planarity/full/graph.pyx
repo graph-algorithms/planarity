@@ -9,6 +9,7 @@ operate over graphP structs.
 
 from libc.stdlib cimport free
 
+from planarity.full cimport capiutils
 from planarity.full cimport cappconst
 from planarity.full cimport cgraphLib
 
@@ -284,6 +285,14 @@ cdef class Graph:
             raise RuntimeError("Failed embed integrity check.")
 
         return check_result
+
+
+def gp_GetQuietModeFlag() -> int:
+    return capiutils.gp_GetQuietModeFlag()
+
+
+def gp_SetQuietModeFlag(int newQuietModeFlag) -> None:
+    capiutils.gp_SetQuietModeFlag(newQuietModeFlag)
 
 
 def gp_GetProjectVersionFull():
