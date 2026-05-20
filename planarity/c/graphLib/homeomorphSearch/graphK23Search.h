@@ -7,13 +7,15 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#include "../graphStructures.h"
+#include "../planarityRelated/graphOuterplanarity.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+// Create a K23Search Graph, i.e., subclass an Outerplanarity Graph by extending it
+// with the ability to perform a search for a subgraph homeomorphic to K_{2,3}.
 #define K23SEARCH_NAME "K23Search"
 
     int gp_ExtendWith_K23Search(graphP theGraph);

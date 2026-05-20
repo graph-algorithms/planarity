@@ -7,7 +7,11 @@ See the LICENSE.TXT file for licensing information.
 #include "graphDrawPlanar.h"
 #include "graphDrawPlanar.private.h"
 
-#include "../graph.h"
+// For definition of zero-based IO flag
+#include "../io/graphIO.h"
+
+// For LOGGING-related declarations
+#include "../lowLevelUtils/apiutils.private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -31,6 +35,10 @@ int _ComputeVertexRanges(DrawPlanarContext *context);
 int _ComputeEdgeRanges(DrawPlanarContext *context);
 int _GetNextExternalFaceVertex(graphP theGraph, int curVertex, int *pPrevLink);
 char *_RenderToString(graphP theEmbedding);
+
+#ifdef LOGGING
+void _LogEdgeList(graphP theEmbedding, listCollectionP edgeList, int edgeListHead);
+#endif
 
 /********************************************************************
  _ComputeVisibilityRepresentation()
@@ -79,7 +87,7 @@ int _ComputeVertexPositions(DrawPlanarContext *context)
     int v, vertpos;
 
     vertpos = 0;
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+    for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
     {
         // For each DFS tree root in the embedding, we
         // compute the vertex positions
@@ -189,7 +197,7 @@ int _ComputeVertexPositions(DrawPlanarContext *context)
 int _ComputeVertexPositionsInComponent(DrawPlanarContext *context, int root, int *pVertpos)
 {
     graphP theEmbedding = context->theGraph;
-    listCollectionP theOrder = LCNew(gp_VertexArraySize(theEmbedding));
+    listCollectionP theOrder = LCNew(gp_UpperBoundVertices(theEmbedding));
     int W, P, C, V, e;
 
     if (theOrder == NULL)
@@ -297,7 +305,7 @@ void _LogEdgeList(graphP theEmbedding, listCollectionP edgeList, int edgeListHea
 
     _gp_Log("EdgeList: [ ");
 
-    while (gp_IsEdge(theGraph, eIndex))
+    while (gp_IsEdge(theEmbedding, eIndex))
     {
         e = (eIndex << 1);
         eTwin = gp_GetTwin(theEmbedding, e);
@@ -348,7 +356,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
         return NOTOK;
     }
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+    for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
         vertexOrder[context->VI[v].pos] = v;
 
     // Allocate the edge list of size M.
@@ -358,7 +366,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
     //    represented by a pair of adjacent edge records
     //    at index 2X.
 
-    if (gp_GetM(theEmbedding) > 0 && (edgeList = LCNew(gp_EdgeArrayStart(theEmbedding) / 2 + gp_GetM(theEmbedding))) == NULL)
+    if (gp_GetM(theEmbedding) > 0 && (edgeList = LCNew(gp_LowerBoundEdges(theEmbedding) / 2 + gp_GetM(theEmbedding))) == NULL)
     {
         free(vertexOrder);
         vertexOrder = NULL;
@@ -370,7 +378,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
 
     // Each vertex starts out with a NIL generator edge.
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+    for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
         gp_SetVertexVisitedInfo(theEmbedding, v, NIL);
 
     // Perform the vertical sweep of the combinatorial embedding, using
@@ -517,7 +525,7 @@ int _ComputeVertexRanges(DrawPlanarContext *context)
     graphP theEmbedding = context->theGraph;
     int v = NIL, e = NIL, min = NIL, max = NIL;
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+    for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
     {
         min = gp_GetM(theEmbedding) + 1;
         max = NIL;
@@ -561,15 +569,14 @@ int _ComputeVertexRanges(DrawPlanarContext *context)
 int _ComputeEdgeRanges(DrawPlanarContext *context)
 {
     graphP theEmbedding = context->theGraph;
-    int e, eTwin, EsizeOccupied, v1, v2, pos1, pos2;
+    int e, eTwin, v1, v2, pos1, pos2;
 
     // Deleted edges are not supported, nor should they be in the embedding, so
     // this is just a reality check that avoids an in-use test inside the loop
     if (sp_NonEmpty(theEmbedding->edgeHoles))
         return NOTOK;
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
-    for (e = gp_EdgeArrayStart(theEmbedding); e < EsizeOccupied; e += 2)
+    for (e = gp_LowerBoundEdges(theEmbedding); e < gp_UpperBoundEdges(theEmbedding); e += 2)
     {
         eTwin = gp_GetTwin(theEmbedding, e);
 
@@ -798,7 +805,8 @@ char *_RenderToString(graphP theEmbedding)
         int N = gp_GetN(theEmbedding);
         int M = gp_GetM(theEmbedding);
         int zeroBasedVertexOffset = 0;
-        int n, m, EsizeOccupied, v, vRange, e, eRange, Mid, Pos;
+        int n, m, v, vRange, eRange, Mid, Pos;
+        int e;
         char *visRep = (char *)malloc(sizeof(char) * ((M + 1) * 2 * N + 1));
         char numBuffer[32];
 
@@ -820,10 +828,10 @@ char *_RenderToString(graphP theEmbedding)
         // If we are supposed to write 0-based output, then we have to set this variable to indicate
         // how much to subtract from each vertex index based on whether this library has been
         // compiled with 0-based or 1-based array indexing for the in-memory data structure (i.e.,
-        // compiled with USE_FASTER_1BASEDARRAYS USE_0BASEDARRAYS).
+        // compiled with USE_1BASEDARRAYS versus USE_0BASEDARRAYS).
         // The macro invoked is responsive to the compile-time difference.
-        if (gp_GetGraphFlags(theEmbedding) & FLAGS_ZEROBASEDIO)
-            zeroBasedVertexOffset = gp_GetFirstVertex(theGraph);
+        if (gp_GetGraphFlags(theEmbedding) & GRAPHFLAGS_ZEROBASEDIO)
+            zeroBasedVertexOffset = gp_LowerBoundVertexStorage(theEmbedding);
 
         // Clear the space
         for (n = 0; n < N; n++)
@@ -839,7 +847,7 @@ char *_RenderToString(graphP theEmbedding)
         }
 
         // Draw the vertices
-        for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+        for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
         {
             Pos = context->VI[v].pos;
             for (vRange = context->VI[v].start; vRange <= context->VI[v].end; vRange++)
@@ -865,8 +873,7 @@ char *_RenderToString(graphP theEmbedding)
         }
 
         // Draw the edges
-        EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
-        for (e = gp_EdgeArrayStart(theEmbedding); e < EsizeOccupied; e += 2)
+        for (e = gp_LowerBoundEdges(theEmbedding); e < gp_UpperBoundEdges(theEmbedding); e += 2)
         {
             Pos = context->E[e].pos;
             for (eRange = context->E[e].start; eRange < context->E[e].end; eRange++)
@@ -964,7 +971,7 @@ int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
 int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
 {
     graphP theEmbedding = context->theGraph;
-    int v, e, eTwin, EsizeOccupied, epos, eposIndex;
+    int v, e, eTwin, epos, eposIndex;
 
     if (sp_NonEmpty(context->theGraph->edgeHoles))
         return NOTOK;
@@ -974,7 +981,7 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
     /* Test whether the vertex values make sense and
             whether the vertex positions are unique. */
 
-    for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+    for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
     {
         if (gp_GetM(theEmbedding) > 0)
         {
@@ -987,21 +994,20 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
         }
 
         // Has the vertex position been used by a vertex before vertex v?
-        if (gp_GetVisited(theEmbedding, context->VI[v].pos + gp_GetFirstVertex(theEmbedding)))
+        if (gp_GetVisited(theEmbedding, context->VI[v].pos + gp_LowerBoundVertexStorage(theEmbedding)))
             return NOTOK;
 
         // Mark the vertex position as used by vertex v.
         // Note that this marking is made on some other vertex unrelated to v
         // We're just reusing the vertex visited array as cheap storage for a
         // detector of reusing vertex position integers.
-        gp_SetVisited(theEmbedding, context->VI[v].pos + gp_GetFirstVertex(theEmbedding));
+        gp_SetVisited(theEmbedding, context->VI[v].pos + gp_LowerBoundVertexStorage(theEmbedding));
     }
 
     /* Test whether the edge values make sense and
             whether the edge positions are unique */
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
-    for (e = gp_EdgeArrayStart(theEmbedding); e < EsizeOccupied; e += 2)
+    for (e = gp_LowerBoundEdges(theEmbedding); e < gp_UpperBoundEdges(theEmbedding); e += 2)
     {
         /* Each edge has two index locations in the edge information array */
         eTwin = gp_GetTwin(theEmbedding, e);
@@ -1025,7 +1031,7 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
             can use the visited flags in the graph's edges to
             tell us whether the positions are being reused. */
 
-        eposIndex = (epos << 1) + gp_EdgeArrayStart(theEmbedding);
+        eposIndex = (epos << 1) + gp_LowerBoundEdgeStorage(theEmbedding);
         eTwin = gp_GetTwin(theEmbedding, eposIndex);
 
         if (gp_GetEdgeVisited(theEmbedding, eposIndex) || gp_GetEdgeVisited(theEmbedding, eTwin))
@@ -1038,12 +1044,11 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
     /* Test whether any edge intersects any vertex position
         for a vertex that is not an endpoint of the edge. */
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theEmbedding);
-    for (e = gp_EdgeArrayStart(theEmbedding); e < EsizeOccupied; e += 2)
+    for (e = gp_LowerBoundEdges(theEmbedding); e < gp_UpperBoundEdges(theEmbedding); e += 2)
     {
         eTwin = gp_GetTwin(theEmbedding, e);
 
-        for (v = gp_GetFirstVertex(theEmbedding); gp_VertexInRangeAscending(theEmbedding, v); v++)
+        for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
         {
             /* If the vertex is an endpoint of the edge, then... */
 

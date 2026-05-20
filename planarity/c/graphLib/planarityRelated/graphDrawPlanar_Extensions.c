@@ -4,12 +4,15 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
+#include "graphDrawPlanar.h"
+#include "graphDrawPlanar.private.h"
+
+// Need to save and restore a graph flag related to IO
+#include "../io/graphIO.h"
+
 #include <stdlib.h>
 
-#include "graphDrawPlanar.private.h"
-#include "graphDrawPlanar.h"
-
-extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 extern void _CollectDrawingData(DrawPlanarContext *context, int RootVertex, int W, int WPrevLink);
 extern int _BreakTie(DrawPlanarContext *context, int BicompRoot, int W, int WPrevLink);
@@ -35,7 +38,7 @@ int _DrawPlanar_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _DrawPlanar_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
 int _DrawPlanar_InitGraph(graphP theGraph, int N);
-void _DrawPlanar_ReinitializeGraph(graphP theGraph);
+void _DrawPlanar_ReinitGraph(graphP theGraph);
 int _DrawPlanar_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 int _DrawPlanar_SortVertices(graphP theGraph);
 
@@ -78,6 +81,9 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
 {
     DrawPlanarContext *context = NULL;
 
+    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+        return NOTOK;
+
     // If the drawing feature has already been attached to the graph,
     // then there is no need to attach it again
     gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
@@ -85,6 +91,10 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     {
         return OK;
     }
+
+    // Ensure theGraph is a Planarity Graph
+    if (gp_ExtendWith_Planarity(theGraph) != OK)
+        return NOTOK;
 
     // Allocate a new extension context
     context = (DrawPlanarContext *)malloc(sizeof(DrawPlanarContext));
@@ -102,7 +112,7 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     // Put the overload functions into the context function table.
     // gp_AddExtension will overload the graph's functions with these, and
     // return the base function pointers in the context function table
-    memset(&context->functions, 0, sizeof(graphFunctionTable));
+    memset(&context->functions, 0, sizeof(graphFunctionTableStruct));
 
     context->functions.fpMergeBicomps = _DrawPlanar_MergeBicomps;
     context->functions.fpHandleInactiveVertex = _DrawPlanar_HandleInactiveVertex;
@@ -111,7 +121,7 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     context->functions.fpCheckObstructionIntegrity = _DrawPlanar_CheckObstructionIntegrity;
 
     context->functions.fpInitGraph = _DrawPlanar_InitGraph;
-    context->functions.fpReinitializeGraph = _DrawPlanar_ReinitializeGraph;
+    context->functions.fpReinitGraph = _DrawPlanar_ReinitGraph;
     context->functions.fpEnsureEdgeCapacity = _DrawPlanar_EnsureEdgeCapacity;
     context->functions.fpSortVertices = _DrawPlanar_SortVertices;
 
@@ -198,8 +208,8 @@ void _DrawPlanar_ClearStructures(DrawPlanarContext *context)
 int _DrawPlanar_CreateStructures(DrawPlanarContext *context)
 {
     graphP theGraph = context->theGraph;
-    int VIsize = gp_VertexArraySize(theGraph);
-    int Esize = gp_EdgeArraySize(theGraph);
+    int VIsize = gp_UpperBoundVertices(theGraph);
+    int Esize = gp_UpperBoundEdgeStorage(theGraph);
 
     if (gp_GetN(theGraph) <= 0)
         return NOTOK;
@@ -221,22 +231,19 @@ int _DrawPlanar_CreateStructures(DrawPlanarContext *context)
  ********************************************************************/
 int _DrawPlanar_InitStructures(DrawPlanarContext *context)
 {
-#ifdef USE_FASTER_1BASEDARRAYS
-    memset(context->VI, NIL_CHAR, gp_VertexArraySize(context->theGraph) * sizeof(DrawPlanar_VertexInfo));
-    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(DrawPlanar_EdgeRec));
+    memset(context->E, 0, gp_UpperBoundEdgeStorage(context->theGraph) * sizeof(DrawPlanar_EdgeRec));
+
+#ifdef USE_1BASEDARRAYS
+    memset(context->VI, NIL_CHAR, gp_UpperBoundVertices(context->theGraph) * sizeof(DrawPlanar_VertexInfo));
 #else
-    int v, e, Esize;
+    int v;
     graphP theGraph = context->theGraph;
 
     if (gp_GetN(theGraph) <= 0)
         return NOTOK;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         _DrawPlanar_InitVertexInfo(context, v);
-
-    Esize = gp_EdgeArraySize(theGraph);
-    for (e = gp_EdgeArrayStart(theGraph); e < Esize; e++)
-        _DrawPlanar_InitEdgeRec(context, e);
 #endif
 
     return OK;
@@ -253,8 +260,8 @@ void *_DrawPlanar_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int VIsize = gp_VertexArraySize((graphP)theGraph);
-        int Esize = gp_EdgeArraySize((graphP)theGraph);
+        int VIsize = gp_UpperBoundVertices((graphP)theGraph);
+        int Esize = gp_UpperBoundEdgeStorage((graphP)theGraph);
 
         *newContext = *context;
 
@@ -307,7 +314,7 @@ int _DrawPlanar_InitGraph(graphP theGraph, int N)
     theGraph->N = N;
     theGraph->NV = N;
     if (theGraph->edgeCapacity == 0)
-        theGraph->edgeCapacity = DEFAULT_EDGE_LIMIT * N;
+        theGraph->edgeCapacity = DEFAULT_EDGE_CAPACITY_FACTOR * N;
 
     if (_DrawPlanar_CreateStructures(context) != OK ||
         _DrawPlanar_InitStructures(context) != OK)
@@ -321,7 +328,7 @@ int _DrawPlanar_InitGraph(graphP theGraph, int N)
 /********************************************************************
  ********************************************************************/
 
-void _DrawPlanar_ReinitializeGraph(graphP theGraph)
+void _DrawPlanar_ReinitGraph(graphP theGraph)
 {
     DrawPlanarContext *context = NULL;
     gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
@@ -329,7 +336,7 @@ void _DrawPlanar_ReinitializeGraph(graphP theGraph)
     if (context != NULL)
     {
         // Reinitialize the graph
-        context->functions.fpReinitializeGraph(theGraph);
+        context->functions.fpReinitGraph(theGraph);
 
         // Do the reinitialization that is specific to this module
         _DrawPlanar_InitStructures(context);
@@ -369,7 +376,7 @@ int _DrawPlanar_SortVertices(graphP theGraph)
             DrawPlanar_VertexInfo temp;
 
             // Relabel the context data members that indicate vertices
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+            for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
             {
                 if (gp_IsVertex(theGraph, context->VI[v].ancestor))
                 {
@@ -382,8 +389,8 @@ int _DrawPlanar_SortVertices(graphP theGraph)
             // to the index values of the vertices.  This could be done very easily with an extra array in
             // which, for each v, newVI[index of v] = VI[v].  However, this loop avoids memory allocation
             // by performing the operation (almost) in-place, except for the pre-existing visitation flags.
-            _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+            _ClearVertexVisitedFlags(theGraph, FALSE);
+            for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
             {
                 // If the correct data has already been placed into position v
                 // by prior steps, then skip to the next vertex
@@ -563,7 +570,7 @@ int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData)
 
         else if (extraData != NULL && strlen(extraData) > 0)
         {
-            int v, e, tempInt, EsizeOccupied;
+            int v, tempInt, e;
             char line[64], tempChar;
 
             sprintf(line, "<%s>", DRAWPLANAR_NAME);
@@ -577,7 +584,7 @@ int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData)
             extraData = extraData + strlen(line) + 1;
 
             // Read the N lines of vertex information
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+            for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
             {
                 sscanf(extraData, " %d%c %d %d %d", &tempInt, &tempChar,
                        &context->VI[v].pos,
@@ -588,8 +595,7 @@ int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData)
             }
 
             // Read the lines that contain edge information
-            EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
-            for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e++)
+            for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); ++e)
             {
                 sscanf(extraData, " %d%c %d %d %d", &tempInt, &tempChar,
                        &context->E[e].pos,
@@ -630,7 +636,7 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
         }
         else
         {
-            int v, e, EsizeOccupied;
+            int v, e;
             char line[64];
             int maxLineSize = 64, extraDataPos = 0;
             char *extraData = (char *)calloc((1 + gp_GetN(theGraph) + 2 * gp_GetM(theGraph) + 1) * maxLineSize, sizeof(char));
@@ -643,11 +649,11 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
             // If we are supposed to write 0-based output, then we have to set these two variables to indicate
             // how much to subtract from each vertex and edge index based on whether this library has been
             // compiled with 0-based or 1-based array indexing for the in-memory data structure (i.e., compiled
-            // with USE_FASTER_1BASEDARRAYS USE_0BASEDARRAYS). The macros invoked are responsive to the difference.
-            if (gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO)
+            // with USE_1BASEDARRAYS USE_0BASEDARRAYS). The macros invoked are responsive to the difference.
+            if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO)
             {
-                zeroBasedVertexOffset = gp_GetFirstVertex(theGraph);
-                zeroBasedEdgeOffset = gp_EdgeArrayStart(theGraph);
+                zeroBasedVertexOffset = gp_LowerBoundVertexStorage(theGraph);
+                zeroBasedEdgeOffset = gp_LowerBoundEdgeStorage(theGraph);
             }
 
             // Bit of an unlikely case, but for safety, a bigger maxLineSize
@@ -664,7 +670,7 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
             strcpy(extraData + extraDataPos, line);
             extraDataPos += (int)strlen(line);
 
-            for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+            for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
             {
                 sprintf(line, "%d: %d %d %d\n", v - zeroBasedVertexOffset,
                         context->VI[v].pos,
@@ -674,8 +680,7 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
                 extraDataPos += (int)strlen(line);
             }
 
-            EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
-            for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e++)
+            for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); e++)
             {
                 if (gp_EdgeInUse(theGraph, e))
                 {

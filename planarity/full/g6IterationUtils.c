@@ -10,7 +10,8 @@
         "sources": [
             "planarity/full/g6IterationUtils.pyx",
             "planarity/c/graphLib/graphDFSUtils.c",
-            "planarity/c/graphLib/graphUtils.c",
+            "planarity/c/graphLib/graphLib.c",
+            "planarity/c/graphLib/graph.c",
             "planarity/c/graphLib/io/g6-api-utilities.c",
             "planarity/c/graphLib/io/g6-read-iterator.c",
             "planarity/c/graphLib/io/strOrFile.c",
@@ -25,10 +26,12 @@
             "planarity/c/graphLib/homeomorphSearch/graphK33Search.c",
             "planarity/c/graphLib/homeomorphSearch/graphK23Search.c",
             "planarity/c/graphLib/planarityRelated/graphTests.c",
+            "planarity/c/graphLib/planarityRelated/graphPlanarity_Extensions.c",
             "planarity/c/graphLib/planarityRelated/graphEmbed.c",
             "planarity/c/graphLib/planarityRelated/graphOuterplanarObstruction.c",
             "planarity/c/graphLib/planarityRelated/graphNonplanar.c",
             "planarity/c/graphLib/planarityRelated/graphIsolator.c",
+            "planarity/c/graphLib/planarityRelated/graphOuterplanarity_Extensions.c",
             "planarity/c/graphLib/planarityRelated/graphDrawPlanar.c",
             "planarity/c/graphLib/planarityRelated/graphDrawPlanar_Extensions.c",
             "planarity/c/graphLib/lowLevelUtils/stack.c",
@@ -1158,13 +1161,15 @@ static int __Pyx_init_co_variables(void) {
 #define __PYX_HAVE_API__planarity__full__g6IterationUtils
 /* Early includes */
 #include "../c/graphLib/lowLevelUtils/appconst.h"
-#include "../c/graphLib/graphLib.h"
-#include "../c/graphLib/graphStructures.h"
 #include "../c/graphLib/graph.h"
-#include "../c/graphLib/planarityRelated/graphDrawPlanar.h"
+#include "../c/graphLib/graphLib.h"
 #include "../c/graphLib/homeomorphSearch/graphK23Search.h"
 #include "../c/graphLib/homeomorphSearch/graphK33Search.h"
 #include "../c/graphLib/homeomorphSearch/graphK4Search.h"
+#include "../c/graphLib/io/graphIO.h"
+#include "../c/graphLib/planarityRelated/graphDrawPlanar.h"
+#include "../c/graphLib/planarityRelated/graphOuterplanarity.h"
+#include "../c/graphLib/planarityRelated/graphPlanarity.h"
 #include "../c/graphLib/io/g6-read-iterator.h"
 #include "../c/graphLib/io/g6-write-iterator.h"
 #ifdef _OPENMP

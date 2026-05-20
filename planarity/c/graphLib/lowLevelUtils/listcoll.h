@@ -20,13 +20,14 @@ extern "C"
                 int prev, next;
         } lcnode;
 
-        typedef struct
+        struct listCollectionStruct
         {
                 int N;
                 lcnode *List;
-        } listCollectionRec;
+        };
 
-        typedef listCollectionRec *listCollectionP;
+        typedef struct listCollectionStruct listCollectionStruct;
+        typedef listCollectionStruct *listCollectionP;
 
         listCollectionP LCNew(int N);
         void LCFree(listCollectionP *pListColl);

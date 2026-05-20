@@ -49,10 +49,10 @@ cdef class PGraph:
         seen = set()
         for u,v in edges:
             if (u,v) not in seen and (v,u) not in seen:
-                status = cplanarity.gp_AddEdge(self.theGraph, 
+                status = cplanarity.gp_DynamicAddEdge(self.theGraph, 
                                                self.nodemap[u], 0, 
                                                self.nodemap[v], 0)
-                if status == cplanarity.NOTOK:
+                if status != cplanarity.OK:
                     cplanarity.gp_Free(&self.theGraph)
                     raise RuntimeError("planarity: failed adding edge.")
                 seen.add((u,v))
@@ -70,7 +70,7 @@ cdef class PGraph:
             return
         
         status = cplanarity.gp_ExtendWith_Planarity(self.theGraph)
-        if status == cplanarity.NOTOK:
+        if status != cplanarity.OK:
             raise RuntimeError("planarity: failed to extend graph with planarity structures.")
         self.embedding = cplanarity.gp_Embed(self.theGraph, 
                                             cplanarity.EMBEDFLAGS_PLANAR)
@@ -79,7 +79,7 @@ cdef class PGraph:
 
     def embed_drawplanar(self):
         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
-        if status == cplanarity.NOTOK:
+        if status != cplanarity.OK:
             raise RuntimeError("planarity: failed to extend graph with drawplanar structures.")
         status = cplanarity.gp_Embed(self.theGraph, 
                                              cplanarity.EMBEDFLAGS_DRAWPLANAR)
@@ -105,15 +105,16 @@ cdef class PGraph:
             raise RuntimeError("planarity: Unknown error.")        
 
 
-    def nodes(self,data=False):
+    def nodes(self, data=False):
         DRAWPLANAR_ID=1
-        cdef cplanarity.DrawPlanarContext *context 
+        cdef cplanarity.DrawPlanarContext *context
+
         drawing=cplanarity.gp_FindExtension(self.theGraph, 
                                             DRAWPLANAR_ID, 
-                                            <void *> &context)        
+                                            <void **> &context)
 
-        first=cplanarity.gp_GetFirstVertex(self.theGraph)
-        last=cplanarity.gp_GetLastVertex(self.theGraph)+1
+        first=cplanarity.gp_LowerBoundVertices(self.theGraph)
+        last=cplanarity.gp_UpperBoundVertices(self.theGraph)
         r=self.reverse_nodemap
         nodes=[]
         for n in range(first,last):
@@ -134,11 +135,11 @@ cdef class PGraph:
         cdef cplanarity.DrawPlanarContext *context 
         drawing=cplanarity.gp_FindExtension(self.theGraph, 
                                             DRAWPLANAR_ID, 
-                                            <void *> &context)        
+                                            <void **> &context)
         edges=[]
         r=self.reverse_nodemap
-        first=cplanarity.gp_GetFirstVertex(self.theGraph)
-        last=cplanarity.gp_GetLastVertex(self.theGraph)+1
+        first=cplanarity.gp_LowerBoundVertices(self.theGraph)
+        last=cplanarity.gp_UpperBoundVertices(self.theGraph)
         for n in range(first,last):
             e=cplanarity.gp_GetFirstEdge(self.theGraph,n)
             is_edge=cplanarity.gp_IsEdge(self.theGraph, e)

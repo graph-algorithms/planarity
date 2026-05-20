@@ -37,7 +37,7 @@ strOrFileP sf_NewInputContainer(char const *const inputStr, char const *const fi
         ((fileName == NULL) && (inputStr == NULL)))
         return NULL;
 
-    theStrOrFile = (strOrFileP)calloc(1, sizeof(strOrFile));
+    theStrOrFile = (strOrFileP)calloc(1, sizeof(strOrFileStruct));
     if (theStrOrFile != NULL)
     {
         theStrOrFile->containerType = INPUT_CONTAINER;
@@ -127,7 +127,7 @@ strOrFileP sf_NewOutputContainer(char **pOutputStr, char const *const fileName)
         ((pOutputStr != NULL) && ((*pOutputStr) != NULL)))
         return NULL;
 
-    theStrOrFile = (strOrFileP)calloc(1, sizeof(strOrFile));
+    theStrOrFile = (strOrFileP)calloc(1, sizeof(strOrFileStruct));
     if (theStrOrFile != NULL)
     {
         theStrOrFile->containerType = OUTPUT_CONTAINER;

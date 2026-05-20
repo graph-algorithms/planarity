@@ -6,8 +6,11 @@ See the LICENSE.TXT file for licensing information.
 
 #include <stdlib.h>
 
-#include "graphK33Search.private.h"
 #include "graphK33Search.h"
+#include "graphK33Search.private.h"
+
+// Need to save and restore a graph flag related to IO
+#include "../io/graphIO.h"
 
 extern int _SearchForMergeBlocker(graphP theGraph, K33SearchContext *context, int v, int *pMergeBlocker);
 extern int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, int mergeBlocker);
@@ -41,7 +44,7 @@ int _K33Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _K33Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
 int _K33Search_InitGraph(graphP theGraph, int N);
-void _K33Search_ReinitializeGraph(graphP theGraph);
+void _K33Search_ReinitGraph(graphP theGraph);
 int _K33Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 /* Forward declarations of functions used by the extension system */
@@ -68,6 +71,9 @@ int gp_ExtendWith_K33Search(graphP theGraph)
 {
     K33SearchContext *context = NULL;
 
+    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+        return NOTOK;
+
     // If the K3,3 search feature has already been attached to the graph,
     // then there is no need to attach it again
     gp_FindExtension(theGraph, K33SEARCH_ID, (void *)&context);
@@ -75,6 +81,10 @@ int gp_ExtendWith_K33Search(graphP theGraph)
     {
         return OK;
     }
+
+    // Ensure theGraph is a Planarity Graph
+    if (gp_ExtendWith_Planarity(theGraph) != OK)
+        return NOTOK;
 
     // Allocate a new extension context
     context = (K33SearchContext *)malloc(sizeof(K33SearchContext));
@@ -92,7 +102,7 @@ int gp_ExtendWith_K33Search(graphP theGraph)
     // Put the overload functions into the context function table.
     // gp_AddExtension will overload the graph's functions with these, and
     // return the base function pointers in the context function table
-    memset(&context->functions, 0, sizeof(graphFunctionTable));
+    memset(&context->functions, 0, sizeof(graphFunctionTableStruct));
 
     context->functions.fpEmbeddingInitialize = _K33Search_EmbeddingInitialize;
     context->functions.fpEmbedBackEdgeToDescendant = _K33Search_EmbedBackEdgeToDescendant;
@@ -104,7 +114,7 @@ int gp_ExtendWith_K33Search(graphP theGraph)
     context->functions.fpCheckObstructionIntegrity = _K33Search_CheckObstructionIntegrity;
 
     context->functions.fpInitGraph = _K33Search_InitGraph;
-    context->functions.fpReinitializeGraph = _K33Search_ReinitializeGraph;
+    context->functions.fpReinitGraph = _K33Search_ReinitGraph;
     context->functions.fpEnsureEdgeCapacity = _K33Search_EnsureEdgeCapacity;
 
     _K33Search_ClearStructures(context);
@@ -200,8 +210,8 @@ void _K33Search_ClearStructures(K33SearchContext *context)
  ********************************************************************/
 int _K33Search_CreateStructures(K33SearchContext *context)
 {
-    int VIsize = gp_VertexArraySize(context->theGraph);
-    int Esize = gp_EdgeArraySize(context->theGraph);
+    int VIsize = gp_UpperBoundVertices(context->theGraph);
+    int Esize = gp_UpperBoundEdgeStorage(context->theGraph);
 
     if (gp_GetN(context->theGraph) <= 0)
         return NOTOK;
@@ -223,22 +233,8 @@ int _K33Search_CreateStructures(K33SearchContext *context)
  ********************************************************************/
 int _K33Search_InitStructures(K33SearchContext *context)
 {
-    memset(context->VI, NIL_CHAR, gp_VertexArraySize(context->theGraph) * sizeof(K33Search_VertexInfo));
-    memset(context->E, NIL_CHAR, gp_EdgeArraySize(context->theGraph) * sizeof(K33Search_EdgeRec));
-    // N.B. This is the legacy API-based approach to initializing the structures
-    // required for the K_{3, 3} search graph algorithm extension.
-    // graphP theGraph = context->theGraph;
-    // int v, e, Esize;
-
-    // if (gp_GetN(theGraph) <= 0)
-    //     return OK;
-
-    // for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
-    //     _K33Search_InitVertexInfo(context, v);
-
-    // Esize = gp_EdgeArraySize(theGraph);
-    // for (e = gp_EdgeArrayStart(theGraph); e < Esize; e++)
-    //     _K33Search_InitEdgeRec(context, e);
+    memset(context->VI, NIL_CHAR, gp_UpperBoundVertices(context->theGraph) * sizeof(K33Search_VertexInfo));
+    memset(context->E, NIL_CHAR, gp_UpperBoundEdgeStorage(context->theGraph) * sizeof(K33Search_EdgeRec));
 
     return OK;
 }
@@ -259,7 +255,7 @@ int _K33Search_InitGraph(graphP theGraph, int N)
     theGraph->N = N;
     theGraph->NV = N;
     if (theGraph->edgeCapacity == 0)
-        theGraph->edgeCapacity = DEFAULT_EDGE_LIMIT * N;
+        theGraph->edgeCapacity = DEFAULT_EDGE_CAPACITY_FACTOR * N;
 
     if (_K33Search_CreateStructures(context) != OK ||
         _K33Search_InitStructures(context) != OK)
@@ -273,7 +269,7 @@ int _K33Search_InitGraph(graphP theGraph, int N)
 /********************************************************************
  ********************************************************************/
 
-void _K33Search_ReinitializeGraph(graphP theGraph)
+void _K33Search_ReinitGraph(graphP theGraph)
 {
     K33SearchContext *context = NULL;
     gp_FindExtension(theGraph, K33SEARCH_ID, (void *)&context);
@@ -281,7 +277,7 @@ void _K33Search_ReinitializeGraph(graphP theGraph)
     if (context != NULL)
     {
         // Reinitialize the graph
-        context->functions.fpReinitializeGraph(theGraph);
+        context->functions.fpReinitGraph(theGraph);
 
         // Do the reinitialization that is specific to this module
         _K33Search_InitStructures(context);
@@ -316,8 +312,8 @@ void *_K33Search_DupContext(void *pContext, void *theGraph)
 
     if (newContext != NULL)
     {
-        int VIsize = gp_VertexArraySize((graphP)theGraph);
-        int Esize = gp_EdgeArraySize((graphP)theGraph);
+        int VIsize = gp_UpperBoundVertices((graphP)theGraph);
+        int Esize = gp_UpperBoundEdgeStorage((graphP)theGraph);
 
         *newContext = *context;
 
@@ -394,7 +390,7 @@ void _CreateBackEdgeLists(graphP theGraph, K33SearchContext *context)
 {
     int v, e, eTwin, ancestor;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         e = gp_GetVertexFwdEdgeList(theGraph, v);
         while (gp_IsEdge(theGraph, e))
@@ -445,12 +441,12 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
 
     // Initialize the bin and all the buckets to be empty
     LCReset(bin);
-    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, L); L++)
+    for (L = gp_LowerBoundVertices(theGraph); L < gp_UpperBoundVertices(theGraph); L++)
         buckets[L] = NIL;
 
     // For each vertex, add it to the bucket whose index is equal to the lowpoint of the vertex.
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         L = gp_GetVertexLowpoint(theGraph, v);
         buckets[L] = LCAppend(bin, buckets[L], v);
@@ -460,7 +456,7 @@ void _CreateSeparatedDFSChildLists(graphP theGraph, K33SearchContext *context)
     // Since lower numbered buckets are processed before higher numbered buckets, vertices with lower
     // lowpoint values are added before those with higher lowpoint values, so the separatedDFSChildList
     // of each vertex is sorted by lowpoint
-    for (L = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, L); L++)
+    for (L = gp_LowerBoundVertices(theGraph); L < gp_UpperBoundVertices(theGraph); L++)
     {
         v = buckets[L];
 
@@ -680,8 +676,8 @@ int _K33Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
             // is meaningless, so we empty it out. We preserve the embedFlags
             // to ensure post-processing continues as expected.
             savedEmbedFlags = gp_GetEmbedFlags(theGraph);
-            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO;
-            gp_ReinitializeGraph(theGraph);
+            savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO;
+            gp_ReinitGraph(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
             theGraph->graphFlags &= savedZEROBASEDIO;
         }

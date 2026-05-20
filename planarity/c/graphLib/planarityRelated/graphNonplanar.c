@@ -6,7 +6,9 @@ See the LICENSE.TXT file for licensing information.
 
 #define GRAPHNONPLANAR_C
 
-#include "../graph.h"
+// This source file implements subroutines of the main graph planarity method
+#include "../planarityRelated/graphPlanarity.h"
+#include "../planarityRelated/graphPlanarity.private.h"
 
 /* Imported functions */
 
@@ -38,6 +40,18 @@ int _MarkZtoRPath(graphP theGraph);
 int _FindFuturePertinenceBelowXYPath(graphP theGraph);
 
 /****************************************************************************
+ _gp_GetObstructionMinorType()
+ ****************************************************************************/
+
+int gp_GetObstructionMinorType(graphP theGraph)
+{
+    if (theGraph == NULL || theGraph->IC == NULL)
+        return MINORTYPE_NONE;
+
+    return theGraph->IC->minorType;
+}
+
+/****************************************************************************
  _ChooseTypeOfNonplanarityMinor()
  ****************************************************************************/
 
@@ -50,8 +64,8 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
     if (_InitializeNonplanarityContext(theGraph, v, R) != OK)
         return NOTOK;
 
-    R = theGraph->IC.r;
-    W = theGraph->IC.w;
+    R = theGraph->IC->r;
+    W = theGraph->IC->w;
 
     /* If the root copy is not a root copy of the current vertex v,
             then the Walkdown terminated because it couldn't find
@@ -59,7 +73,7 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
 
     if (gp_GetVertexFromBicompRoot(theGraph, R) != v)
     {
-        theGraph->IC.minorType |= MINORTYPE_A;
+        theGraph->IC->minorType |= MINORTYPE_A;
         return OK;
     }
 
@@ -70,18 +84,18 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
     {
         if (gp_GetVertexLowpoint(theGraph, gp_GetVertexLastPertinentRootChild(theGraph, W)) < v)
         {
-            theGraph->IC.minorType |= MINORTYPE_B;
+            theGraph->IC->minorType |= MINORTYPE_B;
             return OK;
         }
     }
 
     /* Find the highest obstructing X-Y path */
 
-    if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC.py == NIL)
+    if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC->py == NIL)
         return NOTOK;
 
-    Px = theGraph->IC.px;
-    Py = theGraph->IC.py;
+    Px = theGraph->IC->px;
+    Py = theGraph->IC->py;
 
     /* If either point of attachment is 'high' (P_x closer to R than X
          or P_y closer to R than Y along external face), then we've
@@ -90,7 +104,7 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
     if (gp_GetObstructionMark(theGraph, Px) == ANYVERTEX_OBSTRUCTIONMARK_HIGH_RXW ||
         gp_GetObstructionMark(theGraph, Py) == ANYVERTEX_OBSTRUCTIONMARK_HIGH_RYW)
     {
-        theGraph->IC.minorType |= MINORTYPE_C;
+        theGraph->IC->minorType |= MINORTYPE_C;
         return OK;
     }
 
@@ -100,9 +114,9 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
     if (_MarkZtoRPath(theGraph) != OK)
         return NOTOK;
 
-    if (gp_IsVertex(theGraph, theGraph->IC.z))
+    if (gp_IsVertex(theGraph, theGraph->IC->z))
     {
-        theGraph->IC.minorType |= MINORTYPE_D;
+        theGraph->IC->minorType |= MINORTYPE_D;
         return OK;
     }
 
@@ -112,8 +126,8 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
     Z = _FindFuturePertinenceBelowXYPath(theGraph);
     if (gp_IsVertex(theGraph, Z))
     {
-        theGraph->IC.z = Z;
-        theGraph->IC.minorType |= MINORTYPE_E;
+        theGraph->IC->z = Z;
+        theGraph->IC->minorType |= MINORTYPE_E;
         return OK;
     }
 
@@ -151,7 +165,7 @@ int _InitializeNonplanarityContext(graphP theGraph, int v, int R)
     // Blank out the isolator context, then assign the input graph reference
     // and the current vertext v into the context.
     _InitIsolatorContext(theGraph);
-    theGraph->IC.v = v;
+    theGraph->IC->v = v;
 
     // The bicomp root provided was the one on which the WalkDown was performed,
     // but in the case of Minor A, the central bicomp of the minor is at the top
@@ -163,7 +177,7 @@ int _InitializeNonplanarityContext(graphP theGraph, int v, int R)
         sp_Pop2_Discard1(theGraph->theStack, R);
     }
 
-    theGraph->IC.r = R;
+    theGraph->IC->r = R;
 
     // A number of subroutines require the main bicomp of the minor to be
     // consistently oriented and its visited flags clear.
@@ -177,11 +191,11 @@ int _InitializeNonplanarityContext(graphP theGraph, int v, int R)
 
     // Now we find the active vertices along both external face paths
     // extending from R.
-    _FindActiveVertices(theGraph, R, &theGraph->IC.x, &theGraph->IC.y);
+    _FindActiveVertices(theGraph, R, &theGraph->IC->x, &theGraph->IC->y);
 
     // Now, we obtain the pertinent vertex W on the lower external face
     // path between X and Y (that path that does not include R).
-    theGraph->IC.w = _FindPertinentVertex(theGraph);
+    theGraph->IC->w = _FindPertinentVertex(theGraph);
 
     // Now we can classify the vertices along the external face of the bicomp
     // rooted at R as 'high RXW', 'low RXW', 'high RXY', 'low RXY'
@@ -263,7 +277,7 @@ int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink)
 
 void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY)
 {
-    int XPrevLink = 1, YPrevLink = 0, v = theGraph->IC.v;
+    int XPrevLink = 1, YPrevLink = 0, v = theGraph->IC->v;
 
     *pX = _GetNeighborOnExtFace(theGraph, R, &XPrevLink);
     *pY = _GetNeighborOnExtFace(theGraph, R, &YPrevLink);
@@ -300,11 +314,11 @@ void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY)
 
 int _FindPertinentVertex(graphP theGraph)
 {
-    int W = theGraph->IC.x, WPrevLink = 1;
+    int W = theGraph->IC->x, WPrevLink = 1;
 
     W = _GetNeighborOnExtFace(theGraph, W, &WPrevLink);
 
-    while (W != theGraph->IC.y)
+    while (W != theGraph->IC->y)
     {
         if (PERTINENT(theGraph, W))
             return W;
@@ -327,10 +341,10 @@ int _SetVertexTypesForMarkingXYPath(graphP theGraph)
     int R, X, Y, W, Z, ZPrevLink, ZType;
 
     // Unpack the context for efficiency of loops
-    R = theGraph->IC.r;
-    X = theGraph->IC.x;
-    Y = theGraph->IC.y;
-    W = theGraph->IC.w;
+    R = theGraph->IC->r;
+    X = theGraph->IC->x;
+    Y = theGraph->IC->y;
+    W = theGraph->IC->w;
 
     // Ensure basic preconditions of this routine are met
     if (gp_IsNotVirtualVertex(theGraph, R) || gp_IsNotVertex(theGraph, X) ||
@@ -427,12 +441,12 @@ int _PopAndUnmarkVerticesAndEdges(graphP theGraph, int Z, int stackBottom)
  This method also sets the isolator context's points of attachment on the
  external face of the marked X-Y path, if there was an X-Y path.  So, the
  caller can also use this call to decide if there was an X-Y path by
- testing whether theGraph->IC.px and py have been set to non-NIL values.
+ testing whether theGraph->IC->px and py have been set to non-NIL values.
  ****************************************************************************/
 
 int _MarkHighestXYPath(graphP theGraph)
 {
-    return _MarkClosestXYPath(theGraph, theGraph->IC.r);
+    return _MarkClosestXYPath(theGraph, theGraph->IC->r);
 }
 
 /****************************************************************************
@@ -452,12 +466,12 @@ int _MarkHighestXYPath(graphP theGraph)
  This method also sets the isolator context's points of attachment on the
  external face of the marked X-Y path, if there was an X-Y path.  So, the
  caller can also use this call to decide if there was an X-Y path by
- testing whether theGraph->IC.px and py have been set to non-NIL values.
+ testing whether theGraph->IC->px and py have been set to non-NIL values.
  ****************************************************************************/
 
 int _MarkLowestXYPath(graphP theGraph)
 {
-    return _MarkClosestXYPath(theGraph, theGraph->IC.w);
+    return _MarkClosestXYPath(theGraph, theGraph->IC->w);
 }
 
 /****************************************************************************
@@ -477,7 +491,7 @@ int _MarkLowestXYPath(graphP theGraph)
  OK to indicate no internal failures, but on return the caller can detect
  whether there was an X-Y path by testing whether the attachment points in
  the isolator context have been set to non-NIL values. Specifically, test
- whether theGraph->IC.px and py have been set to non-NIL values. The caller
+ whether theGraph->IC->px and py have been set to non-NIL values. The caller
  must decide whether the absence of an X-Y path is an error. For example,
  in core planarity, the proof of correctness guarantees an X-Y path exists
  by the time this method is called, so that caller would decide to return
@@ -566,9 +580,9 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
 
     /* Initialization */
 
-    R = theGraph->IC.r;
-    W = theGraph->IC.w;
-    theGraph->IC.px = theGraph->IC.py = NIL;
+    R = theGraph->IC->r;
+    W = theGraph->IC->w;
+    theGraph->IC->px = theGraph->IC->py = NIL;
 
     /* This method only makes sense for a targetVertex of R or W */
     if (targetVertex != R && targetVertex != W)
@@ -656,7 +670,7 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
             if (gp_GetObstructionMark(theGraph, Z) == ANYVERTEX_OBSTRUCTIONMARK_HIGH_RXW ||
                 gp_GetObstructionMark(theGraph, Z) == ANYVERTEX_OBSTRUCTIONMARK_LOW_RXW)
             {
-                theGraph->IC.px = Z;
+                theGraph->IC->px = Z;
                 if (_PopAndUnmarkVerticesAndEdges(theGraph, NIL, stackBottom2) != OK)
                     return NOTOK;
             }
@@ -671,7 +685,7 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
                (except the entry edge for P_x).*/
 
             gp_SetVisited(theGraph, Z);
-            if (Z != theGraph->IC.px)
+            if (Z != theGraph->IC->px)
             {
                 gp_SetEdgeVisited(theGraph, e);
                 gp_SetEdgeVisited(theGraph, gp_GetTwin(theGraph, e));
@@ -684,7 +698,7 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
             if (gp_GetObstructionMark(theGraph, Z) == ANYVERTEX_OBSTRUCTIONMARK_HIGH_RYW ||
                 gp_GetObstructionMark(theGraph, Z) == ANYVERTEX_OBSTRUCTIONMARK_LOW_RYW)
             {
-                theGraph->IC.py = Z;
+                theGraph->IC->py = Z;
                 break;
             }
         }
@@ -700,8 +714,8 @@ int _MarkClosestXYPath(graphP theGraph, int targetVertex)
 
     /* Return the result */
 
-    if (!gp_IsVertex(theGraph, theGraph->IC.py))
-        theGraph->IC.px = NIL;
+    if (!gp_IsVertex(theGraph, theGraph->IC->py))
+        theGraph->IC->px = NIL;
 
     return OK;
 }
@@ -745,10 +759,10 @@ int _MarkZtoRPath(graphP theGraph)
 
     /* Initialize */
 
-    R = theGraph->IC.r;
-    Px = theGraph->IC.px;
-    Py = theGraph->IC.py;
-    theGraph->IC.z = NIL;
+    R = theGraph->IC->r;
+    Px = theGraph->IC->px;
+    Py = theGraph->IC->py;
+    theGraph->IC->z = NIL;
 
     /* Begin at Px and search its adjacency list for the edge leading to
        the first internal vertex of the X-Y path. */
@@ -784,7 +798,7 @@ int _MarkZtoRPath(graphP theGraph)
 
     /* Otherwise, store Z in the isolation context */
 
-    theGraph->IC.z = Z;
+    theGraph->IC->z = Z;
 
     /* Walk the proper face starting with (Z, ZNextEdge) until we reach R, marking
             the vertices and edges encountered along the way, then Return OK. */
@@ -829,8 +843,8 @@ int _MarkZtoRPath(graphP theGraph)
 
 int _FindFuturePertinenceBelowXYPath(graphP theGraph)
 {
-    int Z = theGraph->IC.px, ZPrevLink = 1,
-        Py = theGraph->IC.py, v = theGraph->IC.v;
+    int Z = theGraph->IC->px, ZPrevLink = 1,
+        Py = theGraph->IC->py, v = theGraph->IC->v;
 
     Z = _GetNeighborOnExtFace(theGraph, Z, &ZPrevLink);
 

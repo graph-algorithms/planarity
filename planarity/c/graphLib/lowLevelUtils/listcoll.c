@@ -80,7 +80,7 @@ listCollectionP LCNew(int N)
      if (N <= 0)
           return theListColl;
 
-     theListColl = (listCollectionP)malloc(sizeof(listCollectionRec));
+     theListColl = (listCollectionP)malloc(sizeof(listCollectionStruct));
      if (theListColl != NULL)
      {
           theListColl->List = (lcnode *)malloc(N * sizeof(lcnode));

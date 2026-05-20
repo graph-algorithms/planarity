@@ -15,13 +15,14 @@ extern "C"
 // includes mem functions like memcpy
 #include <string.h>
 
-        typedef struct
+        struct stackStruct
         {
                 int *S;
                 int size, capacity;
-        } stack;
+        };
 
-        typedef stack *stackP;
+        typedef struct stackStruct stackStruct;
+        typedef stackStruct *stackP;
 
         stackP sp_New(int);
         void sp_Free(stackP *);

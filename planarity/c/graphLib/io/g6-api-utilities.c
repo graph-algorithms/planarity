@@ -8,9 +8,9 @@ See the LICENSE.TXT file for licensing information.
 #include "../lowLevelUtils/appconst.h"
 
 /* Private function declarations (exported within system) */
-int _g6_GetNumCharsForEncoding(int);
-int _g6_GetNumCharsForOrder(int);
-int _g6_GetExpectedNumPaddingZeroes(const int, const int);
+size_t _g6_GetNumCharsForEncoding(int order);
+int _g6_GetNumCharsForOrder(int order);
+size_t _g6_GetExpectedNumPaddingZeroes(const int order, const size_t numChars);
 // NOTE: this method is used by g6_ReadGraph() to ensure that graphs after the
 // first one in the file have the same order, and by g6_WriteGraph() to ensure
 // that the encoding of the graph order at the beginning of the graph encoding
@@ -22,19 +22,19 @@ int _g6_ValidateOrderOfEncodedGraph(char *graphBuff, int order);
 // NOTE: this method is now used to validate each graph we're reading in, as
 // well as to check the validity of the encoding produced before attempting to
 // write.
-int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const int numChars);
+int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const size_t numChars);
 
 /* Private functions */
-int _g6_GetMaxEdgeCount(int);
+size_t _g6_GetMaxEdgeCount(int);
 
-int _g6_GetMaxEdgeCount(int order)
+size_t _g6_GetMaxEdgeCount(int order)
 {
-    return (order * (order - 1)) / 2;
+    return ((size_t)order * (order - 1)) / 2;
 }
 
-int _g6_GetNumCharsForEncoding(int order)
+size_t _g6_GetNumCharsForEncoding(int order)
 {
-    int maxNumEdges = _g6_GetMaxEdgeCount(order);
+    size_t maxNumEdges = _g6_GetMaxEdgeCount(order);
 
     return (maxNumEdges / 6) + (maxNumEdges % 6 ? 1 : 0);
 }
@@ -53,10 +53,10 @@ int _g6_GetNumCharsForOrder(int order)
     return -1;
 }
 
-int _g6_GetExpectedNumPaddingZeroes(const int order, const int numChars)
+size_t _g6_GetExpectedNumPaddingZeroes(const int order, const size_t numChars)
 {
-    int maxNumEdges = _g6_GetMaxEdgeCount(order);
-    int expectedNumPaddingZeroes = numChars * 6 - maxNumEdges;
+    size_t maxNumEdges = _g6_GetMaxEdgeCount(order);
+    size_t expectedNumPaddingZeroes = numChars * 6 - maxNumEdges;
 
     return expectedNumPaddingZeroes;
 }
@@ -70,12 +70,12 @@ int _g6_ValidateOrderOfEncodedGraph(char *graphBuff, int order)
     {
         if (graphBuff[1] == 126)
         {
-            ErrorMessage("Can only handle graphs of order <= 100,000.\n");
+            gp_ErrorMessage("Can only handle graphs of order <= 100,000.\n");
             return NOTOK;
         }
         else if (graphBuff[1] > 126)
         {
-            ErrorMessage("Invalid graph order signifier.\n");
+            gp_ErrorMessage("Invalid graph order signifier.\n");
             return NOTOK;
         }
         else
@@ -89,32 +89,32 @@ int _g6_ValidateOrderOfEncodedGraph(char *graphBuff, int order)
         n = currChar - 63;
     else
     {
-        ErrorMessage("Character doesn't correspond to a printable ASCII character.\n");
+        gp_ErrorMessage("Character doesn't correspond to a printable ASCII "
+                        "character.\n");
         return NOTOK;
     }
 
     if (n != order)
     {
-        char messageContents[MAXLINE + 1];
-        sprintf(messageContents, "Graph order %d doesn't match expected graph order %d", n, order);
-        ErrorMessage(messageContents);
+        gp_ErrorMessage("Graph order %d doesn't match expected graph order %d",
+                        n, order);
         return NOTOK;
     }
 
     return OK;
 }
 
-int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const int numChars)
+int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const size_t numChars)
 {
     int exitCode = OK;
 
-    int numPaddingZeroes = 0, numCharsForGraphEncoding = 0;
-    int expectedNumPaddingZeroes = 0, expectedNumChars = 0;
+    size_t numPaddingZeroes = 0, numCharsForGraphEncoding = 0;
+    size_t expectedNumPaddingZeroes = 0, expectedNumChars = 0;
     char finalByte = '\0';
 
     if (graphBuff == NULL || strlen(graphBuff) == 0)
     {
-        ErrorMessage("Invalid encoding: graphBuff is NULL or has no content.\n");
+        gp_ErrorMessage("Invalid encoding: graphBuff is NULL or empty.\n");
         return NOTOK;
     }
 
@@ -129,29 +129,26 @@ int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const int numCha
 
     if (expectedNumChars != numCharsForGraphEncoding)
     {
-        char messageContents[MAXLINE + 1];
-        messageContents[0] = '\0';
-        sprintf(messageContents, "Invalid number of bytes for graph of order %d; got %d but expected %d\n", order, numCharsForGraphEncoding, expectedNumChars);
-        ErrorMessage(messageContents);
+        gp_ErrorMessage("Invalid number of bytes for graph of order %d; got %d "
+                        "but expected %d\n",
+                        order, (int)numCharsForGraphEncoding, (int)expectedNumChars);
         return NOTOK;
     }
 
     // Check that characters are valid ASCII characters between 62 and 126
-    for (int i = 0; i < numChars; i++)
+    for (size_t i = 0; i < numChars; i++)
     {
         if (graphBuff[i] < 63 || graphBuff[i] > 126)
         {
-            char messageContents[MAXLINE + 1];
-            messageContents[0] = '\0';
-            sprintf(messageContents, "Invalid character at index %d: \"%c\"\n", i, graphBuff[i]);
-            ErrorMessage(messageContents);
+            gp_ErrorMessage("Invalid character at index %d: \"%c\"\n",
+                            (int)i, graphBuff[i]);
             return NOTOK;
         }
     }
 
     // Check that there are no extraneous bits in representation (since we pad out to a
     // multiple of 6 before splitting into bytes and adding 63 to each byte)
-    for (int i = 0; i < expectedNumPaddingZeroes; i++)
+    for (size_t i = 0; i < expectedNumPaddingZeroes; i++)
     {
         if (finalByte & (1 << i))
             break;
@@ -161,10 +158,8 @@ int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const int numCha
 
     if (numPaddingZeroes != expectedNumPaddingZeroes)
     {
-        char messageContents[MAXLINE + 1];
-        messageContents[0] = '\0';
-        sprintf(messageContents, "Expected %d padding zeroes, but got %d.\n", expectedNumPaddingZeroes, numPaddingZeroes);
-        ErrorMessage(messageContents);
+        gp_ErrorMessage("Expected %d padding zeroes, but got %d.\n",
+                        (int)expectedNumPaddingZeroes, (int)numPaddingZeroes);
         exitCode = NOTOK;
     }
 

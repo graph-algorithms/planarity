@@ -14,17 +14,33 @@ extern "C"
 
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
 #include <ctype.h>
 
+// Basic public API declarations, such as for OK, NOTOK, and NIL
+#include "lowLevelUtils/appconst.h"
+// And for get/set quiet mode, gp_ErrorMessage() and gp_Message()
+#include "lowLevelUtils/apiutils.h"
+
+// Graph structure and public API methods
 #include "graph.h"
 
-#include "lowLevelUtils/platformTime.h"
+// Graph I/O public API methods and definitions
+#include "io/graphIO.h"
+#include "io/g6-read-iterator.h"
+#include "io/g6-write-iterator.h"
 
+// Depth-first search public API methods and definitions
+#include "graphDFSUtils.h"
+
+// Planarity-specific public API methods and definitions
+#include "planarityRelated/graphPlanarity.h"
+
+// Public APIs for extensions to the edge addition planarity algorithm
+#include "planarityRelated/graphOuterplanarity.h"
+#include "planarityRelated/graphDrawPlanar.h"
 #include "homeomorphSearch/graphK23Search.h"
 #include "homeomorphSearch/graphK33Search.h"
 #include "homeomorphSearch/graphK4Search.h"
-#include "planarityRelated/graphDrawPlanar.h"
 
     // This is the main location for the project and shared library version numbering.
     // Changes here must be mirrored in configure.ac
@@ -35,9 +51,9 @@ extern "C"
     // Maintenance is for functional revision (e.g. bug fix to existing algorithm implementation)
     // Tweak is for a non-functional revision (e.g. change of build scripts or testing code, user-facing string changes)
 
-#define GP_PROJECTVERSION_MAJOR 4
+#define GP_PROJECTVERSION_MAJOR 5
 #define GP_PROJECTVERSION_MINOR 0
-#define GP_PROJECTVERSION_MAINT 2
+#define GP_PROJECTVERSION_MAINT 0
 #define GP_PROJECTVERSION_TWEAK 0
 
     char *gp_GetProjectVersionFull(void);

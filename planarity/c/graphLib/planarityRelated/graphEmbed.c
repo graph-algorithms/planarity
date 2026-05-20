@@ -6,22 +6,29 @@ See the LICENSE.TXT file for licensing information.
 
 #include <stdlib.h>
 
-#include "../graph.h"
+// This source file implements the main graph planarity/outerplanarity method, gp_Embed()
+#include "../planarityRelated/graphPlanarity.h"
+#include "../planarityRelated/graphPlanarity.private.h"
+#include "../planarityRelated/graphOuterplanarity.h"
+#include "../planarityRelated/graphOuterplanarity.private.h"
 
-// Includes needed by _gp_EmbedFlagsValid(), until it become overloadable
+// Includes needed by _gp_EmbedFlagsValid()
 #include "graphDrawPlanar.private.h"
 #include "../homeomorphSearch/graphK23Search.private.h"
 #include "../homeomorphSearch/graphK33Search.private.h"
 #include "../homeomorphSearch/graphK4Search.private.h"
 
+// For LOGGING-related declarations
+#include "../lowLevelUtils/apiutils.private.h"
+
 /* Imported functions */
 
-extern void _ClearAnyTypeVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 extern int _IsolateKuratowskiSubgraph(graphP theGraph, int v, int R);
 extern int _IsolateOuterplanarObstruction(graphP theGraph, int v, int R);
 
-extern void _InitAnyTypeVertexRec(graphP theGraph, int v);
+extern void _InitVertexRec(graphP theGraph, int v);
 
 extern int _gp_FindEdge(graphP theGraph, int u, int v);
 
@@ -89,7 +96,7 @@ int _JoinBicomps(graphP theGraph);
   module that defines the embedding flag.
  ********************************************************************/
 
-int gp_Embed(graphP theGraph, int embedFlags)
+int gp_Embed(graphP theGraph, unsigned embedFlags)
 {
     int v, e, c;
     int RetVal = OK;
@@ -100,17 +107,35 @@ int gp_Embed(graphP theGraph, int embedFlags)
 
     // Preprocessing
     if (!_gp_EmbedFlagsValid(theGraph, embedFlags))
-        return NOTOK;
+    {
+        // For historical reasons, the graph will be automatically extended with
+        // Planarity or Outerplanarity if not already done.
+        if (embedFlags == EMBEDFLAGS_PLANAR)
+        {
+            if (gp_ExtendWith_Planarity(theGraph) != OK)
+                return NOTOK;
+        }
+        else if (embedFlags == EMBEDFLAGS_OUTERPLANAR)
+        {
+            if (gp_ExtendWith_Outerplanarity(theGraph) != OK)
+                return NOTOK;
+        }
+
+        // For other Graph subclasses, the caller must have invoked their
+        // ExtendWith method prior to calling gp_Embed()
+        else
+            return NOTOK;
+    }
 
     theGraph->embedFlags = embedFlags;
 
     // Initialize embedding data structures and allow extension algorithms
     // that overload the function to postprocess the DFS
-    if (theGraph->functions.fpEmbeddingInitialize(theGraph) != OK)
+    if (theGraph->functions->fpEmbeddingInitialize(theGraph) != OK)
         return NOTOK;
 
     // In reverse DFI order, embed the back edges from each vertex to its DFS descendants.
-    for (v = gp_GetLastVertex(theGraph); gp_VertexInRangeDescending(theGraph, v); v--)
+    for (v = gp_UpperBoundVertices(theGraph) - 1; v >= gp_LowerBoundVertices(theGraph); --v)
     {
         RetVal = OK;
 
@@ -119,7 +144,7 @@ int gp_Embed(graphP theGraph, int embedFlags)
         e = gp_GetVertexFwdEdgeList(theGraph, v);
         while (gp_IsEdge(theGraph, e))
         {
-            theGraph->functions.fpWalkUp(theGraph, v, e);
+            theGraph->functions->fpWalkUp(theGraph, v, e);
 
             e = gp_GetNextEdge(theGraph, e);
             if (e == gp_GetVertexFwdEdgeList(theGraph, v))
@@ -134,7 +159,7 @@ int gp_Embed(graphP theGraph, int embedFlags)
         {
             if (gp_IsVertex(theGraph, gp_GetVertexPertinentRootsList(theGraph, c)))
             {
-                RetVal = theGraph->functions.fpWalkDown(theGraph, v, gp_GetBicompRootFromDFSChild(theGraph, c));
+                RetVal = theGraph->functions->fpWalkDown(theGraph, v, gp_GetBicompRootFromDFSChild(theGraph, c));
                 // If Walkdown returns OK, then it is OK to proceed with edge addition.
                 // Otherwise, if Walkdown returns NONEMBEDDABLE then we stop edge addition.
                 if (RetVal != OK)
@@ -152,7 +177,7 @@ int gp_Embed(graphP theGraph, int embedFlags)
     // Postprocessing to orient the embedding and merge any remaining separated bicomps.
     // Some extension algorithms may overload this function, e.g. to do nothing if they
     // have no need of an embedding.
-    return theGraph->functions.fpEmbedPostprocess(theGraph, v, RetVal);
+    return theGraph->functions->fpEmbedPostprocess(theGraph, v, RetVal);
 }
 
 /********************************************************************
@@ -172,8 +197,16 @@ int _gp_EmbedFlagsValid(graphP theGraph, int embedFlags)
 {
     // Currently, planar and outerplanar graph embedding and obstruction
     // isolation do not require an explicit extension.
-    if (embedFlags == EMBEDFLAGS_PLANAR || embedFlags == EMBEDFLAGS_OUTERPLANAR)
-        return TRUE;
+    if (embedFlags == EMBEDFLAGS_PLANAR)
+    {
+        if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_EXTENDEDWITH_PLANARITY)
+            return TRUE;
+    }
+    else if (embedFlags == EMBEDFLAGS_OUTERPLANAR)
+    {
+        if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY)
+            return TRUE;
+    }
 
     // For other algorithms that are supported by explicit extensions, we
     // ensure they are attached (the attach methods exit early if it has
@@ -237,11 +270,6 @@ int _EmbeddingInitialize(graphP theGraph)
     int DFI, v, R, uparent, u, uneighbor, e, f, eTwin, ePrev, eNext;
     int leastValue, child;
 
-#ifdef PROFILE
-    platform_time start, end;
-    platform_GetTime(start);
-#endif
-
     _gp_LogLine("graphEmbed.c/_EmbeddingInitialize() start\n");
 
     theStack = theGraph->theStack;
@@ -258,12 +286,12 @@ int _EmbeddingInitialize(graphP theGraph)
 
     // We clear the visited flags of vertices because they are used to determine
     // which vertices have already been visited as the DFS traverses theGraph.
-    _ClearAnyTypeVertexVisitedFlags(theGraph, FALSE);
+    _ClearVertexVisitedFlags(theGraph, FALSE);
 
     // This outer loop processes each connected component of a disconnected graph
     // No need to compare v < N since DFI will reach N when inner loop processes the
     // last connected component in the graph
-    for (DFI = v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, DFI); v++)
+    for (DFI = v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         // Skip numbered vertices to cause the outerloop to find the
         // next DFS tree root in a disconnected graph
@@ -372,14 +400,14 @@ int _EmbeddingInitialize(graphP theGraph)
     }
 
     // The graph is now DFS numbered
-    theGraph->graphFlags |= FLAGS_DFSNUMBERED;
+    theGraph->graphFlags |= GRAPHFLAGS_DFSNUMBERED;
 
     // (6) Now that all vertices have a DFI in the index member, we can sort vertices
     if (gp_SortVertices(theGraph) != OK)
         return NOTOK;
 
-    // Loop through the vertices and virtual vertices to...
-    for (v = gp_GetLastVertex(theGraph); gp_VertexInRangeDescending(theGraph, v); v--)
+    // Loop through the vertices to...
+    for (v = gp_UpperBoundVertices(theGraph) - 1; v >= gp_LowerBoundVertices(theGraph); --v)
     {
         // (7) Initialize for pertinence management
         gp_SetVertexVisitedInfo(theGraph, v, gp_GetN(theGraph));
@@ -433,11 +461,6 @@ int _EmbeddingInitialize(graphP theGraph)
     }
 
     _gp_LogLine("graphEmbed.c/_EmbeddingInitialize() end\n");
-
-#ifdef PROFILE
-    platform_GetTime(end);
-    printf("Initialize embedding in %.3lf seconds.\n", platform_GetDuration(start, end));
-#endif
 
     return OK;
 }
@@ -613,7 +636,7 @@ void _MergeVertex(graphP theGraph, int W, int WPrevLink, int R)
     }
 
     // Erase the entries in R, which is a root copy that is no longer needed
-    _InitAnyTypeVertexRec(theGraph, R);
+    _InitVertexRec(theGraph, R);
 }
 
 /********************************************************************
@@ -704,7 +727,7 @@ int _MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int WPrevLink)
         }
 
         // Now we push R into Z, eliminating R
-        theGraph->functions.fpMergeVertex(theGraph, Z, ZPrevLink, R);
+        theGraph->functions->fpMergeVertex(theGraph, Z, ZPrevLink, R);
     }
 
     return OK;
@@ -945,10 +968,10 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
                 // edge to W to form a new proper face in the embedding.
                 if (sp_NonEmpty(theGraph->theStack))
                 {
-                    if ((RetVal = theGraph->functions.fpMergeBicomps(theGraph, v, RootVertex, W, WPrevLink)) != OK)
+                    if ((RetVal = theGraph->functions->fpMergeBicomps(theGraph, v, RootVertex, W, WPrevLink)) != OK)
                         return RetVal;
                 }
-                theGraph->functions.fpEmbedBackEdgeToDescendant(theGraph, RootSide, RootVertex, W, WPrevLink);
+                theGraph->functions->fpEmbedBackEdgeToDescendant(theGraph, RootSide, RootVertex, W, WPrevLink);
 
                 // Clear W's pertinentEdge since the forward edge record it contained has been embedded
                 gp_SetVertexPertinentEdge(theGraph, W, NIL);
@@ -1004,7 +1027,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
                     // Let the application decide whether it can unblock the bicomp.
                     // The core planarity/outerplanarity embedder simply isolates a
                     // planarity/outerplanary obstruction and returns NONEMBEDDABLE
-                    if ((RetVal = theGraph->functions.fpHandleBlockedBicomp(theGraph, v, RootVertex, R)) != OK)
+                    if ((RetVal = theGraph->functions->fpHandleBlockedBicomp(theGraph, v, RootVertex, R)) != OK)
                         return RetVal;
 
                     // If an extension algorithm cleared the blockage, then we pop W and WPrevLink
@@ -1047,7 +1070,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
                 // inactive vertices, but the extFace links above achieve the same result with less work.
                 else
                 {
-                    if (theGraph->functions.fpHandleInactiveVertex(theGraph, RootVertex, &W, &WPrevLink) != OK)
+                    if (theGraph->functions->fpHandleInactiveVertex(theGraph, RootVertex, &W, &WPrevLink) != OK)
                         return NOTOK;
                 }
             }
@@ -1067,7 +1090,7 @@ int _WalkDown(graphP theGraph, int v, int RootVertex)
         {
             // If an extension to core planarity indicates it is OK to proceed despite having detected
             // unembedded forward edges, then advance to the forward edges for the next child, if any
-            if ((RetVal = theGraph->functions.fpHandleBlockedBicomp(theGraph, v, RootVertex, RootVertex)) == OK)
+            if ((RetVal = theGraph->functions->fpHandleBlockedBicomp(theGraph, v, RootVertex, RootVertex)) == OK)
                 _AdvanceFwdEdgeList(theGraph, v, RootEdgeChild, nextChild);
 
             return RetVal;
@@ -1276,13 +1299,11 @@ int _EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
 
 int _OrientVerticesInEmbedding(graphP theGraph)
 {
-    int R;
-
     sp_ClearStack(theGraph->theStack);
 
     // For each vertex, obtain the associated bicomp root location and,
     // if it is still in use as a bicomp root, orient the vertices in the bicomp
-    for (R = gp_GetFirstVirtualVertex(theGraph); gp_VirtualVertexInRangeAscending(theGraph, R); R++)
+    for (int R = gp_LowerBoundVirtualVertices(theGraph); R < gp_UpperBoundVirtualVertices(theGraph); ++R)
     {
         if (gp_VirtualVertexInUse(theGraph, R))
         {
@@ -1371,9 +1392,7 @@ int _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns)
 
 int _JoinBicomps(graphP theGraph)
 {
-    int R;
-
-    for (R = gp_GetFirstVirtualVertex(theGraph); gp_VirtualVertexInRangeAscending(theGraph, R); R++)
+    for (int R = gp_LowerBoundVirtualVertices(theGraph); R < gp_UpperBoundVirtualVertices(theGraph); ++R)
     {
         // If the bicomp root is still active (i.e. an in-use virtual vertex)
         // then merge it with its parent copy vertex (non-virtual)

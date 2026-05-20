@@ -7,8 +7,6 @@ See the LICENSE.TXT file for licensing information.
 #include "graphK4Search.h"
 #include "graphK4Search.private.h"
 
-#include "../graph.h"
-
 /* Imported functions */
 
 extern void _InitIsolatorContext(graphP theGraph);
@@ -88,7 +86,7 @@ int _K4_RestoreAndOrientReducedPaths(graphP theGraph, K4SearchContext *context);
 
 int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
 
     if (context == NULL)
     {
@@ -105,7 +103,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
     // we run additional tests to see whether we can either find an
     // entwined K4 homeomorph or reduce the bicomp so that the WalkDown
     // is enabled to continue to resolve pertinence
-    if (theGraph->IC.minorType & MINORTYPE_A)
+    if (theGraph->IC->minorType & MINORTYPE_A)
     {
         // Now that we know we have minor A, we can afford to orient the
         // bicomp because we will either find the desired K4 or we will
@@ -185,7 +183,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
             return NOTOK;
 
         // If there was an X-Y path to mark...
-        if (theGraph->IC.py != NIL)
+        if (theGraph->IC->py != NIL)
         {
             // Now that we know we can find a K4, the Walkdown will not continue
             // and we can do away with the stack content.
@@ -207,7 +205,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
             }
 
             // Fail if there is an internal error or if there isn't an X-Y path
-            if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC.py == NIL)
+            if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC->py == NIL)
                 return NOTOK;
 
             // Isolate the K4 homeomorph
@@ -243,7 +241,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
     // we run additional tests to see whether we can either find an
     // entwined K4 homeomorph or reduce a portion of the bicomp so that
     // the WalkDown can be reinvoked on the bicomp
-    else if (theGraph->IC.minorType & MINORTYPE_B)
+    else if (theGraph->IC->minorType & MINORTYPE_B)
     {
         int a_x, a_y;
 
@@ -320,7 +318,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
             // the separating internal edge (but it has to be there, else error).
             if (_SetVertexTypesForMarkingXYPath(theGraph) != OK ||
                 _MarkHighestXYPath(theGraph) != OK ||
-                theGraph->IC.py == NIL)
+                theGraph->IC->py == NIL)
                 return NOTOK;
 
             // Isolate the K4 homeomorph
@@ -355,7 +353,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
     }
 
     // Minor E indicates the desired K4 homeomorph, so we isolate it and return NONEMBEDDABLE
-    else if (theGraph->IC.minorType & MINORTYPE_E)
+    else if (theGraph->IC->minorType & MINORTYPE_E)
     {
         // Reality check on stack state
         if (sp_NonEmpty(theGraph->theStack))
@@ -375,7 +373,7 @@ int _SearchForK4InBicomp(graphP theGraph, K4SearchContext *context, int v, int R
 
         if (_SetVertexTypesForMarkingXYPath(theGraph) != OK)
             return NOTOK;
-        if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC.py == NIL)
+        if (_MarkHighestXYPath(theGraph) != OK || theGraph->IC->py == NIL)
             return NOTOK;
 
         // Isolate the K4 homeomorph
@@ -410,8 +408,8 @@ int _K4_ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
 
     _InitIsolatorContext(theGraph);
 
-    theGraph->IC.v = v;
-    theGraph->IC.r = R;
+    theGraph->IC->v = v;
+    theGraph->IC->r = R;
 
     // Reality check on data structure integrity
     if (!gp_VirtualVertexInUse(theGraph, R))
@@ -422,8 +420,8 @@ int _K4_ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
     //    are the desired vertices because no vertices are "inactive"
     // 2) We have purposely not oriented the bicomp, so the XPrevLink result is
     //    needed to help find the pertinent vertex W
-    theGraph->IC.x = _GetNeighborOnExtFace(theGraph, R, &XPrevLink);
-    theGraph->IC.y = _GetNeighborOnExtFace(theGraph, R, &YPrevLink);
+    theGraph->IC->x = _GetNeighborOnExtFace(theGraph, R, &XPrevLink);
+    theGraph->IC->y = _GetNeighborOnExtFace(theGraph, R, &YPrevLink);
 
     // We are essentially doing a _FindPertinentVertex() here, except two things:
     // 1) It is not known whether the reduction of the path through X or the path
@@ -435,45 +433,45 @@ int _K4_ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
     //    the "prev link" is hard coded to traverse down the X side.  In this
     //    implementation, the  bicomp is purposely not oriented, so we need to know
     //    XPrevLink and YPrevLink in order to set off in the correct directions.
-    Wx = theGraph->IC.x;
+    Wx = theGraph->IC->x;
     WxPrevLink = XPrevLink;
-    Wy = theGraph->IC.y;
+    Wy = theGraph->IC->y;
     WyPrevLink = YPrevLink;
-    theGraph->IC.w = NIL;
+    theGraph->IC->w = NIL;
 
-    while (Wx != theGraph->IC.y)
+    while (Wx != theGraph->IC->y)
     {
         Wx = _GetNeighborOnExtFace(theGraph, Wx, &WxPrevLink);
         if (PERTINENT(theGraph, Wx))
         {
-            theGraph->IC.w = Wx;
+            theGraph->IC->w = Wx;
             break;
         }
         Wy = _GetNeighborOnExtFace(theGraph, Wy, &WyPrevLink);
         if (PERTINENT(theGraph, Wy))
         {
-            theGraph->IC.w = Wy;
+            theGraph->IC->w = Wy;
             break;
         }
     }
 
-    if (gp_IsNotVertex(theGraph, theGraph->IC.w))
+    if (gp_IsNotVertex(theGraph, theGraph->IC->w))
         return NOTOK;
 
     // If the root copy is not a root copy of the current vertex v,
     // then the Walkdown terminated on a descendant bicomp, which is Minor A.
     if (gp_GetVertexFromBicompRoot(theGraph, R) != v)
-        theGraph->IC.minorType |= MINORTYPE_A;
+        theGraph->IC->minorType |= MINORTYPE_A;
 
     // If W has a pertinent child bicomp, then we've found Minor B.
     // Notice this is different from planarity, in which minor B is indicated
     // only if the pertinent child bicomp is also future pertinent.
-    else if (gp_IsVertex(theGraph, gp_GetVertexPertinentRootsList(theGraph, theGraph->IC.w)))
-        theGraph->IC.minorType |= MINORTYPE_B;
+    else if (gp_IsVertex(theGraph, gp_GetVertexPertinentRootsList(theGraph, theGraph->IC->w)))
+        theGraph->IC->minorType |= MINORTYPE_B;
 
     // The only other result is minor E (we will search for the X-Y path later)
     else
-        theGraph->IC.minorType |= MINORTYPE_E;
+        theGraph->IC->minorType |= MINORTYPE_E;
 
     return OK;
 }
@@ -493,16 +491,16 @@ int _K4_ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
 
 int _K4_FindSecondActiveVertexOnLowExtFacePath(graphP theGraph)
 {
-    int Z = theGraph->IC.r, ZPrevLink = 1;
+    int Z = theGraph->IC->r, ZPrevLink = 1;
 
     // First we test X for future pertinence only (if it were pertinent, then
     // we wouldn't have been blocked up on this bicomp)
     Z = _GetNeighborOnExtFace(theGraph, Z, &ZPrevLink);
-    gp_UpdateVertexFuturePertinentChild(theGraph, Z, theGraph->IC.v);
-    if (FUTUREPERTINENT(theGraph, Z, theGraph->IC.v))
+    gp_UpdateVertexFuturePertinentChild(theGraph, Z, theGraph->IC->v);
+    if (FUTUREPERTINENT(theGraph, Z, theGraph->IC->v))
     {
-        theGraph->IC.z = Z;
-        theGraph->IC.uz = _GetLeastAncestorConnection(theGraph, Z);
+        theGraph->IC->z = Z;
+        theGraph->IC->uz = _GetLeastAncestorConnection(theGraph, Z);
         return TRUE;
     }
 
@@ -511,21 +509,21 @@ int _K4_FindSecondActiveVertexOnLowExtFacePath(graphP theGraph)
     // future pertinence.
     Z = _GetNeighborOnExtFace(theGraph, Z, &ZPrevLink);
 
-    while (Z != theGraph->IC.y)
+    while (Z != theGraph->IC->y)
     {
-        if (Z != theGraph->IC.w)
+        if (Z != theGraph->IC->w)
         {
-            gp_UpdateVertexFuturePertinentChild(theGraph, Z, theGraph->IC.v);
-            if (FUTUREPERTINENT(theGraph, Z, theGraph->IC.v))
+            gp_UpdateVertexFuturePertinentChild(theGraph, Z, theGraph->IC->v);
+            if (FUTUREPERTINENT(theGraph, Z, theGraph->IC->v))
             {
-                theGraph->IC.z = Z;
-                theGraph->IC.uz = _GetLeastAncestorConnection(theGraph, Z);
+                theGraph->IC->z = Z;
+                theGraph->IC->uz = _GetLeastAncestorConnection(theGraph, Z);
                 return TRUE;
             }
             else if (PERTINENT(theGraph, Z))
             {
-                theGraph->IC.z = Z;
-                theGraph->IC.uz = theGraph->IC.v;
+                theGraph->IC->z = Z;
+                theGraph->IC->uz = theGraph->IC->v;
                 return TRUE;
             }
         }
@@ -534,11 +532,11 @@ int _K4_FindSecondActiveVertexOnLowExtFacePath(graphP theGraph)
     }
 
     // Now we test Y for future pertinence (same explanation as for X above)
-    gp_UpdateVertexFuturePertinentChild(theGraph, Z, theGraph->IC.v);
-    if (FUTUREPERTINENT(theGraph, Z, theGraph->IC.v))
+    gp_UpdateVertexFuturePertinentChild(theGraph, Z, theGraph->IC->v);
+    if (FUTUREPERTINENT(theGraph, Z, theGraph->IC->v))
     {
-        theGraph->IC.z = Z;
-        theGraph->IC.uz = _GetLeastAncestorConnection(theGraph, Z);
+        theGraph->IC->z = Z;
+        theGraph->IC->uz = _GetLeastAncestorConnection(theGraph, Z);
         return TRUE;
     }
 
@@ -717,15 +715,15 @@ void _K4_ClearMarksOnExternalFacePath(graphP theGraph, int R, int prevLink, int 
 
 int _K4_IsolateMinorA1(graphP theGraph)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
 
     if (IC->uz < IC->v)
     {
-        if (theGraph->functions.fpMarkDFSPath(theGraph, IC->uz, IC->v) != OK)
+        if (theGraph->functions->fpMarkDFSPath(theGraph, IC->uz, IC->v) != OK)
             return NOTOK;
     }
 
-    if (theGraph->functions.fpMarkDFSPath(theGraph, IC->z, IC->dz) != OK)
+    if (theGraph->functions->fpMarkDFSPath(theGraph, IC->z, IC->dz) != OK)
         return NOTOK;
 
     if (_IsolateOuterplanarityObstructionA(theGraph) != OK)
@@ -754,7 +752,7 @@ int _K4_IsolateMinorA1(graphP theGraph)
 
 int _K4_IsolateMinorA2(graphP theGraph)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
 
     // We assume the X-Y path was already marked
     if (!gp_GetVisited(theGraph, IC->px) || !gp_GetVisited(theGraph, IC->py))
@@ -781,18 +779,18 @@ int _K4_IsolateMinorA2(graphP theGraph)
 
 int _K4_IsolateMinorB1(graphP theGraph)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
 
-    if (theGraph->functions.fpMarkDFSPath(theGraph, IC->x, IC->dx) != OK)
+    if (theGraph->functions->fpMarkDFSPath(theGraph, IC->x, IC->dx) != OK)
         return NOTOK;
 
-    if (theGraph->functions.fpMarkDFSPath(theGraph, IC->y, IC->dy) != OK)
+    if (theGraph->functions->fpMarkDFSPath(theGraph, IC->y, IC->dy) != OK)
         return NOTOK;
 
     // The path from the bicomp root to MIN(ux,uy) is marked to ensure the
     // connection from the image vertices v and MAX(ux,uy) as well as the
     // connection from MAX(ux,uy) through MIN(ux,uy) to (ux==MIN(ux,uy)?x:y)
-    if (theGraph->functions.fpMarkDFSPath(theGraph, MIN(IC->ux, IC->uy), IC->r) != OK)
+    if (theGraph->functions->fpMarkDFSPath(theGraph, MIN(IC->ux, IC->uy), IC->r) != OK)
         return NOTOK;
 
     // This makes the following connections (a_x ... v), (a_y ... v), and
@@ -823,7 +821,7 @@ int _K4_IsolateMinorB1(graphP theGraph)
 
 int _K4_IsolateMinorB2(graphP theGraph)
 {
-    isolatorContextP IC = &theGraph->IC;
+    isolatorContextP IC = theGraph->IC;
 
     // First subcase, the active vertex is pertinent
     if (PERTINENT(theGraph, IC->w))
@@ -868,7 +866,7 @@ int _K4_ReduceBicompToEdge(graphP theGraph, K4SearchContext *context, int R, int
     if (_OrientVerticesInBicomp(theGraph, R, 0) != OK ||
         _ClearAllVisitedFlagsInBicomp(theGraph, R) != OK)
         return NOTOK;
-    if (theGraph->functions.fpMarkDFSPath(theGraph, R, W) != OK)
+    if (theGraph->functions->fpMarkDFSPath(theGraph, R, W) != OK)
         return NOTOK;
     if (_K4_DeleteUnmarkedEdgesInBicomp(theGraph, context, R) != OK)
         return NOTOK;
@@ -953,7 +951,7 @@ int _K4_ReducePathComponent(graphP theGraph, K4SearchContext *context, int R, in
     if (_K4_TestPathComponentForAncestor(theGraph, R, prevLink, A))
     {
         _K4_ClearVisitedInPathComponent(theGraph, R, prevLink, A);
-        if (theGraph->functions.fpMarkDFSPath(theGraph, R, A) != OK)
+        if (theGraph->functions->fpMarkDFSPath(theGraph, R, A) != OK)
             return NOTOK;
         edgeType = EDGE_TYPE_PARENT;
 
@@ -967,7 +965,7 @@ int _K4_ReducePathComponent(graphP theGraph, K4SearchContext *context, int R, in
         Z = gp_GetNeighbor(theGraph, e_R);
         gp_SetEdgeVisited(theGraph, e_R);
         gp_SetEdgeVisited(theGraph, gp_GetTwin(theGraph, e_R));
-        if (theGraph->functions.fpMarkDFSPath(theGraph, A, Z) != OK)
+        if (theGraph->functions->fpMarkDFSPath(theGraph, A, Z) != OK)
         {
             return NOTOK;
         }
@@ -1082,7 +1080,7 @@ int _K4_GetCumulativeOrientationOnDFSPath(graphP theGraph, int ancestor, int des
 
     while (descendant != ancestor)
     {
-        if (gp_IsNotAnyTypeVertex(theGraph, descendant))
+        if (descendant == NIL)
             return NOTOK;
 
         // If we are at a bicomp root, then ascend to its parent copy
@@ -1108,7 +1106,7 @@ int _K4_GetCumulativeOrientationOnDFSPath(graphP theGraph, int ancestor, int des
             }
 
             // If the edge to the parent vertex was not found, then the data structure is corrupt
-            if (gp_IsNotAnyTypeVertex(theGraph, parent))
+            if (parent == NIL)
                 return NOTOK;
 
             // Add the inversion flag on the child edge record to the cumulative result
@@ -1288,7 +1286,9 @@ int _K4_ReducePathToEdge(graphP theGraph, K4SearchContext *context, int edgeType
 
         // Prepare for removing each of the two edges that join the path to the bicomp by
         // restoring it if it is a reduction edge (a constant time operation)
-        if (gp_IsAnyTypeVertex(theGraph, context->E[e_R].pathConnector))
+        // If e_R has a pathConnector vertex, then we prep by restoring a previously reduced
+        // path for e_R
+        if (context->E[e_R].pathConnector != NIL)
         {
             if (_K4_RestoreReducedPath(theGraph, context, e_R) != OK)
             {
@@ -1301,7 +1301,9 @@ int _K4_ReducePathToEdge(graphP theGraph, K4SearchContext *context, int edgeType
             e_R = gp_GetEdgeByLink(theGraph, R, Rlink);
         }
 
-        if (gp_IsAnyTypeVertex(theGraph, context->E[e_A].pathConnector))
+        // If e_A has a pathConnector vertex, then we prep by restoring a previously reduced
+        // path for e_A
+        if (context->E[e_A].pathConnector != NIL)
         {
             if (_K4_RestoreReducedPath(theGraph, context, e_A) != OK)
             {
@@ -1378,7 +1380,9 @@ int _K4_RestoreReducedPath(graphP theGraph, K4SearchContext *context, int e)
     int eTwin, u, v, w, x;
     int e0, e1, eTwin0, eTwin1;
 
-    if (gp_IsNotAnyTypeVertex(theGraph, context->E[e].pathConnector))
+    // An edge e does not represent a path reduction that needs to be restored
+    // unless it was assigned a pathConnector vertex (and so is non-NIL)
+    if (context->E[e].pathConnector == NIL)
         return OK;
 
     eTwin = gp_GetTwin(theGraph, e);
@@ -1453,12 +1457,13 @@ int _K4_RestoreReducedPath(graphP theGraph, K4SearchContext *context, int e)
 
 int _K4_RestoreAndOrientReducedPaths(graphP theGraph, K4SearchContext *context)
 {
-    int EsizeOccupied, e, eTwin, u, v, w, x, visited;
+    int e, eTwin, u, v, w, x, visited;
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
-    for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied;)
+    for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph);)
     {
-        if (gp_IsAnyTypeVertex(theGraph, context->E[e].pathConnector))
+        // If e has a pathConnector vertex, then there is a reduced path
+        // to restore and orient.
+        if (context->E[e].pathConnector != NIL)
         {
             visited = gp_GetEdgeVisited(theGraph, e);
 

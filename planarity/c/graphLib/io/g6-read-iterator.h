@@ -16,24 +16,9 @@ extern "C"
 #include <stdbool.h>
 
 #include "../graph.h"
-#include "strOrFile.h"
 
-    typedef struct
-    {
-        strOrFileP inputContainer;
-        int numGraphsRead;
-
-        int order;
-        int numCharsForOrder;
-        int numCharsForGraphEncoding;
-        int currGraphBuffSize;
-        char *currGraphBuff;
-
-        graphP currGraph;
-
-        bool endReached;
-    } G6ReadIterator;
-    typedef G6ReadIterator *G6ReadIteratorP;
+    typedef struct G6ReadIteratorStruct G6ReadIteratorStruct;
+    typedef G6ReadIteratorStruct *G6ReadIteratorP;
 
     int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph);
     bool g6_EndReached(G6ReadIteratorP theG6ReadIterator);

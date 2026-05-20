@@ -8,7 +8,18 @@ See the LICENSE.TXT file for licensing information.
 #include <string.h>
 #include <ctype.h>
 
-#include "../graph.h"
+#include "graphIO.h"
+
+#include "strOrFile.h"
+
+#include "../extensionSystem/graphExtensions.private.h"
+
+// To help with writing debug info
+#include "../planarityRelated/graphPlanarity.private.h"
+#include "../graphDFSUtils.h"
+
+// To help with graph construction
+#include "../graph.private.h"
 
 /* Imported functions */
 extern int _g6_ReadGraphFromStrOrFile(graphP theGraph, strOrFileP *pG6InputContainer);
@@ -28,20 +39,6 @@ int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer);
 int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer);
 int _WritePostprocess(graphP theGraph, char **pExtraData);
 
-// These prototypes are defined if LOGGING is defined, but
-// if LOGGING is not defined, then these declarations help
-// to get rid of missingprototype warnings.
-#ifndef LOGGING
-void _LogLine(const char *Line);
-void _Log(const char *Line);
-
-char *_MakeLogStr1(char *format, int);
-char *_MakeLogStr2(char *format, int, int);
-char *_MakeLogStr3(char *format, int, int, int);
-char *_MakeLogStr4(char *format, int, int, int, int);
-char *_MakeLogStr5(char *format, int, int, int, int, int);
-#endif
-
 /* Private functions */
 char _GetEdgeTypeChar(graphP theGraph, int e);
 char _GetObstructionMarkChar(graphP theGraph, int v);
@@ -53,7 +50,7 @@ char _GetObstructionMarkChar(graphP theGraph, int v);
  Though O(N^2) time is required, this routine is useful during
  reliability testing due to the wealth of graph generating software
  that uses this format for output.
- Returns: OK, NOTOK on internal error, NONEMBEDDABLE if too many edges
+ Returns: OK, NOTOK on internal error
  ********************************************************************/
 
 int _ReadAdjMatrix(graphP theGraph, strOrFileP inputContainer)
@@ -78,10 +75,10 @@ int _ReadAdjMatrix(graphP theGraph, strOrFileP inputContainer)
 
     // Read an upper-triangular matrix row for each vertex
     // Note that for the last vertex, zero flags are read, per the upper triangular format
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         gp_SetIndex(theGraph, v, v);
-        for (w = v + 1; gp_VertexInRangeAscending(theGraph, w); w++)
+        for (w = v + 1; w < gp_UpperBoundVertices(theGraph); w++)
         {
             // Read each of v's w-neighbor flags
             if (sf_ReadSkipWhitespace(inputContainer) != OK)
@@ -127,7 +124,7 @@ int _ReadAdjMatrix(graphP theGraph, strOrFileP inputContainer)
         This makes it easy to used edge directedness when appropriate
         but also seamlessly process the corresponding undirected graph.
 
- Returns: OK on success, NONEMBEDDABLE if success except too many edges
+ Returns: OK on success,
           NOTOK on file content error (or internal error)
  ********************************************************************/
 
@@ -163,11 +160,11 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
 
     // Clear the visited members of the vertices so they can be used
     // during the adjacency list read operation
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         gp_SetVertexVisitedInfo(theGraph, v, NIL);
 
     // Do the adjacency list read operation for each vertex in order
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         // Read the vertex number
         if (sf_ReadSkipWhitespace(inputContainer) != OK)
@@ -177,15 +174,15 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
         if (sf_ReadSkipWhitespace(inputContainer) != OK)
             return NOTOK;
 
-        if (indexValue == 0 && v == gp_GetFirstVertex(theGraph))
+        if (indexValue == 0 && v == gp_LowerBoundVertexStorage(theGraph))
             zeroBased = TRUE;
 
         // If we are reading a zero-based input file, then we have to add to the
-        // indexValue for v the amount returned by gp_GetFirstVertex(),
-        // which is 1 if this library was compiled with USE_FASTER_1BASEDARRAYS
-        // or 0 if this library was compiled with USE_0BASEDARRAYS
+        // indexValue for v the offset of the first vertex in storage, which is
+        // usually 1 (because we compile with USE_1BASEDARRAYS by default) but
+        // which may be 0 if this library was compiled with USE_0BASEDARRAYS.
         if (zeroBased)
-            indexValue += gp_GetFirstVertex(theGraph);
+            indexValue += gp_LowerBoundVertexStorage(theGraph);
 
         gp_SetIndex(theGraph, v, indexValue);
 
@@ -242,19 +239,19 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
                 return NOTOK;
 
             // If we are reading a zero-based input file, then we have to add to W
-            // the amount returned by gp_GetFirstVertex(), which is 1 if this library
-            // was compiled with USE_FASTER_1BASEDARRAYS or 0 if this library was
-            // compiled with USE_0BASEDARRAYS
+            // the offset of the first vertex in storage, which is usually 1
+            // (because we compile with USE_1BASEDARRAYS by default) but which may
+            // be 0 if this library was compiled with USE_0BASEDARRAYS.
             if (zeroBased)
-                W += gp_GetFirstVertex(theGraph);
+                W += gp_LowerBoundVertexStorage(theGraph);
 
             // A value below the valid range indicates the adjacency list end
             // This was written before gp_IsNotVertex() existed
-            if (W < gp_GetFirstVertex(theGraph))
+            if (W < gp_LowerBoundVertices(theGraph))
                 break;
 
             // A value above the valid range is an error
-            if (W > gp_GetLastVertex(theGraph))
+            if (W >= gp_UpperBoundVertices(theGraph))
                 return NOTOK;
 
             // Loop edges are not supported
@@ -333,7 +330,7 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
     }
 
     if (zeroBased)
-        theGraph->graphFlags |= FLAGS_ZEROBASEDIO;
+        theGraph->graphFlags |= GRAPHFLAGS_ZEROBASEDIO;
 
     return OK;
 }
@@ -344,7 +341,7 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
  LEDA files use a one-based numbering system, which is converted to
  zero-based numbers if the graph reports starting at zero as the first vertex.
 
- Returns: OK on success, NONEMBEDDABLE if success except too many edges
+ Returns: OK on success,
           NOTOK on file content error (or internal error)
  ********************************************************************/
 
@@ -354,7 +351,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
 
     int graphType = 0;
     int N = 0, M = 0, u = NIL, v = NIL;
-    int zeroBasedOffset = gp_GetFirstVertex(theGraph) == 0 ? 1 : 0;
+    int zeroBasedOffset = gp_LowerBoundVertexStorage(theGraph) == 0 ? 1 : 0;
     char Line[MAXLINE + 1];
 
     memset(Line, '\0', (MAXLINE + 1));
@@ -392,7 +389,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
     if (gp_InitGraph(theGraph, N) != OK)
         return NOTOK;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
         if (sf_fgets(Line, MAXLINE, inputContainer) == NULL)
             return NOTOK;
 
@@ -426,7 +423,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
     }
 
     if (zeroBasedOffset)
-        theGraph->graphFlags |= FLAGS_ZEROBASEDIO;
+        theGraph->graphFlags |= GRAPHFLAGS_ZEROBASEDIO;
 
     return OK;
 }
@@ -439,7 +436,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
 
  Pass "stdin" for the FileName to read from the stdin stream.
 
- Returns: OK, NOTOK on internal error, NONEMBEDDABLE if too many edges
+ Returns: OK, NOTOK on internal error
  ********************************************************************/
 
 int gp_Read(graphP theGraph, char const *FileName)
@@ -547,9 +544,8 @@ int _ReadGraph(graphP theGraph, strOrFileP *pInputContainer)
     // The possibility of "extra data" is not allowed for .g6 format:
     // .g6 files may contain multiple graphs, which are not valid input
     // for the extra data readers (i.e. fpReadPostProcess) Additionally,
-    // we don't want to add extra data if the graph is nonembeddable, as
-    // the FILE pointer isn't necessarily advanced past the graph
-    // encoding unless OK is returned.
+    // we don't want to process extra data unless the graph reading
+    // was OK.
     if (extraDataAllowed)
     {
         char charAfterGraphRead = EOF;
@@ -574,7 +570,7 @@ int _ReadGraph(graphP theGraph, strOrFileP *pInputContainer)
                     }
 
                     if (sb_GetSize(extraData) > 0)
-                        RetVal = theGraph->functions.fpReadPostprocess(theGraph, sb_GetReadString(extraData));
+                        RetVal = theGraph->functions->fpReadPostprocess(theGraph, sb_GetReadString(extraData));
 
                     sb_Free(&extraData);
                     extraData = NULL;
@@ -626,18 +622,18 @@ int _WriteAdjList(graphP theGraph, strOrFileP outputContainer)
     // If we are supposed to write 0-based output, then we have to adjust the vertex offset and the
     // adjacency list terminator based on whether this library has been compiled with 0-based or
     // 1-based array indexing for the in-memory data structure (i.e., compiled with
-    // USE_FASTER_1BASEDARRAYS USE_0BASEDARRAYS). The macro invoked is responsive to the difference.
-    if (gp_GetGraphFlags(theGraph) & FLAGS_ZEROBASEDIO)
+    // USE_1BASEDARRAYS USE_0BASEDARRAYS). The macro invoked is responsive to the difference.
+    if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO)
     {
-        zeroBasedVertexOffset = gp_GetFirstVertex(theGraph);
+        zeroBasedVertexOffset = gp_LowerBoundVertexStorage(theGraph);
         // If the graph must be written 0-based, then the adjacency list terminator must be -1,
-        // even if the internal representation is 1-based (i.e. when USE_FASTER_1BASEDARRAYS, NIL == 0,
+        // even if the internal representation is 1-based (i.e. when USE_1BASEDARRAYS, NIL == 0,
         // but the output needs to be -1 for 0-based output)
         adjacencyListTerminator = -1;
     }
 
     // Write the adjacency list of each vertex
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         if (sprintf(numberStr, "%d:", v - zeroBasedVertexOffset) < 1)
             return NOTOK;
@@ -703,13 +699,13 @@ int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer)
         return NOTOK;
 
     // Construct the upper triangular matrix representation one row at a time
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
-        for (int i = gp_GetFirstVertex(theGraph); i <= v; i++)
-            Row[i - gp_GetFirstVertex(theGraph)] = ' ';
+        for (int i = gp_LowerBoundVertices(theGraph); i <= v; i++)
+            Row[i - gp_LowerBoundVertices(theGraph)] = ' ';
 
-        for (int i = v + 1; gp_VertexInRangeAscending(theGraph, i); i++)
-            Row[i - gp_GetFirstVertex(theGraph)] = '0';
+        for (int i = v + 1; i < gp_UpperBoundVertices(theGraph); i++)
+            Row[i - gp_LowerBoundVertices(theGraph)] = '0';
 
         e = gp_GetFirstEdge(theGraph, v);
         while (gp_IsEdge(theGraph, e))
@@ -718,7 +714,7 @@ int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer)
                 return NOTOK;
 
             if (gp_GetNeighbor(theGraph, e) > v)
-                Row[gp_GetNeighbor(theGraph, e) - gp_GetFirstVertex(theGraph)] = '1';
+                Row[gp_GetNeighbor(theGraph, e) - gp_LowerBoundVertices(theGraph)] = '1';
 
             e = gp_GetNextEdge(theGraph, e);
         }
@@ -752,7 +748,7 @@ char _GetEdgeTypeChar(graphP theGraph, int e)
         type = 'P';
     else if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_BACK)
         type = 'B';
-    else if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_RANDOMTREE)
+    else if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_TREE)
         type = 'T';
 
     return type;
@@ -786,7 +782,7 @@ char _GetObstructionMarkChar(graphP theGraph, int v)
 
 int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
 {
-    int v = NIL, e = NIL, EsizeOccupied = 0;
+    int v = NIL, e = NIL;
     char lineBuf[MAXLINE + 1];
 
     memset(lineBuf, '\0', (MAXLINE + 1) * sizeof(char));
@@ -800,7 +796,7 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
     if (sf_fputs(lineBuf, outputContainer) == EOF)
         return NOTOK;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         if (sprintf(lineBuf, "%d(P=%d,lA=%d,LowPt=%d,v=%d):",
                     v, gp_GetVertexParent(theGraph, v),
@@ -829,7 +825,7 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
 
     /* Print any root copy vertices and their adjacency lists */
 
-    for (v = gp_GetFirstVirtualVertex(theGraph); gp_VirtualVertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVirtualVertices(theGraph); v < gp_UpperBoundVirtualVertices(theGraph); ++v)
     {
         if (!gp_VirtualVertexInUse(theGraph, v))
             continue;
@@ -862,7 +858,7 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
     if (sf_fputs("\nVERTEX INFORMATION\n", outputContainer) == EOF)
         return NOTOK;
 
-    for (v = gp_GetFirstVertex(theGraph); gp_VertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
         if (sprintf(lineBuf, "V[%3d] index=%3d, type=%c, first edge=%3d, last edge=%3d\n",
                     v,
@@ -874,7 +870,7 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
         if (sf_fputs(lineBuf, outputContainer) == EOF)
             return NOTOK;
     }
-    for (v = gp_GetFirstVirtualVertex(theGraph); gp_VirtualVertexInRangeAscending(theGraph, v); v++)
+    for (v = gp_LowerBoundVirtualVertices(theGraph); v < gp_UpperBoundVirtualVertices(theGraph); ++v)
     {
         if (gp_VirtualVertexNotInUse(theGraph, v))
             continue;
@@ -895,8 +891,7 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
     if (sf_fputs("\nEDGE INFORMATION\n", outputContainer) == EOF)
         return NOTOK;
 
-    EsizeOccupied = gp_EdgeInUseArraySize(theGraph);
-    for (e = gp_EdgeArrayStart(theGraph); e < EsizeOccupied; e++)
+    for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); ++e)
     {
         if (gp_EdgeInUse(theGraph, e))
         {
@@ -1047,7 +1042,7 @@ int _WriteGraph(graphP theGraph, strOrFileP *pOutputContainer, int Mode)
     {
         char *extraData = NULL;
 
-        RetVal = theGraph->functions.fpWritePostprocess(theGraph, &extraData);
+        RetVal = theGraph->functions->fpWritePostprocess(theGraph, &extraData);
 
         if (extraData != NULL)
         {
@@ -1071,85 +1066,4 @@ int _WriteGraph(graphP theGraph, strOrFileP *pOutputContainer, int Mode)
 int _WritePostprocess(graphP theGraph, char **pExtraData)
 {
     return OK;
-}
-
-/********************************************************************
- _Log()
-
- When the project is compiled with LOGGING enabled, this method writes
- a string to the file PLANARITY.LOG in the current working directory.
- On first write, the file is created or cleared.
- Call this method with NULL to close the log file.
- ********************************************************************/
-
-void _Log(char const *Str)
-{
-    static FILE *logfile = NULL;
-
-    if (logfile == NULL)
-    {
-        if ((logfile = fopen("PLANARITY.LOG", WRITETEXT)) == NULL)
-            return;
-    }
-
-    if (Str != NULL)
-    {
-        fprintf(logfile, "%s", Str);
-        fflush(logfile);
-    }
-    else
-        fclose(logfile);
-}
-
-void _LogLine(char const *Str)
-{
-    _Log(Str);
-    _Log("\n");
-}
-
-static char LogStr[MAXLINE + 1];
-
-char *_MakeLogStr1(char *format, int one)
-{
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    sprintf(LogStr, format, one);
-#pragma GCC diagnostic pop
-    return LogStr;
-}
-
-char *_MakeLogStr2(char *format, int one, int two)
-{
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    sprintf(LogStr, format, one, two);
-#pragma GCC diagnostic pop
-    return LogStr;
-}
-
-char *_MakeLogStr3(char *format, int one, int two, int three)
-{
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    sprintf(LogStr, format, one, two, three);
-#pragma GCC diagnostic pop
-    return LogStr;
-}
-
-char *_MakeLogStr4(char *format, int one, int two, int three, int four)
-{
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    sprintf(LogStr, format, one, two, three, four);
-#pragma GCC diagnostic pop
-    return LogStr;
-}
-
-char *_MakeLogStr5(char *format, int one, int two, int three, int four, int five)
-{
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    sprintf(LogStr, format, one, two, three, four, five);
-#pragma GCC diagnostic pop
-    return LogStr;
 }

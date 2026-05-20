@@ -12,38 +12,34 @@ extern "C"
 {
 #endif
 
-#include "graphStructures.h"
-
-#include "io/g6-read-iterator.h"
-#include "io/g6-write-iterator.h"
-
-// Headers needed within library but not part of public API
-#include "io/strbuf.h"
-#include "io/strOrFile.h"
-
-#include "extensionSystem/graphExtensions.h"
+// Basic declarations, such as for OK, NOTOK, and NIL
+#include "lowLevelUtils/appconst.h"
 
     ///////////////////////////////////////////////////////////////////////////////
-    // Definitions for higher-order operations at the vertex, edge and graph levels
+    // The top-level operations at the graph, vertex, and edge levels
     ///////////////////////////////////////////////////////////////////////////////
+
+    // Forward declaration of graph structure and graph pointer type definitions
+    // (see the end of this header file).
+    typedef struct graphStruct graphStruct;
+    typedef graphStruct *graphP;
 
     // Methods related to graph allocation, initialization, and destruction
     graphP gp_New(void);
 
     int gp_InitGraph(graphP theGraph, int N);
-    void gp_ReinitializeGraph(graphP theGraph);
+    void gp_ReinitGraph(graphP theGraph);
 
     void gp_Free(graphP *pGraph);
 
     int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
-// Basic graph structure interrogators
+#define gp_GetEdgeCapacity(theGraph) ((theGraph)->edgeCapacity)
+
 // N=# of vertices; NV=# of virtual vertices; M=# of edges
 #define gp_GetN(theGraph) ((theGraph)->N)
 #define gp_GetNV(theGraph) ((theGraph)->NV)
 #define gp_GetM(theGraph) ((theGraph)->M)
-
-#define gp_GetEdgeCapacity(theGraph) ((theGraph)->edgeCapacity)
 
     // Basic graph utility methods
     int gp_CopyGraph(graphP dstGraph, graphP srcGraph);
@@ -53,18 +49,7 @@ extern "C"
     int gp_CreateRandomGraph(graphP theGraph);
     int gp_CreateRandomGraphEx(graphP theGraph, int numEdges);
 
-    // Basic graph I/O methods
-    int gp_Read(graphP theGraph, char const *FileName);
-    int gp_ReadFromString(graphP theGraph, char *inputStr);
-
-    int gp_Write(graphP theGraph, char const *FileName, int Mode);
-    int gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode);
-
-// Mode values for gp_Write() and gp_WriteToString()
-#define WRITE_ADJLIST 1
-#define WRITE_ADJMATRIX 2
-#define WRITE_DEBUGINFO 3
-#define WRITE_G6 4
+    // Basic graph I/O methods: see graphIO.h
 
     // Basic vertex interrogators
     int gp_IsNeighbor(graphP theGraph, int u, int v);
@@ -96,53 +81,476 @@ extern "C"
     int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore);
     int gp_RestoreVertices(graphP theGraph);
 
-    // DFS-related methods
-    int gp_CreateDFSTree(graphP theGraph);
-    int gp_SortVertices(graphP theGraph);
-    int gp_ComputeLowpoints(graphP theGraph);
-    int gp_ComputeLeastAncestors(graphP theGraph);
+    // For methods and declarations related to depth-first search (DFS), see graphDFSUtils.h
 
-/* Graph Flags:
-        FLAGS_DFSNUMBERED is set if DFS numbering has been performed on the graph
-        FLAGS_SORTEDBYDFI records whether the graph is in original vertex order
-                or sorted by depth first index. Successive calls to SortVertices()
-                toggle this bit.
-        FLAGS_ZEROBASEDIO is typically set by gp_Read() to indicate that the
-                adjacency list representation in a file began with index 0.
+/* Graph Flags (bit flags set by various public graphLib APIs):
+        Bits 0-3 reserved for base graph class
+        Bits 4-7 reserved for graph I/O
+        Bits 8-15 reserved for DFS Utils
+        Bits 16-23 reserved for Planarity-Related
+        bits 24-31 reserved for future expansion
 */
 #define gp_GetGraphFlags(theGraph) ((theGraph)->graphFlags)
-#define FLAGS_DFSNUMBERED 1
-#define FLAGS_SORTEDBYDFI 2
-#define FLAGS_ZEROBASEDIO 4
 
-    // Graph embedding and result validation methods
-    // The embedResult output by gp_Embed() and input to gp_TestEmbedResultIntegrity()
-    // can be OK if the graph is embedded or embeddable, NONEMBEDDABLE if a minimal
-    // subgraph obstructing embedding has been isolated, or NOTOK on error
-    int gp_Embed(graphP theGraph, int embedFlags);
-    int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult);
+    // For graph embedding methods and declarations, see graphPlanarity.h
 
-/* Possible graph embedFlags for gp_Embed().
-    The planar and outerplanar settings are supported natively;
-    The rest are supported via  extension modules.
-*/
-#define gp_GetEmbedFlags(theGraph) ((theGraph)->embedFlags)
+// The initial setting for the edge storage capacity expressed as a constant factor of N,
+// which is the number of vertices in the graph. By default, array E is allocated enough
+// space to contain 3N edges, which is 6N edge records, but this initial setting
+// can be overridden using gp_EnsureEdgeCapacity(). It is especially efficient to change
+// to ensure a higher edge capacity if done before calling gp_InitGraph() or gp_Read().
+#define DEFAULT_EDGE_CAPACITY_FACTOR 3
 
-#define EMBEDFLAGS_PLANAR 1
-#define EMBEDFLAGS_OUTERPLANAR 2
+// This value is returned by gp_AddEdge() and gp_InsertEdge() if adding or inserting
+// the edge would exceed the edge capacity limit. The limit can be increased by
+// calling gp_EnsureEdgeCapacity(), or by calling gp_DynamicAddEdge().
+#define AT_EDGE_CAPACITY_LIMIT -1
 
-#define EMBEDFLAGS_DRAWPLANAR (4 | EMBEDFLAGS_PLANAR)
+    /********************************************************************
+     Edge Record Definition
 
-#define EMBEDFLAGS_SEARCHFORK23 (8 | EMBEDFLAGS_OUTERPLANAR)
-#define EMBEDFLAGS_SEARCHFORK33 (16 | EMBEDFLAGS_PLANAR)
-#define EMBEDFLAGS_SEARCHFORK4 (32 | EMBEDFLAGS_OUTERPLANAR)
+     An edge is defined by a pair of edge records allocated in array E
+     of a graph. A pair of edge records represents the edge in the
+     adjacency lists of each vertex to which the edge is incident.
 
-// Reserve flag bits for possible future embedding-related extension modules
-#define EMBEDFLAGS_SEARCHFORK5 (64 | EMBEDFLAGS_PLANAR)
-#define EMBEDFLAGS_SEARCHFORK5MINOR (128 | EMBEDFLAGS_PLANAR)
-#define EMBEDFLAGS_MAXIMALPLANARSUBGRAPH (256 | EMBEDFLAGS_PLANAR)
-#define EMBEDFLAGS_PROJECTIVEPLANAR 512
-#define EMBEDFLAGS_TOROIDAL 1024
+     link[2]: the next and previous edge records in the adjacency
+              list that contains this edge record.
+
+     v: The vertex neighbor of the vertex whose adjacency list contains
+        this edge record (an index into array V).
+
+     flags: Bits 0-15 reserved for library; bits 16 and higher for apps
+            Bit 0: Visited
+            Bit 1: Marked (2nd visited flag, for while visiting all)
+            Bit 2: DFS type has been set, versus not set
+            Bit 3: DFS tree edge, versus cycle edge (co-tree edge, etc.)
+            Bit 4: DFS edge pointing to descendant, versus to ancestor
+            Bit 5: Inverted (same as marking an edge with a "sign" of -1)
+            Bit 6: Edge record is directed into the containing vertex only
+            Bit 7: Edge record is directed from the containing vertex only
+     ********************************************************************/
+
+    struct edgeRec
+    {
+        int link[2];
+        int neighbor;
+        unsigned flags;
+    };
+
+    typedef struct edgeRec edgeRec;
+    typedef edgeRec *edgeRecP;
+
+/*********************************************/
+#ifdef USE_1BASEDARRAYS
+/*********************************************/
+
+// These lower and upper bounds for edge storage are used for initializing and for
+// iterating through all of the edge storage, including space not yet containing edges.
+#define gp_LowerBoundEdgeStorage(theGraph) (2)
+#define gp_UpperBoundEdgeStorage(theGraph) (gp_LowerBoundEdgeStorage(theGraph) + ((theGraph)->edgeCapacity << 1))
+
+// Test whether an index e indicates a valid edge storage location
+// (versus NIL in non-debug, or including bounds checking in DEBUG mode
+#define gp_IsEdge(theGraph, e) (e)
+#define gp_IsNotEdge(theGraph, e) (!(e))
+
+#ifdef DEBUG
+#undef gp_IsEdge
+#define gp_IsEdge(theGraph, e)                                                                    \
+    ((e) == NIL                                                                                   \
+         ? 0                                                                                      \
+         : ((e) < gp_LowerBoundEdgeStorage(theGraph) || (e) >= gp_UpperBoundEdgeStorage(theGraph) \
+                ? (NOTOK, 0)                                                                      \
+                : 1))
+#endif
+
+// Given a valid edge record storage index e, we test whether e is in use by an
+// existing edge by testing whether or not it indicates a neighbor vertex (versus NIL)
+// This test is needed to avoid edge index holes created by gp_DeleteEdge()).
+#define gp_EdgeInUse(theGraph, e) (gp_GetNeighbor(theGraph, e))
+#define gp_EdgeNotInUse(theGraph, e) (!gp_GetNeighbor(theGraph, e))
+
+/*********************************************/
+#else /* When using 0-based Arrays ***********/
+/*********************************************/
+#define gp_LowerBoundEdgeStorage(theGraph) (0)
+#define gp_UpperBoundEdgeStorage(theGraph) (gp_LowerBoundEdgeStorage(theGraph) + ((theGraph)->edgeCapacity << 1))
+
+#define gp_IsEdge(theGraph, e) ((e) != NIL)
+#define gp_IsNotEdge(theGraph, e) ((e) == NIL)
+
+#ifdef DEBUG
+#undef gp_IsEdge
+#define gp_IsEdge(theGraph, e)                                                                    \
+    ((e) == NIL                                                                                   \
+         ? 0                                                                                      \
+         : ((e) < gp_LowerBoundEdgeStorage(theGraph) || (e) >= gp_UpperBoundEdgeStorage(theGraph) \
+                ? (NOTOK, 0)                                                                      \
+                : 1))
+#endif
+
+#define gp_EdgeInUse(theGraph, e) (gp_GetNeighbor(theGraph, e) != NIL)
+#define gp_EdgeNotInUse(theGraph, e) (!gp_GetNeighbor(theGraph, e) == NIL)
+/*********************************************/
+#endif /* End of macros for 0-based Arrays ***/
+/*********************************************/
+
+// Lower and upper edge bounds methods are used to test whether a given valid
+// edge storage location falls within the range of locations occupied by edges
+// of the graph. May be used in combination with gp_EdgeInUse().
+#define gp_LowerBoundEdges(theGraph) (gp_LowerBoundEdgeStorage(theGraph))
+#define gp_UpperBoundEdges(theGraph) (gp_LowerBoundEdges(theGraph) + ((gp_GetM(theGraph) + (theGraph)->numEdgeHoles) << 1))
+
+// An edge is represented by two consecutive edge records in the edge array E.
+// If an even number, xor 1 will add one; if an odd number, xor 1 will subtract 1
+#define gp_GetTwin(theGraph, e) ((e) ^ 1)
+
+// Access to adjacency list pointers
+#define gp_GetNextEdge(theGraph, e) (theGraph->E[e].link[0])
+#define gp_GetPrevEdge(theGraph, e) (theGraph->E[e].link[1])
+#define gp_GetAdjacentEdge(theGraph, e, theLink) (theGraph->E[e].link[theLink])
+
+#define gp_SetNextEdge(theGraph, e, newNextEdge) (theGraph->E[e].link[0] = newNextEdge)
+#define gp_SetPrevEdge(theGraph, e, newPrevEdge) (theGraph->E[e].link[1] = newPrevEdge)
+#define gp_SetAdjacentEdge(theGraph, e, theLink, newEdge) (theGraph->E[e].link[theLink] = newEdge)
+
+// Get/set 'neighbor' member indicated by edge record e
+#define gp_GetNeighbor(theGraph, e) (theGraph->E[e].neighbor)
+#define gp_SetNeighbor(theGraph, e, v) (theGraph->E[e].neighbor = v)
+
+// Initializer for edge flags
+#define gp_InitEdgeFlags(theGraph, e) (theGraph->E[e].flags = 0)
+
+// Definitions of and access to edge flags
+#define EDGE_VISITED_MASK 1
+#define gp_GetEdgeVisited(theGraph, e) (theGraph->E[e].flags & EDGE_VISITED_MASK)
+#define gp_ClearEdgeVisited(theGraph, e) (theGraph->E[e].flags &= ~EDGE_VISITED_MASK)
+#define gp_SetEdgeVisited(theGraph, e) (theGraph->E[e].flags |= EDGE_VISITED_MASK)
+
+// Definition and accessors for the edge marked flag
+// Essentially, this is a second visitation flag that can help applications that
+// must visit all edges to analyze and mark the ones important for some purpose.
+#define EDGE_MARKED_MASK 2
+#define gp_GetEdgeMarked(theGraph, e) (theGraph->E[e].flags & EDGE_MARKED_MASK)
+#define gp_ClearEdgeMarked(theGraph, e) (theGraph->E[e].flags &= ~EDGE_MARKED_MASK)
+#define gp_SetEdgeMarked(theGraph, e) (theGraph->E[e].flags |= EDGE_MARKED_MASK)
+
+// The edge type is defined by bits 2-4, 4+8+16=28
+#define EDGE_TYPE_MASK 28
+
+// Call gp_GetEdgeType(), then compare to one of these four possibilities
+// EDGE_TYPE_CHILD - edge record points to a neighboring DFS child
+// EDGE_TYPE_FORWARD - edge record points to a DFS descendant, not a DFS child
+// EDGE_TYPE_PARENT - edge record points to the DFS parent
+// EDGE_TYPE_BACK - edge record points to a DFS ancestor, not the DFS parent
+// NOTE: A parent/child tree edge has bit 3 (8) set, forward/back edges do not
+#define EDGE_TYPE_CHILD 28
+#define EDGE_TYPE_FORWARD 20
+#define EDGE_TYPE_PARENT 12
+#define EDGE_TYPE_BACK 4
+
+// EDGE_TYPE_NOTDEFINED - the edge record type has not been defined
+// EDGE_TYPE_TREE - edge record is part of a randomly generated tree
+// NOTE: EDGE_TYPE_TREE uses the same bit 3 as DFS parent and child edges above
+#define EDGE_TYPE_NOTDEFINED 0
+#define EDGE_TYPE_TREE 8
+
+#define gp_GetEdgeType(theGraph, e) (theGraph->E[e].flags & EDGE_TYPE_MASK)
+#define gp_ClearEdgeType(theGraph, e) (theGraph->E[e].flags &= ~EDGE_TYPE_MASK)
+#define gp_SetEdgeType(theGraph, e, type) (theGraph->E[e].flags |= type)
+#define gp_ResetEdgeType(theGraph, e, type) \
+    (theGraph->E[e].flags = (theGraph->E[e].flags & ~EDGE_TYPE_MASK) | type)
+
+#define EDGEFLAG_INVERTED_MASK 32
+#define gp_GetEdgeFlagInverted(theGraph, e) (theGraph->E[e].flags & EDGEFLAG_INVERTED_MASK)
+#define gp_SetEdgeFlagInverted(theGraph, e) (theGraph->E[e].flags |= EDGEFLAG_INVERTED_MASK)
+#define gp_ClearEdgeFlagInverted(theGraph, e) (theGraph->E[e].flags &= (~EDGEFLAG_INVERTED_MASK))
+#define gp_XorEdgeFlagInverted(theGraph, e) (theGraph->E[e].flags ^= EDGEFLAG_INVERTED_MASK)
+
+#define EDGEFLAG_DIRECTION_INONLY 64
+#define EDGEFLAG_DIRECTION_OUTONLY 128
+#define EDGEFLAG_DIRECTION_MASK 192
+
+// Returns the direction, if any, of the edge record
+#define gp_GetDirection(theGraph, e) (theGraph->E[e].flags & EDGEFLAG_DIRECTION_MASK)
+
+// A direction of 0 clears directedness. Otherwise, edge record e is set
+// to direction and e's twin edge record is set to the opposing setting.
+#define gp_SetDirection(theGraph, e, direction)                                       \
+    {                                                                                 \
+        if (direction == EDGEFLAG_DIRECTION_INONLY)                                   \
+        {                                                                             \
+            theGraph->E[e].flags |= EDGEFLAG_DIRECTION_INONLY;                        \
+            theGraph->E[gp_GetTwin(theGraph, e)].flags |= EDGEFLAG_DIRECTION_OUTONLY; \
+        }                                                                             \
+        else if (direction == EDGEFLAG_DIRECTION_OUTONLY)                             \
+        {                                                                             \
+            theGraph->E[e].flags |= EDGEFLAG_DIRECTION_OUTONLY;                       \
+            theGraph->E[gp_GetTwin(theGraph, e)].flags |= EDGEFLAG_DIRECTION_INONLY;  \
+        }                                                                             \
+        else                                                                          \
+        {                                                                             \
+            theGraph->E[e].flags &= ~EDGEFLAG_DIRECTION_MASK;                         \
+            theGraph->E[gp_GetTwin(theGraph, e)].flags &= ~EDGEFLAG_DIRECTION_MASK;   \
+        }                                                                             \
+    }
+
+    /********************************************************************
+     Vertex Record Definition (For non-virtual and virtual vertices)
+
+     This record definition provides the data members needed for the
+     core structural information for both vertices and virtual vertices.
+     Non-virtual vertices are also equipped with additional information
+     provided by private vertexInfo records.
+
+     The vertices of a graph are stored in the first N locations of array V.
+     Virtual vertices are secondary vertices used to help represent the
+     main vertices in substructural components of a graph (such as in
+     biconnected components).
+
+     link[2]: the first and last edge records in the adjacency list
+              of the vertex.
+
+     index: In vertices, stores either the depth first index of a vertex or
+            the original array index of the vertex if the vertices of the
+            graph are sorted by DFI.
+            In virtual vertices, the index may be used to indicate the vertex
+            that the virtual vertex represents, unless an algorithm has some
+            other way of making the association (for example, the planarity
+            algorithms rely on biconnected components and therefore place
+            virtual vertices of a vertex at positions corresponding to the
+            DFS children of the vertex).
+
+     flags: Bits 0-15 reserved for library; bits 16 and higher for apps
+            Bit 0: visited, for vertices and virtual vertices
+            Bit 1: marked, 2nd visited flag, for while visiting all
+                    Used in K4 homeomorph search algorithm
+            Bit 2: Obstruction type VERTEX_TYPE_SET (versus not set, i.e. VERTEX_TYPE_UNKNOWN)
+            Bit 3: Obstruction type qualifier RYW (set) versus RXW (clear)
+            Bit 4: Obstruction type qualifier high (set) versus low (clear)
+                    Bits 2-4 used in planarity-related algorithms
+     ********************************************************************/
+
+    struct vertexRec
+    {
+        int link[2];
+        int index;
+        unsigned flags;
+    };
+
+    typedef struct vertexRec vertexRec;
+    typedef vertexRec *vertexRecP;
+
+////////////////////////////////////////////
+// Accessors for vertex adjacency list links
+////////////////////////////////////////////
+#define gp_GetFirstEdge(theGraph, v) (theGraph->V[v].link[0])
+#define gp_GetLastEdge(theGraph, v) (theGraph->V[v].link[1])
+#define gp_GetEdgeByLink(theGraph, v, theLink) (theGraph->V[v].link[theLink])
+
+#define gp_SetFirstEdge(theGraph, v, newFirstEdge) (theGraph->V[v].link[0] = newFirstEdge)
+#define gp_SetLastEdge(theGraph, v, newLastEdge) (theGraph->V[v].link[1] = newLastEdge)
+#define gp_SetEdgeByLink(theGraph, v, theLink, newEdge) (theGraph->V[v].link[theLink] = newEdge)
+
+///////////////////////////////////
+// Vertex iteration-related methods
+///////////////////////////////////
+
+// These lower and upper bounds for vertex storage are used for initializing and for
+// iterating through all of non-virtual and virtual vertex records.
+#ifdef USE_1BASEDARRAYS
+#define gp_LowerBoundVertexStorage(theGraph) (1)
+#else
+#define gp_LowerBoundVertexStorage(theGraph) (0)
+#endif
+
+#define gp_UpperBoundVertexStorage(theGraph) (gp_LowerBoundVertexStorage(theGraph) + gp_GetN(theGraph) + gp_GetNV(theGraph))
+
+// The original N non-virtual vertices of a graph start at the lowest allowed storage location.
+// The upper bound is one-past-the-end of the storage for the N non-virtual vertices.
+#define gp_LowerBoundVertices(theGraph) gp_LowerBoundVertexStorage(theGraph)
+#define gp_UpperBoundVertices(theGraph) (gp_LowerBoundVertexStorage(theGraph) + gp_GetN(theGraph))
+
+// The virtual vertices start at the one-past-the-end upper bound of the non-virtual vertices.
+// The upper bound is one-past-the-end of the vertex storage locations.
+#define gp_LowerBoundVirtualVertices(theGraph) gp_UpperBoundVertices(theGraph)
+#define gp_UpperBoundVirtualVertices(theGraph) gp_UpperBoundVertexStorage(theGraph)
+
+#ifdef USE_1BASEDARRAYS
+// The use of *Vertex* alone consistently refers to the initial N vertices.
+// The use of *VirtualVertex* refers to vertex array locations after the first N.
+#ifndef DEBUG
+#define gp_IsVertex(theGraph, v) (v)
+#define gp_IsVirtualVertex(theGraph, v) ((v) > gp_GetN(theGraph))
+#else
+// See below for definitions common to 1-based and 0-based
+#endif
+
+#else // Using 0-based Arrays
+#ifndef DEBUG
+#define gp_IsVertex(theGraph, v) ((v) != NIL)
+#define gp_IsVirtualVertex(theGraph, v) ((v) >= gp_GetN(theGraph))
+#else
+// See below for definitions common to 1-based and 0-based
+#endif
+#endif // End of 0-based Arrays
+
+// The same for 1-based and 0-based when debugging
+#ifdef DEBUG
+#define gp_IsVertex(theGraph, v) \
+    ((v) == NIL ? 0 : ((v) < gp_LowerBoundVertices(theGraph) ? (NOTOK, 0) : ((v) >= gp_UpperBoundVertices(theGraph) ? (NOTOK, 0) : 1)))
+
+// NOTE: gp_IsVirtualVertex() is sometimes called to distinguish between
+// an existing non-virtual and a virtual
+#define gp_IsVirtualVertex(theGraph, v)                                    \
+    ((v) == NIL                                                            \
+         ? 0                                                               \
+         : ((v) < gp_LowerBoundVirtualVertices(theGraph)                   \
+                ? ((v) < gp_LowerBoundVertices(theGraph) ? (NOTOK, 0) : 0) \
+                : ((v) >= gp_UpperBoundVirtualVertices(theGraph) ? (NOTOK, 0) : 1)))
+
+#endif
+
+#define gp_IsNotVertex(theGraph, v) (!(gp_IsVertex(theGraph, v)))
+#define gp_IsNotVirtualVertex(theGraph, v) (!(gp_IsVirtualVertex(theGraph, v)))
+
+#define gp_VirtualVertexInUse(theGraph, virtualVertex) (gp_IsEdge(theGraph, gp_GetFirstEdge(theGraph, virtualVertex)))
+#define gp_VirtualVertexNotInUse(theGraph, virtualVertex) (gp_IsNotEdge(theGraph, gp_GetFirstEdge(theGraph, virtualVertex)))
+///////////////////////////////////////////
+// End of Vertex iteration-related methods
+//////////////////////////////////////////
+
+// Accessors for non-virtual and virtual vertex index value
+#define gp_GetIndex(theGraph, v) (theGraph->V[v].index)
+#define gp_SetIndex(theGraph, v, theIndex) (theGraph->V[v].index = theIndex)
+
+// Initializer for non-virtual and virtual vertex flags
+#define gp_InitFlags(theGraph, v) (theGraph->V[v].flags = 0)
+
+// Definition and accessors for the non-virtual and virtual vertex visited flag
+#define VERTEX_VISITED_MASK 1
+#define gp_GetVisited(theGraph, v) (theGraph->V[v].flags & VERTEX_VISITED_MASK)
+#define gp_ClearVisited(theGraph, v) (theGraph->V[v].flags &= ~VERTEX_VISITED_MASK)
+#define gp_SetVisited(theGraph, v) (theGraph->V[v].flags |= VERTEX_VISITED_MASK)
+
+// Definition and accessors for the non-virtual and virtual vertex marked flag
+// Essentially, this is a second visitation flag that can help applications that
+// must visit all vertices to analyze and mark the ones important for some purpose.
+#define VERTEX_MARKED_MASK 2
+#define gp_GetMarked(theGraph, v) (theGraph->V[v].flags & VERTEX_MARKED_MASK)
+#define gp_ClearMarked(theGraph, v) (theGraph->V[v].flags &= ~VERTEX_MARKED_MASK)
+#define gp_SetMarked(theGraph, v) (theGraph->V[v].flags |= VERTEX_MARKED_MASK)
+
+    // DFS-RELATED and PLANARITY-RELATED ONLY
+    // Declaration of package-private data type for managing additional DFS-
+    // and planarity-related information associated with each non-virtual vertex
+    typedef struct DFSUtils_VertexInfo DFSUtils_VertexInfo;
+    typedef DFSUtils_VertexInfo *DFSUtils_VertexInfoP;
+    typedef struct Planarity_VertexInfo Planarity_VertexInfo;
+    typedef Planarity_VertexInfo *Planarity_VertexInfoP;
+
+    // PLANARITY-RELATED ONLY
+    // Declaration of package private data type for optimizing management of
+    // the external face of a planar embedding as it is being built
+    typedef struct extFaceLinkRec extFaceLinkRec;
+    typedef extFaceLinkRec *extFaceLinkRecP;
+
+    // DFS-RELATED and PLANARITY-RELATED ONLY
+    // Declaration of package-private data type for managing a
+    // stack of integers
+    typedef struct stackStruct stackStruct;
+    typedef stackStruct *stackP;
+
+    // PLANARITY-RELATED ONLY
+    // Declaration of package private data type for isolating
+    // minimal subgraphs obstructing planarity-related embedding
+    typedef struct isolatorContextStruct isolatorContextStruct;
+    typedef isolatorContextStruct *isolatorContextP;
+
+    // DFS-RELATED and PLANARITY-RELATED ONLY
+    // Declaration of package-private data type for managing a
+    // collection of lists of integers
+    typedef struct listCollectionStruct listCollectionStruct;
+    typedef listCollectionStruct *listCollectionP;
+
+    // PLANARITY-RELATED ONLY
+    // Declaration of package private data types for extending the
+    // planarity algorithm to implement planarity-related algorithms
+    typedef struct graphExtensionStruct graphExtensionStruct;
+    typedef graphExtensionStruct *graphExtensionP;
+
+    typedef struct graphFunctionTableStruct graphFunctionTableStruct;
+    typedef graphFunctionTableStruct *graphFunctionTableP;
+
+    /********************************************************************
+         Graph structure definition
+                V : Array of vertex records (allocated size N + NV)
+                N : Number of non-virtual vertices (the "order" of the graph)
+                NV: Number of virtual vertices (currently always equal to N)
+
+                E : Array of edge records (edge records come in pairs and represent
+                    an edge in each of the two vertex endpoints of the edge)
+                M: Number of edges (the "size" of the graph)
+                edgeCapacity: the maximum number of edges allowed in E
+                edgeHoles: free locations in E where edges have been deleted
+                numEdgeHoles: package private member indicating the number of edge holes.
+
+                graphFlags: Additional state information about the graph
+                embedFlags: records the type of embedding requested (uses EMBEDFLAGS)
+
+                theStack: Used by routines of various DFSUtils graph subclasses
+                BicompRootLists: storage for bicomp root lists (DFSUtils) or, for
+                                 Planarity, pertinent child bicomp lists that develop
+                                during embedding
+                DVI: package private pointer; if the graph is extended to DFSUtils,
+                        then N instances of DFSUtils vertex info records are allocated
+
+                PVI: package private pointer; if the graph is extended to Planarity,
+                        then N instances of Planarity vertex info records are allocated
+                IC: contains additional useful variables for Kuratowski subgraph isolation.
+                sortedDFSChildLists: for Planarity graphs, storage for the sorted DFS child
+                        lists of each vertex
+                extFace: For Planarity graphs, an array of (N + NV) external face
+                        short circuit records
+
+                extensions: a list of extension data structures
+                functions: a table of function pointers that can be overloaded to provide
+                           extension behaviors to the graph
+
+                extraData: void pointer for extra package private data, if any.
+                           This allows adding data members for graph subclasses
+                           while maintaining backwards compatibility.
+        */
+
+    struct graphStruct
+    {
+        vertexRecP V;
+        int N, NV;
+
+        edgeRecP E;
+        int M, edgeCapacity;
+        stackP edgeHoles;
+        int numEdgeHoles;
+
+        unsigned graphFlags, embedFlags;
+
+        stackP theStack;
+        listCollectionP BicompRootLists;
+        DFSUtils_VertexInfoP DVI;
+
+        Planarity_VertexInfoP PVI;
+        listCollectionP sortedDFSChildLists;
+        extFaceLinkRecP extFace;
+        isolatorContextP IC;
+
+        graphExtensionP extensions;
+        graphFunctionTableP functions;
+
+        void *extraData;
+    };
+
+    typedef struct graphStruct graphStruct;
+    typedef graphStruct *graphP;
 
 #ifdef __cplusplus
 }

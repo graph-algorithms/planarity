@@ -12,7 +12,7 @@ stackP sp_New(int capacity)
 {
     stackP theStack;
 
-    theStack = (stackP)malloc(sizeof(stack));
+    theStack = (stackP)malloc(sizeof(stackStruct));
 
     if (theStack != NULL)
     {

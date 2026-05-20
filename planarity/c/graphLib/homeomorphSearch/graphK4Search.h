@@ -7,13 +7,15 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#include "../graphStructures.h"
+#include "../planarityRelated/graphOuterplanarity.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+// Create a K4Search Graph, i.e., subclass an Outerplanarity Graph by extending it
+// with the ability to perform a search for a subgraph homeomorphic to K_4.
 #define K4SEARCH_NAME "K4Search"
 
     int gp_ExtendWith_K4Search(graphP theGraph);
