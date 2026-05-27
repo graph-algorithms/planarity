@@ -7,7 +7,7 @@ allows other Cython modules access to the Graph extension type.
     https://cython.readthedocs.io/en/latest/src/userguide/sharing_declarations.html#sharing-extension-types
 """
 
-from planarity.full cimport cgraphLib
+from planarity.full cimport graphLib
 
 cdef class Graph:
-    cdef cgraphLib.graphP _theGraph
+    cdef graphLib.graphP _theGraph

@@ -13,11 +13,13 @@ include planarity/classic/cplanarity.pxd
 include planarity/classic/planarity.c
 include planarity/classic/planarity.pyx
 
-include planarity/full/cappconst.pxd
-include planarity/full/cg6IterationDefs.pxd
 include planarity/full/cgraphLib.pxd
+include planarity/full/graphLib.pxd
+include planarity/full/graph.pxd
+include planarity/full/graphLib.c
 include planarity/full/graph.c
 include planarity/full/g6IterationUtils.c
+include planarity/full/graphLib.pyx
 include planarity/full/graph.pyx
 include planarity/full/g6IterationUtils.pyx
 
