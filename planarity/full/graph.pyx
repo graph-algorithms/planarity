@@ -201,19 +201,7 @@ cdef class Graph:
             (v < self.gp_UpperBoundVertices()) and
             graphLib.gp_IsVertex(self._theGraph, v)
         )
-
-    def gp_ExtendWith_K23Search(self):
-        if graphLib.gp_ExtendWith_K23Search(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with K23Search structures.")
     
-    def gp_ExtendWith_K33Search(self):
-        if graphLib.gp_ExtendWith_K33Search(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with K33Search structures.")
-    
-    def gp_ExtendWith_K4Search(self):
-        if graphLib.gp_ExtendWith_K4Search(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with K4Search structures.")
-
     def gp_Read(self, str infile_name):
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = infile_name.encode('utf-8')
@@ -242,10 +230,34 @@ cdef class Graph:
                 f"gp_Write() of graph to '{outfile_name}' failed."
                 )
 
+    def gp_ExtendWith_Planarity(self):
+        if graphLib.gp_ExtendWith_Planarity(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with Planarity structures.")
+    
+    def gp_Embed(self, int embedFlags) -> int:
+        embed_result = graphLib.gp_Embed(self._theGraph, embedFlags)
+        if embed_result != OK and embed_result != NONEMBEDDABLE:
+            raise RuntimeError("Failed to perform embed operation.")
+        
+        return embed_result
+
+    def gp_TestEmbedResultIntegrity(self, Graph copy_of_orig_graph, int embed_result) -> int:
+        check_result = graphLib.gp_TestEmbedResultIntegrity(
+                self._theGraph, copy_of_orig_graph._theGraph, embed_result
+            )
+        if check_result != OK and check_result != NONEMBEDDABLE:
+            raise RuntimeError("Failed embed integrity check.")
+
+        return check_result
+
+    def gp_ExtendWith_Outerplanarity(self):
+        if graphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with Outerplanarity structures.")
+
     def gp_ExtendWith_DrawPlanar(self):
         if graphLib.gp_ExtendWith_DrawPlanar(self._theGraph) != OK:
             raise RuntimeError("Failed to extend graph with DrawPlanar structures.")
-    
+
     def gp_DrawPlanar_RenderToFile(self, str outfile_name):
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = outfile_name.encode('utf-8')
@@ -267,27 +279,15 @@ cdef class Graph:
                 ) from string_conversion_error
         finally:
             free(renditionString)
-
-    def gp_ExtendWith_Outerplanarity(self):
-        if graphLib.gp_ExtendWith_Outerplanarity(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with Outerplanarity structures.")
-
-    def gp_ExtendWith_Planarity(self):
-        if graphLib.gp_ExtendWith_Planarity(self._theGraph) != OK:
-            raise RuntimeError("Failed to extend graph with Planarity structures.")
     
-    def gp_Embed(self, int embedFlags) -> int:
-        embed_result = graphLib.gp_Embed(self._theGraph, embedFlags)
-        if embed_result != OK and embed_result != NONEMBEDDABLE:
-            raise RuntimeError("Failed to perform embed operation.")
-        
-        return embed_result
-
-    def gp_TestEmbedResultIntegrity(self, Graph copy_of_orig_graph, int embed_result) -> int:
-        check_result = graphLib.gp_TestEmbedResultIntegrity(
-                self._theGraph, copy_of_orig_graph._theGraph, embed_result
-            )
-        if check_result != OK and check_result != NONEMBEDDABLE:
-            raise RuntimeError("Failed embed integrity check.")
-
-        return check_result
+    def gp_ExtendWith_K23Search(self):
+        if graphLib.gp_ExtendWith_K23Search(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with K23Search structures.")
+    
+    def gp_ExtendWith_K33Search(self):
+        if graphLib.gp_ExtendWith_K33Search(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with K33Search structures.")
+    
+    def gp_ExtendWith_K4Search(self):
+        if graphLib.gp_ExtendWith_K4Search(self._theGraph) != OK:
+            raise RuntimeError("Failed to extend graph with K4Search structures.")
