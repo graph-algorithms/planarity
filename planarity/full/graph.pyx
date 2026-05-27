@@ -159,6 +159,9 @@ cdef class Graph:
 
         return graphLib.gp_EdgeInUse(self._theGraph, e)
 
+    def gp_LowerBoundEdges(self):
+        return graphLib.gp_LowerBoundEdges(self._theGraph)
+    
     def gp_UpperBoundEdges(self):
         return graphLib.gp_UpperBoundEdges(self._theGraph)
 
