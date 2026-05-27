@@ -4,10 +4,11 @@ from .classic.planarity_networkx import *
 
 from .full.graphLib import (
     OK,
-    AT_EDGE_CAPACITY_LIMIT,
     NONEMBEDDABLE,
     NOTOK,
-    NIL,
+    TRUE,
+    FALSE,
+    AT_EDGE_CAPACITY_LIMIT,
     EMBEDFLAGS_PLANAR,
     EMBEDFLAGS_DRAWPLANAR,
     EMBEDFLAGS_OUTERPLANAR,
@@ -24,4 +25,4 @@ from .full.g6IterationUtils import G6ReadIterator, G6WriteIterator
 
 # NOTE: In the future, we could automatically generate the version number by
 # configuring setuptools-scm, but presently this seems simpler.
-__version__ = "0.7.15"
+__version__ = "0.7.16"

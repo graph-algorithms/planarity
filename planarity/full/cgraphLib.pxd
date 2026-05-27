@@ -16,7 +16,7 @@ cdef extern from "../c/graphLib/graphLib.h":
 
 
 cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
-    cdef int OK, NOTOK, NULL, NIL, NIL_CHAR
+    cdef int OK, NOTOK, TRUE, FALSE
 
 
 cdef extern from "../c/graphLib/graph.h":
@@ -57,6 +57,7 @@ cdef extern from "../c/graphLib/graph.h":
 
     int gp_EdgeInUse(graphP theGraph, int e)
 
+    int gp_LowerBoundEdges(graphP theGraph)
     int gp_UpperBoundEdges(graphP theGraph)
 
     int gp_GetNextEdge(graphP theGraph, int e)
@@ -71,35 +72,33 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_IsVertex(graphP theGraph, int v)
 
 
-cdef extern from "../c/graphLib/homeomorphSearch/graphK23Search.h":
-    int gp_ExtendWith_K23Search(graphP theGraph)
-
-
-cdef extern from "../c/graphLib/homeomorphSearch/graphK33Search.h":
-    int gp_ExtendWith_K33Search(graphP theGraph)
-
-
-cdef extern from "../c/graphLib/homeomorphSearch/graphK4Search.h":
-    int gp_ExtendWith_K4Search(graphP theGraph)
-
-
 cdef extern from "../c/graphLib/io/graphIO.h":
     int gp_Read(graphP theGraph, char *FileName)
-
     int gp_Write(graphP theGraph, char *FileName, int Mode)
-
     int WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6
 
 
-cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
-    int gp_ExtendWith_DrawPlanar(graphP theGraph)
+cdef extern from "../c/graphLib/io/g6-read-iterator.h":
+    ctypedef struct G6ReadIterator:
+        pass
+    ctypedef G6ReadIterator * G6ReadIteratorP
 
-    int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
-    int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
+    int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph)
+    int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName)
+    int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator)
+    bint g6_EndReached(G6ReadIteratorP theG6ReadIterator)
+    void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator)
 
 
-cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
-    int gp_ExtendWith_Outerplanarity(graphP theGraph)
+cdef extern from "../c/graphLib/io/g6-write-iterator.h":
+    ctypedef struct G6WriteIterator:
+        pass
+    ctypedef G6WriteIterator * G6WriteIteratorP
+
+    int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph)
+    int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName)
+    int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator)
+    void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator)
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
@@ -113,30 +112,24 @@ cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
     int EMBEDFLAGS_SEARCHFORK23, EMBEDFLAGS_SEARCHFORK33, EMBEDFLAGS_SEARCHFORK4
 
 
-cdef extern from "../c/graphLib/io/g6-read-iterator.h":
-    ctypedef struct G6ReadIterator:
-        pass
-    ctypedef G6ReadIterator * G6ReadIteratorP
-
-    int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph)
-    bint g6_EndReached(G6ReadIteratorP theG6ReadIterator)
-
-    int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName)
-
-    int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator)
-
-    void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator)
+cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
+    int gp_ExtendWith_Outerplanarity(graphP theGraph)
 
 
-cdef extern from "../c/graphLib/io/g6-write-iterator.h":
-    ctypedef struct G6WriteIterator:
-        pass
-    ctypedef G6WriteIterator * G6WriteIteratorP
+cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
+    int gp_ExtendWith_DrawPlanar(graphP theGraph)
 
-    int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph)
+    int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
+    int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
 
-    int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName)
 
-    int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator)
+cdef extern from "../c/graphLib/homeomorphSearch/graphK23Search.h":
+    int gp_ExtendWith_K23Search(graphP theGraph)
 
-    void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator)
+
+cdef extern from "../c/graphLib/homeomorphSearch/graphK33Search.h":
+    int gp_ExtendWith_K33Search(graphP theGraph)
+
+
+cdef extern from "../c/graphLib/homeomorphSearch/graphK4Search.h":
+    int gp_ExtendWith_K4Search(graphP theGraph)
