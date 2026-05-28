@@ -1,4 +1,8 @@
 """Interface for Boyer's (c) planarity algorithms."""
+
+cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
+    int OK, NOTOK, NULL 
+
 cdef extern from "../c/graphLib/graph.h":
     ctypedef struct graphStruct:
         pass
@@ -37,18 +41,27 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
     void gp_SortVertices(graphP theGraph)
 
 
-cdef extern from "../c/graphLib/extensionSystem/graphExtensions.h":
-    int gp_FindExtension(graphP theGraph, int moduleID, void **pContext)
-    void *gp_GetExtension(graphP theGraph, int moduleID)
-
-
 cdef extern from "../c/graphLib/io/graphIO.h":
     int WRITE_ADJLIST
     int gp_Write(graphP theGraph, char *FileName, int Mode)
 
 
-cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
-    int OK, NOTOK, NULL 
+cdef extern from "../c/graphLib/extensionSystem/graphExtensions.h":
+    int gp_FindExtension(graphP theGraph, int moduleID, void **pContext)
+    void *gp_GetExtension(graphP theGraph, int moduleID)
+
+
+cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
+    int gp_ExtendWith_Planarity(graphP theGraph)
+
+    int gp_Embed(graphP theGraph, int embedFlags)
+
+    int NONEMBEDDABLE
+    int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR
+
+
+cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
+    int gp_ExtendWith_Outerplanarity(graphP theGraph)
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
@@ -72,16 +85,3 @@ cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.private.h":
     ctypedef struct DrawPlanarContext:
         DrawPlanar_EdgeRecP E
         DrawPlanar_VertexInfoP VI
-
-
-cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
-    int gp_ExtendWith_Outerplanarity(graphP theGraph)
-
-
-cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
-    int gp_ExtendWith_Planarity(graphP theGraph)
-
-    int gp_Embed(graphP theGraph, int embedFlags)
-
-    int NONEMBEDDABLE
-    int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR

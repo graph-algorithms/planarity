@@ -569,7 +569,7 @@ int _MarkLowestXYPath(graphP theGraph)
  Also, if an X-Y path is found (which will be the closest), then
  the graph isolator context contains its attachment points on the
  external face of the bicomp rooted by R, and the edges and vertices
- in the X-Y path have been marked visited.
+ in the X-Y path will have been marked visited.
  ****************************************************************************/
 
 int _MarkClosestXYPath(graphP theGraph, int targetVertex)

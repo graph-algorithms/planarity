@@ -18,7 +18,7 @@ extern "C"
     {
         int moduleID;
         void *context;
-        void *(*dupContext)(void *, void *);
+        int  (*copyData)(void *, void *);
         void (*freeContext)(void *);
 
         graphFunctionTableP functions;

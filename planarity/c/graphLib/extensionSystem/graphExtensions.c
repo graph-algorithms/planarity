@@ -53,19 +53,10 @@ static int moduleIDGenerator = 0;
      An instance of this context structure is passed to the "context"
      parameter of gp_AddExtension().
 
-  3) Define a function capable of duplicating your context data
-     structure.  It receives a void pointer indicating the context
-     to duplicate and a void pointer that can be cast to a graph
-     pointer indicating the graph for which the context is being
-     duplicated.  The void pointer returned indicates the newly
-     allocated context structure.  The pointer to this function is
-     passed to the "dupContext" parameter of gp_AddExtension()
-
-     Note: It is useful to store in your context structure a pointer
-     to the graph that the context is extending.  There are certain
-     function overloads you will perform that will only receive
-     the context, and you may need to know things about the graph,
-     such as the number of vertices or edges.
+  3) Define a function capable of copying your context data. It receives 
+     void pointers to destination and source contexts, and then copies the
+     extension-specific data from source to destination. This function's
+     pointer is passed to the "copyData" parameter of gp_AddExtension()
 
   4) Define a function that can free the memory used by your context
      data structure.  It will receive a void pointer indicating the
@@ -132,7 +123,8 @@ static int moduleIDGenerator = 0;
         of fpReadPostprocess() and fpWritePostprocess() are needed.
 
   7) Define internal functions for _Feature_ClearStructures(),
-     _Feature_CreateStructures() and _Feature_InitStructures();
+     _Feature_CreateStructures(), _Feature_InitStructures(), and
+     _Feature_CopyStructures();
 
      a) The _Feature_ClearStructures() should simply null out pointers
         to extra structures on its first invocation, but thereafter it
@@ -150,6 +142,13 @@ static int moduleIDGenerator = 0;
      c) The _Feature_InitStructures() should invoke just the functions
         needed to initialize the custom VertexRec, VertexInfo and
         EdgeRec data members, if any.
+
+     d) The _Feature_CopyStructures() should invoke just the functions
+        needed to copy the custom VertexRec, VertexInfo and EdgeRec data
+        members, if any, from a source extension context to a destination
+        extension context. For custom EdgeRec arrays, if the destination
+        has more capacitiy than the source, then the implementation should
+        also ensure the extra EdgeRecs are initialized in the destination.
 
   8) Define a function gp_Detach_Feature() that invokes gp_RemoveExtension()
      This should be done for consistency, so that users of a feature
@@ -170,7 +169,7 @@ static int moduleIDGenerator = 0;
                  value can be used to find and remove the extension from any graph
  @param context - the data storage for the extension being added
                The context is owned by the extension and freed with freeContext()
- @param dupContext - a function capable of duplicating the context data
+ @param copyData - a function capable of copying the context data
  @param freeContext - a function capable of freeing the context data
  @param functions - pointer to a table of functions stored in the data context.
                         The table of functions is an input and output parameter.
@@ -190,14 +189,14 @@ static int moduleIDGenerator = 0;
 int gp_AddExtension(graphP theGraph,
                     int *pModuleID,
                     void *context,
-                    void *(*dupContext)(void *, void *),
+                    int  (*copyData)(void *, void *),
                     void (*freeContext)(void *),
                     graphFunctionTableP functions)
 {
     graphExtensionP newExtension = NULL;
 
     if (theGraph == NULL || pModuleID == NULL ||
-        context == NULL || dupContext == NULL || freeContext == NULL ||
+        context == NULL || copyData == NULL || freeContext == NULL ||
         functions == NULL)
     {
         return NOTOK;
@@ -224,7 +223,7 @@ int gp_AddExtension(graphP theGraph,
     // Assign the data payload of the extension
     newExtension->moduleID = *pModuleID;
     newExtension->context = context;
-    newExtension->dupContext = dupContext;
+    newExtension->copyData = copyData;
     newExtension->freeContext = freeContext;
     newExtension->functions = functions;
 
@@ -459,39 +458,51 @@ graphExtensionP _FindNearestOverload(graphP theGraph, graphExtensionP target, in
  gp_CopyExtensions()
  ********************************************************************/
 
+// This number can just be made bigger if ever needed
+#define MAXNUMSUPPORTEDEXTENSIONS 32
+
 int gp_CopyExtensions(graphP dstGraph, graphP srcGraph)
 {
-    graphExtensionP next = NULL, newNext = NULL, newLast = NULL;
+    graphExtensionP dstExtension = NULL, srcExtension = NULL;
+    graphExtensionP srcExtensionIDMap[MAXNUMSUPPORTEDEXTENSIONS+1];
 
     if (srcGraph == NULL || dstGraph == NULL)
         return NOTOK;
 
-    gp_FreeExtensions(dstGraph);
+    if (gp_GetN(dstGraph) != gp_GetN(srcGraph) || gp_GetN(dstGraph) == 0)
+        return NOTOK;
 
-    next = srcGraph->extensions;
+    // NULL out the pointers in the srcExtensionIDMap
+    memset(srcExtensionIDMap, 0, (MAXNUMSUPPORTEDEXTENSIONS+1)*sizeof(graphExtensionP));
 
-    while (next != NULL)
+    // Run through the srcGraph extensions linked list and put the pointer to 
+    // each extension in the srcExtensionIDMap at the index location indicated
+    // by the extension module ID. This mapping is needed because the srcGraph
+    // may have been extended with the extensions in a different order than the
+    // dstGraph, but the moduleID for each extension is the same across graphs. 
+    srcExtension = srcGraph->extensions;
+    while (srcExtension != NULL)
     {
-        if ((newNext = (graphExtensionP)malloc(sizeof(graphExtensionStruct))) == NULL)
-        {
-            gp_FreeExtensions(dstGraph);
+        if (srcExtension->moduleID < 0 || srcExtension->moduleID > MAXNUMSUPPORTEDEXTENSIONS)
             return NOTOK;
-        }
 
-        newNext->moduleID = next->moduleID;
-        newNext->context = next->dupContext(next->context, dstGraph);
-        newNext->dupContext = next->dupContext;
-        newNext->freeContext = next->freeContext;
-        newNext->functions = next->functions;
-        newNext->next = NULL;
+        srcExtensionIDMap[srcExtension->moduleID] = srcExtension;
+        srcExtension = (graphExtensionP)srcExtension->next;        
+    }
 
-        if (newLast != NULL)
-            newLast->next = (struct graphExtensionStruct *)newNext;
-        else
-            dstGraph->extensions = newNext;
+    // For each extension in the dstGraph, if the srcGraph has the same extension,
+    // then we invoke the extension's copyData to copy from srcGraph to dstGraph.
+    // If the dstGraph has an extension that the srcGraph does not have, then
+    // NULL is passed for the srcGraph extension, which is expected to cause
+    // the extension's copyData() to reset/reinitialize the dstGraph structures.
+    dstExtension = dstGraph->extensions;
+    while (dstExtension != NULL)
+    {
+        srcExtension = srcExtensionIDMap[dstExtension->moduleID];
+        if (dstExtension->copyData(dstExtension->context, srcExtension ? srcExtension->context : NULL) != OK)
+            return NOTOK;
 
-        newLast = newNext;
-        next = (graphExtensionP)next->next;
+        dstExtension = (graphExtensionP)dstExtension->next;
     }
 
     return OK;

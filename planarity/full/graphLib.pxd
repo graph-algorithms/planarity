@@ -26,17 +26,18 @@ cdef int gp_FindEdge(graphP theGraph, int u, int v)
 cdef int gp_GetVertexDegree(graphP theGraph, int v)
 
 cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
+cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 cdef int gp_DeleteEdge(graphP theGraph, int e)
 
-cdef int gp_LowerBoundEdgeStorage(graphP theGraph)
-cdef int gp_UpperBoundEdgeStorage(graphP theGraph)
+cdef int gp_LowerBoundEdges(graphP theGraph)
+cdef int gp_UpperBoundEdges(graphP theGraph)
 
 cdef int gp_IsEdge(graphP theGraph, int v)
 
 cdef int gp_EdgeInUse(graphP theGraph, int e)
 
-cdef int gp_LowerBoundEdges(graphP theGraph)
-cdef int gp_UpperBoundEdges(graphP theGraph)
+cdef int gp_LowerBoundEdgeStorage(graphP theGraph)
+cdef int gp_UpperBoundEdgeStorage(graphP theGraph)
 
 cdef int gp_GetNextEdge(graphP theGraph, int e)
 

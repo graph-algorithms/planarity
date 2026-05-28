@@ -1163,15 +1163,15 @@ static int __Pyx_init_co_variables(void) {
 /* Early includes */
 #include <string.h>
 #include <stdlib.h>
+#include "../c/graphLib/lowLevelUtils/appconst.h"
 #include "../c/graphLib/graph.h"
 #include "../c/graphLib/graphDFSUtils.h"
-#include "../c/graphLib/extensionSystem/graphExtensions.h"
 #include "../c/graphLib/io/graphIO.h"
-#include "../c/graphLib/lowLevelUtils/appconst.h"
+#include "../c/graphLib/extensionSystem/graphExtensions.h"
+#include "../c/graphLib/planarityRelated/graphPlanarity.h"
+#include "../c/graphLib/planarityRelated/graphOuterplanarity.h"
 #include "../c/graphLib/planarityRelated/graphDrawPlanar.h"
 #include "../c/graphLib/planarityRelated/graphDrawPlanar.private.h"
-#include "../c/graphLib/planarityRelated/graphOuterplanarity.h"
-#include "../c/graphLib/planarityRelated/graphPlanarity.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */

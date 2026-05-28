@@ -17,7 +17,7 @@ extern "C"
     int gp_AddExtension(graphP theGraph,
                         int *pModuleID,
                         void *context,
-                        void *(*dupContext)(void *, void *),
+                        int  (*copyData)(void *, void *),
                         void (*freeContext)(void *),
                         graphFunctionTableP overloadTable);
 

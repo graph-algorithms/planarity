@@ -144,25 +144,16 @@ extern "C"
 #ifdef USE_1BASEDARRAYS
 /*********************************************/
 
-// These lower and upper bounds for edge storage are used for initializing and for
-// iterating through all of the edge storage, including space not yet containing edges.
-#define gp_LowerBoundEdgeStorage(theGraph) (2)
-#define gp_UpperBoundEdgeStorage(theGraph) (gp_LowerBoundEdgeStorage(theGraph) + ((theGraph)->edgeCapacity << 1))
+// Lower and upper edge bounds methods are used to test whether a given valid
+// edge storage location falls within the range of locations occupied by edges
+// of the graph. Often used in combination with gp_EdgeInUse(), defined below.
+#define gp_LowerBoundEdges(theGraph) (2)
+#define gp_UpperBoundEdges(theGraph) (gp_LowerBoundEdges(theGraph) + ((gp_GetM(theGraph) + (theGraph)->numEdgeHoles) << 1))
 
 // Test whether an index e indicates a valid edge storage location
 // (versus NIL in non-debug, or including bounds checking in DEBUG mode
 #define gp_IsEdge(theGraph, e) (e)
 #define gp_IsNotEdge(theGraph, e) (!(e))
-
-#ifdef DEBUG
-#undef gp_IsEdge
-#define gp_IsEdge(theGraph, e)                                                                    \
-    ((e) == NIL                                                                                   \
-         ? 0                                                                                      \
-         : ((e) < gp_LowerBoundEdgeStorage(theGraph) || (e) >= gp_UpperBoundEdgeStorage(theGraph) \
-                ? (NOTOK, 0)                                                                      \
-                : 1))
-#endif
 
 // Given a valid edge record storage index e, we test whether e is in use by an
 // existing edge by testing whether or not it indicates a neighbor vertex (versus NIL)
@@ -173,12 +164,24 @@ extern "C"
 /*********************************************/
 #else /* When using 0-based Arrays ***********/
 /*********************************************/
-#define gp_LowerBoundEdgeStorage(theGraph) (0)
-#define gp_UpperBoundEdgeStorage(theGraph) (gp_LowerBoundEdgeStorage(theGraph) + ((theGraph)->edgeCapacity << 1))
+#define gp_LowerBoundEdges(theGraph) (0)
+#define gp_UpperBoundEdges(theGraph) (gp_LowerBoundEdges(theGraph) + ((gp_GetM(theGraph) + (theGraph)->numEdgeHoles) << 1))
 
 #define gp_IsEdge(theGraph, e) ((e) != NIL)
 #define gp_IsNotEdge(theGraph, e) ((e) == NIL)
 
+#define gp_EdgeInUse(theGraph, e) (gp_GetNeighbor(theGraph, e) != NIL)
+#define gp_EdgeNotInUse(theGraph, e) (gp_GetNeighbor(theGraph, e) == NIL)
+/*********************************************/
+#endif /* End of macros for 0-based Arrays ***/
+/*********************************************/
+
+// These lower and upper bounds for edge storage are used for initializing and for
+// iterating through all of the edge storage, including space not yet containing edges.
+#define gp_LowerBoundEdgeStorage(theGraph) (gp_LowerBoundEdges(theGraph))
+#define gp_UpperBoundEdgeStorage(theGraph) (gp_LowerBoundEdgeStorage(theGraph) + ((theGraph)->edgeCapacity << 1))
+
+// A nice bounds-checking version for DEBUG mode compilation
 #ifdef DEBUG
 #undef gp_IsEdge
 #define gp_IsEdge(theGraph, e)                                                                    \
@@ -188,18 +191,6 @@ extern "C"
                 ? (NOTOK, 0)                                                                      \
                 : 1))
 #endif
-
-#define gp_EdgeInUse(theGraph, e) (gp_GetNeighbor(theGraph, e) != NIL)
-#define gp_EdgeNotInUse(theGraph, e) (!gp_GetNeighbor(theGraph, e) == NIL)
-/*********************************************/
-#endif /* End of macros for 0-based Arrays ***/
-/*********************************************/
-
-// Lower and upper edge bounds methods are used to test whether a given valid
-// edge storage location falls within the range of locations occupied by edges
-// of the graph. May be used in combination with gp_EdgeInUse().
-#define gp_LowerBoundEdges(theGraph) (gp_LowerBoundEdgeStorage(theGraph))
-#define gp_UpperBoundEdges(theGraph) (gp_LowerBoundEdges(theGraph) + ((gp_GetM(theGraph) + (theGraph)->numEdgeHoles) << 1))
 
 // An edge is represented by two consecutive edge records in the edge array E.
 // If an even number, xor 1 will add one; if an odd number, xor 1 will subtract 1
