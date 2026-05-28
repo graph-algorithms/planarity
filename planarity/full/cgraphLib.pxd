@@ -42,6 +42,7 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_GetVertexDegree(graphP theGraph, int v)
 
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
+    int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DeleteEdge(graphP theGraph, int e)
 
     int AT_EDGE_CAPACITY_LIMIT
@@ -50,15 +51,15 @@ cdef extern from "../c/graphLib/graph.h":
         pass
     ctypedef edgeRec * edgeRecP
 
-    int gp_LowerBoundEdgeStorage(graphP theGraph)
-    int gp_UpperBoundEdgeStorage(graphP theGraph)
+    int gp_LowerBoundEdges(graphP theGraph)
+    int gp_UpperBoundEdges(graphP theGraph)
 
     int gp_IsEdge(graphP theGraph, int v)
 
     int gp_EdgeInUse(graphP theGraph, int e)
 
-    int gp_LowerBoundEdges(graphP theGraph)
-    int gp_UpperBoundEdges(graphP theGraph)
+    int gp_LowerBoundEdgeStorage(graphP theGraph)
+    int gp_UpperBoundEdgeStorage(graphP theGraph)
 
     int gp_GetNextEdge(graphP theGraph, int e)
 

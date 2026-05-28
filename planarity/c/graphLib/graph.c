@@ -62,7 +62,7 @@ int _ClearAllVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
 int _SetAllVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
 
 int _ComputeEdgeRecordType(graphP theGraph, int a, int b, int edgeType);
-int _SetEdgeType(graphP theGraph, int u, int v);
+int _RestoreEdgeType(graphP theGraph, int u, int v);
 
 int _HideInternalEdges(graphP theGraph, int vertex);
 int _RestoreInternalEdges(graphP theGraph, int stackBottom);
@@ -306,7 +306,7 @@ void _InitEdges(graphP theGraph)
 
 #ifdef USE_1BASEDARRAYS
 #else
-    for (int e = gp_BeginEdgeStorage(theGraph); e != gp_EndEdgeStorage(theGraph); ++e)
+    for (int e = gp_LowerBoundEdgeStorage(theGraph); e < gp_UpperBoundEdgeStorage(theGraph); ++e)
         gp_InitEdgeFlags(theGraph, e);
 #endif
 }
@@ -1002,20 +1002,6 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
         return NOTOK;
     }
 
-    // If the dstGraph has a larger edge capacity than the srcGraph
-    // then we report failure because the code below only gives valid
-    // values to edge records up to the edge capacity of the srcGraph
-    // It would be possible to invoke _InitEdgeRec() on the extra
-    // edge records in dstGraph, but we do not support this
-    // currently because we would need to have and currently do
-    // not have a way to reinitialize the edge record extensions
-    // (gp_CopyExtensions() only copies the content in extension
-    // content up to the size of data structures in srcGraph).
-    if (dstGraph->edgeCapacity > srcGraph->edgeCapacity)
-    {
-        return NOTOK;
-    }
-
     // Copy the vertices (non-virtual only).  Augmentations to vertices created
     // by extensions are copied below by gp_CopyExtensions()
     for (v = gp_LowerBoundVertices(srcGraph); v < gp_UpperBoundVertices(srcGraph); ++v)
@@ -1043,6 +1029,15 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
     for (e = gp_LowerBoundEdgeStorage(srcGraph); e < gp_UpperBoundEdgeStorage(srcGraph); e++)
         _gp_CopyEdgeRec(dstGraph, e, srcGraph, e);
 
+    // If the dstGraph has more edge storage than the srcGraph, then we clear the extra 
+    // base edgeRec structures. In gp_CopyExtensions(), the various extensions' copyData()
+    // functions are expected to clear out any extension-specific extra edgeRec structures
+    if (gp_UpperBoundEdgeStorage(dstGraph) > gp_UpperBoundEdgeStorage(srcGraph))
+    {
+        for (e = gp_UpperBoundEdgeStorage(srcGraph); e < gp_UpperBoundEdgeStorage(dstGraph); e++)
+            _InitEdgeRec(dstGraph, e);
+    }
+
     // Give the dstGraph the same size and intrinsic properties
     dstGraph->N = gp_GetN(srcGraph);
     dstGraph->NV = gp_GetNV(srcGraph);
@@ -1062,21 +1057,12 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
     if (gp_CopyExtensions(dstGraph, srcGraph) != OK)
         return NOTOK;
 
-    // Copy the graph's function table, which has the pointers to
-    // the most recent extension overloads of each function (or
-    // the original function pointer if a particular function has
-    // not been overloaded).
-    //
-    // This must be done after copying the extension because the
-    // first step of copying the extensions is to free the extensions
-    // of the dstGraph, which performs _InitFunctionTable() on dstGraph.
-    // Therefore, assigning the srcGraph functions to dstGraph *before*
-    // copying the extensions doesn't work because the assignment would be
-    // wiped out. This, in turn, means that the DupContext function of an
-    // extension *cannot* depend on any extension function overloads;
-    // the extension must directly invoke extension functions only.
-    *(dstGraph->functions) = *(srcGraph->functions);
-
+    // We do not copy the function table of srcGraph to the dstGraph
+    // because copy extensions now copies all possible data from
+    // srcGraph to dstGraph, but it does not extend dstGraph with
+    // any extensions it doesn't already have, so the dstGraph
+    // function table is already correct for its type.
+    
     return OK;
 }
 
@@ -2754,7 +2740,7 @@ int _ComputeEdgeRecordType(graphP theGraph, int a, int b, int edgeType)
 }
 
 /****************************************************************************
- _SetEdgeType()
+ _RestoreEdgeType()
 
  When we are restoring an edge, we must restore its type (tree edge or cycle edge).
  We can deduce what the type was based on other information in the graph.
@@ -2763,7 +2749,7 @@ int _ComputeEdgeRecordType(graphP theGraph, int a, int b, int edgeType)
  constant time if u is known to have a degree bound by a constant.
  ****************************************************************************/
 
-int _SetEdgeType(graphP theGraph, int u, int v)
+int _RestoreEdgeType(graphP theGraph, int u, int v)
 {
     int e, eTwin, u_orig, v_orig;
 

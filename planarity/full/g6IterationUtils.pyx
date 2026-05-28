@@ -39,9 +39,6 @@ cdef class G6ReadIterator:
             # graphP will be cleaned up with gp_Free()
             graphLib.g6_FreeReader(&self._g6ReadIterator)
 
-    def g6_EndReached(self):
-        return graphLib.g6_EndReached(self._g6ReadIterator)
-
     def g6_InitReaderWithFileName(self, str infile_name):
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = infile_name.encode('utf-8')
@@ -58,6 +55,9 @@ cdef class G6ReadIterator:
                 f"Unable to read graph, as g6_ReadGraph() in EAPS graphLib "
                 "failed."
             )
+
+    def g6_EndReached(self):
+        return graphLib.g6_EndReached(self._g6ReadIterator)
 
 
 cdef class G6WriteIterator:

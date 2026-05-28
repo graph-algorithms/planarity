@@ -126,8 +126,23 @@ cdef class Graph:
             )
         if graphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink) != OK:
             raise RuntimeError(
-                f"Unable to add edge (u, v) = ({u}, {v}) with ulink = {ulink} "
-                f"and vlink = {vlink}."
+                f"gp_AddEdge() failed: unable to add edge (u, v) = ({u}, {v}) "
+                f"with ulink = {ulink} and vlink = {vlink}."
+            )
+    
+    def gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink):
+        if ulink != 0 and ulink != 1:
+            raise RuntimeError(
+                f"Invalid link index for ulink: '{ulink}'."
+            )
+        if vlink != 0 and vlink != 1:
+            raise RuntimeError(
+                f"Invalid link index for vlink: '{vlink}'."
+            )
+        if graphLib.gp_DynamicAddEdge(self._theGraph, u, ulink, v, vlink) != OK:
+            raise RuntimeError(
+                f"gp_DynamicAddEdge() failed: unable to add edge (u, v) = "
+                f"({u}, {v}) with ulink = {ulink} and vlink = {vlink}."
             )
 
     def gp_DeleteEdge(self, int e):
@@ -138,11 +153,11 @@ cdef class Graph:
 
         return graphLib.gp_DeleteEdge(self._theGraph, e)
 
-    def gp_LowerBoundEdgeStorage(self):
-        return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+    def gp_LowerBoundEdges(self):
+        return graphLib.gp_LowerBoundEdges(self._theGraph)
     
-    def gp_UpperBoundEdgeStorage(self):
-        return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
+    def gp_UpperBoundEdges(self):
+        return graphLib.gp_UpperBoundEdges(self._theGraph)
 
     def gp_IsEdge(self, int e):
         return (
@@ -159,11 +174,11 @@ cdef class Graph:
 
         return graphLib.gp_EdgeInUse(self._theGraph, e)
 
-    def gp_LowerBoundEdges(self):
-        return graphLib.gp_LowerBoundEdges(self._theGraph)
+    def gp_LowerBoundEdgeStorage(self):
+        return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
     
-    def gp_UpperBoundEdges(self):
-        return graphLib.gp_UpperBoundEdges(self._theGraph)
+    def gp_UpperBoundEdgeStorage(self):
+        return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
 
     def gp_GetNextEdge(self, int e):
         if not self.gp_IsEdge(e):

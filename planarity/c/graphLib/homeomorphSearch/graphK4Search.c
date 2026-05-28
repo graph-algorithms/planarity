@@ -17,7 +17,7 @@ extern int _ClearAllVisitedFlagsInBicomp(graphP theGraph, int BicompRoot);
 extern int _ClearObstructionMarksInBicomp(graphP theGraph, int BicompRoot);
 // extern int  _DeleteUnmarkedEdgesInBicomp(graphP theGraph, int BicompRoot);
 extern int _ComputeEdgeRecordType(graphP theGraph, int a, int b, int edgeType);
-extern int _SetEdgeType(graphP theGraph, int u, int v);
+extern int _RestoreEdgeType(graphP theGraph, int u, int v);
 
 extern int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int _JoinBicomps(graphP theGraph);
@@ -1431,7 +1431,7 @@ int _K4_RestoreReducedPath(graphP theGraph, K4SearchContext *context, int e)
     // Set the types of the newly added edges. In both cases, the first of the two
     // vertex parameters is known to be degree 2 because they are internal to the
     // path being restored, so this operation is constant time.
-    if (_SetEdgeType(theGraph, v, u) != OK || _SetEdgeType(theGraph, w, x) != OK)
+    if (_RestoreEdgeType(theGraph, v, u) != OK || _RestoreEdgeType(theGraph, w, x) != OK)
         return NOTOK;
 
     return OK;

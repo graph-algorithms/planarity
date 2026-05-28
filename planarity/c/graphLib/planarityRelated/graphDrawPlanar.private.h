@@ -86,6 +86,8 @@ extern "C"
 
         extern int DRAWPLANAR_ID;
 
+        int gp_GetDrawPlanarExtensionIdentifier(void);
+
 #ifdef __cplusplus
 }
 #endif

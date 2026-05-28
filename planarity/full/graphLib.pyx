@@ -105,16 +105,21 @@ cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
     return cgraphLib.gp_AddEdge(theGraph, u, ulink, v, vlink)
 
 
+cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
+    return cgraphLib.gp_DynamicAddEdge(theGraph, u, ulink, v, vlink)
+
+
 cdef int gp_DeleteEdge(graphP theGraph, int e):
     return cgraphLib.gp_DeleteEdge(theGraph, e)
 
 
-cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
-    return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
+cdef int gp_LowerBoundEdges(graphP theGraph):
+    return cgraphLib.gp_LowerBoundEdges(theGraph)
 
 
-cdef int gp_UpperBoundEdgeStorage(graphP theGraph):
-    return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)
+cdef int gp_UpperBoundEdges(graphP theGraph):
+    return cgraphLib.gp_UpperBoundEdges(theGraph)
+
 
 cdef int gp_IsEdge(graphP theGraph, int e):
     return cgraphLib.gp_IsEdge(theGraph, e)
@@ -124,12 +129,12 @@ cdef int gp_EdgeInUse(graphP theGraph, int e):
     return cgraphLib.gp_EdgeInUse(theGraph, e)
 
 
-cdef int gp_LowerBoundEdges(graphP theGraph):
-    return cgraphLib.gp_LowerBoundEdges(theGraph)
+cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
+    return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
 
 
-cdef int gp_UpperBoundEdges(graphP theGraph):
-    return cgraphLib.gp_UpperBoundEdges(theGraph)
+cdef int gp_UpperBoundEdgeStorage(graphP theGraph):
+    return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)
 
 
 cdef int gp_GetNextEdge(graphP theGraph, int e):

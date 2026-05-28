@@ -20,7 +20,7 @@ extern int _HideInternalEdges(graphP theGraph, int vertex);
 extern int _RestoreInternalEdges(graphP theGraph, int stackBottom);
 extern int _ClearInvertedFlagsInBicomp(graphP theGraph, int BicompRoot);
 extern int _ComputeEdgeRecordType(graphP theGraph, int a, int b, int edgeType);
-extern int _SetEdgeType(graphP theGraph, int u, int v);
+extern int _RestoreEdgeType(graphP theGraph, int u, int v);
 
 extern int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int _JoinBicomps(graphP theGraph);
@@ -362,7 +362,7 @@ int _RunExtraK33Tests(graphP theGraph, K33SearchContext *context)
     // Now mark the lowest x-y path so that we can test whether _any_ x-y path
     // has points of attachment, px or py, below x or y, respectively (where
     // below means closer to W than x or y, respectively, along the external face).
-    if (_MarkLowestXYPath(theGraph) != TRUE)
+    if (_MarkLowestXYPath(theGraph) != OK)
         return NOTOK;
 
     // Now we test for E4 based on whether px!=x or py!=y. Note that the inequality
@@ -918,7 +918,7 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
  The function returns NOTOK on internal error, OK otherwise.
 
  Preconditions: The X-Y path is marked visited by a prior invocation of
- the meothd _MarkLowestXYPath() above.
+ the method _MarkLowestXYPath() above.
 
  So, we start a depth first search from W to find a visited vertex, except
  we prune the search to ignore vertices whose obstruction type is other than
@@ -1678,8 +1678,8 @@ int _RestoreReducedPath(graphP theGraph, K33SearchContext *context, int e)
     // Set the types of the newly added edges. In both cases, the first of the two
     // vertex parameters is known to be degree 2 because they are internal to the
     // path being restored, so this operation is constant time.
-    if (_SetEdgeType(theGraph, v, u) != OK ||
-        _SetEdgeType(theGraph, w, x) != OK)
+    if (_RestoreEdgeType(theGraph, v, u) != OK ||
+        _RestoreEdgeType(theGraph, w, x) != OK)
         return NOTOK;
 
     return OK;
@@ -1762,8 +1762,8 @@ int _RestoreAndOrientReducedPaths(graphP theGraph, K33SearchContext *context)
 
             /* Set the types of the newly added edges */
 
-            if (_SetEdgeType(theGraph, u, v) != OK ||
-                _SetEdgeType(theGraph, w, x) != OK)
+            if (_RestoreEdgeType(theGraph, u, v) != OK ||
+                _RestoreEdgeType(theGraph, w, x) != OK)
                 return NOTOK;
 
             /* We determine whether the reduction edge may be on the external face,
