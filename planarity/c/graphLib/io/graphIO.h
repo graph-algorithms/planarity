@@ -14,11 +14,11 @@ extern "C"
 
 #include "../graph.h"
 
-    int gp_Read(graphP theGraph, char const *FileName);
+    int gp_Read(graphP theGraph, char const *fileName);
     int gp_ReadFromString(graphP theGraph, char *inputStr);
 
-    int gp_Write(graphP theGraph, char const *FileName, int Mode);
-    int gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode);
+    int gp_Write(graphP theGraph, char const *fileName, int writeMode);
+    int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode);
 
 // Mode values for gp_Write() and gp_WriteToString()
 #define WRITE_ADJLIST 1

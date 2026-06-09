@@ -61,7 +61,7 @@ extern "C"
     // After gp_Embed(), if the result is NONEMBEDDABLE, then this method
     // returns the obstructing minor type from the list below.
     // It is best to compare using a bitwise-and operation.
-    int gp_GetObstructionMinorType(graphP theGraph);
+    unsigned gp_GetObstructionMinorType(graphP theGraph);
 
 #define MINORTYPE_NONE 0
 #define MINORTYPE_A 1

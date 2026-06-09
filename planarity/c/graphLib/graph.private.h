@@ -18,6 +18,81 @@ extern "C"
 {
 #endif
 
+    // DFS-RELATED and PLANARITY-RELATED ONLY
+
+    // Declaration of package-private data type for managing a
+    // collection of lists of integers
+    typedef struct listCollectionStruct listCollectionStruct;
+    typedef listCollectionStruct *listCollectionP;
+
+    // Declaration of package-private data type for managing additional 
+    // DFS--related information associated with each non-virtual vertex
+    typedef struct DFSUtils_VertexInfo DFSUtils_VertexInfo;
+    typedef DFSUtils_VertexInfo *DFSUtils_VertexInfoP;
+
+    // PLANARITY-RELATED ONLY
+
+    // Declaration of package-private data type for managing additional 
+    // planarity-related information associated with each non-virtual vertex
+    typedef struct Planarity_VertexInfo Planarity_VertexInfo;
+    typedef Planarity_VertexInfo *Planarity_VertexInfoP;
+
+    // Declaration of package private data type for optimizing management of
+    // the external face of a planar embedding as it is being built
+    typedef struct extFaceLinkRec extFaceLinkRec;
+    typedef extFaceLinkRec *extFaceLinkRecP;
+
+    // Declaration of package private data type for isolating
+    // minimal subgraphs obstructing planarity-related embedding
+    typedef struct isolatorContextStruct isolatorContextStruct;
+    typedef isolatorContextStruct *isolatorContextP;
+
+
+    /********************************************************************
+     A structure for package private data associated with a graph.
+
+        BicompRootLists: storage for bicomp root lists (DFSUtils) or, for
+                            Planarity, pertinent child bicomp lists that develop
+                        during embedding
+        DVI: package private pointer; if the graph is extended to DFSUtils,
+                then N instances of DFSUtils vertex info records are allocated
+
+        PVI: package private pointer; if the graph is extended to Planarity,
+                then N instances of Planarity vertex info records are allocated
+        IC: contains additional useful variables for Kuratowski subgraph isolation.
+        sortedDFSChildLists: for Planarity graphs, storage for the sorted DFS child
+                lists of each vertex
+        extFace: For Planarity graphs, an array of (N + NV) external face
+                short circuit records
+     ********************************************************************/
+    struct graphPrivateDataStruct
+    {
+        // Private Data members specific to a DFSUtilsGraph subclass
+        listCollectionP BicompRootLists;
+        DFSUtils_VertexInfoP DVI;
+
+        // Private data members specific to a PlanarityGraph subclass
+        Planarity_VertexInfoP PVI;
+        listCollectionP sortedDFSChildLists;
+        extFaceLinkRecP extFace;
+        isolatorContextP IC;
+    };
+
+    typedef struct graphPrivateDataStruct graphPrivateDataStruct;
+    typedef graphPrivateDataStruct *graphPrivateDataP;
+
+// These macros describe how to currently get access to additional data structures
+// used in DFSUtils Graphs and Planarity Graphs. Once full extensions are
+// developed for those, then these definitions can change to access the data 
+// from the extensions, and the data can be removed from graphPrivateDataStruct. 
+#define theGraphBicompRootLists(theGraph) (((graphPrivateDataP)((theGraph)->privateData))->BicompRootLists)
+#define theGraphDVI(theGraph) (((graphPrivateDataP)((theGraph)->privateData))->DVI)
+
+#define theGraphPVI(theGraph) (((graphPrivateDataP)((theGraph)->privateData))->PVI)
+#define theGraphSortedDFSChildLists(theGraph) (((graphPrivateDataP)((theGraph)->privateData))->sortedDFSChildLists)
+#define theGraphExtFace(theGraph) (((graphPrivateDataP)((theGraph)->privateData))->extFace)
+#define theGraphIC(theGraph) (((graphPrivateDataP)((theGraph)->privateData))->IC)
+
 /********************************************************************
  Additional edge link accessors and manipulators
  ********************************************************************/

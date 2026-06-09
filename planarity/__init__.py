@@ -3,6 +3,10 @@ from .classic.planarity_functions import *
 from .classic.planarity_networkx import *
 
 from .full.graphLib import (
+    QUIETMODE_NONE,
+    QUIETMODE_ERRORS,
+    QUIETMODE_MESSAGES,
+    QUIETMODE_ALL,
     OK,
     NONEMBEDDABLE,
     NOTOK,
@@ -15,8 +19,8 @@ from .full.graphLib import (
     EMBEDFLAGS_SEARCHFORK23,
     EMBEDFLAGS_SEARCHFORK33,
     EMBEDFLAGS_SEARCHFORK4,
-    gp_GetQuietModeFlag,
-    gp_SetQuietModeFlag,
+    gp_GetQuietMode,
+    gp_SetQuietMode,
     gp_GetProjectVersionFull,
     gp_GetLibPlanarityVersionFull,
 )

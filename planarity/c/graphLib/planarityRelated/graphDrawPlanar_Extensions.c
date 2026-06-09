@@ -37,8 +37,8 @@ int _DrawPlanar_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult
 int _DrawPlanar_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _DrawPlanar_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
-int _DrawPlanar_InitGraph(graphP theGraph, int N);
-void _DrawPlanar_ReinitGraph(graphP theGraph);
+int _DrawPlanar_EnsureVertexCapacity(graphP theGraph, int N);
+void _DrawPlanar_ResetGraphStorage(graphP theGraph);
 int _DrawPlanar_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 int _DrawPlanar_SortVertices(graphP theGraph);
 
@@ -47,6 +47,7 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData);
 
 /* Forward declarations of functions used by the extension system */
 
+void *_DrawPlanar_DupContext(void *pContext, void *theGraph);
 int _DrawPlanar_CopyData(void *dstContext, void *srcContext);
 void _DrawPlanar_FreeContext(void *);
 
@@ -67,12 +68,12 @@ int DRAWPLANAR_ID = 0;
  To activate this feature during gp_Embed(), use EMBEDFLAGS_DRAWPLANAR.
 
  This method may be called immediately after gp_New() in the case of
- invoking gp_Read().  For generating graphs, gp_InitGraph() can be invoked
- before or after this enabling method.  This method detects if the core
- graph has already been initialized, and if so, it will initialize the
- additional data structures specific to planar graph drawing.  This makes
- it possible to invoke gp_New() and gp_InitGraph() together, and then attach
- this feature only if it is requested at run-time.
+ invoking gp_Read().  For generating graphs, gp_EnsureVertexCapacity() can
+ be invoked before or after this enabling method.  This method detects if
+ the vertex capacity has already been set, and if so, it will also create
+ the additional data structures specific to planar graph drawing.  This makes
+ it possible to invoke gp_New() and gp_EnsureVertexCapacity() together, and
+ then attach this feature only if it is requested at run-time.
 
  Returns OK for success, NOTOK for failure.
  ****************************************************************************/
@@ -120,8 +121,8 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     context->functions.fpCheckEmbeddingIntegrity = _DrawPlanar_CheckEmbeddingIntegrity;
     context->functions.fpCheckObstructionIntegrity = _DrawPlanar_CheckObstructionIntegrity;
 
-    context->functions.fpInitGraph = _DrawPlanar_InitGraph;
-    context->functions.fpReinitGraph = _DrawPlanar_ReinitGraph;
+    context->functions.fpEnsureVertexCapacity = _DrawPlanar_EnsureVertexCapacity;
+    context->functions.fpResetGraphStorage = _DrawPlanar_ResetGraphStorage;
     context->functions.fpEnsureEdgeCapacity = _DrawPlanar_EnsureEdgeCapacity;
     context->functions.fpSortVertices = _DrawPlanar_SortVertices;
 
@@ -133,7 +134,9 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     // Store the Draw context, including the data structure and the
     // function pointers, as an extension of the graph
     if (gp_AddExtension(theGraph, &DRAWPLANAR_ID, (void *)context,
-                        _DrawPlanar_CopyData, _DrawPlanar_FreeContext,
+                        _DrawPlanar_DupContext, 
+                        _DrawPlanar_CopyData, 
+                        _DrawPlanar_FreeContext,
                         &context->functions) != OK)
     {
         _DrawPlanar_FreeContext(context);
@@ -143,11 +146,9 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     // Create the Draw-specific structures if the size of the graph is known
     // Attach functions are typically invoked after gp_New(), but if a graph
     // extension must be attached before gp_Read(), then the attachment
-    // also happens before gp_InitGraph() because gp_Read() invokes init only
-    // after it reads the order N of the graph.  Hence, this attach call would
-    // occur when N==0 in the case of gp_Read().
-    // But if a feature is attached after gp_InitGraph(), then N > 0 and so we
-    // need to create and initialize all the custom data structures
+    // also happens before gp_EnsureVertexCapacity(), which means N==0.
+    // However, a feature can be attached after gp_EnsureVertexCapacity(),
+    // in which case there is extra work to do when N > 0.
     if (gp_GetN(theGraph) > 0)
     {
         if (_DrawPlanar_CreateStructures(context) != OK ||
@@ -259,6 +260,43 @@ int _DrawPlanar_InitStructures(DrawPlanarContext *context)
 }
 
 /********************************************************************
+ _DrawPlanar_DupContext()
+ ********************************************************************/
+
+void *_DrawPlanar_DupContext(void *pContext, void *theGraph)
+{
+    DrawPlanarContext *context = (DrawPlanarContext *)pContext;
+    DrawPlanarContext *newContext = (DrawPlanarContext *)malloc(sizeof(DrawPlanarContext));
+
+    if (newContext != NULL)
+    {
+        int VIsize = gp_UpperBoundVertices((graphP)theGraph);
+        int Esize = gp_UpperBoundEdgeStorage((graphP)theGraph);
+
+        *newContext = *context;
+
+        newContext->theGraph = (graphP)theGraph;
+
+        newContext->initialized = 0;
+        _DrawPlanar_ClearStructures(newContext);
+        if (((graphP)theGraph)->N > 0)
+        {
+            if (_DrawPlanar_CreateStructures(newContext) != OK)
+            {
+                _DrawPlanar_FreeContext(newContext);
+                return NULL;
+            }
+
+            // Initialize custom data structures by copying
+            memcpy(newContext->E, context->E, Esize * sizeof(DrawPlanar_EdgeRec));
+            memcpy(newContext->VI, context->VI, VIsize * sizeof(DrawPlanar_VertexInfo));
+        }
+    }
+
+    return newContext;
+}
+
+/********************************************************************
  _DrawPlanar_CopyData()
  ********************************************************************/
 int _DrawPlanar_CopyData(void *dstContext, void *srcContext)
@@ -314,7 +352,7 @@ void _DrawPlanar_FreeContext(void *pContext)
 /********************************************************************
  ********************************************************************/
 
-int _DrawPlanar_InitGraph(graphP theGraph, int N)
+int _DrawPlanar_EnsureVertexCapacity(graphP theGraph, int N)
 {
     DrawPlanarContext *context = NULL;
     gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
@@ -333,7 +371,7 @@ int _DrawPlanar_InitGraph(graphP theGraph, int N)
         _DrawPlanar_InitStructures(context) != OK)
         return NOTOK;
 
-    context->functions.fpInitGraph(theGraph, N);
+    context->functions.fpEnsureVertexCapacity(theGraph, N);
 
     return OK;
 }
@@ -341,17 +379,17 @@ int _DrawPlanar_InitGraph(graphP theGraph, int N)
 /********************************************************************
  ********************************************************************/
 
-void _DrawPlanar_ReinitGraph(graphP theGraph)
+void _DrawPlanar_ResetGraphStorage(graphP theGraph)
 {
     DrawPlanarContext *context = NULL;
     gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
 
     if (context != NULL)
     {
-        // Reinitialize the graph
-        context->functions.fpReinitGraph(theGraph);
+        // Reset the graph storage in base class(es)
+        context->functions.fpResetGraphStorage(theGraph);
 
-        // Do the reinitialization that is specific to this module
+        // Do the reset that is specific to this module
         _DrawPlanar_InitStructures(context);
     }
 }

@@ -41,21 +41,18 @@ cdef class Graph:
         if self._theGraph != NULL:
             graphLib.gp_Free(&self._theGraph)
 
-    def gp_InitGraph(self, int n):
-        if graphLib.gp_InitGraph(self._theGraph, n) != OK:
-            raise RuntimeError(f"gp_InitGraph() failed.")
-
-    def gp_ReinitGraph(self):
-        graphLib.gp_ReinitGraph(self._theGraph)
+    def gp_EnsureVertexCapacity(self, int n):
+        if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:
+            raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
 
     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
             raise RuntimeError(
                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "
                 f"{new_edge_capacity}.")
-
-    def gp_GetEdgeCapacity(self):
-        return graphLib.gp_GetEdgeCapacity(self._theGraph)
+    
+    def gp_ResetGraphStorage(self):
+        graphLib.gp_ResetGraphStorage(self._theGraph)
 
     def gp_GetN(self)-> int:
         """
@@ -65,6 +62,9 @@ cdef class Graph:
             raise RuntimeError("Graph is not initialized.")
         
         return graphLib.gp_GetN(self._theGraph)
+
+    def gp_GetEdgeCapacity(self):
+        return graphLib.gp_GetEdgeCapacity(self._theGraph)
 
     def gp_CopyGraph(self, Graph src_graph):
         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
@@ -153,49 +153,6 @@ cdef class Graph:
 
         return graphLib.gp_DeleteEdge(self._theGraph, e)
 
-    def gp_LowerBoundEdges(self):
-        return graphLib.gp_LowerBoundEdges(self._theGraph)
-    
-    def gp_UpperBoundEdges(self):
-        return graphLib.gp_UpperBoundEdges(self._theGraph)
-
-    def gp_IsEdge(self, int e):
-        return (
-            (e >= self.gp_LowerBoundEdgeStorage()) and
-            (e < self.gp_UpperBoundEdgeStorage()) and
-            graphLib.gp_IsEdge(self._theGraph, e)
-        )
-
-    def gp_EdgeInUse(self, int e):
-        if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_EdgeInUse() failed: invalid edge index '{e}'."
-            )
-
-        return graphLib.gp_EdgeInUse(self._theGraph, e)
-
-    def gp_LowerBoundEdgeStorage(self):
-        return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
-    
-    def gp_UpperBoundEdgeStorage(self):
-        return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
-
-    def gp_GetNextEdge(self, int e):
-        if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_GetNextEdge() failed: invalid edge index '{e}'."
-            )
-
-        return graphLib.gp_GetNextEdge(self._theGraph, e)
-
-    def gp_GetNeighbor(self, int e):
-        if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_GetNeighbor() failed: invalid edge index '{e}'."
-            )
-
-        return graphLib.gp_GetNeighbor(self._theGraph, e)
-
     def gp_GetFirstEdge(self, int v):
         if not self.gp_IsVertex(v):
             raise RuntimeError(
@@ -216,7 +173,50 @@ cdef class Graph:
             (v < self.gp_UpperBoundVertices()) and
             graphLib.gp_IsVertex(self._theGraph, v)
         )
+
+    def gp_GetNextEdge(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_GetNextEdge() failed: invalid edge index '{e}'."
+            )
+
+        return graphLib.gp_GetNextEdge(self._theGraph, e)
+
+    def gp_IsEdge(self, int e):
+        return (
+            (e >= self.gp_LowerBoundEdgeStorage()) and
+            (e < self.gp_UpperBoundEdgeStorage()) and
+            graphLib.gp_IsEdge(self._theGraph, e)
+        )
+
+    def gp_GetNeighbor(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+            )
+
+        return graphLib.gp_GetNeighbor(self._theGraph, e)
+
+    def gp_LowerBoundEdges(self):
+        return graphLib.gp_LowerBoundEdges(self._theGraph)
     
+    def gp_UpperBoundEdges(self):
+        return graphLib.gp_UpperBoundEdges(self._theGraph)
+
+    def gp_EdgeInUse(self, int e):
+        if not self.gp_IsEdge(e):
+            raise RuntimeError(
+                f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+            )
+
+        return graphLib.gp_EdgeInUse(self._theGraph, e)
+
+    def gp_LowerBoundEdgeStorage(self):
+        return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+    
+    def gp_UpperBoundEdgeStorage(self):
+        return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
+
     def gp_Read(self, str infile_name):
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = infile_name.encode('utf-8')

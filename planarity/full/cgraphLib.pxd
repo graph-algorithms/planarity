@@ -6,8 +6,10 @@ machinery.
 """
 
 cdef extern from "../c/graphLib/lowLevelUtils/apiutils.h":
-    int gp_GetQuietModeFlag()
-    void gp_SetQuietModeFlag(int newQuietModeFlag)
+    int QUIETMODE_NONE, QUIETMODE_ERRORS, QUIETMODE_MESSAGES, QUIETMODE_ALL
+    
+    int gp_GetQuietMode()
+    void gp_SetQuietMode(int newQuietMode)
 
 
 cdef extern from "../c/graphLib/graphLib.h":
@@ -25,15 +27,15 @@ cdef extern from "../c/graphLib/graph.h":
     ctypedef graphStruct * graphP
 
     graphP gp_New()
-    int gp_InitGraph(graphP theGraph, int N)
-    void gp_ReinitGraph(graphP theGraph)
+
+    int gp_EnsureVertexCapacity(graphP theGraph, int N)
+    int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
+    void gp_ResetGraphStorage(graphP theGraph)
+
     void gp_Free(graphP *pGraph)
 
-    int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
-
-    int gp_GetEdgeCapacity(graphP theGraph)
-
     int gp_GetN(graphP theGraph)
+    int gp_GetEdgeCapacity(graphP theGraph)
 
     int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
     graphP gp_DupGraph(graphP theGraph)
@@ -45,25 +47,9 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DeleteEdge(graphP theGraph, int e)
 
-    int AT_EDGE_CAPACITY_LIMIT
-
-    ctypedef struct edgeRec:
+    ctypedef struct vertexRec:
         pass
-    ctypedef edgeRec * edgeRecP
-
-    int gp_LowerBoundEdges(graphP theGraph)
-    int gp_UpperBoundEdges(graphP theGraph)
-
-    int gp_IsEdge(graphP theGraph, int v)
-
-    int gp_EdgeInUse(graphP theGraph, int e)
-
-    int gp_LowerBoundEdgeStorage(graphP theGraph)
-    int gp_UpperBoundEdgeStorage(graphP theGraph)
-
-    int gp_GetNextEdge(graphP theGraph, int e)
-
-    int gp_GetNeighbor(graphP theGraph, int e)
+    ctypedef edgeRec * vertexRecP
 
     int gp_GetFirstEdge(graphP theGraph, int v)
 
@@ -71,6 +57,26 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_UpperBoundVertices(graphP theGraph)
 
     int gp_IsVertex(graphP theGraph, int v)
+
+    ctypedef struct edgeRec:
+        pass
+    ctypedef edgeRec * edgeRecP
+
+    int gp_GetNextEdge(graphP theGraph, int e)
+
+    int gp_IsEdge(graphP theGraph, int v)
+
+    int gp_GetNeighbor(graphP theGraph, int e)
+
+    int gp_LowerBoundEdges(graphP theGraph)
+    int gp_UpperBoundEdges(graphP theGraph)
+
+    int gp_EdgeInUse(graphP theGraph, int e)
+
+    int gp_LowerBoundEdgeStorage(graphP theGraph)
+    int gp_UpperBoundEdgeStorage(graphP theGraph)
+
+    int AT_EDGE_CAPACITY_LIMIT
 
 
 cdef extern from "../c/graphLib/io/graphIO.h":

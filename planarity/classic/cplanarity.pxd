@@ -1,7 +1,7 @@
 """Interface for Boyer's (c) planarity algorithms."""
 
 cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
-    int OK, NOTOK, NULL 
+    int OK, NOTOK, TRUE, FALSE
 
 cdef extern from "../c/graphLib/graph.h":
     ctypedef struct graphStruct:
@@ -9,7 +9,7 @@ cdef extern from "../c/graphLib/graph.h":
     ctypedef graphStruct * graphP
 
     graphP gp_New()
-    int gp_InitGraph(graphP theGraph, int N)
+    int gp_EnsureVertexCapacity(graphP theGraph, int N)
     void gp_Free(graphP *pGraph)
 
     ctypedef struct edgeRec:
@@ -19,22 +19,22 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 
-    int gp_IsEdge(graphP theGraph, int v)
+    int gp_GetFirstEdge(graphP theGraph, int v)
+    int gp_GetLastEdge(graphP theGraph, int v)
+
+    int gp_LowerBoundVertices(graphP theGraph)
+    int gp_UpperBoundVertices(graphP theGraph)
 
     int gp_GetNextEdge(graphP theGraph, int v)
     int gp_GetPrevEdge(graphP theGraph, int v)
+
+    int gp_IsEdge(graphP theGraph, int v)
 
     int gp_GetNeighbor(graphP theGraph, int v)
 
     int EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY
 
     int gp_GetDirection(graphP theGraph, int v)
-
-    int gp_GetFirstEdge(graphP theGraph, int v)
-    int gp_GetLastEdge(graphP theGraph, int v)
-
-    int gp_LowerBoundVertices(graphP theGraph)
-    int gp_UpperBoundVertices(graphP theGraph)
 
 
 cdef extern from "../c/graphLib/graphDFSUtils.h":
@@ -44,11 +44,6 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
 cdef extern from "../c/graphLib/io/graphIO.h":
     int WRITE_ADJLIST
     int gp_Write(graphP theGraph, char *FileName, int Mode)
-
-
-cdef extern from "../c/graphLib/extensionSystem/graphExtensions.h":
-    int gp_FindExtension(graphP theGraph, int moduleID, void **pContext)
-    void *gp_GetExtension(graphP theGraph, int moduleID)
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
@@ -68,20 +63,10 @@ cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
     int gp_ExtendWith_DrawPlanar(graphP theGraph)
     int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
 
+    int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v)
+    int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v)
+    int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v)
 
-cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.private.h":
-    ctypedef struct DrawPlanar_VertexInfo:
-       int pos
-       int start
-       int end
-    ctypedef DrawPlanar_VertexInfo * DrawPlanar_VertexInfoP
-
-    ctypedef struct DrawPlanar_EdgeRec:
-       int pos
-       int start
-       int end
-    ctypedef DrawPlanar_EdgeRec * DrawPlanar_EdgeRecP
-
-    ctypedef struct DrawPlanarContext:
-        DrawPlanar_EdgeRecP E
-        DrawPlanar_VertexInfoP VI
+    int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e)
+    int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e)
+    int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e)

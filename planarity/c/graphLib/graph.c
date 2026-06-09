@@ -98,8 +98,8 @@ void _InitVertexRec(graphP theGraph, int v);
 void _InitVertexInfo(graphP theGraph, int v);
 void _InitEdgeRec(graphP theGraph, int e);
 
-int _InitGraph(graphP theGraph, int N);
-void _ReinitGraph(graphP theGraph);
+int _EnsureVertexCapacity(graphP theGraph, int N);
+void _ResetGraphStorage(graphP theGraph);
 int _EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 /********************************************************************
@@ -112,12 +112,15 @@ graphP gp_New(void)
 {
     graphP theGraph = (graphP)calloc(1, sizeof(graphStruct));
     graphFunctionTableP functionTable = (graphFunctionTableP)calloc(1, sizeof(graphFunctionTableStruct));
+    graphPrivateDataP theGraphPrivateData = (graphPrivateDataP)calloc(1, sizeof(graphPrivateDataStruct));
 
-    if (theGraph != NULL && functionTable != NULL)
+    if (theGraph != NULL && functionTable != NULL && theGraphPrivateData != NULL)
     {
-        // All pointers within the graph are NULL due to using calloc() above
+        theGraph->privateData = (void *)theGraphPrivateData;
+
         theGraph->functions = functionTable;
         _InitFunctionTable(theGraph);
+
         _ClearGraph(theGraph);
     }
     else
@@ -131,6 +134,11 @@ graphP gp_New(void)
         {
             free(functionTable);
             functionTable = NULL;
+        }
+        if (theGraphPrivateData != NULL)
+        {
+            free(theGraphPrivateData);
+            theGraphPrivateData = NULL;
         }
     }
 
@@ -168,8 +176,8 @@ void _InitFunctionTable(graphP theGraph)
         theGraph->functions->fpCheckEmbeddingIntegrity = _CheckEmbeddingIntegrity;
         theGraph->functions->fpCheckObstructionIntegrity = _CheckObstructionIntegrity;
 
-        theGraph->functions->fpInitGraph = _InitGraph;
-        theGraph->functions->fpReinitGraph = _ReinitGraph;
+        theGraph->functions->fpEnsureVertexCapacity = _EnsureVertexCapacity;
+        theGraph->functions->fpResetGraphStorage = _ResetGraphStorage;
         theGraph->functions->fpEnsureEdgeCapacity = _EnsureEdgeCapacity;
         theGraph->functions->fpSortVertices = _SortVertices;
 
@@ -186,39 +194,43 @@ void _InitFunctionTable(graphP theGraph)
 }
 
 /********************************************************************
- gp_InitGraph()
- Allocates memory for vertex and edge records now that N is known.
- The edgeCapacity is set to (DEFAULT_EDGE_CAPACITY_FACTOR * N) unless it
-     has already been set by gp_EnsureEdgeCapacity()
+ gp_EnsureVertexCapacity()
 
- For V, we need 2N vertex records, N for vertices and N for virtual vertices (root copies).
+ Allocates memory for N vertices and N virtual vertices. Once N > 0
+ vertices have been allocated, this method currently does not support
+ being called a second time to add more vertices.
 
- For E, we need 2*edgeCapacity edge records (plus 2 for default of using 1-based arrays).
+ This method will also ensure that the edge capacity is allocated or
+ reallocated to be at least (DEFAULT_EDGE_CAPACITY_FACTOR * N), i.e.,
+ a capacity for twice that many edge records, two per edge (plus 2
+ for the default of using one-based arrays). The edge capacity can
+ be set before this function using gp_EnsureEdgeCapacity().
 
  The edgeHoles stack, initially empty, is set to the edgeCapacity,
-     which is big enough to push every edge (to indicate an edge
-     you only need to indicate one of its two edge records).
+     which is big enough to push every edge (to indicate an edge,
+     only one of its two edge records need be pushed).
 
- The numEdgeHoles member tracks the size of the edgeHoles stack so that
-    the number of edges in use within E can be efficiently computed.
+ The numEdgeHoles is set to 0; it tracks the edgeHoles stack size,
+    so the number of edge records in use can be efficiently computed.
 
  The stack, initially empty, is made big enough for a pair of integers
      per edge (2 * edgeCapacity), or 6N integers if the edgeCapacity
-     was set below the default value. Space for 2 extra integers is added
-     to allow depth-first search to push (NIL, NIL) to start at a DFS tree root
+     was set below the default. Space for 2 extra integers is added so
+     depth-first search can push (NIL, NIL) to start at a DFS tree root.
 
- The BicompRootLists and sortedDFSChildLists are of size N and start out empty.
+ The BicompRootLists and sortedDFSChildLists are set to a size of N,
+     and they start out empty.
 
- For each DVI and PVI, we need N of each of the respective vertex info records.
+ DVI and PVI are set to store N of their respective vertex info records.
 
- For the isolator context, we need a single instance.
+ An instance of the isolator context is created.
 
-  Returns OK on success, NOTOK on all failures.
+ Returns OK on success, NOTOK on aany failure.
           On NOTOK, graph extensions are freed so that the graph is
           returned to the post-condition of gp_New().
  ********************************************************************/
 
-int gp_InitGraph(graphP theGraph, int N)
+int gp_EnsureVertexCapacity(graphP theGraph, int N)
 {
     // valid params check
     if (theGraph == NULL || N <= 0)
@@ -228,10 +240,10 @@ int gp_InitGraph(graphP theGraph, int N)
     if (gp_GetN(theGraph) > 0)
         return NOTOK;
 
-    return theGraph->functions->fpInitGraph(theGraph, N);
+    return theGraph->functions->fpEnsureVertexCapacity(theGraph, N);
 }
 
-int _InitGraph(graphP theGraph, int N)
+int _EnsureVertexCapacity(graphP theGraph, int N)
 {
     int Vsize, VIsize, Esize, stackSize;
 
@@ -256,13 +268,13 @@ int _InitGraph(graphP theGraph, int N)
         (theGraph->edgeHoles = sp_New(theGraph->edgeCapacity)) == NULL ||
 
         (theGraph->theStack = sp_New(stackSize)) == NULL ||
-        (theGraph->BicompRootLists = LCNew(VIsize)) == NULL ||
-        (theGraph->DVI = (DFSUtils_VertexInfoP)calloc(VIsize, sizeof(DFSUtils_VertexInfo))) == NULL ||
+        (theGraphBicompRootLists(theGraph) = LCNew(VIsize)) == NULL ||
+        (theGraphDVI(theGraph) = (DFSUtils_VertexInfoP)calloc(VIsize, sizeof(DFSUtils_VertexInfo))) == NULL ||
 
-        (theGraph->PVI = (Planarity_VertexInfoP)calloc(VIsize, sizeof(Planarity_VertexInfo))) == NULL ||
-        (theGraph->sortedDFSChildLists = LCNew(VIsize)) == NULL ||
-        (theGraph->extFace = (extFaceLinkRecP)calloc(Vsize, sizeof(extFaceLinkRec))) == NULL ||
-        (theGraph->IC = (isolatorContextP)calloc(1, sizeof(isolatorContextStruct))) == NULL ||
+        (theGraphPVI(theGraph) = (Planarity_VertexInfoP)calloc(VIsize, sizeof(Planarity_VertexInfo))) == NULL ||
+        (theGraphSortedDFSChildLists(theGraph) = LCNew(VIsize)) == NULL ||
+        (theGraphExtFace(theGraph) = (extFaceLinkRecP)calloc(Vsize, sizeof(extFaceLinkRec))) == NULL ||
+        (theGraphIC(theGraph) = (isolatorContextP)calloc(1, sizeof(isolatorContextStruct))) == NULL ||
         0)
     {
         _ClearGraph(theGraph);
@@ -284,10 +296,10 @@ void _InitVertices(graphP theGraph)
 {
     memset(theGraph->V, NIL_CHAR, gp_UpperBoundVertexStorage(theGraph) * sizeof(vertexRec));
 
-    memset(theGraph->DVI, NIL_CHAR, gp_UpperBoundVertices(theGraph) * sizeof(DFSUtils_VertexInfo));
+    memset(theGraphDVI(theGraph), NIL_CHAR, gp_UpperBoundVertices(theGraph) * sizeof(DFSUtils_VertexInfo));
 
-    memset(theGraph->PVI, NIL_CHAR, gp_UpperBoundVertices(theGraph) * sizeof(Planarity_VertexInfo));
-    memset(theGraph->extFace, NIL_CHAR, gp_UpperBoundVertexStorage(theGraph) * sizeof(extFaceLinkRec));
+    memset(theGraphPVI(theGraph), NIL_CHAR, gp_UpperBoundVertices(theGraph) * sizeof(Planarity_VertexInfo));
+    memset(theGraphExtFace(theGraph), NIL_CHAR, gp_UpperBoundVertexStorage(theGraph) * sizeof(extFaceLinkRec));
 
 #ifdef USE_1BASEDARRAYS
 // For 1-based arrays, the memset() initializes the flags correctly
@@ -312,20 +324,20 @@ void _InitEdges(graphP theGraph)
 }
 
 /********************************************************************
- gp_ReinitGraph()
- Reinitializes a graph, restoring it to the state it was in immediately
- after gp_InitGraph() processed it.
+ gp_ResetGraphStorage()
+ Resets the graph to the state immediately after processing by
+ gp_EnsureVertexCapacity().
  ********************************************************************/
 
-void gp_ReinitGraph(graphP theGraph)
+void gp_ResetGraphStorage(graphP theGraph)
 {
     if (theGraph == NULL || gp_GetN(theGraph) <= 0)
         return;
 
-    theGraph->functions->fpReinitGraph(theGraph);
+    theGraph->functions->fpResetGraphStorage(theGraph);
 }
 
-void _ReinitGraph(graphP theGraph)
+void _ResetGraphStorage(graphP theGraph)
 {
     theGraph->M = 0;
     theGraph->embedFlags = 0;
@@ -337,8 +349,8 @@ void _ReinitGraph(graphP theGraph)
     _InitEdges(theGraph);
     _InitIsolatorContext(theGraph);
 
-    LCReset(theGraph->BicompRootLists);
-    LCReset(theGraph->sortedDFSChildLists);
+    LCReset(theGraphBicompRootLists(theGraph));
+    LCReset(theGraphSortedDFSChildLists(theGraph));
     sp_ClearStack(theGraph->theStack);
     sp_ClearStack(theGraph->edgeHoles);
     theGraph->numEdgeHoles = 0;
@@ -353,7 +365,7 @@ void _ReinitGraph(graphP theGraph)
 
  This method is most performant when invoked immediately after
  gp_New(), since it must only set the edgeCapacity and then let
- normal initialization to occur through gp_InitGraph().
+ normal processing by gp_EnsureVertexCapacity() occur.
 
  This method is also a constant time operation if the graph already
  has at least the requiredEdgeCapacity, since it will return OK
@@ -362,27 +374,22 @@ void _ReinitGraph(graphP theGraph)
  This method is generally more performant if it is invoked before
  attaching extensions to the graph.  Some extensions associate
  parallel data with edge records, which is a faster operation if
- the associated data is created and initialized only after the
- proper edgeCapacity is specified.
+ the associated data storage is created and initialized only after
+ the proper edgeCapacity is specified.
 
- If the graph has been initialized and has a lower edge capacity
- than required, then the array of edge records is reallocated to
+ The array of edge records is allocated or reallocated to
  satisfy the requiredEdgeCapacity.  The new array contains the
- old edges and edge holes at the same locations, and all newly
- created edge records are initialized.
+ old edges and edge holes, if any, at the same locations. All
+ newly created edge records are initialized.
 
  Also, if the edge capacity was lower than required, then the
- edgeCapacity member of theGraph is changed and storage for both
+ edgeCapacity member of theGraph is increased and both
  theStack and the edgeHoles are expanded (since the sizes of both
  are based on the edge capacity).
 
  Extensions that add to data associated with edges must overload
- this method to ensure capacity in the parallel extension data
- structures.  An extension can return NOTOK if it does not
- support edge capacity expansion.  The extension function will
- not be called if edgeCapacity is expanded before the graph is
- initialized, and it is assumed that extensions will allocate
- parallel data structures according to the edge capacity.
+ this method to ensure the reqquired capacity in the parallel
+ extension data structures.
 
  Returns NOTOK on failure to reallocate the edge record array to
          satisfy the requiredEdgeCapacity
@@ -396,9 +403,10 @@ int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
     if (theGraph->edgeCapacity >= requiredEdgeCapacity)
         return OK;
 
-    // In the special case where gp_InitGraph() has not yet been called,
-    // we can simply set the higher edgeCapacity since normal initialization
-    // will then allocate the correct number of edge records.
+    // In the special case where gp_EnsureVertexCapacity() has not yet
+    // been called, we can simply set the higher edgeCapacity since normal
+    // behavior of gp_EnsureVertexCapacity() will then allocate the
+    // correct number of edge records.
     if (gp_GetN(theGraph) == 0)
     {
         theGraph->edgeCapacity = requiredEdgeCapacity;
@@ -521,7 +529,7 @@ void _InitEdgeRec(graphP theGraph, int e)
 
 void _InitIsolatorContext(graphP theGraph)
 {
-    isolatorContextP IC = theGraph->IC;
+    isolatorContextP IC = theGraphIC(theGraph);
 
     if (IC != NULL)
     {
@@ -845,28 +853,28 @@ void _ClearGraph(graphP theGraph)
     theGraph->numEdgeHoles = 0;
 
     sp_Free(&theGraph->theStack);
-    LCFree(&theGraph->BicompRootLists);
-    if (theGraph->DVI != NULL)
+    LCFree(&theGraphBicompRootLists(theGraph));
+    if (theGraphDVI(theGraph) != NULL)
     {
-        free(theGraph->DVI);
-        theGraph->DVI = NULL;
+        free(theGraphDVI(theGraph));
+        theGraphDVI(theGraph) = NULL;
     }
 
-    if (theGraph->PVI != NULL)
+    if (theGraphPVI(theGraph) != NULL)
     {
-        free(theGraph->PVI);
-        theGraph->PVI = NULL;
+        free(theGraphPVI(theGraph));
+        theGraphPVI(theGraph) = NULL;
     }
-    LCFree(&theGraph->sortedDFSChildLists);
-    if (theGraph->extFace != NULL)
+    LCFree(&theGraphSortedDFSChildLists(theGraph));
+    if (theGraphExtFace(theGraph) != NULL)
     {
-        free(theGraph->extFace);
-        theGraph->extFace = NULL;
+        free(theGraphExtFace(theGraph));
+        theGraphExtFace(theGraph) = NULL;
     }
-    if (theGraph->IC != NULL)
+    if (theGraphIC(theGraph) != NULL)
     {
-        free(theGraph->IC);
-        theGraph->IC = NULL;
+        free(theGraphIC(theGraph));
+        theGraphIC(theGraph) = NULL;
     }
 
     gp_FreeExtensions(theGraph);
@@ -903,6 +911,12 @@ void gp_Free(graphP *pGraph)
     {
         free((*pGraph)->functions);
         (*pGraph)->functions = NULL;
+    }
+
+    if ((*pGraph)->privateData != NULL)
+    {
+        free((*pGraph)->privateData);
+        (*pGraph)->privateData = NULL;
     }
 
     free(*pGraph);
@@ -974,8 +988,8 @@ int gp_CopyAdjacencyLists(graphP dstGraph, graphP srcGraph)
 
 // Give macro names to three copy operations
 #define _gp_CopyVertexRec(dstGraph, vdst, srcGraph, vsrc) (dstGraph->V[vdst] = srcGraph->V[vsrc])
-#define _gp_CopyDFSUtilsVertexInfo(dstGraph, dstI, srcGraph, srcI) (dstGraph->DVI[dstI] = srcGraph->DVI[srcI])
-#define _gp_CopyPlanarityVertexInfo(dstGraph, dstI, srcGraph, srcI) (dstGraph->PVI[dstI] = srcGraph->PVI[srcI])
+#define _gp_CopyDFSUtilsVertexInfo(dstGraph, dstI, srcGraph, srcI) (theGraphDVI(dstGraph)[dstI] = theGraphDVI(srcGraph)[srcI])
+#define _gp_CopyPlanarityVertexInfo(dstGraph, dstI, srcGraph, srcI) (theGraphPVI(dstGraph)[dstI] = theGraphPVI(srcGraph)[srcI])
 #define _gp_CopyEdgeRec(dstGraph, edst, srcGraph, esrc) (dstGraph->E[edst] = srcGraph->E[esrc])
 
 int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
@@ -1007,9 +1021,9 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
     for (v = gp_LowerBoundVertices(srcGraph); v < gp_UpperBoundVertices(srcGraph); ++v)
     {
         _gp_CopyVertexRec(dstGraph, v, srcGraph, v);
-        if (dstGraph->DVI != NULL && srcGraph->DVI != NULL)
+        if (theGraphDVI(dstGraph) != NULL && theGraphDVI(srcGraph) != NULL)
             _gp_CopyDFSUtilsVertexInfo(dstGraph, v, srcGraph, v);
-        if (dstGraph->PVI != NULL && srcGraph->PVI != NULL)
+        if (theGraphPVI(dstGraph) != NULL && theGraphPVI(srcGraph) != NULL)
             _gp_CopyPlanarityVertexInfo(dstGraph, v, srcGraph, v);
         gp_SetExtFaceVertex(dstGraph, v, 0, gp_GetExtFaceVertex(srcGraph, v, 0));
         gp_SetExtFaceVertex(dstGraph, v, 1, gp_GetExtFaceVertex(srcGraph, v, 1));
@@ -1029,7 +1043,7 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
     for (e = gp_LowerBoundEdgeStorage(srcGraph); e < gp_UpperBoundEdgeStorage(srcGraph); e++)
         _gp_CopyEdgeRec(dstGraph, e, srcGraph, e);
 
-    // If the dstGraph has more edge storage than the srcGraph, then we clear the extra 
+    // If the dstGraph has more edge storage than the srcGraph, then we clear the extra
     // base edgeRec structures. In gp_CopyExtensions(), the various extensions' copyData()
     // functions are expected to clear out any extension-specific extra edgeRec structures
     if (gp_UpperBoundEdgeStorage(dstGraph) > gp_UpperBoundEdgeStorage(srcGraph))
@@ -1046,8 +1060,8 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
 
     dstGraph->graphFlags = gp_GetGraphFlags(srcGraph);
 
-    LCCopy(dstGraph->BicompRootLists, srcGraph->BicompRootLists);
-    LCCopy(dstGraph->sortedDFSChildLists, srcGraph->sortedDFSChildLists);
+    LCCopy(theGraphBicompRootLists(dstGraph), theGraphBicompRootLists(srcGraph));
+    LCCopy(theGraphSortedDFSChildLists(dstGraph), theGraphSortedDFSChildLists(srcGraph));
     sp_Copy(dstGraph->theStack, srcGraph->theStack);
     sp_Copy(dstGraph->edgeHoles, srcGraph->edgeHoles);
     dstGraph->numEdgeHoles = sp_GetCurrentSize((dstGraph)->edgeHoles);
@@ -1062,7 +1076,7 @@ int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
     // srcGraph to dstGraph, but it does not extend dstGraph with
     // any extensions it doesn't already have, so the dstGraph
     // function table is already correct for its type.
-    
+
     return OK;
 }
 
@@ -1075,11 +1089,29 @@ graphP gp_DupGraph(graphP theGraph)
     graphP result = NULL;
 
     if ((result = gp_New()) == NULL)
-        return NULL;
-
-    if (gp_InitGraph(result, gp_GetN(theGraph)) != OK ||
-        gp_CopyGraph(result, theGraph) != OK)
     {
+        gp_ErrorMessage("Failed to create a new graph.");
+        return NULL;
+    }
+
+    if (gp_EnsureVertexCapacity(result, gp_GetN(theGraph)) != OK)
+    {
+        gp_ErrorMessage("Failed to increase the vertex capacity of the new "
+                        "graph.");
+        gp_Free(&result);
+        return NULL;
+    }
+
+    if (gp_CopyGraph(result, theGraph) != OK)
+    {
+        gp_ErrorMessage("Failed to copy the source graph to the new graph.");
+        gp_Free(&result);
+        return NULL;
+    }
+
+    if (gp_DupExtensions(result, theGraph) != OK)
+    {
+        gp_ErrorMessage("Failed to duplicate the extensions of the source graph into the new graph.");
         gp_Free(&result);
         return NULL;
     }

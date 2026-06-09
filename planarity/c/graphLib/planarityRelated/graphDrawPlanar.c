@@ -919,7 +919,7 @@ int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
 
  Creates a rendition of the planar graph visibility representation
  as a string, then dumps the string to the file.
- theFileName - can be "stdout", "stderr" or a file system filename
+ theFileName - can be "stdout", "stderr" or a file system file name
 
  Returns NOTOK for any error, OK otherwise.
  ********************************************************************/
@@ -1091,3 +1091,155 @@ int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context)
 
     return OK;
 }
+
+/********************************************************************
+ gp_DrawPlanar_GetVertexPosition()
+
+ Gets the vertical position of the horizontal bar that represents
+ vertex v in the visibility representation.
+
+ Returns the vertex's vertical position or -1 on error
+ ********************************************************************/
+int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);
+
+    if (theEmbedding == NULL || context == NULL ||
+        context->VI == NULL ||
+        v < gp_LowerBoundVertices(theEmbedding) ||
+        v >= gp_UpperBoundVertices(theEmbedding))
+    {
+        gp_ErrorMessage("Invalid parameters");
+        return -1;
+    }
+
+    return context->VI[v].pos;               
+}
+
+/********************************************************************
+ gp_DrawPlanar_GetVertexStart()
+
+ Gets the horizontal start position of the horizontal bar representing
+ vertex v in the visibility representation.
+
+ Returns the vertex's horizontal start position or -1 on error
+ ********************************************************************/
+int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);
+
+    if (theEmbedding == NULL || context == NULL ||
+        context->VI == NULL ||
+        v < gp_LowerBoundVertices(theEmbedding) ||
+        v >= gp_UpperBoundVertices(theEmbedding))
+    {
+        gp_ErrorMessage("Invalid parameters");
+        return -1;
+    }
+
+    return context->VI[v].start;               
+}
+
+/********************************************************************
+ gp_DrawPlanar_GetVertexEnd()
+
+ Gets the horizontal end position of the horizontal bar representing
+ vertex v in the visibility representation.
+
+ Returns the vertex's horizontal end position or -1 on error
+ ********************************************************************/
+int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);
+
+    if (theEmbedding == NULL || context == NULL ||
+        context->VI == NULL ||
+        v < gp_LowerBoundVertices(theEmbedding) ||
+        v >= gp_UpperBoundVertices(theEmbedding))
+    {
+        gp_ErrorMessage("Invalid parameters");
+        return -1;
+    }
+
+    return context->VI[v].end;               
+}
+
+/********************************************************************
+ gp_DrawPlanar_GetEdgePosition()
+
+ Gets the horizontal position of the vertical bar that represents
+ edge e in the visibility representation.
+
+ Returns the edge's horizontal position or -1 on error
+ ********************************************************************/
+
+int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);
+
+    if (theEmbedding == NULL || context == NULL ||
+        context->E == NULL ||
+        e < gp_LowerBoundEdges(theEmbedding) ||
+        e >= gp_UpperBoundEdges(theEmbedding))
+    {
+        gp_ErrorMessage("Invalid parameters");
+        return -1;
+    }
+
+    return context->E[e].pos;
+}
+
+/********************************************************************
+ gp_DrawPlanar_GetEdgeStart()
+
+ Gets the vertical start position of the vertical bar representing
+ edge e in the visibility representation.
+
+ Returns the edge's vertical start position or -1 on error
+ ********************************************************************/
+int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);
+
+    if (theEmbedding == NULL || context == NULL ||
+        context->E == NULL ||
+        e < gp_LowerBoundEdges(theEmbedding) ||
+        e >= gp_UpperBoundEdges(theEmbedding))
+    {
+        gp_ErrorMessage("Invalid parameters");
+        return -1;
+    }
+
+    return context->E[e].start;
+}
+
+/********************************************************************
+ gp_DrawPlanar_GetEdgeEnd()
+
+ Gets the vertical end position of the vertical bar representing
+ edge e in the visibility representation.
+
+ Returns the edge's vertical end position or -1 on error
+ ********************************************************************/
+int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);
+
+    if (theEmbedding == NULL || context == NULL ||
+        context->E == NULL ||
+        e < gp_LowerBoundEdges(theEmbedding) ||
+        e >= gp_UpperBoundEdges(theEmbedding))
+    {
+        gp_ErrorMessage("Invalid parameters");
+        return -1;
+    }
+
+    return  context->E[e].end;
+}
+

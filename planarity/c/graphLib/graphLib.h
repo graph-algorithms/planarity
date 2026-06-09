@@ -56,7 +56,7 @@ extern "C"
 #define GP_PROJECTVERSION_MAINT 0
 #define GP_PROJECTVERSION_TWEAK 0
 
-    char *gp_GetProjectVersionFull(void);
+    const char *gp_GetProjectVersionFull(void);
 
 // Any change to the project version numbers should also affect the
 // shared library version numbers below.
@@ -66,7 +66,7 @@ extern "C"
 #define GP_LIBPLANARITYVERSION_REVISION 0
 #define GP_LIBPLANARITYVERSION_AGE 0
 
-    char *gp_GetLibPlanarityVersionFull(void);
+    const char *gp_GetLibPlanarityVersionFull(void);
 
 #ifdef __cplusplus
 }

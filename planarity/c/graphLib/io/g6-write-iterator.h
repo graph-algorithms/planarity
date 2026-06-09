@@ -13,7 +13,6 @@ extern "C"
 #endif
 
 #include <stdio.h>
-#include <stdbool.h>
 
 #include "../graph.h"
 
@@ -21,10 +20,6 @@ extern "C"
     typedef G6WriteIteratorStruct *G6WriteIteratorP;
 
     int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph);
-
-    int g6_GetNumGraphsWritten(G6WriteIteratorP theG6WriteIterator, int *pNumGraphsWritten);
-    int g6_GetOrderFromWriter(G6WriteIteratorP theG6WriteIterator, int *pOrder);
-    int g6_GetGraphFromWriter(G6WriteIteratorP theG6WriteIterator, graphP *pGraph);
 
     int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString);
     int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName);

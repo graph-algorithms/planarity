@@ -28,7 +28,8 @@ int _K23Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
 /* Forward declarations of functions used by the extension system */
 
-int  _K23Search_CopyData(void *, void *);
+void *_K23Search_DupContext(void *pContext, void *theGraph);
+int _K23Search_CopyData(void *, void *);
 void _K23Search_FreeContext(void *);
 
 /****************************************************************************
@@ -85,7 +86,9 @@ int gp_ExtendWith_K23Search(graphP theGraph)
     // Store the K23 search context, including the data structure and the
     // function pointers, as an extension of the graph
     if (gp_AddExtension(theGraph, &K23SEARCH_ID, (void *)context,
-                        _K23Search_CopyData, _K23Search_FreeContext,
+                        _K23Search_DupContext, 
+                        _K23Search_CopyData, 
+                        _K23Search_FreeContext,
                         &context->functions) != OK)
     {
         _K23Search_FreeContext(context);
@@ -104,6 +107,23 @@ int gp_ExtendWith_K23Search(graphP theGraph)
 int gp_Detach_K23Search(graphP theGraph)
 {
     return gp_RemoveExtension(theGraph, K23SEARCH_ID);
+}
+
+/********************************************************************
+ _K23Search_DupContext()
+ ********************************************************************/
+
+void *_K23Search_DupContext(void *pContext, void *theGraph)
+{
+    K23SearchContext *context = (K23SearchContext *)pContext;
+    K23SearchContext *newContext = (K23SearchContext *)malloc(sizeof(K23SearchContext));
+
+    if (newContext != NULL)
+    {
+        *newContext = *context;
+    }
+
+    return newContext;
 }
 
 /********************************************************************
@@ -176,7 +196,7 @@ int _K23Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
             // to ensure post-processing continues as expected.
             savedEmbedFlags = gp_GetEmbedFlags(theGraph);
             savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO;
-            gp_ReinitGraph(theGraph);
+            gp_ResetGraphStorage(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
             theGraph->graphFlags &= savedZEROBASEDIO;
         }

@@ -22,7 +22,15 @@ extern "C"
     int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName);
     int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
 
-#ifdef __cplusplus
+    int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v);
+    int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v);
+    int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v);
+
+    int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e);
+    int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e);
+    int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e);
+
+    #ifdef __cplusplus
 }
 #endif
 

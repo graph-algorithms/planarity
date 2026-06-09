@@ -13,7 +13,7 @@ See the LICENSE.TXT file for licensing information.
  Return full major.minor.maint.tweak version string for the graph planarity project
  ********************************************************************/
 
-char *gp_GetProjectVersionFull(void)
+const char *gp_GetProjectVersionFull(void)
 {
     static char projectVersionStr[MAXLINE + 1];
     sprintf(projectVersionStr, "%d.%d.%d.%d",
@@ -29,7 +29,7 @@ char *gp_GetProjectVersionFull(void)
  Returns full current:revision:age version string for the graph planarity shared library
  ********************************************************************/
 
-char *gp_GetLibPlanarityVersionFull(void)
+const char *gp_GetLibPlanarityVersionFull(void)
 {
     static char libPlanarityVersionStr[MAXLINE + 1];
     sprintf(libPlanarityVersionStr, "%d:%d:%d",

@@ -70,7 +70,7 @@ int _ReadAdjMatrix(graphP theGraph, strOrFileP inputContainer)
         return NOTOK;
 
     // Initialize the graph based on the number of vertices
-    if (gp_InitGraph(theGraph, N) != OK)
+    if (gp_EnsureVertexCapacity(theGraph, N) != OK)
         return NOTOK;
 
     // Read an upper-triangular matrix row for each vertex
@@ -155,7 +155,7 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
         return NOTOK;
 
     // Initialize theGraph based on the number of vertices in the input
-    if (gp_InitGraph(theGraph, N) != OK)
+    if (gp_EnsureVertexCapacity(theGraph, N) != OK)
         return NOTOK;
 
     // Clear the visited members of the vertices so they can be used
@@ -386,7 +386,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
     if (sf_ReadSkipWhitespace(inputContainer) != OK)
         return NOTOK;
 
-    if (gp_InitGraph(theGraph, N) != OK)
+    if (gp_EnsureVertexCapacity(theGraph, N) != OK)
         return NOTOK;
 
     for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
@@ -432,21 +432,21 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
  gp_Read()
 
  Populates theGraph from the contents of the input file with path
- FileName.
+ and name given by fileName.
 
- Pass "stdin" for the FileName to read from the stdin stream.
+ Pass "stdin" for the fileName to read from the stdin stream.
 
  Returns: OK, NOTOK on internal error
  ********************************************************************/
 
-int gp_Read(graphP theGraph, char const *FileName)
+int gp_Read(graphP theGraph, char const *fileName)
 {
     strOrFileP inputContainer = NULL;
 
-    if (theGraph == NULL || FileName == NULL || strlen(FileName) == 0)
+    if (theGraph == NULL || fileName == NULL || strlen(fileName) == 0)
         return NOTOK;
 
-    if ((inputContainer = sf_NewInputContainer(NULL, FileName)) == NULL)
+    if ((inputContainer = sf_NewInputContainer(NULL, fileName)) == NULL)
         return NOTOK;
 
     return _ReadGraph(theGraph, (&inputContainer));
@@ -496,7 +496,7 @@ int _ReadGraph(graphP theGraph, strOrFileP *pInputContainer)
 {
     int RetVal = OK;
 
-    bool extraDataAllowed = false;
+    int extraDataAllowed = FALSE;
     char lineBuff[MAXLINE + 1];
 
     memset(lineBuff, '\0', (MAXLINE + 1));
@@ -524,13 +524,13 @@ int _ReadGraph(graphP theGraph, strOrFileP *pInputContainer)
     {
         RetVal = _ReadAdjList(theGraph, (*pInputContainer));
         if (RetVal == OK)
-            extraDataAllowed = true;
+            extraDataAllowed = TRUE;
     }
     else if (isdigit(lineBuff[0]))
     {
         RetVal = _ReadAdjMatrix(theGraph, (*pInputContainer));
         if (RetVal == OK)
-            extraDataAllowed = true;
+            extraDataAllowed = TRUE;
     }
     else
     {
@@ -913,29 +913,29 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
 /********************************************************************
  gp_Write()
  Writes theGraph into the file.
- Pass "stdout" or "stderr" to FileName to write to the corresponding stream
- Pass WRITE_G6, WRITE_ADJLIST, WRITE_ADJMATRIX, or WRITE_DEBUGINFO for the Mode
+ Pass "stdout" or "stderr" to fileName to write to the corresponding stream
+ Pass WRITE_G6, WRITE_ADJLIST, WRITE_ADJMATRIX, or WRITE_DEBUGINFO for writeMode
 
- NOTE: For digraphs, it is an error to use a mode other than WRITE_ADJLIST
+ NOTE: For digraphs, it is an error to use a writeMode other than WRITE_ADJLIST
 
  Returns NOTOK on error, OK on success.
  ********************************************************************/
 
-int gp_Write(graphP theGraph, char const *FileName, int Mode)
+int gp_Write(graphP theGraph, char const *fileName, int writeMode)
 {
     int RetVal = OK;
     strOrFileP outputContainer = NULL;
 
-    if (theGraph == NULL || FileName == NULL || strlen(FileName) == 0)
+    if (theGraph == NULL || fileName == NULL || strlen(fileName) == 0)
         return NOTOK;
 
-    if (strcmp(FileName, "nullwrite") == 0)
+    if (strcmp(fileName, "nullwrite") == 0)
         return OK;
 
-    if ((outputContainer = sf_NewOutputContainer(NULL, FileName)) == NULL)
+    if ((outputContainer = sf_NewOutputContainer(NULL, fileName)) == NULL)
         return NOTOK;
 
-    RetVal = _WriteGraph(theGraph, &outputContainer, Mode);
+    RetVal = _WriteGraph(theGraph, &outputContainer, writeMode);
 
     sf_Free(&outputContainer);
 
@@ -950,15 +950,15 @@ int gp_Write(graphP theGraph, char const *FileName, int Mode)
  * The string is owned by the caller and should be released with
  * free() when the caller doesn't need the string anymore.
  * The format of the content written into the returned string is based
- * on the Mode parameter: WRITE_G6, WRITE_ADJLIST, or WRITE_ADJMATRIX
- * (the WRITE_DEBUGINFO Mode is not supported at this time)
+ * on writeMode: WRITE_G6, WRITE_ADJLIST, or WRITE_ADJMATRIX
+ * (the WRITE_DEBUGINFO writeMode is not supported at this time)
 
  NOTE: For digraphs, it is an error to use a mode other than WRITE_ADJLIST
 
  Returns NOTOK on error, or OK on success along with an allocated string
          *pOutputStr that the caller must free()
  ********************************************************************/
-int gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode)
+int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
 {
     int RetVal = OK;
 
@@ -970,7 +970,7 @@ int gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode)
     if ((outputContainer = sf_NewOutputContainer(pOutputStr, NULL)) == NULL)
         return NOTOK;
 
-    RetVal = _WriteGraph(theGraph, &outputContainer, Mode);
+    RetVal = _WriteGraph(theGraph, &outputContainer, writeMode);
 
     sf_Free(&outputContainer);
 
