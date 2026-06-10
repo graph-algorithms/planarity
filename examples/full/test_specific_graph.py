@@ -23,10 +23,12 @@ from typing import Optional
 
 # THIRD PARTY IMPORTS
 from planarity import (
-    Graph,
+    QUIETMODE_NONE,
+    gp_SetQuietMode,
     OK,
     NONEMBEDDABLE,
     NOTOK,
+    Graph,
 )
 
 # LOCAL IMPORTS
@@ -70,6 +72,8 @@ def specific_graph(
         RuntimeError: If unable to extend graph for the specified command, or if
             embedding result does not match integrity check result
     """
+    gp_SetQuietMode(QUIETMODE_NONE)
+
     embed_flags = get_embed_flags(command)
 
     if outdir is None:
@@ -91,7 +95,7 @@ def specific_graph(
     graph_for_embedding_check.gp_Read(str(infile))
     order = graph_for_embedding_check.gp_GetN()
 
-    graph_for_embedding.gp_InitGraph(order)
+    graph_for_embedding.gp_EnsureVertexCapacity(order)
     graph_for_embedding.gp_CopyGraph(graph_for_embedding_check)
 
     extend_graph(graph_for_embedding, command)

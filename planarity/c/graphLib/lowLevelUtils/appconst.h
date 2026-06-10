@@ -62,7 +62,7 @@ extern int debugNOTOK(void);
 #endif
 
 #ifndef NULL
-#define NULL 0L
+#define NULL ((void *)0)
 #endif
 
 // Define one of these to use 1-based arrays or the original 0-based arrays

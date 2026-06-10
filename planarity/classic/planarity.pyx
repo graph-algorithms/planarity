@@ -42,7 +42,7 @@ cdef class PGraph:
         self.reverse_nodemap=dict(zip(range(1,n+1),nodes))
         self.theGraph = cplanarity.gp_New()
         cdef int status
-        status = cplanarity.gp_InitGraph(self.theGraph, n)
+        status = cplanarity.gp_EnsureVertexCapacity(self.theGraph, n)
         if status != cplanarity.OK:
             raise RuntimeError("planarity: failed to initialize graph")
         # add the edges and check return
@@ -100,63 +100,71 @@ cdef class PGraph:
         if self.is_planar():
             return []
         elif self.embedding == cplanarity.NONEMBEDDABLE:
-            return self.edges(data=False)
+            return self.edges(include_drawplanar_edge_info=False)
         else:
-            raise RuntimeError("planarity: Unknown error.")        
+            raise RuntimeError("planarity: Unknown error.")
 
 
-    def nodes(self, data=False):
-        DRAWPLANAR_ID=1
-        cdef cplanarity.DrawPlanarContext *context
-
-        drawing=cplanarity.gp_FindExtension(self.theGraph, 
-                                            DRAWPLANAR_ID, 
-                                            <void **> &context)
-
+    def nodes(self, include_drawplanar_vertex_info=False):
         first=cplanarity.gp_LowerBoundVertices(self.theGraph)
         last=cplanarity.gp_UpperBoundVertices(self.theGraph)
         r=self.reverse_nodemap
         nodes=[]
-        for n in range(first,last):
-            if data:
-                data={}
-                if drawing==1:
-                    data.update(pos=context.VI[n].pos,
-                                start=context.VI[n].start,
-                                end=context.VI[n].end)
-                nodes.append((r[n],data))
+
+        for v in range(first, last):
+            if include_drawplanar_vertex_info:
+                drawplanar_vertex_info = {}
+
+                vertex_position=cplanarity.gp_DrawPlanar_GetVertexPosition(self.theGraph, v)
+                vertex_start=cplanarity.gp_DrawPlanar_GetVertexStart(self.theGraph, v)
+                vertex_end=cplanarity.gp_DrawPlanar_GetVertexEnd(self.theGraph, v)
+                
+                if (vertex_position > -1 and vertex_start > -1 and vertex_end > -1):
+                    drawplanar_vertex_info.update(
+                        vertex_position=vertex_position,
+                        vertex_start=vertex_start,
+                        vertex_end=vertex_end,
+                    )
+
+                nodes.append((r[v], drawplanar_vertex_info))
             else:
-                nodes.append((r[n]))
+                nodes.append((r[v]))
         return nodes
 
 
-    def edges(self,data=False):
-        DRAWPLANAR_ID=1
-        cdef cplanarity.DrawPlanarContext *context 
-        drawing=cplanarity.gp_FindExtension(self.theGraph, 
-                                            DRAWPLANAR_ID, 
-                                            <void **> &context)
+    def edges(self, include_drawplanar_edge_info=False):
         edges=[]
         r=self.reverse_nodemap
         first=cplanarity.gp_LowerBoundVertices(self.theGraph)
         last=cplanarity.gp_UpperBoundVertices(self.theGraph)
-        for n in range(first,last):
-            e=cplanarity.gp_GetFirstEdge(self.theGraph,n)
-            is_edge=cplanarity.gp_IsEdge(self.theGraph, e)
+
+        for v in range(first,last):
+            e = cplanarity.gp_GetFirstEdge(self.theGraph, v)
+            is_edge = cplanarity.gp_IsEdge(self.theGraph, e)
             while is_edge > 0:
-                nbr=cplanarity.gp_GetNeighbor(self.theGraph,e)
-                if nbr > n:
-                    if data:
-                        data={}
-                        if drawing==1:
-                            data.update(pos=context.E[e].pos,
-                                        start=context.E[e].start,
-                                        end=context.E[e].end)
-                        edges.append((r[n],r[nbr],data))
+                nbr = cplanarity.gp_GetNeighbor(self.theGraph, e)
+                if nbr > v:
+                    if include_drawplanar_edge_info:
+                        drawplanar_edge_info = {}
+
+                        edge_position=cplanarity.gp_DrawPlanar_GetEdgePosition(self.theGraph, e)
+                        edge_start=cplanarity.gp_DrawPlanar_GetEdgeStart(self.theGraph, e)
+                        edge_end=cplanarity.gp_DrawPlanar_GetEdgeEnd(self.theGraph, e)
+
+                        if (edge_position > -1 and edge_start > -1 and edge_end > -1):
+                            drawplanar_edge_info.update(
+                                edge_position=edge_position,
+                                edge_start=edge_start,
+                                edge_end=edge_end,
+                            )
+                        
+                        edges.append((r[v], r[nbr], drawplanar_edge_info))
                     else:
-                        edges.append((r[n],r[nbr]))
+                        edges.append((r[v],r[nbr]))
+
                 e=cplanarity.gp_GetNextEdge(self.theGraph,e)
                 is_edge=cplanarity.gp_IsEdge(self.theGraph, e)
+
         return edges
 
 

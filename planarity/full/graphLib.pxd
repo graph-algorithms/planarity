@@ -9,15 +9,15 @@ from planarity.full.cgraphLib cimport graphP, G6ReadIteratorP, G6WriteIteratorP
 
 
 cdef graphP gp_New()
-cdef int gp_InitGraph(graphP theGraph, int n)
-cdef void gp_ReinitGraph(graphP theGraph)
+
+cdef int gp_EnsureVertexCapacity(graphP theGraph, int n)
+cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
+cdef void gp_ResetGraphStorage(graphP theGraph)
+
 cdef void gp_Free(graphP *pGraph)
 
-cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
-
-cdef int gp_GetEdgeCapacity(graphP theGraph)
-
 cdef int gp_GetN(graphP theGraph)
+cdef int gp_GetEdgeCapacity(graphP theGraph)
 
 cdef int gp_CopyGraph(graphP dstGraph, graphP srcGraph)
 cdef graphP gp_DupGraph(graphP theGraph)
@@ -29,20 +29,6 @@ cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 cdef int gp_DeleteEdge(graphP theGraph, int e)
 
-cdef int gp_LowerBoundEdges(graphP theGraph)
-cdef int gp_UpperBoundEdges(graphP theGraph)
-
-cdef int gp_IsEdge(graphP theGraph, int v)
-
-cdef int gp_EdgeInUse(graphP theGraph, int e)
-
-cdef int gp_LowerBoundEdgeStorage(graphP theGraph)
-cdef int gp_UpperBoundEdgeStorage(graphP theGraph)
-
-cdef int gp_GetNextEdge(graphP theGraph, int e)
-
-cdef int gp_GetNeighbor(graphP theGraph, int e)
-
 cdef int gp_GetFirstEdge(graphP theGraph, int v)
 
 cdef int gp_LowerBoundVertices(graphP theGraph)
@@ -50,6 +36,19 @@ cdef int gp_UpperBoundVertices(graphP theGraph)
 
 cdef int gp_IsVertex(graphP theGraph, int v)
 
+cdef int gp_GetNextEdge(graphP theGraph, int e)
+
+cdef int gp_IsEdge(graphP theGraph, int v)
+
+cdef int gp_GetNeighbor(graphP theGraph, int e)
+
+cdef int gp_LowerBoundEdges(graphP theGraph)
+cdef int gp_UpperBoundEdges(graphP theGraph)
+
+cdef int gp_EdgeInUse(graphP theGraph, int e)
+
+cdef int gp_LowerBoundEdgeStorage(graphP theGraph)
+cdef int gp_UpperBoundEdgeStorage(graphP theGraph)
 
 cdef int gp_Read(graphP theGraph, char *FileName)
 cdef int gp_Write(graphP theGraph, char *FileName, int Mode)

@@ -49,14 +49,14 @@ extern "C"
     typedef struct vertexInfoRec vertexInfoRec;
     typedef vertexInfoRec *vertexInfoP;
 
-#define gp_GetVertexParent(theGraph, v) (theGraph->DVI[v].parent)
-#define gp_SetVertexParent(theGraph, v, theParent) (theGraph->DVI[v].parent = theParent)
+#define gp_GetVertexParent(theGraph, v) (theGraphDVI(theGraph)[v].parent)
+#define gp_SetVertexParent(theGraph, v, theParent) (theGraphDVI(theGraph)[v].parent = theParent)
 
-#define gp_GetVertexLeastAncestor(theGraph, v) (theGraph->DVI[v].leastAncestor)
-#define gp_SetVertexLeastAncestor(theGraph, v, theLeastAncestor) (theGraph->DVI[v].leastAncestor = theLeastAncestor)
+#define gp_GetVertexLeastAncestor(theGraph, v) (theGraphDVI(theGraph)[v].leastAncestor)
+#define gp_SetVertexLeastAncestor(theGraph, v, theLeastAncestor) (theGraphDVI(theGraph)[v].leastAncestor = theLeastAncestor)
 
-#define gp_GetVertexLowpoint(theGraph, v) (theGraph->DVI[v].lowpoint)
-#define gp_SetVertexLowpoint(theGraph, v, theLowpoint) (theGraph->DVI[v].lowpoint = theLowpoint)
+#define gp_GetVertexLowpoint(theGraph, v) (theGraphDVI(theGraph)[v].lowpoint)
+#define gp_SetVertexLowpoint(theGraph, v, theLowpoint) (theGraphDVI(theGraph)[v].lowpoint = theLowpoint)
 
 #ifdef __cplusplus
 }

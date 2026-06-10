@@ -39,15 +39,21 @@ extern "C"
 #define FORMAT_PRINTF(formatIndex, firstArg)
 #endif
 
-    extern int quietMode;
-
     // These methods control whether gp_ErrorMessage() and gp_Message() calls
     // emit output or skip producing output (the default)
-    int gp_GetQuietModeFlag(void);
-    void gp_SetQuietModeFlag(int newQuietModeFlag);
+    unsigned gp_GetQuietMode(void);
+    void gp_SetQuietMode(unsigned newQuietMode);
 
-    extern void gp_Message(char const *message, ...) FORMAT_PRINTF(1, 2);
-    extern void gp_ErrorMessage(char const *message, ...) FORMAT_PRINTF(1, 2);
+#define QUIETMODE_NONE 0
+#define QUIETMODE_ERRORS 1
+#define QUIETMODE_MESSAGES 2
+#define QUIETMODE_ALL 0XFFFFFFFF
+
+    void gp_Message(const char *message, ...) FORMAT_PRINTF(1, 2);
+    void gp_MessagePrompt(const char *message, ...) FORMAT_PRINTF(1, 2);
+
+#define gp_ErrorMessage(...) (gp_LogErrorMessage(__LINE__, __FILE__, __VA_ARGS__))
+    void gp_LogErrorMessage(int lineNum, const char *srcFileName, const char *message, ...) FORMAT_PRINTF(3, 4);
 
 #ifdef __cplusplus
 }

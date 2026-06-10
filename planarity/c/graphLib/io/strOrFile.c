@@ -182,17 +182,17 @@ strOrFileP sf_NewOutputContainer(char **pOutputStr, char const *const fileName)
     should only contain one source).
  5. containerType is either set to INPUT_CONTAINER or OUTPUT_CONTAINER
 
- Returns false if any of these conditions are not met, otherwise true.
+ Returns FALSE if any of these conditions are not met, otherwise TRUE.
  ********************************************************************/
 
-bool sf_IsValidStrOrFile(strOrFileP theStrOrFile)
+int sf_IsValidStrOrFile(strOrFileP theStrOrFile)
 {
     if (theStrOrFile == NULL ||
         (theStrOrFile->pFile == NULL && theStrOrFile->theStrBuf == NULL) ||
         (theStrOrFile->pFile != NULL && theStrOrFile->theStrBuf != NULL) ||
         (theStrOrFile->containerType != INPUT_CONTAINER &&
          theStrOrFile->containerType != OUTPUT_CONTAINER))
-        return false;
+        return FALSE;
 
     if (theStrOrFile->containerType == INPUT_CONTAINER)
     {
@@ -201,18 +201,18 @@ bool sf_IsValidStrOrFile(strOrFileP theStrOrFile)
             (theStrOrFile->theStrBuf != NULL && sb_GetSize(theStrOrFile->theStrBuf) == 0))
 
         {
-            return false;
+            return FALSE;
         }
     }
     else // Otherwise, due to the above validation, can only be an output container
     {
         if (theStrOrFile->ungetBuf != NULL)
         {
-            return false;
+            return FALSE;
         }
     }
 
-    return true;
+    return TRUE;
 }
 
 /********************************************************************
@@ -349,7 +349,7 @@ int sf_ReadInteger(int *intToRead, strOrFileP theStrOrFile)
 
     int intCandidate = 0, intCandidateIndex = 0;
     char currChar = '\0', nextChar = '\0';
-    bool startedReadingInt = FALSE, isNegative = FALSE;
+    int startedReadingInt = FALSE, isNegative = FALSE;
     char intCandidateStr[MAXCHARSFOR32BITINT + 1];
     memset(intCandidateStr, '\0', (MAXCHARSFOR32BITINT + 1) * sizeof(char));
 
@@ -574,7 +574,7 @@ char *sf_fgets(char *str, int count, strOrFileP theStrOrFile)
         if (numCharsInUngetBuf > 0)
         {
             char currChar = '\0';
-            bool encounteredNewline = FALSE;
+            int encounteredNewline = FALSE;
 
             charsToReadFromUngetBuf = (count > numCharsInUngetBuf) ? numCharsInUngetBuf : count;
             for (int i = 0; i < charsToReadFromUngetBuf; i++)

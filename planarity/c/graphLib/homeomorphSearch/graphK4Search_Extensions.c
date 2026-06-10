@@ -36,12 +36,13 @@ int _K4Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult);
 int _K4Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _K4Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
-int _K4Search_InitGraph(graphP theGraph, int N);
-void _K4Search_ReinitGraph(graphP theGraph);
+int _K4Search_EnsureVertexCapacity(graphP theGraph, int N);
+void _K4Search_ResetGraphStorage(graphP theGraph);
 int _K4Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 /* Forward declarations of functions used by the extension system */
 
+void *_K4Search_DupContext(void *pContext, void *theGraph);
 int _K4Search_CopyData(void *dstContext, void *srcContext);
 void _K4Search_FreeContext(void *);
 
@@ -101,8 +102,8 @@ int gp_ExtendWith_K4Search(graphP theGraph)
     context->functions.fpCheckEmbeddingIntegrity = _K4Search_CheckEmbeddingIntegrity;
     context->functions.fpCheckObstructionIntegrity = _K4Search_CheckObstructionIntegrity;
 
-    context->functions.fpInitGraph = _K4Search_InitGraph;
-    context->functions.fpReinitGraph = _K4Search_ReinitGraph;
+    context->functions.fpEnsureVertexCapacity = _K4Search_EnsureVertexCapacity;
+    context->functions.fpResetGraphStorage = _K4Search_ResetGraphStorage;
     context->functions.fpEnsureEdgeCapacity = _K4Search_EnsureEdgeCapacity;
 
     _K4Search_ClearStructures(context);
@@ -110,7 +111,9 @@ int gp_ExtendWith_K4Search(graphP theGraph)
     // Store the K4 search context, including the data structure and the
     // function pointers, as an extension of the graph
     if (gp_AddExtension(theGraph, &K4SEARCH_ID, (void *)context,
-                        _K4Search_CopyData, _K4Search_FreeContext,
+                        _K4Search_DupContext,
+                        _K4Search_CopyData, 
+                        _K4Search_FreeContext,
                         &context->functions) != OK)
     {
         _K4Search_FreeContext(context);
@@ -122,9 +125,9 @@ int gp_ExtendWith_K4Search(graphP theGraph)
     // Create the K4-specific structures if the size of the graph is known
     // Attach functions are always invoked after gp_New(), but if a graph
     // extension must be attached before gp_Read(), then the attachment
-    // also happens before gp_InitGraph(), which means N==0.
-    // However, sometimes a feature is attached after gp_InitGraph(), in
-    // which case N > 0
+    // also happens before gp_EnsureVertexCapacity(), which means N==0.
+    // However, a feature can be attached after gp_EnsureVertexCapacity(),
+    // in which case there is extra work to do when N > 0.
     if (gp_GetN(theGraph) > 0)
     {
         if (_K4Search_CreateStructures(context) != OK ||
@@ -206,12 +209,141 @@ int _K4Search_InitStructures(K4SearchContext *context)
 }
 
 /********************************************************************
+ ********************************************************************/
+
+int _K4Search_EnsureVertexCapacity(graphP theGraph, int N)
+{
+    K4SearchContext *context = NULL;
+    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
+
+    if (context == NULL)
+        return NOTOK;
+
+    theGraph->N = N;
+    theGraph->NV = N;
+    if (theGraph->edgeCapacity == 0)
+        theGraph->edgeCapacity = DEFAULT_EDGE_CAPACITY_FACTOR * N;
+
+    if (_K4Search_CreateStructures(context) != OK ||
+        _K4Search_InitStructures(context) != OK)
+        return NOTOK;
+
+    context->functions.fpEnsureVertexCapacity(theGraph, N);
+
+    return OK;
+}
+
+/********************************************************************
+ ********************************************************************/
+
+void _K4Search_ResetGraphStorage(graphP theGraph)
+{
+    K4SearchContext *context = NULL;
+    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
+
+    if (context != NULL)
+    {
+        // Reset the graph storage in base class(es)
+        context->functions.fpResetGraphStorage(theGraph);
+
+        // Do the reset that is specific to this module
+        _K4Search_InitStructures(context);
+    }
+}
+
+/********************************************************************
+ _K4Search_EnsureEdgeCapacity()
+ ********************************************************************/
+
+int _K4Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
+{
+    K4SearchContext *context = NULL;
+    K4Search_EdgeRecP oldE = NULL, newE = NULL;
+    int oldEsize = gp_UpperBoundEdgeStorage(theGraph), newEsize = 0;
+
+    // If the requirement is already satisfied, then no work to do
+    if (gp_GetEdgeCapacity(theGraph) >= requiredEdgeCapacity)
+        return OK;
+
+    // Get the graph's extension context so we can work on it
+    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
+    if (context == NULL)
+        return NOTOK;
+
+    // Call the superclass function to make sure lower levels of parallel
+    // edge arrays can successfully meet the new capacity requirement
+    if (context->functions.fpEnsureEdgeCapacity(theGraph, requiredEdgeCapacity) != OK)
+        return NOTOK;
+
+    // Save the current E so it can be freed once we replace it
+    oldE = context->E;
+
+    // The superclass EnsureEdgeCapacity method succeeded, so the graph's
+    // new edge capacity is already set, which means we the upper bound of
+    // the graph's edge storage gives the new parallel array size we need.
+    newEsize = gp_UpperBoundEdgeStorage(theGraph);
+
+    // We must successfully allocate the new parallel edge array
+    newE = (K4Search_EdgeRecP)malloc(newEsize * sizeof(K4Search_EdgeRec));
+    if (newE == NULL)
+        return NOTOK;
+
+    // Clear all new edge records
+    memset(newE, NIL_CHAR, newEsize * sizeof(K4Search_EdgeRec));
+
+    // Copy the old edge records to the new edge records
+    memcpy(newE, oldE, oldEsize * sizeof(K4Search_EdgeRec));
+
+    // Set the new edge array into the context and free the old one
+    context->E = newE;
+    free(oldE);
+
+    return OK;
+}
+
+/********************************************************************
+ _K4Search_DupContext()
+ ********************************************************************/
+
+void *_K4Search_DupContext(void *pContext, void *theGraph)
+{
+    K4SearchContext *context = (K4SearchContext *)pContext;
+    K4SearchContext *newContext = (K4SearchContext *)malloc(sizeof(K4SearchContext));
+
+    if (newContext != NULL)
+    {
+        int Esize = gp_UpperBoundEdgeStorage((graphP)theGraph);
+
+        *newContext = *context;
+
+        newContext->theGraph = (graphP)theGraph;
+
+        newContext->initialized = 0;
+        _K4Search_ClearStructures(newContext);
+        if (((graphP)theGraph)->N > 0)
+        {
+            if (_K4Search_CreateStructures(newContext) != OK)
+            {
+                _K4Search_FreeContext(newContext);
+                newContext = NULL;
+
+                return NULL;
+            }
+
+            memcpy(newContext->E, context->E, Esize * sizeof(K4Search_EdgeRec));
+        }
+    }
+
+    return newContext;
+}
+
+/********************************************************************
  _K4Search_CopyData()
  ********************************************************************/
 int _K4Search_CopyData(void *dstContext, void *srcContext)
 {
-    K4SearchContext *dstK4Context = (K4SearchContext *) dstContext;
-    K4SearchContext *srcK4Context = (K4SearchContext *) srcContext;
+    K4SearchContext *dstK4Context = (K4SearchContext *)dstContext;
+    K4SearchContext *srcK4Context = (K4SearchContext *)srcContext;
     int dstEdgeStorage, srcEdgeStorage;
 
     if (dstContext == NULL)
@@ -240,99 +372,6 @@ int _K4Search_CopyData(void *dstContext, void *srcContext)
     }
 
     memcpy(dstK4Context->E, srcK4Context->E, gp_UpperBoundEdgeStorage(dstK4Context->theGraph) * sizeof(K4Search_EdgeRec));
-    return OK;
-}
-
-/********************************************************************
- ********************************************************************/
-
-int _K4Search_InitGraph(graphP theGraph, int N)
-{
-    K4SearchContext *context = NULL;
-    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
-
-    if (context == NULL)
-        return NOTOK;
-
-    theGraph->N = N;
-    theGraph->NV = N;
-    if (theGraph->edgeCapacity == 0)
-        theGraph->edgeCapacity = DEFAULT_EDGE_CAPACITY_FACTOR * N;
-
-    if (_K4Search_CreateStructures(context) != OK ||
-        _K4Search_InitStructures(context) != OK)
-        return NOTOK;
-
-    context->functions.fpInitGraph(theGraph, N);
-
-    return OK;
-}
-
-/********************************************************************
- ********************************************************************/
-
-void _K4Search_ReinitGraph(graphP theGraph)
-{
-    K4SearchContext *context = NULL;
-    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
-
-    if (context != NULL)
-    {
-        // Reinitialize the graph
-        context->functions.fpReinitGraph(theGraph);
-
-        // Do the reinitialization that is specific to this module
-        _K4Search_InitStructures(context);
-    }
-}
-
-/********************************************************************
- _K4Search_EnsureEdgeCapacity()
- ********************************************************************/
-
-int _K4Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
-{
-    K4SearchContext *context = NULL;
-    K4Search_EdgeRecP oldE = NULL, newE = NULL;
-    int oldEsize = gp_UpperBoundEdgeStorage(theGraph), newEsize = 0;
-
-    // If the requirement is already satisfied, then no work to do
-    if (gp_GetEdgeCapacity(theGraph) >= requiredEdgeCapacity)
-        return OK;
-
-    // Get the graph's extension context so we can work on it
-    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
-    if (context == NULL)
-        return NOTOK;
-
-    // Call the superclass function to make sure lower levels of parallel
-    // edge arrays can successfully meet the new capacity requirement 
-    if (context->functions.fpEnsureEdgeCapacity(theGraph, requiredEdgeCapacity) != OK)
-        return NOTOK;
-
-    // Save the current E so it can be freed once we replace it
-    oldE = context->E;
-
-    // The superclass EnsureEdgeCapacity method succeeded, so the graph's 
-    // new edge capacity is already set, which means we the upper bound of 
-    // the graph's edge storage gives the new parallel array size we need.
-    newEsize = gp_UpperBoundEdgeStorage(theGraph);
-
-    // We must successfully allocate the new parallel edge array
-    newE = (K4Search_EdgeRecP)malloc(newEsize * sizeof(K4Search_EdgeRec));
-    if (newE == NULL)
-        return NOTOK;
-
-    // Clear all new edge records
-    memset(newE, NIL_CHAR, newEsize * sizeof(K4Search_EdgeRec));
-
-    // Copy the old edge records to the new edge records
-    memcpy(newE, oldE, oldEsize * sizeof(K4Search_EdgeRec));
-
-    // Set the new edge array into the context and free the old one
-    context->E = newE;
-    free(oldE);
-
     return OK;
 }
 
@@ -392,7 +431,7 @@ int _K4Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
                 sp_Pop2_Discard1(theGraph->theStack, R);
 
                 // And we have to clear the indicator of the minor A that was reduced, since it was eliminated.
-                theGraph->IC->minorType = MINORTYPE_NONE;
+                theGraphIC(theGraph)->minorType = MINORTYPE_NONE;
             }
         }
 
@@ -424,13 +463,13 @@ int _K4Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
                 // detects that it still has not embedded all the edges to descendants of the bicomp's
                 // root edge child, then Walkdown calls this routine again, and the above non-reentrancy
                 // code returns NONEMBEDDABLE, causing this loop to search again for a K4.
-                theGraph->IC->minorType = MINORTYPE_NONE;
+                theGraphIC(theGraph)->minorType = MINORTYPE_NONE;
                 RetVal = theGraph->functions->fpWalkDown(theGraph, v, RootVertex);
 
                 // Except if the Walkdown returns NONEMBEDDABLE due to finding a K4 homeomorph entangled
                 // with a descendant bicomp (the R != RootVertex case above), then it was found
                 // entangled with Minor A, so we can stop the search if minor A is detected
-                if (theGraph->IC->minorType & MINORTYPE_A)
+                if (theGraphIC(theGraph)->minorType & MINORTYPE_A)
                     break;
 
             } while (RetVal == NONEMBEDDABLE);
@@ -462,7 +501,7 @@ int _K4Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
             // to ensure post-processing continues as expected.
             savedEmbedFlags = gp_GetEmbedFlags(theGraph);
             savedZEROBASEDIO = gp_GetGraphFlags(theGraph) & GRAPHFLAGS_ZEROBASEDIO;
-            gp_ReinitGraph(theGraph);
+            gp_ResetGraphStorage(theGraph);
             theGraph->embedFlags = savedEmbedFlags;
             theGraph->graphFlags &= savedZEROBASEDIO;
         }

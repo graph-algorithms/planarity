@@ -25,8 +25,8 @@ def networkx_graph(pgraph):
     except ImportError:
         raise ImportError("NetworkX required for networkx_graph()")
     graph = nx.Graph()
-    graph.add_nodes_from(pgraph.nodes(data=True))
-    graph.add_edges_from(pgraph.edges(data=True))
+    graph.add_nodes_from(pgraph.nodes(include_drawplanar_vertex_info=True))
+    graph.add_edges_from(pgraph.edges(include_drawplanar_edge_info=True))
     return graph
 
 def pgraph_graph(graph):
@@ -48,10 +48,10 @@ def draw(graph, labels=True):
     node_labels = {}
     xs = []
     ys = []
-    for node, data in hgraph.nodes(data=True):
-        y = data['pos']
-        xb = data['start']
-        xe = data['end']
+    for node, drawplanar_vertex_info in hgraph.nodes(data=True):
+        y = drawplanar_vertex_info['vertex_position']
+        xb = drawplanar_vertex_info['vertex_start']
+        xe = drawplanar_vertex_info['vertex_end']
         x = int((xe+xb)/2)
         node_labels[node] = (x, y)
         patches += [Circle((x, y), 0.25)]#,0.5,fc='w')]
@@ -59,10 +59,10 @@ def draw(graph, labels=True):
         ys.append(y)
         plt.hlines([y], [xb], [xe])
 
-    for (_, _, data) in hgraph.edges(data=True):
-        x = data['pos']
-        yb = data['start']
-        ye = data['end']
+    for (_, _, drawplanar_edge_info) in hgraph.edges(data=True):
+        x = drawplanar_edge_info['edge_position']
+        yb = drawplanar_edge_info['edge_start']
+        ye = drawplanar_edge_info['edge_end']
         ys.extend([yb, ye])
         xs.append(x)
         plt.vlines([x], [yb], [ye])

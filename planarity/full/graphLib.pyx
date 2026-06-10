@@ -13,10 +13,14 @@ from planarity.full cimport cgraphLib
 from planarity.full.cgraphLib cimport graphP, G6ReadIteratorP, G6WriteIteratorP
 
 
+QUIETMODE_NONE = cgraphLib.QUIETMODE_NONE
+QUIETMODE_ERRORS = cgraphLib.QUIETMODE_ERRORS
+QUIETMODE_MESSAGES = cgraphLib.QUIETMODE_MESSAGES
+QUIETMODE_ALL = cgraphLib.QUIETMODE_ALL
+
 WRITE_ADJLIST = cgraphLib.WRITE_ADJLIST
 WRITE_ADJMATRIX = cgraphLib.WRITE_ADJMATRIX
 WRITE_G6 = cgraphLib.WRITE_G6
-
 
 OK = cgraphLib.OK
 NONEMBEDDABLE = cgraphLib.NONEMBEDDABLE
@@ -36,12 +40,12 @@ EMBEDFLAGS_SEARCHFORK4 = cgraphLib.EMBEDFLAGS_SEARCHFORK4
 
 
 # Functions to be made available when importing package from Python
-def gp_GetQuietModeFlag() -> int:
-    return cgraphLib.gp_GetQuietModeFlag()
+def gp_GetQuietMode() -> int:
+    return cgraphLib.gp_GetQuietMode()
 
 
-def gp_SetQuietModeFlag(int newQuietModeFlag) -> None:
-    cgraphLib.gp_SetQuietModeFlag(newQuietModeFlag)
+def gp_SetQuietMode(int newQuietMode) -> None:
+    cgraphLib.gp_SetQuietMode(newQuietMode)
 
 
 def gp_GetProjectVersionFull():
@@ -61,28 +65,28 @@ cdef graphP gp_New():
     return cgraphLib.gp_New()
 
 
-cdef int gp_InitGraph(graphP theGraph, int n):
-    return cgraphLib.gp_InitGraph(theGraph, n)
-
-
-cdef void gp_ReinitGraph(graphP theGraph):
-    cgraphLib.gp_ReinitGraph(theGraph)
-
-
-cdef void gp_Free(graphP *pGraph):
-    cgraphLib.gp_Free(pGraph)
+cdef int gp_EnsureVertexCapacity(graphP theGraph, int n):
+    return cgraphLib.gp_EnsureVertexCapacity(theGraph, n)
 
 
 cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity):
     return cgraphLib.gp_EnsureEdgeCapacity(theGraph, requiredEdgeCapacity)
 
 
-cdef int gp_GetEdgeCapacity(graphP theGraph):
-    return cgraphLib.gp_GetEdgeCapacity(theGraph)
+cdef void gp_ResetGraphStorage(graphP theGraph):
+    cgraphLib.gp_ResetGraphStorage(theGraph)
+
+
+cdef void gp_Free(graphP *pGraph):
+    cgraphLib.gp_Free(pGraph)
 
 
 cdef int gp_GetN(graphP theGraph):
     return cgraphLib.gp_GetN(theGraph)
+
+
+cdef int gp_GetEdgeCapacity(graphP theGraph):
+    return cgraphLib.gp_GetEdgeCapacity(theGraph)
 
 
 cdef int gp_CopyGraph(graphP dstGraph, graphP srcGraph):
@@ -113,38 +117,6 @@ cdef int gp_DeleteEdge(graphP theGraph, int e):
     return cgraphLib.gp_DeleteEdge(theGraph, e)
 
 
-cdef int gp_LowerBoundEdges(graphP theGraph):
-    return cgraphLib.gp_LowerBoundEdges(theGraph)
-
-
-cdef int gp_UpperBoundEdges(graphP theGraph):
-    return cgraphLib.gp_UpperBoundEdges(theGraph)
-
-
-cdef int gp_IsEdge(graphP theGraph, int e):
-    return cgraphLib.gp_IsEdge(theGraph, e)
-
-
-cdef int gp_EdgeInUse(graphP theGraph, int e):
-    return cgraphLib.gp_EdgeInUse(theGraph, e)
-
-
-cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
-    return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
-
-
-cdef int gp_UpperBoundEdgeStorage(graphP theGraph):
-    return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)
-
-
-cdef int gp_GetNextEdge(graphP theGraph, int e):
-    return cgraphLib.gp_GetNextEdge(theGraph, e)
-
-
-cdef int gp_GetNeighbor(graphP theGraph, int e):
-    return cgraphLib.gp_GetNeighbor(theGraph, e)
-
-
 cdef int gp_GetFirstEdge(graphP theGraph, int v):
     return cgraphLib.gp_GetFirstEdge(theGraph, v)
 
@@ -159,6 +131,38 @@ cdef int gp_UpperBoundVertices(graphP theGraph):
 
 cdef int gp_IsVertex(graphP theGraph, int v):
     return cgraphLib.gp_IsVertex(theGraph, v)
+
+
+cdef int gp_GetNextEdge(graphP theGraph, int e):
+    return cgraphLib.gp_GetNextEdge(theGraph, e)
+
+
+cdef int gp_IsEdge(graphP theGraph, int e):
+    return cgraphLib.gp_IsEdge(theGraph, e)
+
+
+cdef int gp_GetNeighbor(graphP theGraph, int e):
+    return cgraphLib.gp_GetNeighbor(theGraph, e)
+
+
+cdef int gp_LowerBoundEdges(graphP theGraph):
+    return cgraphLib.gp_LowerBoundEdges(theGraph)
+
+
+cdef int gp_UpperBoundEdges(graphP theGraph):
+    return cgraphLib.gp_UpperBoundEdges(theGraph)
+
+
+cdef int gp_EdgeInUse(graphP theGraph, int e):
+    return cgraphLib.gp_EdgeInUse(theGraph, e)
+
+
+cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
+    return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
+
+
+cdef int gp_UpperBoundEdgeStorage(graphP theGraph):
+    return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)
 
 
 # Wraps functions declared in "../c/graphLib/io/graphIO.h":

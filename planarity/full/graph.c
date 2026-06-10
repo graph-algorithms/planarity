@@ -2426,12 +2426,12 @@ static int __Pyx_State_RemoveModule(void*);
 
 /* Module declarations from "planarity.full.graphLib" */
 static graphP (*__pyx_f_9planarity_4full_8graphLib_gp_New)(void); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_InitGraph)(graphP, int); /*proto*/
-static void (*__pyx_f_9planarity_4full_8graphLib_gp_ReinitGraph)(graphP); /*proto*/
-static void (*__pyx_f_9planarity_4full_8graphLib_gp_Free)(graphP *); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity)(graphP, int); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity)(graphP, int); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity)(graphP); /*proto*/
+static void (*__pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage)(graphP); /*proto*/
+static void (*__pyx_f_9planarity_4full_8graphLib_gp_Free)(graphP *); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetN)(graphP); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity)(graphP); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_CopyGraph)(graphP, graphP); /*proto*/
 static graphP (*__pyx_f_9planarity_4full_8graphLib_gp_DupGraph)(graphP); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_FindEdge)(graphP, int, int); /*proto*/
@@ -2439,18 +2439,18 @@ static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetVertexDegree)(graphP, int)
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_AddEdge)(graphP, int, int, int, int); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_DynamicAddEdge)(graphP, int, int, int, int); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge)(graphP, int); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges)(graphP); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges)(graphP); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_IsEdge)(graphP, int); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse)(graphP, int); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage)(graphP); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage)(graphP); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge)(graphP, int); /*proto*/
-static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor)(graphP, int); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge)(graphP, int); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices)(graphP); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices)(graphP); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_IsVertex)(graphP, int); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge)(graphP, int); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_IsEdge)(graphP, int); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor)(graphP, int); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges)(graphP); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges)(graphP); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse)(graphP, int); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage)(graphP); /*proto*/
+static int (*__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage)(graphP); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_Read)(graphP, char *); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_Write)(graphP, char *, int); /*proto*/
 static int (*__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity)(graphP); /*proto*/
@@ -2482,11 +2482,11 @@ static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper 
 /* #### Code section: decls ### */
 static int __pyx_pf_9planarity_4full_5graph_5Graph___cinit__(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
 static void __pyx_pf_9planarity_4full_5graph_5Graph_2__dealloc__(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_n); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_6gp_ReinitGraph(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_new_edge_capacity); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_EnsureVertexCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_n); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_6gp_EnsureEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_new_edge_capacity); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_ResetGraphStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetN(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_14gp_CopyGraph(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_src_graph); /* proto */
 static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full_5graph_5Graph_16gp_DupGraph(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_18gp_FindEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_u, int __pyx_v_v); /* proto */
@@ -2494,18 +2494,18 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_20gp_GetVertexDegree(st
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_22gp_AddEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_u, int __pyx_v_ulink, int __pyx_v_v, int __pyx_v_vlink); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_24gp_DynamicAddEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_u, int __pyx_v_ulink, int __pyx_v_v, int __pyx_v_vlink); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_26gp_DeleteEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_28gp_LowerBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_30gp_UpperBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_32gp_IsEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_34gp_EdgeInUse(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_36gp_LowerBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_38gp_UpperBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_40gp_GetNextEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_42gp_GetNeighbor(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_28gp_GetFirstEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_30gp_LowerBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_32gp_UpperBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_34gp_IsVertex(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_36gp_GetNextEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_38gp_IsEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_40gp_GetNeighbor(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_42gp_LowerBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_UpperBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_EdgeInUse(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_LowerBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_UpperBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_52gp_Read(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, PyObject *__pyx_v_infile_name); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_54gp_Write(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, PyObject *__pyx_v_outfile_name, PyObject *__pyx_v_mode); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_56gp_ExtendWith_Planarity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self); /* proto */
@@ -2628,10 +2628,10 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_kp_u_gp_DynamicAddEdge_failed_unable __pyx_string_tab[36]
 #define __pyx_kp_u_gp_EdgeInUse_failed_invalid_edge __pyx_string_tab[37]
 #define __pyx_kp_u_gp_EnsureEdgeCapacity_failed_to __pyx_string_tab[38]
-#define __pyx_kp_u_gp_GetFirstEdge_failed_invalid_v __pyx_string_tab[39]
-#define __pyx_kp_u_gp_GetNeighbor_failed_invalid_ed __pyx_string_tab[40]
-#define __pyx_kp_u_gp_GetNextEdge_failed_invalid_ed __pyx_string_tab[41]
-#define __pyx_kp_u_gp_InitGraph_failed __pyx_string_tab[42]
+#define __pyx_kp_u_gp_EnsureVertexCapacity_failed __pyx_string_tab[39]
+#define __pyx_kp_u_gp_GetFirstEdge_failed_invalid_v __pyx_string_tab[40]
+#define __pyx_kp_u_gp_GetNeighbor_failed_invalid_ed __pyx_string_tab[41]
+#define __pyx_kp_u_gp_GetNextEdge_failed_invalid_ed __pyx_string_tab[42]
 #define __pyx_kp_u_gp_New_failed __pyx_string_tab[43]
 #define __pyx_kp_u_gp_Read_failed __pyx_string_tab[44]
 #define __pyx_kp_u_gp_Write_of_graph_to __pyx_string_tab[45]
@@ -2664,27 +2664,27 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_n_u_Graph_gp_EdgeInUse __pyx_string_tab[72]
 #define __pyx_n_u_Graph_gp_Embed __pyx_string_tab[73]
 #define __pyx_n_u_Graph_gp_EnsureEdgeCapacity __pyx_string_tab[74]
-#define __pyx_n_u_Graph_gp_ExtendWith_DrawPlanar __pyx_string_tab[75]
-#define __pyx_n_u_Graph_gp_ExtendWith_K23Search __pyx_string_tab[76]
-#define __pyx_n_u_Graph_gp_ExtendWith_K33Search __pyx_string_tab[77]
-#define __pyx_n_u_Graph_gp_ExtendWith_K4Search __pyx_string_tab[78]
-#define __pyx_n_u_Graph_gp_ExtendWith_Outerplanari __pyx_string_tab[79]
-#define __pyx_n_u_Graph_gp_ExtendWith_Planarity __pyx_string_tab[80]
-#define __pyx_n_u_Graph_gp_FindEdge __pyx_string_tab[81]
-#define __pyx_n_u_Graph_gp_GetEdgeCapacity __pyx_string_tab[82]
-#define __pyx_n_u_Graph_gp_GetFirstEdge __pyx_string_tab[83]
-#define __pyx_n_u_Graph_gp_GetN __pyx_string_tab[84]
-#define __pyx_n_u_Graph_gp_GetNeighbor __pyx_string_tab[85]
-#define __pyx_n_u_Graph_gp_GetNextEdge __pyx_string_tab[86]
-#define __pyx_n_u_Graph_gp_GetVertexDegree __pyx_string_tab[87]
-#define __pyx_n_u_Graph_gp_InitGraph __pyx_string_tab[88]
+#define __pyx_n_u_Graph_gp_EnsureVertexCapacity __pyx_string_tab[75]
+#define __pyx_n_u_Graph_gp_ExtendWith_DrawPlanar __pyx_string_tab[76]
+#define __pyx_n_u_Graph_gp_ExtendWith_K23Search __pyx_string_tab[77]
+#define __pyx_n_u_Graph_gp_ExtendWith_K33Search __pyx_string_tab[78]
+#define __pyx_n_u_Graph_gp_ExtendWith_K4Search __pyx_string_tab[79]
+#define __pyx_n_u_Graph_gp_ExtendWith_Outerplanari __pyx_string_tab[80]
+#define __pyx_n_u_Graph_gp_ExtendWith_Planarity __pyx_string_tab[81]
+#define __pyx_n_u_Graph_gp_FindEdge __pyx_string_tab[82]
+#define __pyx_n_u_Graph_gp_GetEdgeCapacity __pyx_string_tab[83]
+#define __pyx_n_u_Graph_gp_GetFirstEdge __pyx_string_tab[84]
+#define __pyx_n_u_Graph_gp_GetN __pyx_string_tab[85]
+#define __pyx_n_u_Graph_gp_GetNeighbor __pyx_string_tab[86]
+#define __pyx_n_u_Graph_gp_GetNextEdge __pyx_string_tab[87]
+#define __pyx_n_u_Graph_gp_GetVertexDegree __pyx_string_tab[88]
 #define __pyx_n_u_Graph_gp_IsEdge __pyx_string_tab[89]
 #define __pyx_n_u_Graph_gp_IsVertex __pyx_string_tab[90]
 #define __pyx_n_u_Graph_gp_LowerBoundEdgeStorage __pyx_string_tab[91]
 #define __pyx_n_u_Graph_gp_LowerBoundEdges __pyx_string_tab[92]
 #define __pyx_n_u_Graph_gp_LowerBoundVertices __pyx_string_tab[93]
 #define __pyx_n_u_Graph_gp_Read __pyx_string_tab[94]
-#define __pyx_n_u_Graph_gp_ReinitGraph __pyx_string_tab[95]
+#define __pyx_n_u_Graph_gp_ResetGraphStorage __pyx_string_tab[95]
 #define __pyx_n_u_Graph_gp_TestEmbedResultIntegrit __pyx_string_tab[96]
 #define __pyx_n_u_Graph_gp_UpperBoundEdgeStorage __pyx_string_tab[97]
 #define __pyx_n_u_Graph_gp_UpperBoundEdges __pyx_string_tab[98]
@@ -2720,27 +2720,27 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_n_u_gp_EdgeInUse __pyx_string_tab[128]
 #define __pyx_n_u_gp_Embed __pyx_string_tab[129]
 #define __pyx_n_u_gp_EnsureEdgeCapacity __pyx_string_tab[130]
-#define __pyx_n_u_gp_ExtendWith_DrawPlanar __pyx_string_tab[131]
-#define __pyx_n_u_gp_ExtendWith_K23Search __pyx_string_tab[132]
-#define __pyx_n_u_gp_ExtendWith_K33Search __pyx_string_tab[133]
-#define __pyx_n_u_gp_ExtendWith_K4Search __pyx_string_tab[134]
-#define __pyx_n_u_gp_ExtendWith_Outerplanarity __pyx_string_tab[135]
-#define __pyx_n_u_gp_ExtendWith_Planarity __pyx_string_tab[136]
-#define __pyx_n_u_gp_FindEdge __pyx_string_tab[137]
-#define __pyx_n_u_gp_GetEdgeCapacity __pyx_string_tab[138]
-#define __pyx_n_u_gp_GetFirstEdge __pyx_string_tab[139]
-#define __pyx_n_u_gp_GetN __pyx_string_tab[140]
-#define __pyx_n_u_gp_GetNeighbor __pyx_string_tab[141]
-#define __pyx_n_u_gp_GetNextEdge __pyx_string_tab[142]
-#define __pyx_n_u_gp_GetVertexDegree __pyx_string_tab[143]
-#define __pyx_n_u_gp_InitGraph __pyx_string_tab[144]
+#define __pyx_n_u_gp_EnsureVertexCapacity __pyx_string_tab[131]
+#define __pyx_n_u_gp_ExtendWith_DrawPlanar __pyx_string_tab[132]
+#define __pyx_n_u_gp_ExtendWith_K23Search __pyx_string_tab[133]
+#define __pyx_n_u_gp_ExtendWith_K33Search __pyx_string_tab[134]
+#define __pyx_n_u_gp_ExtendWith_K4Search __pyx_string_tab[135]
+#define __pyx_n_u_gp_ExtendWith_Outerplanarity __pyx_string_tab[136]
+#define __pyx_n_u_gp_ExtendWith_Planarity __pyx_string_tab[137]
+#define __pyx_n_u_gp_FindEdge __pyx_string_tab[138]
+#define __pyx_n_u_gp_GetEdgeCapacity __pyx_string_tab[139]
+#define __pyx_n_u_gp_GetFirstEdge __pyx_string_tab[140]
+#define __pyx_n_u_gp_GetN __pyx_string_tab[141]
+#define __pyx_n_u_gp_GetNeighbor __pyx_string_tab[142]
+#define __pyx_n_u_gp_GetNextEdge __pyx_string_tab[143]
+#define __pyx_n_u_gp_GetVertexDegree __pyx_string_tab[144]
 #define __pyx_n_u_gp_IsEdge __pyx_string_tab[145]
 #define __pyx_n_u_gp_IsVertex __pyx_string_tab[146]
 #define __pyx_n_u_gp_LowerBoundEdgeStorage __pyx_string_tab[147]
 #define __pyx_n_u_gp_LowerBoundEdges __pyx_string_tab[148]
 #define __pyx_n_u_gp_LowerBoundVertices __pyx_string_tab[149]
 #define __pyx_n_u_gp_Read __pyx_string_tab[150]
-#define __pyx_n_u_gp_ReinitGraph __pyx_string_tab[151]
+#define __pyx_n_u_gp_ResetGraphStorage __pyx_string_tab[151]
 #define __pyx_n_u_gp_TestEmbedResultIntegrity __pyx_string_tab[152]
 #define __pyx_n_u_gp_UpperBoundEdgeStorage __pyx_string_tab[153]
 #define __pyx_n_u_gp_UpperBoundEdges __pyx_string_tab[154]
@@ -2792,24 +2792,24 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_kp_b_iso88591_A_0_A_aq __pyx_string_tab[200]
 #define __pyx_kp_b_iso88591_A_0_Q __pyx_string_tab[201]
 #define __pyx_kp_b_iso88591_A_1D_Cq_aq __pyx_string_tab[202]
-#define __pyx_kp_b_iso88591_A_4_3a_aq __pyx_string_tab[203]
-#define __pyx_kp_b_iso88591_A_4_Q_a_y_3a_j_q_A_4xs_Yha_A_c_a __pyx_string_tab[204]
-#define __pyx_kp_b_iso88591_A_4q __pyx_string_tab[205]
-#define __pyx_kp_b_iso88591_A_4t_Qa_a_8_Qd_a __pyx_string_tab[206]
-#define __pyx_kp_b_iso88591_A_4t_Qa_a_Qa_AT_Q __pyx_string_tab[207]
-#define __pyx_kp_b_iso88591_A_4t_Qa_a_q_at_q __pyx_string_tab[208]
-#define __pyx_kp_b_iso88591_A_4t_q_a_B_1_q_L __pyx_string_tab[209]
-#define __pyx_kp_b_iso88591_A_4t_q_as_1_4_1 __pyx_string_tab[210]
-#define __pyx_kp_b_iso88591_A_4t_q_as_1_4t_q_as_1_1D_Cq __pyx_string_tab[211]
-#define __pyx_kp_b_iso88591_A_6_Bd_1_a_1_6_Bd_1_a_1_Qd_c_7_Q __pyx_string_tab[212]
-#define __pyx_kp_b_iso88591_A_6_Bd_1_a_1_6_Bd_1_a_1_at_s_G3a __pyx_string_tab[213]
-#define __pyx_kp_b_iso88591_A_AT_S_aq __pyx_string_tab[214]
-#define __pyx_kp_b_iso88591_A_Cq_aq __pyx_string_tab[215]
+#define __pyx_kp_b_iso88591_A_1D_Cs_aq __pyx_string_tab[203]
+#define __pyx_kp_b_iso88591_A_4_3a_aq __pyx_string_tab[204]
+#define __pyx_kp_b_iso88591_A_4_Q_a_y_3a_j_q_A_4xs_Yha_A_c_a __pyx_string_tab[205]
+#define __pyx_kp_b_iso88591_A_4q __pyx_string_tab[206]
+#define __pyx_kp_b_iso88591_A_4t_Qa_a_8_Qd_a __pyx_string_tab[207]
+#define __pyx_kp_b_iso88591_A_4t_Qa_a_Qa_AT_Q __pyx_string_tab[208]
+#define __pyx_kp_b_iso88591_A_4t_Qa_a_q_at_q __pyx_string_tab[209]
+#define __pyx_kp_b_iso88591_A_4t_q_a_B_1_q_L __pyx_string_tab[210]
+#define __pyx_kp_b_iso88591_A_4t_q_as_1_4_1 __pyx_string_tab[211]
+#define __pyx_kp_b_iso88591_A_4t_q_as_1_4t_q_as_1_1D_Cq __pyx_string_tab[212]
+#define __pyx_kp_b_iso88591_A_6_Bd_1_a_1_6_Bd_1_a_1_Qd_c_7_Q __pyx_string_tab[213]
+#define __pyx_kp_b_iso88591_A_6_Bd_1_a_1_6_Bd_1_a_1_at_s_G3a __pyx_string_tab[214]
+#define __pyx_kp_b_iso88591_A_AT_S_aq __pyx_string_tab[215]
 #define __pyx_kp_b_iso88591_A_Q_0_BSSVVW_aq_A_a __pyx_string_tab[216]
 #define __pyx_kp_b_iso88591_A_Qd __pyx_string_tab[217]
-#define __pyx_kp_b_iso88591_A_X_uCq_5_1_s_4q_A_31A_q_9AT_S_a __pyx_string_tab[218]
-#define __pyx_kp_b_iso88591_A_l_MSPQ_a_1 __pyx_string_tab[219]
-#define __pyx_kp_b_iso88591_A_q_A __pyx_string_tab[220]
+#define __pyx_kp_b_iso88591_A_Qd_2 __pyx_string_tab[218]
+#define __pyx_kp_b_iso88591_A_X_uCq_5_1_s_4q_A_31A_q_9AT_S_a __pyx_string_tab[219]
+#define __pyx_kp_b_iso88591_A_l_MSPQ_a_1 __pyx_string_tab[220]
 #define __pyx_kp_b_iso88591_A_q_A_81D_Jc_aq __pyx_string_tab[221]
 #define __pyx_kp_b_iso88591_A_q_at_Cq_a_EQa __pyx_string_tab[222]
 #define __pyx_kp_b_iso88591_A_s_D_r_4q __pyx_string_tab[223]
@@ -3036,7 +3036,7 @@ static void __pyx_pf_9planarity_4full_5graph_5Graph_2__dealloc__(struct __pyx_ob
  *         if self._theGraph != NULL:
  *             graphLib.gp_Free(&self._theGraph)             # <<<<<<<<<<<<<<
  * 
- *     def gp_InitGraph(self, int n):
+ *     def gp_EnsureVertexCapacity(self, int n):
 */
     __pyx_f_9planarity_4full_8graphLib_gp_Free((&__pyx_v_self->_theGraph)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
 
@@ -3067,22 +3067,22 @@ static void __pyx_pf_9planarity_4full_5graph_5Graph_2__dealloc__(struct __pyx_ob
 /* "planarity/full/graph.pyx":44
  *             graphLib.gp_Free(&self._theGraph)
  * 
- *     def gp_InitGraph(self, int n):             # <<<<<<<<<<<<<<
- *         if graphLib.gp_InitGraph(self._theGraph, n) != OK:
- *             raise RuntimeError(f"gp_InitGraph() failed.")
+ *     def gp_EnsureVertexCapacity(self, int n):             # <<<<<<<<<<<<<<
+ *         if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_5gp_InitGraph(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_5gp_EnsureVertexCapacity(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_4gp_InitGraph, "Graph.gp_InitGraph(self, int n)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_5gp_InitGraph = {"gp_InitGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_5gp_InitGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_4gp_InitGraph};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_5gp_InitGraph(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_4gp_EnsureVertexCapacity, "Graph.gp_EnsureVertexCapacity(self, int n)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_5gp_EnsureVertexCapacity = {"gp_EnsureVertexCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_5gp_EnsureVertexCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_4gp_EnsureVertexCapacity};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_5gp_EnsureVertexCapacity(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3100,7 +3100,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_InitGraph (wrapper)", 0);
+  __Pyx_RefNannySetupContext("gp_EnsureVertexCapacity (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
   #if CYTHON_ASSUME_SAFE_SIZE
   __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -3123,9 +3123,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_InitGraph", 0) < (0)) __PYX_ERR(0, 44, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_EnsureVertexCapacity", 0) < (0)) __PYX_ERR(0, 44, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_InitGraph", 1, 1, 1, i); __PYX_ERR(0, 44, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_EnsureVertexCapacity", 1, 1, 1, i); __PYX_ERR(0, 44, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -3137,18 +3137,18 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_InitGraph", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 44, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("gp_EnsureVertexCapacity", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 44, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
     Py_XDECREF(values[__pyx_temp]);
   }
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_InitGraph", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_EnsureVertexCapacity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_n);
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_4gp_EnsureVertexCapacity(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_n);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -3158,7 +3158,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_n) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_EnsureVertexCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_n) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3170,16 +3170,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_InitGraph", 0);
+  __Pyx_RefNannySetupContext("gp_EnsureVertexCapacity", 0);
 
   /* "planarity/full/graph.pyx":45
  * 
- *     def gp_InitGraph(self, int n):
- *         if graphLib.gp_InitGraph(self._theGraph, n) != OK:             # <<<<<<<<<<<<<<
- *             raise RuntimeError(f"gp_InitGraph() failed.")
+ *     def gp_EnsureVertexCapacity(self, int n):
+ *         if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
  * 
 */
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_InitGraph(__pyx_v_self->_theGraph, __pyx_v_n); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(__pyx_v_self->_theGraph, __pyx_v_n); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
   __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
@@ -3192,16 +3192,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __
   if (unlikely(__pyx_t_5)) {
 
     /* "planarity/full/graph.pyx":46
- *     def gp_InitGraph(self, int n):
- *         if graphLib.gp_InitGraph(self._theGraph, n) != OK:
- *             raise RuntimeError(f"gp_InitGraph() failed.")             # <<<<<<<<<<<<<<
+ *     def gp_EnsureVertexCapacity(self, int n):
+ *         if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")             # <<<<<<<<<<<<<<
  * 
- *     def gp_ReinitGraph(self):
+ *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
 */
     __pyx_t_3 = NULL;
     __pyx_t_6 = 1;
     {
-      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_gp_InitGraph_failed};
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_gp_EnsureVertexCapacity_failed};
       __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
@@ -3213,9 +3213,9 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __
 
     /* "planarity/full/graph.pyx":45
  * 
- *     def gp_InitGraph(self, int n):
- *         if graphLib.gp_InitGraph(self._theGraph, n) != OK:             # <<<<<<<<<<<<<<
- *             raise RuntimeError(f"gp_InitGraph() failed.")
+ *     def gp_EnsureVertexCapacity(self, int n):
+ *         if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
  * 
 */
   }
@@ -3223,9 +3223,9 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __
   /* "planarity/full/graph.pyx":44
  *             graphLib.gp_Free(&self._theGraph)
  * 
- *     def gp_InitGraph(self, int n):             # <<<<<<<<<<<<<<
- *         if graphLib.gp_InitGraph(self._theGraph, n) != OK:
- *             raise RuntimeError(f"gp_InitGraph() failed.")
+ *     def gp_EnsureVertexCapacity(self, int n):             # <<<<<<<<<<<<<<
+ *         if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
 */
 
   /* function exit code */
@@ -3235,7 +3235,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_InitGraph", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_EnsureVertexCapacity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3244,95 +3244,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_4gp_InitGraph(struct __
 }
 
 /* "planarity/full/graph.pyx":48
- *             raise RuntimeError(f"gp_InitGraph() failed.")
- * 
- *     def gp_ReinitGraph(self):             # <<<<<<<<<<<<<<
- *         graphLib.gp_ReinitGraph(self._theGraph)
- * 
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_7gp_ReinitGraph(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_6gp_ReinitGraph, "Graph.gp_ReinitGraph(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_7gp_ReinitGraph = {"gp_ReinitGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_7gp_ReinitGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_6gp_ReinitGraph};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_7gp_ReinitGraph(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_ReinitGraph (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_ReinitGraph", 1, 0, 0, __pyx_nargs); return NULL; }
-  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-  if (unlikely(__pyx_kwds_len < 0)) return NULL;
-  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_ReinitGraph", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_6gp_ReinitGraph(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_6gp_ReinitGraph(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_ReinitGraph", 0);
-
-  /* "planarity/full/graph.pyx":49
- * 
- *     def gp_ReinitGraph(self):
- *         graphLib.gp_ReinitGraph(self._theGraph)             # <<<<<<<<<<<<<<
- * 
- *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
-*/
-  __pyx_f_9planarity_4full_8graphLib_gp_ReinitGraph(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L1_error)
-
-  /* "planarity/full/graph.pyx":48
- *             raise RuntimeError(f"gp_InitGraph() failed.")
- * 
- *     def gp_ReinitGraph(self):             # <<<<<<<<<<<<<<
- *         graphLib.gp_ReinitGraph(self._theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_ReinitGraph", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":51
- *         graphLib.gp_ReinitGraph(self._theGraph)
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
  * 
  *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):             # <<<<<<<<<<<<<<
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
@@ -3340,16 +3252,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_6gp_ReinitGraph(struct 
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_9gp_EnsureEdgeCapacity(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_7gp_EnsureEdgeCapacity(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity, "Graph.gp_EnsureEdgeCapacity(self, int new_edge_capacity)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_9gp_EnsureEdgeCapacity = {"gp_EnsureEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_9gp_EnsureEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_9gp_EnsureEdgeCapacity(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_6gp_EnsureEdgeCapacity, "Graph.gp_EnsureEdgeCapacity(self, int new_edge_capacity)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_7gp_EnsureEdgeCapacity = {"gp_EnsureEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_7gp_EnsureEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_6gp_EnsureEdgeCapacity};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_7gp_EnsureEdgeCapacity(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3379,32 +3291,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_new_edge_capacity,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 48, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 51, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 48, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_EnsureEdgeCapacity", 0) < (0)) __PYX_ERR(0, 51, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_EnsureEdgeCapacity", 0) < (0)) __PYX_ERR(0, 48, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_EnsureEdgeCapacity", 1, 1, 1, i); __PYX_ERR(0, 51, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_EnsureEdgeCapacity", 1, 1, 1, i); __PYX_ERR(0, 48, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 51, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 48, __pyx_L3_error)
     }
-    __pyx_v_new_edge_capacity = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_new_edge_capacity == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L3_error)
+    __pyx_v_new_edge_capacity = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_new_edge_capacity == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_EnsureEdgeCapacity", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 51, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("gp_EnsureEdgeCapacity", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 48, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3415,7 +3327,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_new_edge_capacity);
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_6gp_EnsureEdgeCapacity(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_new_edge_capacity);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -3425,7 +3337,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_new_edge_capacity) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_6gp_EnsureEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_new_edge_capacity) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3441,26 +3353,26 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_EnsureEdgeCapacity", 0);
 
-  /* "planarity/full/graph.pyx":52
+  /* "planarity/full/graph.pyx":49
  * 
  *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError(
  *                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "
 */
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity(__pyx_v_self->_theGraph, __pyx_v_new_edge_capacity); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity(__pyx_v_self->_theGraph, __pyx_v_new_edge_capacity); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (unlikely(__pyx_t_5)) {
 
-    /* "planarity/full/graph.pyx":53
+    /* "planarity/full/graph.pyx":50
  *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -3469,20 +3381,20 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(
 */
     __pyx_t_3 = NULL;
 
-    /* "planarity/full/graph.pyx":55
+    /* "planarity/full/graph.pyx":52
  *             raise RuntimeError(
  *                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "
  *                 f"{new_edge_capacity}.")             # <<<<<<<<<<<<<<
  * 
- *     def gp_GetEdgeCapacity(self):
+ *     def gp_ResetGraphStorage(self):
 */
-    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_new_edge_capacity, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_new_edge_capacity, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_6[0] = __pyx_mstate_global->__pyx_kp_u_gp_EnsureEdgeCapacity_failed_to;
     __pyx_t_6[1] = __pyx_t_2;
     __pyx_t_6[2] = __pyx_mstate_global->__pyx_kp_u_;
 
-    /* "planarity/full/graph.pyx":54
+    /* "planarity/full/graph.pyx":51
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
  *             raise RuntimeError(
  *                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "             # <<<<<<<<<<<<<<
@@ -3490,7 +3402,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(
  * 
 */
     __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_6, 3, 55 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 1, 127);
-    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_8 = 1;
@@ -3499,14 +3411,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(
       __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_8, (2-__pyx_t_8) | (__pyx_t_8*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 53, __pyx_L1_error)
+    __PYX_ERR(0, 50, __pyx_L1_error)
 
-    /* "planarity/full/graph.pyx":52
+    /* "planarity/full/graph.pyx":49
  * 
  *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:             # <<<<<<<<<<<<<<
@@ -3515,8 +3427,8 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(
 */
   }
 
-  /* "planarity/full/graph.pyx":51
- *         graphLib.gp_ReinitGraph(self._theGraph)
+  /* "planarity/full/graph.pyx":48
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
  * 
  *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):             # <<<<<<<<<<<<<<
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
@@ -3539,25 +3451,25 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity(
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":57
+/* "planarity/full/graph.pyx":54
  *                 f"{new_edge_capacity}.")
  * 
- *     def gp_GetEdgeCapacity(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+ *     def gp_ResetGraphStorage(self):             # <<<<<<<<<<<<<<
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)
  * 
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetEdgeCapacity(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_9gp_ResetGraphStorage(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity, "Graph.gp_GetEdgeCapacity(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_11gp_GetEdgeCapacity = {"gp_GetEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetEdgeCapacity(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_8gp_ResetGraphStorage, "Graph.gp_ResetGraphStorage(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_9gp_ResetGraphStorage = {"gp_ResetGraphStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_9gp_ResetGraphStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_8gp_ResetGraphStorage};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_9gp_ResetGraphStorage(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3570,7 +3482,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_GetEdgeCapacity (wrapper)", 0);
+  __Pyx_RefNannySetupContext("gp_ResetGraphStorage (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
   #if CYTHON_ASSUME_SAFE_SIZE
   __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -3579,54 +3491,47 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_GetEdgeCapacity", 1, 0, 0, __pyx_nargs); return NULL; }
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_ResetGraphStorage", 1, 0, 0, __pyx_nargs); return NULL; }
   const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
   if (unlikely(__pyx_kwds_len < 0)) return NULL;
-  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_GetEdgeCapacity", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_ResetGraphStorage", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_8gp_ResetGraphStorage(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_8gp_ResetGraphStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_GetEdgeCapacity", 0);
+  __Pyx_RefNannySetupContext("gp_ResetGraphStorage", 0);
 
-  /* "planarity/full/graph.pyx":58
+  /* "planarity/full/graph.pyx":55
  * 
- *     def gp_GetEdgeCapacity(self):
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)             # <<<<<<<<<<<<<<
+ *     def gp_ResetGraphStorage(self):
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)             # <<<<<<<<<<<<<<
  * 
  *     def gp_GetN(self)-> int:
 */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
-  goto __pyx_L0;
+  __pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
 
-  /* "planarity/full/graph.pyx":57
+  /* "planarity/full/graph.pyx":54
  *                 f"{new_edge_capacity}.")
  * 
- *     def gp_GetEdgeCapacity(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+ *     def gp_ResetGraphStorage(self):             # <<<<<<<<<<<<<<
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)
  * 
 */
 
   /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetEdgeCapacity", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_ResetGraphStorage", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3634,8 +3539,8 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity(st
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":60
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+/* "planarity/full/graph.pyx":57
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)
  * 
  *     def gp_GetN(self)-> int:             # <<<<<<<<<<<<<<
  *         """
@@ -3643,16 +3548,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity(st
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetN(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetN(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_12gp_GetN, "Graph.gp_GetN(self) -> int\n\nReturns the number of vertices in the graph.");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_13gp_GetN = {"gp_GetN", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetN, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_12gp_GetN};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetN(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_10gp_GetN, "Graph.gp_GetN(self) -> int\n\nReturns the number of vertices in the graph.");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_11gp_GetN = {"gp_GetN", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetN, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_10gp_GetN};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetN(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3678,14 +3583,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
   if (unlikely(__pyx_kwds_len < 0)) return NULL;
   if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_GetN", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetN(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_10gp_GetN(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3698,7 +3603,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_GetN", 0);
 
-  /* "planarity/full/graph.pyx":64
+  /* "planarity/full/graph.pyx":61
  *         Returns the number of vertices in the graph.
  *         """
  *         if self._theGraph == NULL:             # <<<<<<<<<<<<<<
@@ -3708,7 +3613,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_
   __pyx_t_1 = (__pyx_v_self->_theGraph == NULL);
   if (unlikely(__pyx_t_1)) {
 
-    /* "planarity/full/graph.pyx":65
+    /* "planarity/full/graph.pyx":62
  *         """
  *         if self._theGraph == NULL:
  *             raise RuntimeError("Graph is not initialized.")             # <<<<<<<<<<<<<<
@@ -3721,14 +3626,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_Graph_is_not_initialized};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 65, __pyx_L1_error)
+    __PYX_ERR(0, 62, __pyx_L1_error)
 
-    /* "planarity/full/graph.pyx":64
+    /* "planarity/full/graph.pyx":61
  *         Returns the number of vertices in the graph.
  *         """
  *         if self._theGraph == NULL:             # <<<<<<<<<<<<<<
@@ -3737,24 +3642,24 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_
 */
   }
 
-  /* "planarity/full/graph.pyx":67
+  /* "planarity/full/graph.pyx":64
  *             raise RuntimeError("Graph is not initialized.")
  * 
  *         return graphLib.gp_GetN(self._theGraph)             # <<<<<<<<<<<<<<
  * 
- *     def gp_CopyGraph(self, Graph src_graph):
+ *     def gp_GetEdgeCapacity(self):
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __pyx_f_9planarity_4full_8graphLib_gp_GetN(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_5 = __pyx_f_9planarity_4full_8graphLib_gp_GetN(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PyInt_FromNumber(&__pyx_t_2, NULL, 0) < (0)) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (__Pyx_PyInt_FromNumber(&__pyx_t_2, NULL, 0) < (0)) __PYX_ERR(0, 64, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graph.pyx":60
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+  /* "planarity/full/graph.pyx":57
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)
  * 
  *     def gp_GetN(self)-> int:             # <<<<<<<<<<<<<<
  *         """
@@ -3773,8 +3678,103 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetN(struct __pyx_
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":69
+/* "planarity/full/graph.pyx":66
  *         return graphLib.gp_GetN(self._theGraph)
+ * 
+ *     def gp_GetEdgeCapacity(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+ * 
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetEdgeCapacity(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_12gp_GetEdgeCapacity, "Graph.gp_GetEdgeCapacity(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_13gp_GetEdgeCapacity = {"gp_GetEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_12gp_GetEdgeCapacity};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetEdgeCapacity(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_GetEdgeCapacity (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_GetEdgeCapacity", 1, 0, 0, __pyx_nargs); return NULL; }
+  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+  if (unlikely(__pyx_kwds_len < 0)) return NULL;
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_GetEdgeCapacity", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetEdgeCapacity(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_12gp_GetEdgeCapacity(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_GetEdgeCapacity", 0);
+
+  /* "planarity/full/graph.pyx":67
+ * 
+ *     def gp_GetEdgeCapacity(self):
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_CopyGraph(self, Graph src_graph):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":66
+ *         return graphLib.gp_GetN(self._theGraph)
+ * 
+ *     def gp_GetEdgeCapacity(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetEdgeCapacity", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":69
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
  * 
  *     def gp_CopyGraph(self, Graph src_graph):             # <<<<<<<<<<<<<<
  *         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
@@ -4244,7 +4244,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_14gp_CopyGraph(struct _
   }
 
   /* "planarity/full/graph.pyx":69
- *         return graphLib.gp_GetN(self._theGraph)
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
  * 
  *     def gp_CopyGraph(self, Graph src_graph):             # <<<<<<<<<<<<<<
  *         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
@@ -5914,7 +5914,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_26gp_DeleteEdge(struct 
  * 
  *         return graphLib.gp_DeleteEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
  * 
- *     def gp_LowerBoundEdges(self):
+ *     def gp_GetFirstEdge(self, int v):
 */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L1_error)
@@ -5949,1283 +5949,22 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_26gp_DeleteEdge(struct 
 /* "planarity/full/graph.pyx":156
  *         return graphLib.gp_DeleteEdge(self._theGraph, e)
  * 
- *     def gp_LowerBoundEdges(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)
- * 
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_29gp_LowerBoundEdges(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_28gp_LowerBoundEdges, "Graph.gp_LowerBoundEdges(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_29gp_LowerBoundEdges = {"gp_LowerBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_29gp_LowerBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_28gp_LowerBoundEdges};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_29gp_LowerBoundEdges(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_LowerBoundEdges (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_LowerBoundEdges", 1, 0, 0, __pyx_nargs); return NULL; }
-  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-  if (unlikely(__pyx_kwds_len < 0)) return NULL;
-  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_LowerBoundEdges", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_28gp_LowerBoundEdges(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_28gp_LowerBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_LowerBoundEdges", 0);
-
-  /* "planarity/full/graph.pyx":157
- * 
- *     def gp_LowerBoundEdges(self):
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)             # <<<<<<<<<<<<<<
- * 
- *     def gp_UpperBoundEdges(self):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":156
- *         return graphLib.gp_DeleteEdge(self._theGraph, e)
- * 
- *     def gp_LowerBoundEdges(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_LowerBoundEdges", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":159
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)
- * 
- *     def gp_UpperBoundEdges(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)
- * 
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_31gp_UpperBoundEdges(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_30gp_UpperBoundEdges, "Graph.gp_UpperBoundEdges(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_31gp_UpperBoundEdges = {"gp_UpperBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_31gp_UpperBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_30gp_UpperBoundEdges};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_31gp_UpperBoundEdges(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_UpperBoundEdges (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_UpperBoundEdges", 1, 0, 0, __pyx_nargs); return NULL; }
-  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-  if (unlikely(__pyx_kwds_len < 0)) return NULL;
-  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_UpperBoundEdges", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_30gp_UpperBoundEdges(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_30gp_UpperBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_UpperBoundEdges", 0);
-
-  /* "planarity/full/graph.pyx":160
- * 
- *     def gp_UpperBoundEdges(self):
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)             # <<<<<<<<<<<<<<
- * 
- *     def gp_IsEdge(self, int e):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":159
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)
- * 
- *     def gp_UpperBoundEdges(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_UpperBoundEdges", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":162
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)
- * 
- *     def gp_IsEdge(self, int e):             # <<<<<<<<<<<<<<
- *         return (
- *             (e >= self.gp_LowerBoundEdgeStorage()) and
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_33gp_IsEdge(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_32gp_IsEdge, "Graph.gp_IsEdge(self, int e)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_33gp_IsEdge = {"gp_IsEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_33gp_IsEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_32gp_IsEdge};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_33gp_IsEdge(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  int __pyx_v_e;
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[1] = {0};
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_IsEdge (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
-    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 162, __pyx_L3_error)
-    if (__pyx_kwds_len > 0) {
-      switch (__pyx_nargs) {
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 162, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_IsEdge", 0) < (0)) __PYX_ERR(0, 162, __pyx_L3_error)
-      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_IsEdge", 1, 1, 1, i); __PYX_ERR(0, 162, __pyx_L3_error) }
-      }
-    } else if (unlikely(__pyx_nargs != 1)) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 162, __pyx_L3_error)
-    }
-    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L3_error)
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_IsEdge", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 162, __pyx_L3_error)
-  __pyx_L6_skip:;
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_IsEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_32gp_IsEdge(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
-
-  /* function exit code */
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_32gp_IsEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  size_t __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_IsEdge", 0);
-
-  /* "planarity/full/graph.pyx":163
- * 
- *     def gp_IsEdge(self, int e):
- *         return (             # <<<<<<<<<<<<<<
- *             (e >= self.gp_LowerBoundEdgeStorage()) and
- *             (e < self.gp_UpperBoundEdgeStorage()) and
-*/
-  __Pyx_XDECREF(__pyx_r);
-
-  /* "planarity/full/graph.pyx":164
- *     def gp_IsEdge(self, int e):
- *         return (
- *             (e >= self.gp_LowerBoundEdgeStorage()) and             # <<<<<<<<<<<<<<
- *             (e < self.gp_UpperBoundEdgeStorage()) and
- *             graphLib.gp_IsEdge(self._theGraph, e)
-*/
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = ((PyObject *)__pyx_v_self);
-  __Pyx_INCREF(__pyx_t_4);
-  __pyx_t_5 = 0;
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
-    __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_LowerBoundEdgeStorage, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-  }
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 164, __pyx_L1_error)
-  if (__pyx_t_6) {
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else {
-    __Pyx_INCREF(__pyx_t_4);
-    __pyx_t_1 = __pyx_t_4;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    goto __pyx_L3_bool_binop_done;
-  }
-
-  /* "planarity/full/graph.pyx":165
- *         return (
- *             (e >= self.gp_LowerBoundEdgeStorage()) and
- *             (e < self.gp_UpperBoundEdgeStorage()) and             # <<<<<<<<<<<<<<
- *             graphLib.gp_IsEdge(self._theGraph, e)
- *         )
-*/
-  __pyx_t_4 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = ((PyObject *)__pyx_v_self);
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_5 = 0;
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
-    __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_UpperBoundEdgeStorage, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-  }
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 165, __pyx_L1_error)
-  if (__pyx_t_6) {
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  } else {
-    __Pyx_INCREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_t_2;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    goto __pyx_L3_bool_binop_done;
-  }
-
-  /* "planarity/full/graph.pyx":166
- *             (e >= self.gp_LowerBoundEdgeStorage()) and
- *             (e < self.gp_UpperBoundEdgeStorage()) and
- *             graphLib.gp_IsEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
- *         )
- * 
-*/
-  __pyx_t_7 = __pyx_f_9planarity_4full_8graphLib_gp_IsEdge(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __pyx_t_2;
-  __pyx_t_2 = 0;
-  __pyx_L3_bool_binop_done:;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":162
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)
- * 
- *     def gp_IsEdge(self, int e):             # <<<<<<<<<<<<<<
- *         return (
- *             (e >= self.gp_LowerBoundEdgeStorage()) and
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_IsEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":169
- *         )
- * 
- *     def gp_EdgeInUse(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_35gp_EdgeInUse(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_34gp_EdgeInUse, "Graph.gp_EdgeInUse(self, int e)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_35gp_EdgeInUse = {"gp_EdgeInUse", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_35gp_EdgeInUse, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_34gp_EdgeInUse};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_35gp_EdgeInUse(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  int __pyx_v_e;
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[1] = {0};
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_EdgeInUse (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
-    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 169, __pyx_L3_error)
-    if (__pyx_kwds_len > 0) {
-      switch (__pyx_nargs) {
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 169, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_EdgeInUse", 0) < (0)) __PYX_ERR(0, 169, __pyx_L3_error)
-      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_EdgeInUse", 1, 1, 1, i); __PYX_ERR(0, 169, __pyx_L3_error) }
-      }
-    } else if (unlikely(__pyx_nargs != 1)) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 169, __pyx_L3_error)
-    }
-    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L3_error)
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_EdgeInUse", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 169, __pyx_L3_error)
-  __pyx_L6_skip:;
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_EdgeInUse", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_34gp_EdgeInUse(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
-
-  /* function exit code */
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_34gp_EdgeInUse(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  size_t __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7[3];
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_EdgeInUse", 0);
-
-  /* "planarity/full/graph.pyx":170
- * 
- *     def gp_EdgeInUse(self, int e):
- *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
- *             raise RuntimeError(
- *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
-*/
-  __pyx_t_2 = ((PyObject *)__pyx_v_self);
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = 0;
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-  }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 170, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = (!__pyx_t_5);
-  if (unlikely(__pyx_t_6)) {
-
-    /* "planarity/full/graph.pyx":171
- *     def gp_EdgeInUse(self, int e):
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(             # <<<<<<<<<<<<<<
- *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
- *             )
-*/
-    __pyx_t_3 = NULL;
-
-    /* "planarity/full/graph.pyx":172
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
- *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."             # <<<<<<<<<<<<<<
- *             )
- * 
-*/
-    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_e, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_EdgeInUse_failed_invalid_edge;
-    __pyx_t_7[1] = __pyx_t_2;
-    __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
-    __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 43 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 172, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = 1;
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 171, __pyx_L1_error)
-
-    /* "planarity/full/graph.pyx":170
- * 
- *     def gp_EdgeInUse(self, int e):
- *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
- *             raise RuntimeError(
- *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
-*/
-  }
-
-  /* "planarity/full/graph.pyx":175
- *             )
- * 
- *         return graphLib.gp_EdgeInUse(self._theGraph, e)             # <<<<<<<<<<<<<<
- * 
- *     def gp_LowerBoundEdgeStorage(self):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 175, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":169
- *         )
- * 
- *     def gp_EdgeInUse(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_EdgeInUse", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":177
- *         return graphLib.gp_EdgeInUse(self._theGraph, e)
- * 
- *     def gp_LowerBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
- * 
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_37gp_LowerBoundEdgeStorage(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_36gp_LowerBoundEdgeStorage, "Graph.gp_LowerBoundEdgeStorage(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_37gp_LowerBoundEdgeStorage = {"gp_LowerBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_37gp_LowerBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_36gp_LowerBoundEdgeStorage};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_37gp_LowerBoundEdgeStorage(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_LowerBoundEdgeStorage (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_LowerBoundEdgeStorage", 1, 0, 0, __pyx_nargs); return NULL; }
-  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-  if (unlikely(__pyx_kwds_len < 0)) return NULL;
-  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_LowerBoundEdgeStorage", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_36gp_LowerBoundEdgeStorage(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_36gp_LowerBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_LowerBoundEdgeStorage", 0);
-
-  /* "planarity/full/graph.pyx":178
- * 
- *     def gp_LowerBoundEdgeStorage(self):
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)             # <<<<<<<<<<<<<<
- * 
- *     def gp_UpperBoundEdgeStorage(self):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 178, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":177
- *         return graphLib.gp_EdgeInUse(self._theGraph, e)
- * 
- *     def gp_LowerBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_LowerBoundEdgeStorage", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":180
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
- * 
- *     def gp_UpperBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
- * 
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_39gp_UpperBoundEdgeStorage(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_38gp_UpperBoundEdgeStorage, "Graph.gp_UpperBoundEdgeStorage(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_39gp_UpperBoundEdgeStorage = {"gp_UpperBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_39gp_UpperBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_38gp_UpperBoundEdgeStorage};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_39gp_UpperBoundEdgeStorage(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_UpperBoundEdgeStorage (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_UpperBoundEdgeStorage", 1, 0, 0, __pyx_nargs); return NULL; }
-  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-  if (unlikely(__pyx_kwds_len < 0)) return NULL;
-  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_UpperBoundEdgeStorage", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_38gp_UpperBoundEdgeStorage(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_38gp_UpperBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_UpperBoundEdgeStorage", 0);
-
-  /* "planarity/full/graph.pyx":181
- * 
- *     def gp_UpperBoundEdgeStorage(self):
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)             # <<<<<<<<<<<<<<
- * 
- *     def gp_GetNextEdge(self, int e):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 181, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 181, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":180
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
- * 
- *     def gp_UpperBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_UpperBoundEdgeStorage", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":183
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
- * 
- *     def gp_GetNextEdge(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNextEdge(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetNextEdge, "Graph.gp_GetNextEdge(self, int e)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_41gp_GetNextEdge = {"gp_GetNextEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNextEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetNextEdge};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNextEdge(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  int __pyx_v_e;
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[1] = {0};
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_GetNextEdge (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
-    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 183, __pyx_L3_error)
-    if (__pyx_kwds_len > 0) {
-      switch (__pyx_nargs) {
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 183, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_GetNextEdge", 0) < (0)) __PYX_ERR(0, 183, __pyx_L3_error)
-      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_GetNextEdge", 1, 1, 1, i); __PYX_ERR(0, 183, __pyx_L3_error) }
-      }
-    } else if (unlikely(__pyx_nargs != 1)) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 183, __pyx_L3_error)
-    }
-    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_GetNextEdge", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 183, __pyx_L3_error)
-  __pyx_L6_skip:;
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNextEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_40gp_GetNextEdge(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
-
-  /* function exit code */
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_40gp_GetNextEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  size_t __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7[3];
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_GetNextEdge", 0);
-
-  /* "planarity/full/graph.pyx":184
- * 
- *     def gp_GetNextEdge(self, int e):
- *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
- *             raise RuntimeError(
- *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."
-*/
-  __pyx_t_2 = ((PyObject *)__pyx_v_self);
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = 0;
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-  }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 184, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = (!__pyx_t_5);
-  if (unlikely(__pyx_t_6)) {
-
-    /* "planarity/full/graph.pyx":185
- *     def gp_GetNextEdge(self, int e):
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(             # <<<<<<<<<<<<<<
- *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."
- *             )
-*/
-    __pyx_t_3 = NULL;
-
-    /* "planarity/full/graph.pyx":186
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
- *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."             # <<<<<<<<<<<<<<
- *             )
- * 
-*/
-    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_e, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_GetNextEdge_failed_invalid_ed;
-    __pyx_t_7[1] = __pyx_t_2;
-    __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
-    __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 45 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 186, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = 1;
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 185, __pyx_L1_error)
-
-    /* "planarity/full/graph.pyx":184
- * 
- *     def gp_GetNextEdge(self, int e):
- *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
- *             raise RuntimeError(
- *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."
-*/
-  }
-
-  /* "planarity/full/graph.pyx":189
- *             )
- * 
- *         return graphLib.gp_GetNextEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
- * 
- *     def gp_GetNeighbor(self, int e):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 189, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":183
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
- * 
- *     def gp_GetNextEdge(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNextEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":191
- *         return graphLib.gp_GetNextEdge(self._theGraph, e)
- * 
- *     def gp_GetNeighbor(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_43gp_GetNeighbor(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_42gp_GetNeighbor, "Graph.gp_GetNeighbor(self, int e)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_43gp_GetNeighbor = {"gp_GetNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_43gp_GetNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_42gp_GetNeighbor};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_43gp_GetNeighbor(PyObject *__pyx_v_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-) {
-  int __pyx_v_e;
-  #if !CYTHON_METH_FASTCALL
-  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
-  #endif
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[1] = {0};
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("gp_GetNeighbor (wrapper)", 0);
-  #if !CYTHON_METH_FASTCALL
-  #if CYTHON_ASSUME_SAFE_SIZE
-  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
-  #else
-  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
-  #endif
-  #endif
-  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
-  {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
-    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 191, __pyx_L3_error)
-    if (__pyx_kwds_len > 0) {
-      switch (__pyx_nargs) {
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 191, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_GetNeighbor", 0) < (0)) __PYX_ERR(0, 191, __pyx_L3_error)
-      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_GetNeighbor", 1, 1, 1, i); __PYX_ERR(0, 191, __pyx_L3_error) }
-      }
-    } else if (unlikely(__pyx_nargs != 1)) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 191, __pyx_L3_error)
-    }
-    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 191, __pyx_L3_error)
-  }
-  goto __pyx_L6_skip;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_GetNeighbor", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 191, __pyx_L3_error)
-  __pyx_L6_skip:;
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNeighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_42gp_GetNeighbor(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
-
-  /* function exit code */
-  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
-    Py_XDECREF(values[__pyx_temp]);
-  }
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_42gp_GetNeighbor(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  size_t __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7[3];
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("gp_GetNeighbor", 0);
-
-  /* "planarity/full/graph.pyx":192
- * 
- *     def gp_GetNeighbor(self, int e):
- *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
- *             raise RuntimeError(
- *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
-*/
-  __pyx_t_2 = ((PyObject *)__pyx_v_self);
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = 0;
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-  }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 192, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = (!__pyx_t_5);
-  if (unlikely(__pyx_t_6)) {
-
-    /* "planarity/full/graph.pyx":193
- *     def gp_GetNeighbor(self, int e):
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(             # <<<<<<<<<<<<<<
- *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
- *             )
-*/
-    __pyx_t_3 = NULL;
-
-    /* "planarity/full/graph.pyx":194
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
- *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."             # <<<<<<<<<<<<<<
- *             )
- * 
-*/
-    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_e, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_GetNeighbor_failed_invalid_ed;
-    __pyx_t_7[1] = __pyx_t_2;
-    __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
-    __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 45 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 194, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = 1;
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 193, __pyx_L1_error)
-
-    /* "planarity/full/graph.pyx":192
- * 
- *     def gp_GetNeighbor(self, int e):
- *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
- *             raise RuntimeError(
- *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
-*/
-  }
-
-  /* "planarity/full/graph.pyx":197
- *             )
- * 
- *         return graphLib.gp_GetNeighbor(self._theGraph, e)             # <<<<<<<<<<<<<<
- * 
- *     def gp_GetFirstEdge(self, int v):
-*/
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "planarity/full/graph.pyx":191
- *         return graphLib.gp_GetNextEdge(self._theGraph, e)
- * 
- *     def gp_GetNeighbor(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNeighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "planarity/full/graph.pyx":199
- *         return graphLib.gp_GetNeighbor(self._theGraph, e)
- * 
  *     def gp_GetFirstEdge(self, int v):             # <<<<<<<<<<<<<<
  *         if not self.gp_IsVertex(v):
  *             raise RuntimeError(
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_45gp_GetFirstEdge(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_29gp_GetFirstEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge, "Graph.gp_GetFirstEdge(self, int v)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_45gp_GetFirstEdge = {"gp_GetFirstEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_45gp_GetFirstEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_45gp_GetFirstEdge(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_28gp_GetFirstEdge, "Graph.gp_GetFirstEdge(self, int v)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_29gp_GetFirstEdge = {"gp_GetFirstEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_29gp_GetFirstEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_28gp_GetFirstEdge};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_29gp_GetFirstEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -7255,32 +5994,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_v,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 199, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 156, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 199, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 156, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_GetFirstEdge", 0) < (0)) __PYX_ERR(0, 199, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_GetFirstEdge", 0) < (0)) __PYX_ERR(0, 156, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_GetFirstEdge", 1, 1, 1, i); __PYX_ERR(0, 199, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_GetFirstEdge", 1, 1, 1, i); __PYX_ERR(0, 156, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 199, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 156, __pyx_L3_error)
     }
-    __pyx_v_v = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_v == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L3_error)
+    __pyx_v_v = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_v == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_GetFirstEdge", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 199, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("gp_GetFirstEdge", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 156, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7291,7 +6030,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_v);
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_28gp_GetFirstEdge(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_v);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -7301,7 +6040,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_28gp_GetFirstEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7318,7 +6057,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_GetFirstEdge", 0);
 
-  /* "planarity/full/graph.pyx":200
+  /* "planarity/full/graph.pyx":157
  * 
  *     def gp_GetFirstEdge(self, int v):
  *         if not self.gp_IsVertex(v):             # <<<<<<<<<<<<<<
@@ -7327,7 +6066,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
 */
   __pyx_t_2 = ((PyObject *)__pyx_v_self);
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_v); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_v); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = 0;
   {
@@ -7335,15 +6074,15 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
     __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsVertex, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 200, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_6 = (!__pyx_t_5);
   if (unlikely(__pyx_t_6)) {
 
-    /* "planarity/full/graph.pyx":201
+    /* "planarity/full/graph.pyx":158
  *     def gp_GetFirstEdge(self, int v):
  *         if not self.gp_IsVertex(v):
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -7352,20 +6091,20 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
 */
     __pyx_t_3 = NULL;
 
-    /* "planarity/full/graph.pyx":202
+    /* "planarity/full/graph.pyx":159
  *         if not self.gp_IsVertex(v):
  *             raise RuntimeError(
  *                 f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."             # <<<<<<<<<<<<<<
  *             )
  * 
 */
-    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_v, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_v, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_GetFirstEdge_failed_invalid_v;
     __pyx_t_7[1] = __pyx_t_2;
     __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
     __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 48 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 202, __pyx_L1_error)
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 159, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_4 = 1;
@@ -7374,14 +6113,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
       __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     }
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 201, __pyx_L1_error)
+    __PYX_ERR(0, 158, __pyx_L1_error)
 
-    /* "planarity/full/graph.pyx":200
+    /* "planarity/full/graph.pyx":157
  * 
  *     def gp_GetFirstEdge(self, int v):
  *         if not self.gp_IsVertex(v):             # <<<<<<<<<<<<<<
@@ -7390,7 +6129,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
 */
   }
 
-  /* "planarity/full/graph.pyx":205
+  /* "planarity/full/graph.pyx":162
  *             )
  * 
  *         return graphLib.gp_GetFirstEdge(self._theGraph, v)             # <<<<<<<<<<<<<<
@@ -7398,15 +6137,15 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
  *     def gp_LowerBoundVertices(self):
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge(__pyx_v_self->_theGraph, __pyx_v_v); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge(__pyx_v_self->_theGraph, __pyx_v_v); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graph.pyx":199
- *         return graphLib.gp_GetNeighbor(self._theGraph, e)
+  /* "planarity/full/graph.pyx":156
+ *         return graphLib.gp_DeleteEdge(self._theGraph, e)
  * 
  *     def gp_GetFirstEdge(self, int v):             # <<<<<<<<<<<<<<
  *         if not self.gp_IsVertex(v):
@@ -7427,7 +6166,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":207
+/* "planarity/full/graph.pyx":164
  *         return graphLib.gp_GetFirstEdge(self._theGraph, v)
  * 
  *     def gp_LowerBoundVertices(self):             # <<<<<<<<<<<<<<
@@ -7436,16 +6175,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge(struc
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_47gp_LowerBoundVertices(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_31gp_LowerBoundVertices(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices, "Graph.gp_LowerBoundVertices(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_47gp_LowerBoundVertices = {"gp_LowerBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_47gp_LowerBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_47gp_LowerBoundVertices(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_30gp_LowerBoundVertices, "Graph.gp_LowerBoundVertices(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_31gp_LowerBoundVertices = {"gp_LowerBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_31gp_LowerBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_30gp_LowerBoundVertices};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_31gp_LowerBoundVertices(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -7471,14 +6210,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
   if (unlikely(__pyx_kwds_len < 0)) return NULL;
   if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_LowerBoundVertices", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_30gp_LowerBoundVertices(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_30gp_LowerBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -7488,7 +6227,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_LowerBoundVertices", 0);
 
-  /* "planarity/full/graph.pyx":208
+  /* "planarity/full/graph.pyx":165
  * 
  *     def gp_LowerBoundVertices(self):
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)             # <<<<<<<<<<<<<<
@@ -7496,14 +6235,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices
  *     def gp_UpperBoundVertices(self):
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graph.pyx":207
+  /* "planarity/full/graph.pyx":164
  *         return graphLib.gp_GetFirstEdge(self._theGraph, v)
  * 
  *     def gp_LowerBoundVertices(self):             # <<<<<<<<<<<<<<
@@ -7522,7 +6261,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":210
+/* "planarity/full/graph.pyx":167
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVertices(self):             # <<<<<<<<<<<<<<
@@ -7531,16 +6270,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_49gp_UpperBoundVertices(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_33gp_UpperBoundVertices(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices, "Graph.gp_UpperBoundVertices(self)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_49gp_UpperBoundVertices = {"gp_UpperBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_49gp_UpperBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_49gp_UpperBoundVertices(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_32gp_UpperBoundVertices, "Graph.gp_UpperBoundVertices(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_33gp_UpperBoundVertices = {"gp_UpperBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_33gp_UpperBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_32gp_UpperBoundVertices};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_33gp_UpperBoundVertices(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -7566,14 +6305,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
   if (unlikely(__pyx_kwds_len < 0)) return NULL;
   if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_UpperBoundVertices", __pyx_kwds); return NULL;}
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_32gp_UpperBoundVertices(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_32gp_UpperBoundVertices(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -7583,7 +6322,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_UpperBoundVertices", 0);
 
-  /* "planarity/full/graph.pyx":211
+  /* "planarity/full/graph.pyx":168
  * 
  *     def gp_UpperBoundVertices(self):
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)             # <<<<<<<<<<<<<<
@@ -7591,14 +6330,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices
  *     def gp_IsVertex(self, int v):
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graph.pyx":210
+  /* "planarity/full/graph.pyx":167
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVertices(self):             # <<<<<<<<<<<<<<
@@ -7617,7 +6356,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":213
+/* "planarity/full/graph.pyx":170
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
  *     def gp_IsVertex(self, int v):             # <<<<<<<<<<<<<<
@@ -7626,16 +6365,16 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_51gp_IsVertex(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_35gp_IsVertex(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_50gp_IsVertex, "Graph.gp_IsVertex(self, int v)");
-static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_51gp_IsVertex = {"gp_IsVertex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_51gp_IsVertex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_50gp_IsVertex};
-static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_51gp_IsVertex(PyObject *__pyx_v_self, 
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_34gp_IsVertex, "Graph.gp_IsVertex(self, int v)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_35gp_IsVertex = {"gp_IsVertex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_35gp_IsVertex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_34gp_IsVertex};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_35gp_IsVertex(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -7665,32 +6404,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_v,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 213, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 170, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 213, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 170, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_IsVertex", 0) < (0)) __PYX_ERR(0, 213, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_IsVertex", 0) < (0)) __PYX_ERR(0, 170, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_IsVertex", 1, 1, 1, i); __PYX_ERR(0, 213, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_IsVertex", 1, 1, 1, i); __PYX_ERR(0, 170, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 213, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 170, __pyx_L3_error)
     }
-    __pyx_v_v = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_v == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L3_error)
+    __pyx_v_v = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_v == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 170, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_IsVertex", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 213, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("gp_IsVertex", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 170, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7701,7 +6440,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_v);
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_34gp_IsVertex(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_v);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -7711,7 +6450,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v) {
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_34gp_IsVertex(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_v) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7726,7 +6465,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_IsVertex", 0);
 
-  /* "planarity/full/graph.pyx":214
+  /* "planarity/full/graph.pyx":171
  * 
  *     def gp_IsVertex(self, int v):
  *         return (             # <<<<<<<<<<<<<<
@@ -7735,14 +6474,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
 */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "planarity/full/graph.pyx":215
+  /* "planarity/full/graph.pyx":172
  *     def gp_IsVertex(self, int v):
  *         return (
  *             (v >= self.gp_LowerBoundVertices()) and             # <<<<<<<<<<<<<<
  *             (v < self.gp_UpperBoundVertices()) and
  *             graphLib.gp_IsVertex(self._theGraph, v)
 */
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = ((PyObject *)__pyx_v_self);
   __Pyx_INCREF(__pyx_t_4);
@@ -7751,13 +6490,13 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
     PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_LowerBoundVertices, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 172, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
   }
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 172, __pyx_L1_error)
   if (__pyx_t_6) {
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
@@ -7767,14 +6506,14 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
     goto __pyx_L3_bool_binop_done;
   }
 
-  /* "planarity/full/graph.pyx":216
+  /* "planarity/full/graph.pyx":173
  *         return (
  *             (v >= self.gp_LowerBoundVertices()) and
  *             (v < self.gp_UpperBoundVertices()) and             # <<<<<<<<<<<<<<
  *             graphLib.gp_IsVertex(self._theGraph, v)
  *         )
 */
-  __pyx_t_4 = __Pyx_PyLong_From_int(__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyLong_From_int(__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_2 = ((PyObject *)__pyx_v_self);
   __Pyx_INCREF(__pyx_t_2);
@@ -7783,13 +6522,13 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
     PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_UpperBoundVertices, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
   }
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 173, __pyx_L1_error)
   if (__pyx_t_6) {
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
@@ -7799,15 +6538,15 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
     goto __pyx_L3_bool_binop_done;
   }
 
-  /* "planarity/full/graph.pyx":217
+  /* "planarity/full/graph.pyx":174
  *             (v >= self.gp_LowerBoundVertices()) and
  *             (v < self.gp_UpperBoundVertices()) and
  *             graphLib.gp_IsVertex(self._theGraph, v)             # <<<<<<<<<<<<<<
  *         )
  * 
 */
-  __pyx_t_7 = __pyx_f_9planarity_4full_8graphLib_gp_IsVertex(__pyx_v_self->_theGraph, __pyx_v_v); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 217, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_7 = __pyx_f_9planarity_4full_8graphLib_gp_IsVertex(__pyx_v_self->_theGraph, __pyx_v_v); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -7816,7 +6555,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graph.pyx":213
+  /* "planarity/full/graph.pyx":170
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
  *     def gp_IsVertex(self, int v):             # <<<<<<<<<<<<<<
@@ -7838,8 +6577,1269 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_IsVertex(struct __
   return __pyx_r;
 }
 
-/* "planarity/full/graph.pyx":220
+/* "planarity/full/graph.pyx":177
  *         )
+ * 
+ *     def gp_GetNextEdge(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_37gp_GetNextEdge(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_36gp_GetNextEdge, "Graph.gp_GetNextEdge(self, int e)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_37gp_GetNextEdge = {"gp_GetNextEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_37gp_GetNextEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_36gp_GetNextEdge};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_37gp_GetNextEdge(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_e;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_GetNextEdge (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
+    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 177, __pyx_L3_error)
+    if (__pyx_kwds_len > 0) {
+      switch (__pyx_nargs) {
+        case  1:
+        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 177, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      const Py_ssize_t kwd_pos_args = __pyx_nargs;
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_GetNextEdge", 0) < (0)) __PYX_ERR(0, 177, __pyx_L3_error)
+      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_GetNextEdge", 1, 1, 1, i); __PYX_ERR(0, 177, __pyx_L3_error) }
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 177, __pyx_L3_error)
+    }
+    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gp_GetNextEdge", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 177, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNextEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_36gp_GetNextEdge(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
+
+  /* function exit code */
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_36gp_GetNextEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  size_t __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7[3];
+  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_GetNextEdge", 0);
+
+  /* "planarity/full/graph.pyx":178
+ * 
+ *     def gp_GetNextEdge(self, int e):
+ *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(
+ *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."
+*/
+  __pyx_t_2 = ((PyObject *)__pyx_v_self);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 178, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = 0;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_3};
+    __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 178, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  }
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 178, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_6 = (!__pyx_t_5);
+  if (unlikely(__pyx_t_6)) {
+
+    /* "planarity/full/graph.pyx":179
+ *     def gp_GetNextEdge(self, int e):
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(             # <<<<<<<<<<<<<<
+ *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."
+ *             )
+*/
+    __pyx_t_3 = NULL;
+
+    /* "planarity/full/graph.pyx":180
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+ *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."             # <<<<<<<<<<<<<<
+ *             )
+ * 
+*/
+    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_e, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_GetNextEdge_failed_invalid_ed;
+    __pyx_t_7[1] = __pyx_t_2;
+    __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
+    __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 45 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 180, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_4 = 1;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_t_8};
+      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 179, __pyx_L1_error)
+
+    /* "planarity/full/graph.pyx":178
+ * 
+ *     def gp_GetNextEdge(self, int e):
+ *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(
+ *                 f"gp_GetNextEdge() failed: invalid edge index '{e}'."
+*/
+  }
+
+  /* "planarity/full/graph.pyx":183
+ *             )
+ * 
+ *         return graphLib.gp_GetNextEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_IsEdge(self, int e):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":177
+ *         )
+ * 
+ *     def gp_GetNextEdge(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNextEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":185
+ *         return graphLib.gp_GetNextEdge(self._theGraph, e)
+ * 
+ *     def gp_IsEdge(self, int e):             # <<<<<<<<<<<<<<
+ *         return (
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_39gp_IsEdge(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_38gp_IsEdge, "Graph.gp_IsEdge(self, int e)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_39gp_IsEdge = {"gp_IsEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_39gp_IsEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_38gp_IsEdge};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_39gp_IsEdge(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_e;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_IsEdge (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
+    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 185, __pyx_L3_error)
+    if (__pyx_kwds_len > 0) {
+      switch (__pyx_nargs) {
+        case  1:
+        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 185, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      const Py_ssize_t kwd_pos_args = __pyx_nargs;
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_IsEdge", 0) < (0)) __PYX_ERR(0, 185, __pyx_L3_error)
+      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_IsEdge", 1, 1, 1, i); __PYX_ERR(0, 185, __pyx_L3_error) }
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 185, __pyx_L3_error)
+    }
+    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 185, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gp_IsEdge", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 185, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_IsEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_38gp_IsEdge(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
+
+  /* function exit code */
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_38gp_IsEdge(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  size_t __pyx_t_5;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_IsEdge", 0);
+
+  /* "planarity/full/graph.pyx":186
+ * 
+ *     def gp_IsEdge(self, int e):
+ *         return (             # <<<<<<<<<<<<<<
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and
+ *             (e < self.gp_UpperBoundEdgeStorage()) and
+*/
+  __Pyx_XDECREF(__pyx_r);
+
+  /* "planarity/full/graph.pyx":187
+ *     def gp_IsEdge(self, int e):
+ *         return (
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and             # <<<<<<<<<<<<<<
+ *             (e < self.gp_UpperBoundEdgeStorage()) and
+ *             graphLib.gp_IsEdge(self._theGraph, e)
+*/
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = ((PyObject *)__pyx_v_self);
+  __Pyx_INCREF(__pyx_t_4);
+  __pyx_t_5 = 0;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
+    __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_LowerBoundEdgeStorage, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+  }
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 187, __pyx_L1_error)
+  if (__pyx_t_6) {
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  } else {
+    __Pyx_INCREF(__pyx_t_4);
+    __pyx_t_1 = __pyx_t_4;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    goto __pyx_L3_bool_binop_done;
+  }
+
+  /* "planarity/full/graph.pyx":188
+ *         return (
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and
+ *             (e < self.gp_UpperBoundEdgeStorage()) and             # <<<<<<<<<<<<<<
+ *             graphLib.gp_IsEdge(self._theGraph, e)
+ *         )
+*/
+  __pyx_t_4 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = ((PyObject *)__pyx_v_self);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_5 = 0;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, NULL};
+    __pyx_t_3 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_UpperBoundEdgeStorage, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+  }
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (__pyx_t_6) {
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  } else {
+    __Pyx_INCREF(__pyx_t_2);
+    __pyx_t_1 = __pyx_t_2;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    goto __pyx_L3_bool_binop_done;
+  }
+
+  /* "planarity/full/graph.pyx":189
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and
+ *             (e < self.gp_UpperBoundEdgeStorage()) and
+ *             graphLib.gp_IsEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
+ *         )
+ * 
+*/
+  __pyx_t_7 = __pyx_f_9planarity_4full_8graphLib_gp_IsEdge(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  __pyx_L3_bool_binop_done:;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":185
+ *         return graphLib.gp_GetNextEdge(self._theGraph, e)
+ * 
+ *     def gp_IsEdge(self, int e):             # <<<<<<<<<<<<<<
+ *         return (
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_IsEdge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":192
+ *         )
+ * 
+ *     def gp_GetNeighbor(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNeighbor(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetNeighbor, "Graph.gp_GetNeighbor(self, int e)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_41gp_GetNeighbor = {"gp_GetNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetNeighbor};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNeighbor(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_e;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_GetNeighbor (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
+    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 192, __pyx_L3_error)
+    if (__pyx_kwds_len > 0) {
+      switch (__pyx_nargs) {
+        case  1:
+        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 192, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      const Py_ssize_t kwd_pos_args = __pyx_nargs;
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_GetNeighbor", 0) < (0)) __PYX_ERR(0, 192, __pyx_L3_error)
+      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_GetNeighbor", 1, 1, 1, i); __PYX_ERR(0, 192, __pyx_L3_error) }
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 192, __pyx_L3_error)
+    }
+    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 192, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gp_GetNeighbor", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 192, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNeighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_40gp_GetNeighbor(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
+
+  /* function exit code */
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_40gp_GetNeighbor(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  size_t __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7[3];
+  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_GetNeighbor", 0);
+
+  /* "planarity/full/graph.pyx":193
+ * 
+ *     def gp_GetNeighbor(self, int e):
+ *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(
+ *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+*/
+  __pyx_t_2 = ((PyObject *)__pyx_v_self);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = 0;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_3};
+    __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  }
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 193, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_6 = (!__pyx_t_5);
+  if (unlikely(__pyx_t_6)) {
+
+    /* "planarity/full/graph.pyx":194
+ *     def gp_GetNeighbor(self, int e):
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(             # <<<<<<<<<<<<<<
+ *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+ *             )
+*/
+    __pyx_t_3 = NULL;
+
+    /* "planarity/full/graph.pyx":195
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+ *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."             # <<<<<<<<<<<<<<
+ *             )
+ * 
+*/
+    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_e, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_GetNeighbor_failed_invalid_ed;
+    __pyx_t_7[1] = __pyx_t_2;
+    __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
+    __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 45 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 195, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_4 = 1;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_t_8};
+      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 194, __pyx_L1_error)
+
+    /* "planarity/full/graph.pyx":193
+ * 
+ *     def gp_GetNeighbor(self, int e):
+ *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(
+ *                 f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+*/
+  }
+
+  /* "planarity/full/graph.pyx":198
+ *             )
+ * 
+ *         return graphLib.gp_GetNeighbor(self._theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_LowerBoundEdges(self):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":192
+ *         )
+ * 
+ *     def gp_GetNeighbor(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_GetNeighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":200
+ *         return graphLib.gp_GetNeighbor(self._theGraph, e)
+ * 
+ *     def gp_LowerBoundEdges(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)
+ * 
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_43gp_LowerBoundEdges(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_42gp_LowerBoundEdges, "Graph.gp_LowerBoundEdges(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_43gp_LowerBoundEdges = {"gp_LowerBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_43gp_LowerBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_42gp_LowerBoundEdges};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_43gp_LowerBoundEdges(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_LowerBoundEdges (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_LowerBoundEdges", 1, 0, 0, __pyx_nargs); return NULL; }
+  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+  if (unlikely(__pyx_kwds_len < 0)) return NULL;
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_LowerBoundEdges", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_42gp_LowerBoundEdges(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_42gp_LowerBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_LowerBoundEdges", 0);
+
+  /* "planarity/full/graph.pyx":201
+ * 
+ *     def gp_LowerBoundEdges(self):
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_UpperBoundEdges(self):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":200
+ *         return graphLib.gp_GetNeighbor(self._theGraph, e)
+ * 
+ *     def gp_LowerBoundEdges(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_LowerBoundEdges", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":203
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)
+ * 
+ *     def gp_UpperBoundEdges(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)
+ * 
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_45gp_UpperBoundEdges(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_44gp_UpperBoundEdges, "Graph.gp_UpperBoundEdges(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_45gp_UpperBoundEdges = {"gp_UpperBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_45gp_UpperBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_44gp_UpperBoundEdges};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_45gp_UpperBoundEdges(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_UpperBoundEdges (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_UpperBoundEdges", 1, 0, 0, __pyx_nargs); return NULL; }
+  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+  if (unlikely(__pyx_kwds_len < 0)) return NULL;
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_UpperBoundEdges", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_44gp_UpperBoundEdges(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_UpperBoundEdges(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_UpperBoundEdges", 0);
+
+  /* "planarity/full/graph.pyx":204
+ * 
+ *     def gp_UpperBoundEdges(self):
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_EdgeInUse(self, int e):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":203
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)
+ * 
+ *     def gp_UpperBoundEdges(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_UpperBoundEdges", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":206
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)
+ * 
+ *     def gp_EdgeInUse(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_47gp_EdgeInUse(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_46gp_EdgeInUse, "Graph.gp_EdgeInUse(self, int e)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_47gp_EdgeInUse = {"gp_EdgeInUse", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_47gp_EdgeInUse, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_46gp_EdgeInUse};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_47gp_EdgeInUse(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_e;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_EdgeInUse (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_e,0};
+    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 206, __pyx_L3_error)
+    if (__pyx_kwds_len > 0) {
+      switch (__pyx_nargs) {
+        case  1:
+        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 206, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      const Py_ssize_t kwd_pos_args = __pyx_nargs;
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_EdgeInUse", 0) < (0)) __PYX_ERR(0, 206, __pyx_L3_error)
+      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_EdgeInUse", 1, 1, 1, i); __PYX_ERR(0, 206, __pyx_L3_error) }
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 206, __pyx_L3_error)
+    }
+    __pyx_v_e = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_e == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 206, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gp_EdgeInUse", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 206, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_EdgeInUse", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_46gp_EdgeInUse(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self), __pyx_v_e);
+
+  /* function exit code */
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_EdgeInUse(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self, int __pyx_v_e) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  size_t __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7[3];
+  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_EdgeInUse", 0);
+
+  /* "planarity/full/graph.pyx":207
+ * 
+ *     def gp_EdgeInUse(self, int e):
+ *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(
+ *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+*/
+  __pyx_t_2 = ((PyObject *)__pyx_v_self);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = 0;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_3};
+    __pyx_t_1 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  }
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 207, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_6 = (!__pyx_t_5);
+  if (unlikely(__pyx_t_6)) {
+
+    /* "planarity/full/graph.pyx":208
+ *     def gp_EdgeInUse(self, int e):
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(             # <<<<<<<<<<<<<<
+ *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+ *             )
+*/
+    __pyx_t_3 = NULL;
+
+    /* "planarity/full/graph.pyx":209
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+ *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."             # <<<<<<<<<<<<<<
+ *             )
+ * 
+*/
+    __pyx_t_2 = __Pyx_PyUnicode_From_int(__pyx_v_e, 0, ' ', 'd'); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7[0] = __pyx_mstate_global->__pyx_kp_u_gp_EdgeInUse_failed_invalid_edge;
+    __pyx_t_7[1] = __pyx_t_2;
+    __pyx_t_7[2] = __pyx_mstate_global->__pyx_kp_u__3;
+    __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_7, 3, 43 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2) + 2, 127);
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_4 = 1;
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_t_8};
+      __pyx_t_1 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 208, __pyx_L1_error)
+
+    /* "planarity/full/graph.pyx":207
+ * 
+ *     def gp_EdgeInUse(self, int e):
+ *         if not self.gp_IsEdge(e):             # <<<<<<<<<<<<<<
+ *             raise RuntimeError(
+ *                 f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+*/
+  }
+
+  /* "planarity/full/graph.pyx":212
+ *             )
+ * 
+ *         return graphLib.gp_EdgeInUse(self._theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_LowerBoundEdgeStorage(self):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_9 = __pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse(__pyx_v_self->_theGraph, __pyx_v_e); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":206
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)
+ * 
+ *     def gp_EdgeInUse(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_EdgeInUse", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":214
+ *         return graphLib.gp_EdgeInUse(self._theGraph, e)
+ * 
+ *     def gp_LowerBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+ * 
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_49gp_LowerBoundEdgeStorage(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_48gp_LowerBoundEdgeStorage, "Graph.gp_LowerBoundEdgeStorage(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_49gp_LowerBoundEdgeStorage = {"gp_LowerBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_49gp_LowerBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_48gp_LowerBoundEdgeStorage};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_49gp_LowerBoundEdgeStorage(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_LowerBoundEdgeStorage (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_LowerBoundEdgeStorage", 1, 0, 0, __pyx_nargs); return NULL; }
+  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+  if (unlikely(__pyx_kwds_len < 0)) return NULL;
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_LowerBoundEdgeStorage", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_48gp_LowerBoundEdgeStorage(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_48gp_LowerBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_LowerBoundEdgeStorage", 0);
+
+  /* "planarity/full/graph.pyx":215
+ * 
+ *     def gp_LowerBoundEdgeStorage(self):
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_UpperBoundEdgeStorage(self):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":214
+ *         return graphLib.gp_EdgeInUse(self._theGraph, e)
+ * 
+ *     def gp_LowerBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_LowerBoundEdgeStorage", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":217
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+ * 
+ *     def gp_UpperBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
+ * 
+*/
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_51gp_UpperBoundEdgeStorage(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_50gp_UpperBoundEdgeStorage, "Graph.gp_UpperBoundEdgeStorage(self)");
+static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_51gp_UpperBoundEdgeStorage = {"gp_UpperBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_51gp_UpperBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_50gp_UpperBoundEdgeStorage};
+static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_51gp_UpperBoundEdgeStorage(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gp_UpperBoundEdgeStorage (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) { __Pyx_RaiseArgtupleInvalid("gp_UpperBoundEdgeStorage", 1, 0, 0, __pyx_nargs); return NULL; }
+  const Py_ssize_t __pyx_kwds_len = unlikely(__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+  if (unlikely(__pyx_kwds_len < 0)) return NULL;
+  if (unlikely(__pyx_kwds_len > 0)) {__Pyx_RejectKeywords("gp_UpperBoundEdgeStorage", __pyx_kwds); return NULL;}
+  __pyx_r = __pyx_pf_9planarity_4full_5graph_5Graph_50gp_UpperBoundEdgeStorage(((struct __pyx_obj_9planarity_4full_5graph_Graph *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_UpperBoundEdgeStorage(struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("gp_UpperBoundEdgeStorage", 0);
+
+  /* "planarity/full/graph.pyx":218
+ * 
+ *     def gp_UpperBoundEdgeStorage(self):
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)             # <<<<<<<<<<<<<<
+ * 
+ *     def gp_Read(self, str infile_name):
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage(__pyx_v_self->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "planarity/full/graph.pyx":217
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+ * 
+ *     def gp_UpperBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("planarity.full.graph.Graph.gp_UpperBoundEdgeStorage", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "planarity/full/graph.pyx":220
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
  * 
  *     def gp_Read(self, str infile_name):             # <<<<<<<<<<<<<<
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
@@ -8034,7 +8034,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_52gp_Read(struct __pyx_
   }
 
   /* "planarity/full/graph.pyx":220
- *         )
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
  * 
  *     def gp_Read(self, str infile_name):             # <<<<<<<<<<<<<<
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
@@ -10566,11 +10566,11 @@ static void __pyx_tp_dealloc_9planarity_4full_5graph_Graph(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_9planarity_4full_5graph_Graph[] = {
-  {"gp_InitGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_5gp_InitGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_4gp_InitGraph},
-  {"gp_ReinitGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_7gp_ReinitGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_6gp_ReinitGraph},
-  {"gp_EnsureEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_9gp_EnsureEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_8gp_EnsureEdgeCapacity},
-  {"gp_GetEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_10gp_GetEdgeCapacity},
-  {"gp_GetN", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetN, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_12gp_GetN},
+  {"gp_EnsureVertexCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_5gp_EnsureVertexCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_4gp_EnsureVertexCapacity},
+  {"gp_EnsureEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_7gp_EnsureEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_6gp_EnsureEdgeCapacity},
+  {"gp_ResetGraphStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_9gp_ResetGraphStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_8gp_ResetGraphStorage},
+  {"gp_GetN", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_11gp_GetN, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_10gp_GetN},
+  {"gp_GetEdgeCapacity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_13gp_GetEdgeCapacity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_12gp_GetEdgeCapacity},
   {"gp_CopyGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_15gp_CopyGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_14gp_CopyGraph},
   {"gp_DupGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_17gp_DupGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_16gp_DupGraph},
   {"gp_FindEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_19gp_FindEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_18gp_FindEdge},
@@ -10578,18 +10578,18 @@ static PyMethodDef __pyx_methods_9planarity_4full_5graph_Graph[] = {
   {"gp_AddEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_23gp_AddEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_22gp_AddEdge},
   {"gp_DynamicAddEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_25gp_DynamicAddEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_24gp_DynamicAddEdge},
   {"gp_DeleteEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_27gp_DeleteEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_26gp_DeleteEdge},
-  {"gp_LowerBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_29gp_LowerBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_28gp_LowerBoundEdges},
-  {"gp_UpperBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_31gp_UpperBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_30gp_UpperBoundEdges},
-  {"gp_IsEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_33gp_IsEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_32gp_IsEdge},
-  {"gp_EdgeInUse", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_35gp_EdgeInUse, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_34gp_EdgeInUse},
-  {"gp_LowerBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_37gp_LowerBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_36gp_LowerBoundEdgeStorage},
-  {"gp_UpperBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_39gp_UpperBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_38gp_UpperBoundEdgeStorage},
-  {"gp_GetNextEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNextEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetNextEdge},
-  {"gp_GetNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_43gp_GetNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_42gp_GetNeighbor},
-  {"gp_GetFirstEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_45gp_GetFirstEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_44gp_GetFirstEdge},
-  {"gp_LowerBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_47gp_LowerBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_46gp_LowerBoundVertices},
-  {"gp_UpperBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_49gp_UpperBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_48gp_UpperBoundVertices},
-  {"gp_IsVertex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_51gp_IsVertex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_50gp_IsVertex},
+  {"gp_GetFirstEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_29gp_GetFirstEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_28gp_GetFirstEdge},
+  {"gp_LowerBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_31gp_LowerBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_30gp_LowerBoundVertices},
+  {"gp_UpperBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_33gp_UpperBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_32gp_UpperBoundVertices},
+  {"gp_IsVertex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_35gp_IsVertex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_34gp_IsVertex},
+  {"gp_GetNextEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_37gp_GetNextEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_36gp_GetNextEdge},
+  {"gp_IsEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_39gp_IsEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_38gp_IsEdge},
+  {"gp_GetNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetNeighbor},
+  {"gp_LowerBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_43gp_LowerBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_42gp_LowerBoundEdges},
+  {"gp_UpperBoundEdges", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_45gp_UpperBoundEdges, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_44gp_UpperBoundEdges},
+  {"gp_EdgeInUse", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_47gp_EdgeInUse, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_46gp_EdgeInUse},
+  {"gp_LowerBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_49gp_LowerBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_48gp_LowerBoundEdgeStorage},
+  {"gp_UpperBoundEdgeStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_51gp_UpperBoundEdgeStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_50gp_UpperBoundEdgeStorage},
   {"gp_Read", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_53gp_Read, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_52gp_Read},
   {"gp_Write", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_55gp_Write, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_54gp_Write},
   {"gp_ExtendWith_Planarity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_57gp_ExtendWith_Planarity, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_56gp_ExtendWith_Planarity},
@@ -10811,7 +10811,7 @@ static int __Pyx_modinit_function_import_code(__pyx_mstatetype *__pyx_mstate) {
     if (unlikely(!__pyx_import_signature)) __PYX_ERR(0, 1, __pyx_L1_error)
     #endif
     const char * __pyx_import_name = __pyx_import_signature + 314;
-    void (**const __pyx_import_pointers[])(void) = {(void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DupGraph, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_New, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DrawPlanar, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K23Search, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K33Search, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K4Search, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Outerplanarity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetN, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToFile, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Read, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToString, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Write, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_CopyGraph, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_TestEmbedResultIntegrity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetVertexDegree, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_InitGraph, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_IsEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_IsVertex, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_FindEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_AddEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DynamicAddEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Embed, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Free, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ReinitGraph, (void (**)(void)) NULL};
+    void (**const __pyx_import_pointers[])(void) = {(void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DupGraph, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_New, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DrawPlanar, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K23Search, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K33Search, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K4Search, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Outerplanarity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetN, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToFile, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Read, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToString, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Write, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_CopyGraph, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_TestEmbedResultIntegrity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_GetVertexDegree, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_IsEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_IsVertex, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_FindEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_AddEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_DynamicAddEdge, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Embed, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_Free, (void (**)(void))&__pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage, (void (**)(void)) NULL};
     void (**const *__pyx_import_pointer)(void) = __pyx_import_pointers;
     const char *__pyx_import_current_signature = __pyx_import_signature;
     while (*__pyx_import_pointer) {
@@ -11306,85 +11306,85 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
   /* "planarity/full/graph.pyx":44
  *             graphLib.gp_Free(&self._theGraph)
  * 
- *     def gp_InitGraph(self, int n):             # <<<<<<<<<<<<<<
- *         if graphLib.gp_InitGraph(self._theGraph, n) != OK:
- *             raise RuntimeError(f"gp_InitGraph() failed.")
+ *     def gp_EnsureVertexCapacity(self, int n):             # <<<<<<<<<<<<<<
+ *         if graphLib.gp_EnsureVertexCapacity(self._theGraph, n) != OK:
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_5gp_InitGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_InitGraph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_5gp_EnsureVertexCapacity, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_EnsureVertexCapacity, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_InitGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_EnsureVertexCapacity, __pyx_t_2) < (0)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "planarity/full/graph.pyx":48
- *             raise RuntimeError(f"gp_InitGraph() failed.")
- * 
- *     def gp_ReinitGraph(self):             # <<<<<<<<<<<<<<
- *         graphLib.gp_ReinitGraph(self._theGraph)
- * 
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_7gp_ReinitGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_ReinitGraph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_ReinitGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 48, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":51
- *         graphLib.gp_ReinitGraph(self._theGraph)
+ *             raise RuntimeError(f"gp_EnsureVertexCapacity() failed.")
  * 
  *     def gp_EnsureEdgeCapacity(self, int new_edge_capacity):             # <<<<<<<<<<<<<<
  *         if graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity) != OK:
  *             raise RuntimeError(
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_9gp_EnsureEdgeCapacity, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_EnsureEdgeCapacity, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_7gp_EnsureEdgeCapacity, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_EnsureEdgeCapacity, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_EnsureEdgeCapacity, __pyx_t_2) < (0)) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_EnsureEdgeCapacity, __pyx_t_2) < (0)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":54
+ *                 f"{new_edge_capacity}.")
+ * 
+ *     def gp_ResetGraphStorage(self):             # <<<<<<<<<<<<<<
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)
+ * 
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_9gp_ResetGraphStorage, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_ResetGraphStorage, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_ResetGraphStorage, __pyx_t_2) < (0)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "planarity/full/graph.pyx":57
- *                 f"{new_edge_capacity}.")
- * 
- *     def gp_GetEdgeCapacity(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
- * 
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_11gp_GetEdgeCapacity, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetEdgeCapacity, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetEdgeCapacity, __pyx_t_2) < (0)) __PYX_ERR(0, 57, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":60
- *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+ *         graphLib.gp_ResetGraphStorage(self._theGraph)
  * 
  *     def gp_GetN(self)-> int:             # <<<<<<<<<<<<<<
  *         """
  *         Returns the number of vertices in the graph.
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_int) < (0)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_13gp_GetN, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetN, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[4])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_int) < (0)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_11gp_GetN, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetN, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetN, __pyx_t_4) < (0)) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetN, __pyx_t_4) < (0)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "planarity/full/graph.pyx":66
+ *         return graphLib.gp_GetN(self._theGraph)
+ * 
+ *     def gp_GetEdgeCapacity(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
+ * 
+*/
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_13gp_GetEdgeCapacity, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetEdgeCapacity, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[4])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetEdgeCapacity, __pyx_t_4) < (0)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "planarity/full/graph.pyx":69
- *         return graphLib.gp_GetN(self._theGraph)
+ *         return graphLib.gp_GetEdgeCapacity(self._theGraph)
  * 
  *     def gp_CopyGraph(self, Graph src_graph):             # <<<<<<<<<<<<<<
  *         # NOTE: this is interpreting the self as the dstGraph, i.e. copying
@@ -11496,185 +11496,185 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
   /* "planarity/full/graph.pyx":156
  *         return graphLib.gp_DeleteEdge(self._theGraph, e)
  * 
- *     def gp_LowerBoundEdges(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)
- * 
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_29gp_LowerBoundEdges, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_LowerBoundEdges, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[12])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_LowerBoundEdges, __pyx_t_2) < (0)) __PYX_ERR(0, 156, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":159
- *         return graphLib.gp_LowerBoundEdges(self._theGraph)
- * 
- *     def gp_UpperBoundEdges(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)
- * 
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_31gp_UpperBoundEdges, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_UpperBoundEdges, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[13])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_UpperBoundEdges, __pyx_t_2) < (0)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":162
- *         return graphLib.gp_UpperBoundEdges(self._theGraph)
- * 
- *     def gp_IsEdge(self, int e):             # <<<<<<<<<<<<<<
- *         return (
- *             (e >= self.gp_LowerBoundEdgeStorage()) and
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_33gp_IsEdge, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_IsEdge, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[14])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_t_2) < (0)) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":169
- *         )
- * 
- *     def gp_EdgeInUse(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_35gp_EdgeInUse, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_EdgeInUse, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[15])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 169, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_EdgeInUse, __pyx_t_2) < (0)) __PYX_ERR(0, 169, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":177
- *         return graphLib.gp_EdgeInUse(self._theGraph, e)
- * 
- *     def gp_LowerBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
- * 
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_37gp_LowerBoundEdgeStorage, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_LowerBoundEdgeStorage, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[16])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_LowerBoundEdgeStorage, __pyx_t_2) < (0)) __PYX_ERR(0, 177, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":180
- *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
- * 
- *     def gp_UpperBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
- * 
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_39gp_UpperBoundEdgeStorage, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_UpperBoundEdgeStorage, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[17])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_UpperBoundEdgeStorage, __pyx_t_2) < (0)) __PYX_ERR(0, 180, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":183
- *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
- * 
- *     def gp_GetNextEdge(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_41gp_GetNextEdge, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetNextEdge, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[18])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetNextEdge, __pyx_t_2) < (0)) __PYX_ERR(0, 183, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":191
- *         return graphLib.gp_GetNextEdge(self._theGraph, e)
- * 
- *     def gp_GetNeighbor(self, int e):             # <<<<<<<<<<<<<<
- *         if not self.gp_IsEdge(e):
- *             raise RuntimeError(
-*/
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_43gp_GetNeighbor, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetNeighbor, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[19])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
-  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
-  #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetNeighbor, __pyx_t_2) < (0)) __PYX_ERR(0, 191, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "planarity/full/graph.pyx":199
- *         return graphLib.gp_GetNeighbor(self._theGraph, e)
- * 
  *     def gp_GetFirstEdge(self, int v):             # <<<<<<<<<<<<<<
  *         if not self.gp_IsVertex(v):
  *             raise RuntimeError(
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_45gp_GetFirstEdge, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetFirstEdge, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[20])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_29gp_GetFirstEdge, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetFirstEdge, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[12])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetFirstEdge, __pyx_t_2) < (0)) __PYX_ERR(0, 199, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetFirstEdge, __pyx_t_2) < (0)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graph.pyx":207
+  /* "planarity/full/graph.pyx":164
  *         return graphLib.gp_GetFirstEdge(self._theGraph, v)
  * 
  *     def gp_LowerBoundVertices(self):             # <<<<<<<<<<<<<<
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_47gp_LowerBoundVertices, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_LowerBoundVertices, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[21])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_31gp_LowerBoundVertices, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_LowerBoundVertices, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[13])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_LowerBoundVertices, __pyx_t_2) < (0)) __PYX_ERR(0, 207, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_LowerBoundVertices, __pyx_t_2) < (0)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graph.pyx":210
+  /* "planarity/full/graph.pyx":167
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVertices(self):             # <<<<<<<<<<<<<<
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_49gp_UpperBoundVertices, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_UpperBoundVertices, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[22])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_33gp_UpperBoundVertices, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_UpperBoundVertices, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[14])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_UpperBoundVertices, __pyx_t_2) < (0)) __PYX_ERR(0, 210, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_UpperBoundVertices, __pyx_t_2) < (0)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graph.pyx":213
+  /* "planarity/full/graph.pyx":170
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
  *     def gp_IsVertex(self, int v):             # <<<<<<<<<<<<<<
  *         return (
  *             (v >= self.gp_LowerBoundVertices()) and
 */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_51gp_IsVertex, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_IsVertex, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[23])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_35gp_IsVertex, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_IsVertex, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[15])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_IsVertex, __pyx_t_2) < (0)) __PYX_ERR(0, 213, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_IsVertex, __pyx_t_2) < (0)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":177
+ *         )
+ * 
+ *     def gp_GetNextEdge(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_37gp_GetNextEdge, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetNextEdge, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[16])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetNextEdge, __pyx_t_2) < (0)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":185
+ *         return graphLib.gp_GetNextEdge(self._theGraph, e)
+ * 
+ *     def gp_IsEdge(self, int e):             # <<<<<<<<<<<<<<
+ *         return (
+ *             (e >= self.gp_LowerBoundEdgeStorage()) and
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_39gp_IsEdge, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_IsEdge, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[17])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_IsEdge, __pyx_t_2) < (0)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":192
+ *         )
+ * 
+ *     def gp_GetNeighbor(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_41gp_GetNeighbor, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_GetNeighbor, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[18])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_GetNeighbor, __pyx_t_2) < (0)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":200
+ *         return graphLib.gp_GetNeighbor(self._theGraph, e)
+ * 
+ *     def gp_LowerBoundEdges(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)
+ * 
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_43gp_LowerBoundEdges, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_LowerBoundEdges, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[19])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_LowerBoundEdges, __pyx_t_2) < (0)) __PYX_ERR(0, 200, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":203
+ *         return graphLib.gp_LowerBoundEdges(self._theGraph)
+ * 
+ *     def gp_UpperBoundEdges(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)
+ * 
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_45gp_UpperBoundEdges, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_UpperBoundEdges, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[20])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_UpperBoundEdges, __pyx_t_2) < (0)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":206
+ *         return graphLib.gp_UpperBoundEdges(self._theGraph)
+ * 
+ *     def gp_EdgeInUse(self, int e):             # <<<<<<<<<<<<<<
+ *         if not self.gp_IsEdge(e):
+ *             raise RuntimeError(
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_47gp_EdgeInUse, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_EdgeInUse, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[21])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_EdgeInUse, __pyx_t_2) < (0)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":214
+ *         return graphLib.gp_EdgeInUse(self._theGraph, e)
+ * 
+ *     def gp_LowerBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+ * 
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_49gp_LowerBoundEdgeStorage, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_LowerBoundEdgeStorage, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[22])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_LowerBoundEdgeStorage, __pyx_t_2) < (0)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "planarity/full/graph.pyx":217
+ *         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
+ * 
+ *     def gp_UpperBoundEdgeStorage(self):             # <<<<<<<<<<<<<<
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
+ * 
+*/
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_5graph_5Graph_51gp_UpperBoundEdgeStorage, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Graph_gp_UpperBoundEdgeStorage, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graph, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[23])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
+  #endif
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, __pyx_mstate_global->__pyx_n_u_gp_UpperBoundEdgeStorage, __pyx_t_2) < (0)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "planarity/full/graph.pyx":220
- *         )
+ *         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
  * 
  *     def gp_Read(self, str infile_name):             # <<<<<<<<<<<<<<
  *         # Convert Python str to UTF-8 encoded bytes, and then to const char *
@@ -11961,33 +11961,33 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
 static int __Pyx_InitConstants(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
   {
-    const struct { const unsigned int length: 10; } index[] = {{1},{29},{44},{50},{49},{49},{48},{54},{49},{34},{39},{36},{25},{50},{32},{31},{31},{45},{4},{179},{77},{38},{1},{2},{2},{1},{8},{13},{7},{6},{9},{2},{50},{22},{38},{21},{57},{43},{55},{48},{45},{45},{22},{16},{17},{24},{30},{22},{9},{50},{24},{14},{15},{22},{21},{22},{17},{23},{23},{22},{5},{8},{5},{23},{25},{16},{18},{19},{32},{34},{17},{23},{18},{14},{27},{30},{29},{29},{28},{34},{29},{17},{24},{21},{13},{20},{20},{24},{18},{15},{17},{30},{24},{27},{13},{20},{33},{30},{24},{27},{14},{13},{5},{2},{20},{4},{13},{15},{8},{1},{18},{12},{18},{18},{1},{10},{12},{7},{8},{1},{12},{10},{12},{13},{26},{28},{11},{17},{12},{8},{21},{24},{23},{23},{22},{28},{23},{11},{18},{15},{7},{14},{14},{18},{12},{9},{11},{24},{18},{21},{7},{14},{27},{24},{18},{21},{8},{8},{11},{3},{13},{5},{1},{8},{4},{9},{10},{1},{8},{17},{9},{12},{14},{20},{3},{11},{12},{10},{17},{13},{15},{6},{4},{12},{10},{12},{19},{9},{22},{23},{8},{11},{12},{1},{5},{1},{6},{5},{976},{38},{27},{14},{27},{27},{130},{14},{44},{44},{44},{45},{42},{69},{119},{117},{27},{28},{80},{14},{114},{39},{11},{44},{50},{44},{44},{9},{64},{57},{49}};
-    #if (CYTHON_COMPRESS_STRINGS) == 3 && __PYX_LIMITED_VERSION_HEX >= 0x030e0000 /* compression: zstd (2412 bytes) */
-const char* const cstring = "(\265/\375`\021\030\025K\000\032_\020\024E\020q\335\000\000@\202\032\005\024\254@\005*P\201\nT\240\002\025\322\346\336\030d\247dK\245z\345\355sr\032Y\017X\270nc\224\177\241\311\314y\204\260v\316\231\010\202i\275C\001\247\356\342|\333\200\344\275'2\024\001*\0010\001\344%\t\251\240a \t\004=<\302>\230\347u\273\320\225\375\006/\210\213A0\213\270\035O\327q\255]\266\261\213W\313\262\327\264\034\273\337\223\262\353yfy\264\017sI\323\366\377t\337\340\355\360\0279\317\335\375\332_\256c\337g\315/)\332\356\313tG\333\277|\377p\223\256\373\022\257\327\336\347\360s\221\376\372\377i\027\272\347\033\352\020\032I\221R\227w\375\277\035j\327\0165\230c\377\352/\2424\027Q\372\353\244\350i\335%!oM\203|\337\027|\207\020n\327\373\265?=\372\373\363\351\224\202J\351q\345\222\360\375\275\006/H\343&\017\250a\3540\357\277\371\276_\344\327\357\223\356\276\300\256;\027\367\317\242\254\213\257\256\307\324\330\365'QB\240\330\327\263f\2012\224\360\272\223\377#{\3469L\255\344>\272\261\277Wnl\314\035vA\256\177Ms1\366m)\030\337\375\373+\272\277k\032\027\277+\376\027\237\216}\327\366w\207\351\317\267K\246/\250\303\235K\236\032\303v\027\361K\304/\276\354\322_\356\037\363\215\303\257c\257\371\376\244\330\305\317#\356\217\333|\316\033NP\230V-\317D\213e:\221\030y\230\3242\255TH)\253\326K\257\360\377\366\250fKa\\\002\245\004J\013\005E:\231x#\024\nj\034SL?$\275^}\257[\373\333^\303r\027?\213\024M\272^\021O^w\230\036\235\250\241\370.\245B \025\226\330Z\341\237\277\307\370\363hYF\351p\227H\254\223W\n\201V(\245\021\242\225Gb\255H\255\024\224\225\207\362N)\025o5\302\254\023\357T\032\221LL\220Z&\023\246\023N\3212\211\274\224'\302\244\223\021\t\267<2$DI\3156z.\204!\371\272\200\361\027\346M\333\375\217p\022\274\030\353\217\004u\307\370\376\220\314/\r^\221\203~{:Y\206\340\t\265+\2077w\335K\374\273\253\200Y\257V4\312T\353\242+\006\333\032\365k\372\373\276K_\237|\266\277\277<fQ'=\357|\n7}[\226\271m$\273\255\277\016\365\310#\252\020B\273\035\262\302\3257\237\225\263\232\\\316\231Y\222\226\240\377\314g\215\313:SE\250\322""\006h\353\364\316\031YU\251 r\332A\301Su\322(\027\250\027\265C6U&I\3713\267o\355\250\014R\026\347\006D\271\311h\354L\341\313Z\001L\313F\323z\246\005\023\344\000{\000\323f\316\313\351\242Tp\202N\000'\306\264\261\034\350h\td<\332\0007\262\nRe\240!\224\203Z\230\251\"\265#\035\241\037TD\365\301~x\253fe\221n\322K\212A\303j0\255g\303;9\316\231Y+?0-33\233\235\022AG\2532#\2301XB,\035\0038\314\215\213\271\200\203\3458\216\363\\\215\3438\216\3438\216\3438\316s(\216\013\2018\216\0035\207m\317\311\333\t\261p{\216}\267\363\371\346B\300-\322\270\220\n4\257\3110\323h\344H\202X\307\276\327\037c\217}\027{\327\234\304_\367\370\025j\317;\371u\347\342\376\033\3445\035fr6b<\212\243\307\203W4&1\337Y\206\261\314\313\260\337\370c\035\356\027\337\256}\3020\214?N\2760(~\\{X\016K:,\320\rzAm&g\344\004MPKV;i\206\313\236\312\215G\373Q?\200\260 \230VE\n6\005\007;sPfB\314\214y\222&\010\246E\304\004`\202P\255\233\365\262\236\322\220\351\200\203U\225\",\0048\332\313\203M\353\371\\\310\334M+\222\200\335\224\375\322Q\300J(=\313\001\003\253j%\201\2607\321m\206Z\222~4\243\036\022h\30792?f\007\357\224\200i/\351\014\025\200\2560\035`ZJN\211 \305\262n&H\330\020\225\020\362\271\261V\221\006g\313\364L\017\037(\013\363\301\000\216\300\r\021\013-g\365\352\004\265\005:2\241\375hP?tl\007B\242\027\034\260(\312\004\234\024DU\350H\246\274\224\036\035-\013><s\006\013\007\315\240\335)\242\324t\264\003TN\260'X,\313\204\315h4\227\225\2456H[\250\207v\322O\n\272\254G\313\271en\255\325[Gy\005\255'\252F\355R\217\226\234\377C\251f5\204\010\313\200\275\230\243\362Sj<\332[\204\033\207\025\300\372\241~\023Z8i&\375|(\230`iRj\312\r\242\264\003\035\235\237SF\371i\371\234\234\323\233\027\365\204r\240\263\263\373`\003\201\364\2501\261B\306\314\314\310\210H\222$\351A\010\302\220,s\220\363\001\"y@\310r\030\004\r4\206\030D\204\204(\020\031III\322\032\264\000*\365-L\207\343\332D\000\206\321QC\343\243\274\017\233@TsQ\373\2467\023N\316\225\2171\335Ka\234\177A44#\305\360E\266f\372v\316\271\354q\016q\3618\036\371\340\253\327a\364:\026_P""\\\337\224`\005\331'\225PZ7\314\374\310Y\275\031\332\nUf\nG?@@\235#\003\014=V%DL\343\314)t\275\234\262~\270\276H&\302\351\264\017q\244$E\301\336\327\030\321\331\006\2357e\261\317\245#\256\025#\036j\374I\314\345\204} V`\376\320\335\341\263\337\3719\024\231\0318\250\305\367F\350t^.?\233p\260\262M\312\233\024\256,\007#\r\2640\212C\275\004\2220\320S\305C\266\205\335\t4\306=\"\200\254G\222\317\370\240\235?\010\266\225Q@N\014\275e\034N\364\270v\275\005\025es\335\205\314\032o\315k-L\330\212\303\006M\253eN&\243\314\311^\374C)w\205.\256\301\002\313\234\343\333\\\260\200V\370\265\034uG\227F>\177\361\240{\251\r\302\314<\347\255{s\221\\/_l\312\202*\323R8|\006\"\377\031\320F$\262\344~0\342\246\375 \224\227]e\027U\362\320\366B\277\335\254S\2504%\265\246W\0236YTZ\207'\006g\254\203&y\366\266\2019\336T\253\346C\202p5$\021\226\260OP=\020\016F\227bj\231\265\263\036:\354\3655m\260\313N\257\n^\020AF\347\267\210\276\330@\240RE\260\016\342\263\022\343\205t&\036\272\250e\252@\tH$\367\322\360\311\240\242\222\225)\320\027n\037\304\027\355\326\223\266\202\232\312A\241\"\227)\020{\250\335/\262\0349\332W(\032\227\363+J\226\322\310\373\017k0\252\261\033O\177w\337\356\222\024\354\322\271I\262\236Z\304\224\\\356V\006\266\325 \360\251\245e\2463_\345\354\3673\373E\347Z\332\0235\361\325c]\313\032\333\234v\325\333\256\352\366\336\373_\340\236\016w\263]hr\201\314\261?o+\335\313\352\336\307\236t\273\227\336\251\207o\227\274\353y\371\325\177\332\336\024\276\341\363\277k\3374\277\355\374\363\374o\217\201iP\212D\241G\266UZ\241\254\226\201\313\317?\256Oi\025\327%\326\232\202>\202t\242\215k\316t\315\367\313\240\002\326\216e\024\212\236\005wr,\210Rv\022\022\2472\023\010&A\"\307)\345\314R\366\000\352\214\353\023u\003\022/\034\247\202`O\245W\246W\2270\263.\307\000U\241\n\204\243\000\225\276\256\317\025\022x\035\260<c\301\360\243\3521q\257\000\373\177`\017\300&\t\321WA^\334!S\225\027Wv~\256w_?\224q`\212R\241\360\352B\004m\263qA\004/\006\035o\354\321\250b\225}\371i\225\232\207\371\336\237\231\301\205$T\223\024y""\032\360\303\003\220\024\206\203\324\005\006JSB\2662)\016\033\331\322\300\245\326*\020\006\340\274\332b\177\236\202 \352\237 \247\207\253\325?\005\341\021x\357\224\2768\022\332|\211\320\024<n\007\020RR\241\225Q\210'b>\223\355W\001\274o\007\347\201\027\233\271_\215I\230Zb\332\333v\275\215Y\203\031G\270\244\321$_\353\211@\334\347\037z\332\266!M\t7\240\035\177!\301\"7\332'K\216\273\214\177-o\250\"\2115\344\231\323\201\3473\345\\-\245\226\364%\312\223\261\233\226T7\331\367\007a\205\352E\312E-\205~A\002'\033\217\200 \354Z\355\223\263\3162\275)\340\253\344\200t!1\201\202\220\230\035\325\247%\345u\200\222z\377\245d#\211\330q \311\013d\033\361!\323\255\243C\367\031\234h\307L\0205\241a\233\007\363\330\0345\004p\025\246U\325\343^\031\354\237\217\352\036\002\016\276\245`Ed\303\347;\221\236:\230\342$k)\030*Th\346%\311\354!\005\343\031\017\014\255AK+\325\346D$o:(\031_\002\n\014e\000\202\031";
-    PyObject *data = __Pyx_DecompressString(cstring, 2412, 3);
+    const struct { const unsigned int length: 10; } index[] = {{1},{29},{44},{50},{49},{49},{48},{54},{49},{34},{39},{36},{25},{50},{32},{31},{31},{45},{4},{179},{77},{38},{1},{2},{2},{1},{8},{13},{7},{6},{9},{2},{50},{22},{38},{21},{57},{43},{55},{33},{48},{45},{45},{16},{17},{24},{30},{22},{9},{50},{24},{14},{15},{22},{21},{22},{17},{23},{23},{22},{5},{8},{5},{23},{25},{16},{18},{19},{32},{34},{17},{23},{18},{14},{27},{29},{30},{29},{29},{28},{34},{29},{17},{24},{21},{13},{20},{20},{24},{15},{17},{30},{24},{27},{13},{26},{33},{30},{24},{27},{14},{13},{5},{2},{20},{4},{13},{15},{8},{1},{18},{12},{18},{18},{1},{10},{12},{7},{8},{1},{12},{10},{12},{13},{26},{28},{11},{17},{12},{8},{21},{23},{24},{23},{23},{22},{28},{23},{11},{18},{15},{7},{14},{14},{18},{9},{11},{24},{18},{21},{7},{20},{27},{24},{18},{21},{8},{8},{11},{3},{13},{5},{1},{8},{4},{9},{10},{1},{8},{17},{9},{12},{14},{20},{3},{11},{12},{10},{17},{13},{15},{6},{4},{12},{10},{12},{19},{9},{22},{23},{8},{11},{12},{1},{5},{1},{6},{5},{993},{38},{27},{14},{27},{29},{27},{130},{14},{44},{44},{44},{45},{42},{69},{119},{117},{27},{80},{11},{14},{114},{39},{44},{50},{44},{44},{9},{64},{57},{49}};
+    #if (CYTHON_COMPRESS_STRINGS) == 3 && __PYX_LIMITED_VERSION_HEX >= 0x030e0000 /* compression: zstd (2409 bytes) */
+const char* const cstring = "(\265/\375`P\030\375J\000\212^\364\023E\020q\335\000\000@\202\032\005\024\254@\005*P\201\nT\240\002\025\322\346\336\030d\247dK\245z\345\355sr\032Y\017X\270nc\224\177\241\311\314y\204\260v\316\231\010\202i\275C\001\247\356JX\366LZ\364\177\031\022\001(\001-\001!\0254\014$\201\240\207G\330\007\363\274n\027\272\262\337\340\005q1\010f\021\267\343\351:\256\265\3136v\361jY\366\232\226c\367{Rv=\317,\217\366a.i\332\376\237\356\033\274\035\376\"\347\271\273_\373\313u\354\373\254\371%E\333}\231\256\307\353\321\366/\337?\334\244\353\276\304\353\265\3679\374\\\244\277\376\177\332\205\356\371\206:\204FR\244\324\345]\377o\207\332\265C\r\346\330\277\372\213(\315E\224\376:)zZwI\310[\333\367\005\337!\204\333\365~\355O\217\376\376|:\245\240Rz\\\271$|\177\257\301\013\322\270\311\003j\030;\314\373o\276\357\027\371\365\373\244\273/\260\353\316\305\375\263(\353\342\253\35315v\375I\224\020(\366\365\254Y\240\014%\274\356\344\377\310\236y\016S+\271\217n\354\357\225\033\033s\207]\220\353_\323\\\214}[\n\306w\377\376\212\356\357\232\306\305\357\212\377\305\247c\337\265\375\335a\372\363\355\222\351\013\352p\347\222'\273\213\370%\342\027_v\351/\367\217\371\306\341\327\261\327|\177R\354\342\347\021\367\307m>\347\r'(L\253\226g\242\3052\235H\214<Lj\231V*\244\224U\353\245W\370\177{T\263\2450.\201R\002\245\205\202\"\235L\274\021\n\0055\216)\246\357u\353\333^\303r\027?\213\024M\272^\021O\336\244;L\217j(\276K\251\020H\205%\266V\370\347\3571\376<Z\226Q:\334%\022\353\344\225B\240\025Ji\204h\345\221X+R+\005e\345\241\274SJ\305[\2150\353\304;\225F$\023\023\244\226\311\204\351\204S\264L\"/\345\2110\351dD\302-\217\014\tQR\263\215\236\013aH\276.`\374\205y\323v\377#\234\004/\306\372#A\3351\276?$\363K\203W\344\240\337\236N\226!xB\355\312\341\315]\367\022\377\356*`\326\253\025\215\252u\321\025\203m\215\352h\337\367]\372\372\244\246\177\327'>\333\337_\036\263\250\223\236w>\205\233\276-\313\3346\222\335\326_\207z\344\021U\010\241\335\016Y\341\352K^\222\347\314,IK\320\177\346\263\306e\235\251\"Ti\003\264uz\347\214""\254\252T\0209\355\240\340\251:i\224\013\324\213\332!\233*\223\244\374\232\333\267vT\006)\213s\003\242\334d4v\246\360e\255\000\246e\343\321z\246\005\023\344\000{\000\323j\316\313\351\242Tp\202N\000'\306\264\261\034\310\264\0044\035m\200\033Y\005\2512\320\020\312A-pV?SEj&\035\241\037TD\365\301~x\253\307\312\"\335\244\227\024\203\007\353\201i=\033\336\311q\316\314Z\371\201i\231\231\331\354\224\0102\255\312\214`\306`\t\261d\006p\230\033\027s\001\007\313q\034W\3438\216\3438\216\3438\216\343<\207J\205@\034\307\201\232\303\266\347\344\355\204X\270=\307\276\333\371|s!\340\026i\\H\005\232\327d\230i4r$A\254c\337\353\217\261\307\276\213\275kN\342\257{\374\n\265\347\235\374\272sq\377\r\362\232\01639\0331\036\305\321\343\301+\032\223\230\357,\303X\346e\330o\374\371\326\230o\327>a\030\306\037'_\030\024?\256=,\207%\2551,,\320\rzAm\346\310\t\232\240\226\254v\322\014\227=\225\233\216\366\243~\000aA0\255\212\024l\n\016v\346\240\324\204\230\032\363$M\020L\213\210\t\300\004\241Z7\353e=\245!\323\001\007\253*EX\010p\264\227\007\233\326\363\271\240\271\233V$\001\273)\373\245\243\200\225Pz\226\003\006V\325J\002ao\242\333\014\265$\375hF=$\320\31492?f\007\357\224\200i/\351\014\025\200\2560\035`ZJN\211 \305\262n&H\330\020\225\020\362\271\261V\221\006g\313\364L\017\037(\013\363\301\000\216\300\r\021\013\023\324\026\350\310\204\366\243A\375\320\261\035HK\242\027\034\260(\312\004)\210\252\320\021N\207\246\274\224\035\231\226\005\037\2369\203\205\203j\320\356\024Qzd\332\001*'\330\023,\226e\302j.+Km\220\266P\017\355\244\237\024t\331\216\226s\323\334Z\253\267\216\362\nZOT\017\265K=Zr\376\017\245\232\325\020\",\003\366b\216\312O\351\321\321\336\"\3348\254\000\326\017\365\233\320\302I5\351\347C\301\004K\223\322\243\334 J3\350\350\374\2342\312O\313\347\344\234\336\274\250'\224\003\235\235\335\007\373Y9\253\311%\201\371\250A\255B\306\320\314\310\210$I\222\341A\010\002\221,sN\353\0012\2018\311b\030\004\t5\306\020c\204\204(\210&)'i\r\324\003*\372\033g\232\373P!(\340\250\032\032wep\371\260(\201\215J$S""\200\351\307\357\270X\320\034\022\256\210?[\377\336Gc\250\014\353\321\336\335\323\033\273\3722xz\005\221\317a^\223\306&\222\230\332\023\311Ga\326t\277\013HG E\270G\361\325\230\316\307\\\014>2\307\013H5l\346\370;\217\354\264f\014\016\343\311\215w\340\366\322;s=X\350\340\235T\316\214\266O\364\320\315\230]7\036\355\372\316\273\311\325P\304F\005s\221\336\234\267\025|5t\325\371\"\"\376\316\212\026\031\254#1\276\021\221:\307C\2371>\210\252Q\344a\036\227e\206\363\014\2300\212C=\r\252\260){\342mf\304\357\004>F6HA\0001\3631^\326q\301p\010\345\263H\014(\264\000x\t\211\243\243V\004\212\322\020\000\232p\331\010\263>/\257\026\230B\316\272\201\251\240\212'\223(\016\235f\340\351\t\256\374\375O\251\316\340q\372.\201\260&\370\336]\353\034o3\216F\255\321\367\226\3221\345\3461f\376]d\307\341\"\314\336\374\226\225\321\314\314\271\020?Y$\237\031\320f'B\314\222\304D\023vb\223#\366\0350pR\332\353\243\207\352.#\024B\200\222f\026\323\227\316+\025\243\241\026\003\002s\240\272\037u\2335\300\371\n\325\035&\023\024\266\214\003\021\354\366]\010\216\302@\373q.\350!\303\272\\\276\006\023k\026\200J\357\"Z\035\025\315\257-V\313\240\002\322W\025\340\tR\364J\237\211\230\033%\263\027*\367N;p\324\177\242\014\365\025\242\200/\311M;\2414\335\217\004'w\237\313A\211\225\376!m\032\237\020w\031\256<@\201\313\225\234\324\310\2274\237(\362$\003\236\021S\251\373\370mdo\t\205\331.\347\031\006\030)HO\3707\354A\2322\261\013K\277OsD\343\255\324\017j\354X\365=\327\214X[\320\206\330\255\022\335$z\205\003\216\314\260\022\214\323,Yu7\016\236\235'\235\247\332\024\330Q\267m\005\357\\\010W\215<=\347\016\250\247_\273\004|\200\230\2277\3730\362\265\300\237\312\376\305\010H\000\005\236\037\202\371\035\244q\362:4\375U\351\335\nG\305\315\006\355\036\\\t\240\265\tv\231\314\213\322\001\200\347\302-\236D\253\361\271I\036\204\235o\"\330\035\007]\202d\332Tt\220l\356;b\r:G\300\245\315\204\013\025\007\354o$\211-X\206\350L\243\222\020S\2548\254\306\203\0059\204W\270\254\007\245\201\322p\014\016l\320b>\305\364\325}D5\030\266\014i}l\373""\312q\025\330\361\023\264p\360\202A\351\336\2014\n\030\r\235\354\257\276\302\211\362@\351T\206\332\316Zc\274'U\206\314S\032\242aaT\0241\323\013g\270\235\000\355\010;\2567\312\302O\264\303%\031\227\317lR\217\277\362\230\006\32781l\332 \\u8F\271\216\31269\326\014\267\202\221\330*\327+\330\220urz\261\033\255p\264\202S\220\350@\220\255HL\256\254\336\255#\016a\301\2315|\321\340\310\214e\223\323_D\214\030\356\200-H\337\241\360\026\306\241\236\010r%\351\036,\362\331\376B\2253h]\264\037\366-\022\336\036\271\354\362\265\310\276\203\375a\232\330\036\362:\270\001m<E\222\212\330o\307\237\035\017\211\351}\336\224J\372\254\002\304x\002'\317\333il\211]\222\356Q\366GA\nZ\235\303']\301\330\352\030\227[z\022]\201\274\235X\010BB\370\n\265\253lQlz.\360\215\345@\265p\246\240K\244\221L])T\355WK\225n\006\201b7\003IA0\330\250\267\231\022\300\035\354h@\205{\347\212`\223\3028c \217\3668[\025t\200\332L\356\353l\257\232w\317\243=\t\262\003\255Wt\020\021\3463\202\314K9z\371\222\031\025\224 \224\235\263\004\211\253!\323\360\211\007fmG\245\301\032\220D\362\337\2754\302\337=\001\210\036\223`\006";
+    PyObject *data = __Pyx_DecompressString(cstring, 2409, 3);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #elif (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (2585 bytes) */
-const char* const cstring = "BZh91AY&SY\231<\247\361\000\001\313\177\377\355\376\377\347\377\377\377\377\277\377\377\376\277\377\377\377\300@@@@@@@@@@@@\000@\000`\nY\337\035;u\332\325\233Rn\301\253`\301\n\tR\202\270\016\tMJi1M\225<m\032\251\373CL\200M\0314\324\236I\344LOPy \323\3224\001\352\003jf\243i4{Ti\352i\372\246\231<Q\006L\000\230\000\t\200\000\000\000L\023\000\023\000\000LL\000\000LL@4\320$\0256$\3204\000\000\000h\000\000\000\r\000\000\00044\000\017P\320\022\022M$\311=Dlji\224\375Q\345\036\240\033\32542i\246\200\000\031\000\000\000\000\000\000\000 \311\200\023\000\0010\000\000\000\t\202`\002`\000\t\211\200\000\t\211\210\004\212\021\220\023CQ\220jhd\323 \325=\252x\247\250\032b4\006\206\232\001\240\320\003L\200\006C&\200h\301\000\203\024!+n\320\307\364\367*p=\230\336\024\246=\025&\010\203\3165\262\202\252|V\013J\003\336\001E\377\267\337\360\007\346\372\010\375E\367iO\331f\200\031\002\214\214\200\030W\376K<\237\365\30461\214\032i\266\r\2466\306\232Y0A\272\252\207'j@\025\315\210\010\226Y|\202\351\256`\346\201 \024*\325,hH2\313U\362%\036q7j\000\273\000#pJ\360\244\355\250\n\030\322\345}\024\354:o-e-\202\"P\272\001r\257L<3\277\013!\032\350_N\375\365\227\0353\\\237\327\261\364\305\225]\017\210\275\231p\271\202X\351\311\024\013G\362n\316\233Ai\273\264\346\300/*{\372\316\034c\365\034uB\345\325Z\267Q\363q\360\305Z\303\373fPZ\350\301C|\323\t\343\242\002\325\030\0322%<+Y\222\215H\233\007n\304l+\306\337J\271\231\373\331@1zq\256U\020b\233Y\357v\334\334\302\270\220-\reE\243b\304\213$\204j; \262g\004d\323\345(\362\306\320\316)\331\273r\373_\rT\317\030\224\244\026\267q\264\273\323'\0305\236\326\230\020\324\265\237=\3270XF\254\247G\321x:v\3273w9\272\321\230A\275\277\317\220\275U5?s\240%\353h\333\326\272*\252\315\323\200\316\336\331\207\242d\275\331'\306\370\317\312s\204\221\254Ma\232n\365\262\307Jf\035-\373'W\233w?\277\345\351\254V\302\277h\345\336\347<\235\005q\033\006\322C\030\233\303\010o\361WV\216~\305\315\2566\331\324h\255\360\334(\263\t}T?\221\034\r\036\227\246\333m\267\220\276\026R\236\277\333\265""\034\351\030\007\\\375\211\005=\r7>S\215.#\275 \361\366<\350\206f[w\203A\245\224-}\022\336{\277\253\270_\033\2116\347\023v\333\217?\30772I%\244\371mR\213\270\303\t\345(\302\020UZ\227\263\305\347\2107\303\177A\216\205=\251D%j\355\374\236\r\340(O\2150\306\247 \n\017\277L\321\375\233\215\232c\241\344\244\330H\243{*0+\345U\3246\3458\224:1\267#!\\ \244\254\313\026\202\261I\244\216\257\256\334\027\320\273\244\215\276i\247^k,\241\232\032\332E\020\213\177\032y\016V\254\014\261\234\351\014\270\3656P\263{\222\201'\312\367\211\312r\220\341u\304c\030\256\347\201q\235<\212/~\300\322\024[\017S2C@\\\235*r\034\234\207'#)@\3065\246\273/-\302*\2170O\303\2532\3136]\370-YCez\210\021\013\306\r\354\217w\315\313\274\234\3123P\"\333\345\3756\327\327\364\204BZd\251\231\003!R\326\305T\364\262/Q\322h\215\242\320Ug\335\240\025S\006\233&\263b\rq\262\032\350HHR\022\r\215\275\230jAz}\344\324\240\356l=)\366\3105h\243\241n\351>j\r!\267\305\306\231\306,\264v;\036\335B\013C\333\317\232\371\347\351\373\220[\353\177\2722\344bx\301\260\322\303\27616\005\315\000I\241\025\014D\220[\004\214\361\262mr\357\202[\202\301@\n\r\3761\252\202\212}~\216w2\336]\340\336|\263&\236\346\211\345\351u\237\000\333\236P0u\365Q\350\005\332\245^!\001P\267\266\330\014\023z\352\202\353./\313\370|\371\006Zu\240\367\264*\036\344*\025<\311\031\tl\377\037e!\236\255Q\340\307\301\222\033\rW!\032\027\235\347\234M\017$\000\2474\300\322\t\202\206v\036\264uq\242\223\0343*\210\216\276~\200\016\216\217,a\010*\230I\210\213\036\216\003\000Y\350\341\0320\010\3042\304\217b\001DN\261pI\005a\301\005u,\242\010\217q\235U:\035\250sa\201i\001H7\214\357\252\265k\355\215E\304P\010\016\020\200\231-)%V\023I\215(Y\250\002t\350\344\200\341\332.\026.\0232b\210\321\336J\264\232\022m\t\316\302\242\251\n\023\303\2506\234\007\034\321\235\255\014\312\315\331&\334Zo \326}\3140\33716\3369Xa5\251*6@\"\246\022d\245\245,\205\002dZ\301+\223\003\n]\214<9&dl\200\357\202\227j\323\017\177\263J\213\"E,X\177\221\241E\0305\300\226\330J\320(\356\224\261\241\221\027\251\253""\332\323\362\023\016\350Qg\206\027\314-\276\315\005\362\201)K\027TP*\027\t\335\311B\247\341\326\333m\266\330\306\334\005\204\t\006\243i\344cH\331\233x\223\300Q\223z\341\006\372\325\267\231)\2346\237\035\010f\320\327\013\231^\323\002\353\233\006-.H\330.\312\362\355\3022\022\211\266\026\322\005\317\273\374\235\365\200\336<\213gK\200b\023\030\201\214W\275\321\356\361\261\302\275J\317P\351d\251$\315[5\014%\352\365$\275f\251\312\223\211&I$\222KI!1\234J\265G\222l\325VLmRZ\252\246I*NT\225&\211\033#\315D\274\231d\274\227\220\231\220qY\206\253\347\262i\2616\270\213%K\256+\r\211\305ZV\320\232\211\306\204(\232H\202\0068\261\217d Qh\310\231\004\303\241\366\242p\372\033\202\"\356p\356+H}wK \331\343\251\246j@\241\333\2729\300\222\326\213\342s\335\271\275pK\005\216\375\205\200p~v\217\320\311\010\233Jw\206\247~!P\264G\207\004\030\205\275)|\241\004\212\352W\2151\246\306\333\033wC\"\236)\205lc3\225F\030\372B3m\260m\320\356\233\351\255\215!@v\013*F\030t\231I\007a\247\231\304\261\230\362xu\265\265]\225\323\006\236\000\245\207tx\310\266\354k\274\rB\270\020w\025\027\324\034\341D\"eq\256LL\221!6\n\"\024\020\346C\226\330\024\244\020\247j\203bVm\2327\351\2151\n!\02666\301\203\274\332\005\030\224|\"\317\266\331z\277yVt\026@\2002\256\375\016\030\303\314\017\207\230f\275\002\2568TVWx\255\337\364D\0363\214\312gB\r\241\304\t%\263\211\006\232f\221(\337RI!\330n\335\256&\025\236\212\016\026Qpc\320{\3077\266}\252\026\253Z\345\2070\357\260\230+\217_/\016&6D\304\022AAM,\\\265\240m&\201\r44!\261\203\007\340+<B8\rA`*@9uu6]\340g\022\225bdn\262\314[A\2500\260\332M\216\254c\307!\212Z\341\"K\004\264\020,\270\357Y\225V\210\001\336L\032\221\214x\2166r\350\256\204\315!\256\300\236]5\330\364SB\3250\2602*d\t\204\277\274\020E\027\003\246\243\340p\255\313\222b-\236\366\302\334\340J7\021\325a\313\035\223\215\265\003BY\024H\263XZ\330K\341H\311\205aC\200\350\207XB\025P\005Ma\256\3524\2434\013HUl9E\"\261[\201B\365S\272\202G8\256\234\032m\217\325iUx1:\000\247<\322\326v\3635\371\017Z\363\340\243ZO_T03\352[\324M\222#p""\203(\367\002\222\n\303r]\237\230\022^\014\365\332q\210}z6\310\221\006_\314l\363q\024\020\314\020M\004\020r0m\260^A\006\356\\\305\253\212\tybA\r4m\014\241s<\227\336\014c\313\243`\206\276\202N\006ol|\322~\277\217\313`\216\273\323\355\254Y\205\241\334}(=\241\245\354\257Q\203\001\261\375\253\3750\352/\375\373\206\2004z\353rl\037\260\321E\334\035\357l;\333\177\201\310\027\327\033a\245\350(\365\002\227\017#f\346\360\265?\275\251\376|\245\344\356U\3103;\314\355FC3\316\357\230Y\275\320\257\341iL\010\373\272\265\315p\376\303\364qf0\340\215\270d9\260\377\026A\302\304~E\255\374\326\371\377r\336F\350\216C\305\304\322c\255\315^\\\025\371\310\2611\256\224E|I\"\276\241\017f\307\323V\253\274\376\017\262\263\244\326\366<\352i+\2164\361\326=\r$ezA\020\344\312*\330E\020;\313t\210\234W\334\324\322\255]\243\362*\235\326\361vi|p`wA\233c\260\223\357\355\321\363T\243\247sj\226\314\020x.s_\204\207\334\267\326\351\370\335\251S\202\336\316\307\247\014/\342\267\207\237\261\275\376X\332\237\\\356\276\005\023h\355\330\010\263v\257[\317\307'\333\004'/\265>\301\032\017U\004\023zI\347\230y0\367D\311Y\304u\256^5\321f\212\261\355\260WD\225\024-P\024E?\305e\014 \203XvaR\240R\201\332\2450\313\230Q\014\014\253\002 0|\275\030\261\256\013\377\305\334\221N\024$&O)\374@";
-    PyObject *data = __Pyx_DecompressString(cstring, 2585, 2);
+    #elif (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (2601 bytes) */
+const char* const cstring = "BZh91AY&SYR\277\232\267\000\001\313\377\377\355\376\377\347\377\377\377\377\277\377\377\376\277\377\377\377\300@@@@@@@@@@@@\000@\000`\n}\327\307DZ\325\233I\000\304\004!\020\240\240\260}w\004\222B\231\252x\224\366\230*\177\243&Bd\247\350\301(\300@hl\240cP\000\3654\321\2654\365\033P\315\252\036SO\3254\311\344\2102`\004\300\000L\000\000\000\002`\230\000\230\000\002b`\000\002bb\002$\236\246\223\0024d\304\310\320\3024\311\210\311\202\014\200\304\304\001\200\000\004\304\320i\220\301\240\002BD!&\232\217I\355\024\362\237\251\032h\032\036\246\206\2324\000\000\000\000\000h\014F@\000\000*\232\002`\r\r2\004\321\204\3040\230\000&&\214\002`CCL\t\2040\0040\215\030\t\024&)\202\006\243&\204\323M2i1\252{S\024\375H4\304\310\001\223@4\032\000\000\032\0004\320\016(\301\216\370\261f\257p\350s}\354\254\026\347\363\271j\272\030\305\205\332\363\336l`\344\177\036p8@\200\211\240\005\200\253\267\257\213\001B\002p\222Qq\230\026\"\0062@\006 ,\0312\000\014\326a\013FO\373\001\r\214c\006\23046\230\333\032iet\033\312\363\207\324H\002tb\002&l\327\222\013\250\273\241\335\201 \024,\325,jH4h\325|\211G\240M\332\200.\301\004nR\274'l\220P\306\227\027\336\251\230\357\336Z\312\333\004D\251t\002\345=0\361R\3743B3\251}|\027\314\273\277E\311\375;^\270\377s\347\017\210\301\241\267\334\202\001\320\263\024\213\247\031\267\014\372M\350;\334r\3027\211\237\376\264\207\032{\254\366\253\256]SV\352>F>(\253X\177\\\212\213]X(o\232aLs\300Z\243\003>\202T\302k\"Q\261\024`\355\330\215\204\361\267\326\235\014\275\335\020\014^\234g+\0102\016\350\313G\267'\216\274U\205\304m\253\215\236|[-\233\024i(\242\331\317I\251\177)\251X,\363+\\\277\202\376\272pl\262g\314l\346\013\273yT\030'Ba\303\222\014\223\302\314W\250\322u\375\207\304d\347\0255v\345\2627JM2FE\001\005\333\335\2078\322y\347\231;\306vD\276\313\021C\244\305\246\215G\\\322\334\350E\346\235\001\2675\031j\n\243\316p\314\306Bz\022\237\271x\267\316\235\212\237j\341\325\331\307\321\357y\273\363\025\260\237\3479\267\273\307\227\244\234F\301\264&\3046&\360\302\033\3748_O\231\302""\300\332\333\3348\272h\342\006\351E\230L7\350|\304uM\036\307\262\333m\267\221;3V\276\337\326\265\035\t\030\007]?$\202\276\236\233\2371\304\227\t\347H<\235\257F!\221\243m`\363\224\024\256\3750>\377{g\254k\213\201\227[\201v\027\r\017\332~\206ffju/5Y7P\206\222\224a\010+-K\363p\372B\r\360\337\316c\235Sn\3466\330\334\202\313\216\341\361wW\002\022t)\203+B\300\024\252T\254\265<+\205)\316\213\212\252\304I+\371\330\302\332\345\227\3119U\n$cnFB\270\001IY\226-\005b\223H]o_\272/\251w\311\033\234\243V\264\314\263\206\210f\324(\204\177\032\273\0277\354g\214\356\2443`tI@\223|2\202\346{\305!7\021\302\334Tc\036\177\n\342;\374\212/~\241\231l=\214\212\242\256kB\364,9\234\303\231\314g)\031Eu_\203>\261$o\240\243\213fu\304\263\373\033\366\255\020\331=D\010\205\343\006\366G\275\331\315\274\235\n\263P\"\333\345\374v\317\257\347\010\205\2157\274u\207Z\333\334\362\356r\260\343\362C\267\240Z\026\376\345\256\031\303sA\322\232\345\355W\314-\2433\014\3030\323\023)\030fl\253\332\263\025\214\024\2602\255cw\236\373\325V\320\243\2675-k\345\031\350)\204Y\253\204\211\304\202\247\251,\274p\010(\007\035k\364\247V\367\371\034\254\033:F\\\214O 6\032Xr\214M\201sB\t4\"\301\212H-\202FT\222my\247`q\t\253\023\000\210l\332uD\"E\370v|.\311}\t\300o\033a^\234y\2459S<e\203\273\222\001\247\307ZJ\201\236\263\204\254\261\016\0044z\030D^\224\240\214\354\270\277G\271\362\244\0324\353B\367s\252\237\316\026 \257bF\201-\237\343\352$3\331\262<\030\370t!\260\325r\021\235z>\222\341`=\010I\024\242`i\004\301C,\307\265\035\\H\255\007\014\213\"#\257\243\244\003\247\247\315\030B\n\306\022b\"\307\237\200\300\026Y\367\r\030\004b\0321#\332\200U\024\230\270$\202a\301\005usU\n#\3432\262\307S\226\035\3340- )\006\361\225\366MZ\373\203T\350P \344\200\231-)%V\023I\215(Y\250\002t\350\343\200\341\311\\\rw16\030\250h\343%\202M\t6\204\361\314\\\275\2051\340o\206\331\270\272SN\273ZY\235\233\322M\310\265a \326\276\355\357\30417\0366\260\262\031\242\224M\340ebM\315\253\230[d\002s.\210\252\031\250\346k\244\242\347+$\333\244\317 x\001K\226\342\357{""\267[\014\321\"\226,?\310\320\242\214\032\340Kl%h\025wJX\324\320E\352j\366\032~\"a\336\014\260\302\371\206k\253\234\272P%)b\354\212\005S\021;\271*X\374Z\333m\266\333\030\333\200\260\201 \324m<\254i-\2317\211L\005\0317\257:\214[\353W`X\250n\264\370i4\304\231\2645\302\346Oi\201u\315\203\021\245\311\033\005^\332\363m\3026\tD\333\013\263@\275\367\277{\302`7O\024\263\245\3161\t\246 i\212s\014\021\313\333\307\n\366\253^\241\303\222\244\223El\324/0\254*I\205kV\275r*I6$\315$\222Ii$&R\025#\312t\225U\216\026\251$\222I\310\222\244\3230tS\321D\274\231\244\251/!4 \331e\367\360\327\262i\2616\266\026U0[,8Sej6\204\324N0B\211\200\240\201\216*A\357\004\002$\240\310(\n\001\323\313\023w\247\306\021\027?\007\0314\207\327t\264\006\317%\2153R\005\016\345\321\312\004\226\264_\023\242\356&\362\202X\357\324\250\034\037\211\243\361\262B54\251xjw\342\026\013<w`b\026\367\322\365D\022'e\354cM4\3066\3066\356\206\202\276:\004\330\306e+\0141\365\204d\333`\333\310\353\r\244\326\226\220\240\363\013:E\357\323g$\035\206\236\207\022\306c\307\340\326\326\325v\230&\r;\202\226\036\212\336)\267\231\256050\204z\013\232\327\016\2542B10\254,\304\313\026\023`\250B\210x\223\251\317\014\262\202\025\030*\355\2327\351\2151\002\250F-\215\260`\3576\201V%\037\020\262\3566^\257\336S<\006h\020\006Y\340\251\2720\354\007\273\2723^t\023\216\026\023'x\255\337\365\004\036C\210\321C\245\006\320\341\004\222\331\302\205\246\271$J7\330\220\220\363\034|z\342a3\324A\205\242\347\247\256\371O\201\360_\240\013\252R\231!\303\325\266\027X\017[?\006&6D\304\022AAMM\007li\033I\200\206\232hC\0061\207\204\231\343\021\300j\014\300\253\0009\265u6[\341g\n\224\304\310\335\2336-\240\352\013$6\223c\214\212n Q+\302\020H,Ka\000\222\334\36326g\200\036r`\324\214c\302q3\233<\352P\242\322\032\340\024\321\337\236g\236\271\326\252\006`\320X\310\024\t\177h \212.\001\327Q\357\267.5\310PE\264\336\330[\224\tFb;\326{\361\31186\324\022\242i\024\325\264\332\363\013\3222\275^\207\001\344\207\200I|\200Yl\206\316\214\232Dh\201i\013-\2070\244LV\340T\275X\356\250""\221\320\202\352A\246\330\375\226\225\227\203\023\250%Jd\226\263\271\221\257\312{W\236z5\244\365\365C\003.\245\275T\331\"7\0104G\234+ \230\034iv\3768Ixr\327i\304!\365\347\333\"D\031\177t\331\331\302TC0AD\020A\310\300m\260^Q\007\0376Ij\341\200\036h\220\023L[CD.g\226|\241H;vd@\277a\010s\263\227.t\237\257\343\315\262\216\237\202}\261\263\033\303\274\347\240\346\r/\241y\314\030\r\217\326\326\362\203!C\303 \310\003O\266\244L\301\300\344Sv\367w\256\035\336\247\336q\006\273p\254U|\246\257D*\357\361-\034\275\365[\356U\277>C\003;\221\270\204\235\343v\302a'\335\3361%\357\004}\361\344\014w:\261\346\017\354?W\\\225oJ\267\3469q\177\027\001\303c?+\275\255\027\263\3631{h\363K2\3758\024\331mr\307\005x\371\211-cFfg\021\343\031\230\217`\210\365\355\375Vl\273\311\370\366\355:l\236\317\221\247\217p\312\317\236\231\345SJ\243\252\022!\322Z\3044\200\357\025\362B\022<:\226m+\177\310Hg\003\341\361\351\350\026\017\334\r,\336\204\020`\354r\037\340\241\254R\340\370\032\210%\245;9\006\000\321T\001\337E\361\353\205\336\275\320\347\330\212*\230\357b\346\365\267?\313\177m\030\317\222\242\rS\246vm\204\232=\334\027\250e\233\271^#\223\257F\331\310\303\261\206\375mr\222$\321/\375H\314\263\353\343\241\346\315\t\322\260\237\27135\212\220(\353 \305G\375\312\205\027c\314Z\253'\020\332-YGz\233p\275\017\tC.Qm8\323\247\232\356\337\370\273\222)\302\204\202\225\374\325\270";
+    PyObject *data = __Pyx_DecompressString(cstring, 2601, 2);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (2401 bytes) */
-const char* const cstring = "x\332\255X\315s\333\326\021\007\307\232Vv\325\261\031)\2213cGPb\227\326\207\3512RS\327\037\311@$\2452\246)\212\244\355\270u\007\003\001\217$b\n\240\360!\211\255\335\346\250#\2168\342\210#\2178\362\250#\216<\352O\360\237\220}\017 \010\020 \035\317\324#Ax\373\365\366\355\356o\367\301\331]N\354 \201FG\207\360\024%\r\265\024Q\353\321|\033\361o\263>S\223i^\226N\220\242\321yZ\325\024QjaZ\265\247\265e\311'\204d\321\231\206$\201n)\\\267M\237\212Z\233.(\334i\265\303I\234\202\245u^\323\025\244\316\324x\366\355V\035q\n\337\376\315\n[\237\252\260\375i\362\373\272\206\224.9\004\016\320o\324\252\316V\350\"\245)+G~\370eXr\232(K!\t\005\014\"\305\023\020\374\300\347\3431O\022k\002\223\316\354\021gD\225\226d\r\022,j\"\327\021\377\215\204lI:\2017\201\026\220\252\211\022\331\327\363\374\021}\n\177\272\310?H\025+W^\224\313\201\206w>\3548\247\321j\027\361bS\204\315\277\036\361;\242\364\026\266\022\320\031\026\242u\274~Dg\246\260O&\330\252\254+<\372\210+\025YB\025YC\264\326\006\037\362^%\002S@\035\361\020G\021uH\310E\036\262\206\205$\272Z\254\336\337~\270Ms\220!\005\375\214xM\245U\375\220\357p\252\212TZn\322\207\272\330\201P\320Z\257\013Y\242KM\272'\353\264\204\374\\\201\\XAk#(~\244\341\027:\303I\020_\022D\026\324!\003\031Z\020\025\330D<AX{\227\353\250([\367\316\206]\210\205]\245\217tU\243\333\034V\000\223*w\204hY\301i%\000\354\366FA\360Jid\314\313F\233\3632|\210\300\253p\2323\231\354&\375\003'\010\254\204\343\205\267&\021\247\237\202\203*w\330\001\005\374\314\320MRM\331\026\337\352\262\214 \024\205\026\272\267\346S\037\321:\221\302\256\200-\032\001\223\276\247o\322'k`\350\036h\344\301ARk\201N\026\250\005\324A\032\2320%\372\231&F2XJ\357&\250\366$\356H\344?\335\023,^\222^\250S\267\364j\017o\\\224T@$V\310s]\216\007\234\006:\330>\316.\321\340}.&\202\332\036\322vEE\325\246\234\013wJ\330\000wSo\033\220\257 \261\325>\224\225\217\373D\204\317\264Y1\033\013\227 \323\361\320U\320id]C\234\020!\274\202\226\204\255C\321{\345\003\347\312dF]\202\243#\347\350p\207\250\223\375z\304\005\344a\275L\213;""\312dE\325\253\036A\222\241\242\233\234\336\321h\226U\220\240\363\210eiA'y\222d\351>`\361\004j\022\270<.O\226\rz\351\203\246\336\351< ~d\273\275\263'^s\363\332\300\367k^\037\325\375\222e\032l\261\260Wd\363L\225\311\227\032\257\331r\351y\251Q|\276S,\354\226\231\275:[\2501\257\252e\246\302\324B\304\375\027\215b-F\215\021\352E\246\226\377\373\356~\r\246O\"y+\231\274\275\313\224\353\305]\010n\0050K\322A\036\331 \022<iP,;\"Ca\251\320-&\031c\340\005\353\000V\001e\014\2511)\230\257\220j<\010\0322\366f\026\277N\202<\226\360\0218&D\320\027\220\003l\215)x\344\214W1@\215Yd8\276\202l\206\374I\342\006\263?\221\2715\213\271=\235\027\235\337I\022\325\030s\027\200\0269>`3\361l\341\206\020&V\"\013\277\005Dig1\245\227\004v\005\270\211\2411=\000\372\230\242F\024K\252\247\027\020\312\362)Rvd\335;B]\223\025.$\036\345\252\ttlN\344C,\334EB\0131\346Q\003F\032)\207\032R\241\021\224F\267\311@\340\005\214\362\351.E\271j\002=\346\022\351c\225\375\n\201e\201\331)\027+\373\215\375g\373\317X\266\332;\203\337\002\\\000X\034\344\032j6j/\212\257j\320-X\246\360c\271To\004\213\347L\243V\372\311[\356}\307qjO\342E9\313\313\212\254\303\220F*\271\016\003\230\361\261xhE\210\025a\316+\034\217\0169\376-\236\315\254\334deEl\261\244\217!r\021\333\355p-\225\274\371\252H\342e\001VlS\227x\226m\301\317\250\021\260c\354\207Q\037\301\373t\244\317\302x\010\3351\\\207\021=\302r\"\212\247\341w\nr\247`6\031\255\263p:\005\241!l\306Q9\201G\037hQ\014F\321\027\307]\030q\001\326B(\233\206\2578\262\0221\345\243)\212\243\031\010\232\206\2358j\022\3612B\n\251\315\262x(J\370\333\200\205J\200\3355VT\331\240\324A\352H=b\331#\016*\234=\202r\305\277,\256[\262\324A\217\005\016\326\205':e\361\215\204\035]\2200\201\354\002\326\202=\202lf\361\244\217\256\262D\272+w\341B\000\210\365\301p\254s\035o\207\361e\"6L\003\002:\303\257\222 \342\313\264W\364\n\202O-IE\235&\031\266\276\273\360\346_RB#\230M\030\307\252\302{\307\010^X]\"\327\026\244(\262\342\335PX\357\243X\305w~BfY\r\362\007\3176\032]\006\340\225\344\226\025\364\256N.1'p\267\322\221J""\356\340\376}\376\236\367w\215\032\255OdQX\243 5cV\344_\210\263\t\237\352\360Y\275\276\226H]_K\242n\342\253\351\004g\264O\0021I\234P\222\375\201\305\024\215\211\307\244\313\272\244\212-\311\373o\2105\n\307`\304\303\307\013\257!R\343\246Fy\027^jZ\213\242\246\364(jJ\223\242\222\273\0245\253MQS\372\024\025\357N>\251BMk!q\206J%6\021jZW\2103&d\303\026\246L\024\312oQ\324\254\321B\215\032\013\025\236Y\324\214FFE\006\032\025\236?T\342\340\241&\2729\025\355\343T\264\221S\361NN\205[9\025\364r*\324\314\251\3208\241\306s\230\212\215Kj4#\211\206o<\324\301\335\271\233f\352\303<uu\341|\373\374?\3467\346\301p\3413c\323\344\314\343\313\371e\343\314<\266\346,\346\027f8\277\350.\376\271\237\352/\365\337\014\026\007L \205Y\313\356\262\307:\360\0057\354\234]\350/8y\3478\"\010\254u{\325\336\266\3379[\016\027b}\370]\334\203\341\2154&_\033.\\?\357\231\363\326\025k\313\002\342\027\306\317V\312J\017\347\257\273\327WLb\177\335d@x\270\270t9\377\0070rf\250`\346\265\325\266\2711\027\233Z2\236\202\352\222\365\246\377\245\2639\340/\322\223\247\360\234#+lH3\036\231\007&\027\370\363\320I9\304\320M\343\277\326\201%\330\233}n\232\354S\347\300\341<\331\367\026c5\354[^t\222d\177p\216\007)O\366\177\026gi\366\223~\310\207'\220\203T \2733X\035\344\210\254\273\234\261\216\3559\273\354\244\222\205M\325Z\265r\227\343\203\275sr\263$g\3320\336Y9\253`/\364\363#\337\2763\026\215\035C0\377\004\231\311\005\376\345\372\351\376\352\345\307\330P\010w\375\010\362\316\362\340\312\340\257\027\337\\\204\022?\274\261h\344\214\202\231r\277\004\327\335\215\357\035\316\371\177lk<\206#i\326\023[\355g\234Ego\2605\030\247\2410`\006\215\213\364\305\352\360\006\024\226Ko\365s\375Q\351o\332\214\335\350\337r\352\203T\264\242\203\222Z\304\221\211\360\340\204\021\330\244\335\235\272[\177\351\276|\025\302\330\325\341\302\242\361\203\225\261\323\366*\324\364\371{\223\t\205a\371\346\345\302\r#e\244\375\002\275o\037\330B\177\025\257>7~ro?\260u\262\355J\306\315<v\376\002\201\314\r\357\336\267\377\345\334u\324\301\352p}\303\313\351\030%""\344L\037\256QW\2772\337\330\313\340\030\000\t\312\010\207\346o&c6\254[\240\2741\250_\214+\016\327N\316\017\303\032\270y\307\356\270\217\236_\324\335j$a\237\031\253\006\026\303\261\363z\306\345\374m\363\237\366\357\355\343~j8\177\307b\360&\017\315\234Y\260\026\354\037!\357a\370a\331\t\207\334\305\254\315\331Z\377\211\363\376\"\1771\n\255\273R\034\034\014\010\354\256\016\377x\375\\5\356\270_lB\267I\341\225b,\271\237o`\014\017\227h?1\351\250\354\0030\231\013d\2638\234\303\245\257\374\2628\376%5\234\273v\276a\034\270s\267\241\023\315o\367\313\203\324`ip\200\003\371\324\274b\222\232\332\300\360\275\234_1u\013\016\014\035\324L\233k\030@i\3436f\\\077\077v\347^\273\257\3771\234_qW\036;\271\341\215%\243\354\322\337\3667\035\356\322\267\264e\n\326}(\304\325P5\020\305u\\\t+f\317N\331K\366\033\010\323l\205_\001\205\260]\237";
-    PyObject *data = __Pyx_DecompressString(cstring, 2401, 1);
+    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (2405 bytes) */
+const char* const cstring = "x\332\255X\315s\333\326\021\007\307\232Vv\324\261\030)\2213cGPb\227\326\207\3512RS\327\037\361@$\2452\246)J\244\355\270q\007\003\001\217$b\n\240\360!\211\255\335\346\250#\2168\342\210#\2178\362\250#\216<\352O\360\237\220}\017 \010\220\000\035\317\324#Ax\373\361\336\276\335\375\355.\234\335\341\3046\022htt\010OQ\322PS\021\265.\315\267\020\3776\35335\231\346e\351\004)\032\235\247UM\021\245&\246U\273ZK\226|BH\026\235iH\022\350\246\302uZ\364\251\250\265\350\202\302\235V\333\234\304)XZ\3475]A\352T\215g\337m\326\020\247\360\255\337\255\260\371\251\n[\237&\277\247kH\351\220K`\007\375N\255\352t\205\016R\032\262r\344\273_\206%\247\211\262\024\222P`C\244x\002\202\357\370\374\244\317\343\304\032\300\2443\273\304\030Q\245%Y\203\000\213\232\310\265\305\177#![\222N\340M\240\005\244j\242D\316\365,\177H\237\302\237\016\362/R\305\312\225\027\345r\240\341\335\017\033\316i\264\332A\274\330\020\341\360o\206\374\266(\275\205\243\004t\206\205h\035\257\037\322\231\004\366\311\030[\225u\205G\0371\245\"K\250\"k\210\326Z`C\336\313D`\n\250-\036b/\2426q\271\310C\324\260\220DW\213\325{[\017\266h\016\"\244\240_\020\257\251\264\252\037\362mNU\221J\313\r\372P\027\333\340\nZ\353v Jt\251Awe\235\226\220\037+\220\013+h-\004\311\2174\374Bg8\t\374K\234\310\202:D C\013\242\002\207\210'\010k\357pm\025ek\336\335\260\t\023nW\351#]\325\350\026\207\025`K\225;B\264\254\340\260\022\000v\272C'x\2514\334\314\213F\213\363\"|\210\300\252p\2303\231\354\006\375\224\023\004V\302\376\302G\023\217\323O\300@\225;l\203\002~f\350\006\311\246l\223ovXF\020\212B\023\335]\365\251\017i\235HaS`/\032\001\223\276\253o\320'\253\260\321]\320\310\203\201$\327\002\235,P\013\250\21544\266\225\350G\232l\222\301Rz'F\265+qG\"\377\351\226`\361\222\364BM<\322\313=|pQR\001\221X!\317u8\036p\032\350\340\375qt\211\006\357s11P{\t\005\021\235M(b\333w\221\266#*\252\226p\361\023\242I\312\255g\007\310W\220\330l\035\312\312\307\215&\302g\3324\247\216\204+\3504b\331\001\342\204\010\341\025T'\274\017\344\277\227Ip\305LfX08:bq\233;D\355\3547C.\200\020""\353e\232\334Q&+\252^\"\t\222\014\311\335\340\364\266F\263\254\202\004\235G,K\013:\t\231$K\367\000\226'\220\236\300\345q\246\262lPV\3577\364v\373>\261#\333\351\236=\366\352\234W\021~X\365J\252\356g/Sg\213\205\335\"\233g\252L\276T\177\315\226K\317K\365\342\363\355ba\247\314\354\326\330\302\001\363\252Zf*\314A\210\270\367\242^<\230\240N\020jE\346 \377\217\235\275\003hD\261\344\315x\362\326\016S\256\025w\300\271\025\200/Ij\362\310\006\236\340I\255b\331!\031rL\205\3021\316\030a0X\007\010\013(#t\215HA\253\205P\343\236P\227\2615\323\3705\342\344\221\204\017\306\021!\002\304\200\034\300lD\301\335g\264\232\300\326\030+\212\237\021\2234\321W\020\352\220\261q\334`F\210enNcn%\363\242}>N\242:\301\334\001\274E|\003\020\215\275x\270.\204\211\225\310\302\257\004Q\332\331\204\222\347\277\002LlhD/\251\021\261\222\352I\005\204\262|\212\224mY\367\014\256i\262\302\205\304\243\\5\206\216\267\023\371\020\013\027\224\320\002\322\231\254\306w\256C\273#\371\001\"P\031J\303I3\020x\001m>\331\260(W\215\241O\030F\n[e\257BpZ`\266\313\305\312^}\357\331\3363\226\255v\317\340\267\000\303\001\213\035{\200\032\365\203\027\305W\007P>X\246\360c\271T\253\007\213\347L\375\240\364\223\267\334\375\236\343\324\256\304\213r\226\227\025Y\207\006\216T2*\003\272\361\265x\250M\210\025a\006P8\036\035r\374[\334\267Y\271\301\312\212\330dIaCdH\333isM\225\274\371\252H\342e\001VlC\227x\226m\302\317\2602\260\243b\020.\003\221\002\220\014\375i\240\017\301}\002\350a\210\017\301\035\013\353\004@'A9\001\304\t\360\215\007\3564\310&\2005\004\323I\200\216A\323\307\\\024\216Q NB0\000_\010vI\200\233\204Z,\310|x\305\001k\n\244\222\3004\t\243X\000\r\241C\222\265,\036\212\022\376\220`!5\020\014,\254\250\262A\356\203\324\221z\304\262G\034\244<{\004\371\213\177Y\234\310d\251\203\036\013\034\254\013Ot\312\342\351\204\035NS\230@N\201\335\2023\2028f\361,\020]e\211tG\356\300\310\000\020\366\321q\254sm\357\204\321\2701\321n\003\002:\303\257\222 \342\311\333C\201\202\340\273LRQ\273A\332\261o.\274\371cL\250I\2631\r[Ux\357\032\301\013\253Kd""\260A\212\"+\336\014\303z_\320*\376@ d\226\325 ~\360l\241\341\270\000\257$\304\254\240wt2\346\234\300\364\245#\225\014\354\376\360\177\327\373\273J\r\327'\262(\254R\020\232\021+\362/\304\331\200\357z\370\006_[\215\245\256\255\306Q7\360\230:\306\031\236\023C\214\023'\224x{`\221\2401\366\0307Y\227T\261)y\377g\261Ja\037\014y\370z\3415xjT\345(o$\246\222\212\023\225P\235\250\204\362D\305\327'jZ\201\242\022*\0245Y\227|R\205J*$\223\014\225\212-%TRU\230d\214\311\206wHh1\224_\250\250i\275\206\032\026\026*\334\304\250)\205\214\212t8*\334\220\250\330ND%\264\"j\254\276S\321\312NEK;5Y\333\251\240\270S\241\352N\205z\n5\352\321\324D+\245\206\375\223h\370\373M\224tw\346\206\231\3720K]\235;\337:\377\217\371\255\271?\230\373\334\33009\363\370rv\31183\217\255\031\213\371\225\031\314.\270\013\177\351\245z\213\2757\375\205>\023Ha\326\222\273\344\261\366}\301u;g\027zsN\3369\216\010FXj\177e\234\271f\257\330[\366;g\323\341B\254\017\177\2304o0\237\306\344k\203\271\353\347]s\326\272bmZ@\374\322\370\305JY\351\301\354u\367\372\262I\016_3\031\020\036,,^\316~\006\233\234\031*l\363\332j\331\334\210\213\267Z4\236\200\352\242\365\246\367\225\263\321\347/\322\343W\364\214#+\274\221f<4\367M.\260\347\201\223r\310F7\214\377Z\373\226`o\364\270$\331'\316\276\303y\262\357-\306\252\3337=\327\305\311>u\216\373)O\366\177\026gi\366\343^\310\206\307\020\240T \273\335_\351\347\210\254\273\224\261\216\355\031\273\354\244\342\205M\325Z\261r\227\243\213\275sr\323$\247\356a\274\263rV\301\236\353\345\207\266}o,\030\333\206`\376\031\"\223\013\354\313\365\322\275\225\313\217\261!\021\356\370\036\344\235\245\376\225\376\337.\276\275\010\005~0\277`\344\214\202\231r\277\002\323\335\365\037\034\316\371\177\034k<\202+i\326c[\355e\234\005g\267\277\331\037\205\241\320g\372\365\213\364\305\312`\036\022\313\2457{\271\336\020\027\0336c\327{7\235Z?\025I\032\270E\0047iw\273\346\326^\272/_\205@vu0\267`<\2652v\332^\201\274=\177o2\241\253.\335\270\234\2337RF\032\366\233\367\274\262\342\347\343={\337\026zd\365\205\361\223{\353\276""\255c\377\017\2263n\346\221\363W\360[np\347\236\375/\347\016\201\332\332\272\027\302\021(\310\025>\\\243\256~m\276\261\227\300F\300\rd\r\366\304\337M\306\254[7Ay\275_\273\030%\030N\225\234\177\353U\260\370\266\335v\037>\277\250\271\325H|>7V\014\020\273\234\275e\376l\377\321>\356\245\006\263\267-\006\357\374\300\314\231\005k\316\376\021b\033\206\030\226\035\263\302]\310\332\234\255\365\036;\357/\362\027\303J\342.\027\373\373}\002\255\253\203?]?W\215\333\356\227\033PSRx\245\030\213\356\027\353\030\247\203E\332\307s:*{\037\266\314\005\262Y\354\303\301\342\327~\350\217\177M\rf\256\235\257\033\373\356\314-\2506\263[\275r?\325_\354\357c\357=1\257\230$o\3261D/g\227M\335\002GB\t5\323\346*\006I\332\270\205\031\327\317\217\335\231\327\356\353\177\016f\227\335\345GNn0\277h\224]\372\273\336\206\303]\372;m\232\202u\017\222m%\224\rDq\rg\302\262\331\265S\366\242\375\006\3344]\3417A\203x\035";
+    PyObject *data = __Pyx_DecompressString(cstring, 2405, 1);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #else /* compression: none (6417 bytes) */
-const char* const bytes = ".Failed embed integrity check.Failed to convert C string to Python string.Failed to extend graph with DrawPlanar structures.Failed to extend graph with K23Search structures.Failed to extend graph with K33Search structures.Failed to extend graph with K4Search structures.Failed to extend graph with Outerplanarity structures.Failed to extend graph with Planarity structures.Failed to perform embed operation.Failed to render embedding to C string.Failed to render embedding to file 'Graph is not initialized.Invalid destination graph: wrapped graphP is NULL.Invalid graph format specifier \"Invalid link index for ulink: 'Invalid link index for vlink: 'Invalid source graph: wrapped graphP is NULL.NoneNote that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Source and destination graphs must have the same order to copy graphP struct.Source graph has not been initialized.''., ?add_note and vlink = disableenable' failed.gcgp_AddEdge() failed: unable to add edge (u, v) = (gp_CopyGraph() failed.gp_DeleteEdge() failed: invalid edge 'gp_DupGraph() failed.gp_DynamicAddEdge() failed: unable to add edge (u, v) = (gp_EdgeInUse() failed: invalid edge index 'gp_EnsureEdgeCapacity() failed to set edge capacity to gp_GetFirstEdge() failed: invalid vertex intex 'gp_GetNeighbor() failed: invalid edge index 'gp_GetNextEdge() failed: invalid edge index 'gp_InitGraph() failed.gp_New() failed.gp_Read() failed.gp_Write() of graph to '' is not a valid vertex label.\" is not one of 'gam'.isenabledno default __reduce__ due to non-trivial __cinit__planarity/full/graph.pyx<stringsource>) with ulink = AT_EDGE_CAPACITY_LIMITEMBEDFLAGS_DRAWPLANAREMBEDFLAGS_OUTERPLANAREMBEDFLAGS_PLANAREMBEDFLAGS_SEARCHFORK23EMBEDFLAGS_SEARCHFORK33EMBEDFLAGS_SEARCHFORK4FALSEFileNameGraphGraph.__reduce_cython__Graph.__setstate_cython__Graph.gp_AddEdgeGraph.gp_CopyGraphGraph.gp_DeleteEdgeGraph.gp_DrawPlan""ar_RenderToFileGraph.gp_DrawPlanar_RenderToStringGraph.gp_DupGraphGraph.gp_DynamicAddEdgeGraph.gp_EdgeInUseGraph.gp_EmbedGraph.gp_EnsureEdgeCapacityGraph.gp_ExtendWith_DrawPlanarGraph.gp_ExtendWith_K23SearchGraph.gp_ExtendWith_K33SearchGraph.gp_ExtendWith_K4SearchGraph.gp_ExtendWith_OuterplanarityGraph.gp_ExtendWith_PlanarityGraph.gp_FindEdgeGraph.gp_GetEdgeCapacityGraph.gp_GetFirstEdgeGraph.gp_GetNGraph.gp_GetNeighborGraph.gp_GetNextEdgeGraph.gp_GetVertexDegreeGraph.gp_InitGraphGraph.gp_IsEdgeGraph.gp_IsVertexGraph.gp_LowerBoundEdgeStorageGraph.gp_LowerBoundEdgesGraph.gp_LowerBoundVerticesGraph.gp_ReadGraph.gp_ReinitGraphGraph.gp_TestEmbedResultIntegrityGraph.gp_UpperBoundEdgeStorageGraph.gp_UpperBoundEdgesGraph.gp_UpperBoundVerticesGraph.gp_WriteNONEMBEDDABLENOTOKOK__Pyx_PyDict_NextRefTRUEWRITE_ADJLISTWRITE_ADJMATRIXWRITE_G6aasyncio.coroutinescheck_resultcline_in_tracebackcopy_of_orig_grapheembedFlagsembed_resultencoded__func__g__getstate__gp_AddEdgegp_CopyGraphgp_DeleteEdgegp_DrawPlanar_RenderToFilegp_DrawPlanar_RenderToStringgp_DupGraphgp_DynamicAddEdgegp_EdgeInUsegp_Embedgp_EnsureEdgeCapacitygp_ExtendWith_DrawPlanargp_ExtendWith_K23Searchgp_ExtendWith_K33Searchgp_ExtendWith_K4Searchgp_ExtendWith_Outerplanaritygp_ExtendWith_Planaritygp_FindEdgegp_GetEdgeCapacitygp_GetFirstEdgegp_GetNgp_GetNeighborgp_GetNextEdgegp_GetVertexDegreegp_InitGraphgp_IsEdgegp_IsVertexgp_LowerBoundEdgeStoragegp_LowerBoundEdgesgp_LowerBoundVerticesgp_Readgp_ReinitGraphgp_TestEmbedResultIntegritygp_UpperBoundEdgeStoragegp_UpperBoundEdgesgp_UpperBoundVerticesgp_WritegraphLibinfile_nameint_is_coroutineitemsm__main__modemode_code__module__n__name__new_edge_capacitynew_graphoutfile_nameplanarity.fullplanarity.full.graphpop__pyx_state__qualname____reduce____reduce_cython____reduce_ex__renditionStringreturnself__set_name__setdefault__setstate____setstate_cython__src_graphsrc_graph_uninit_errorstring_conversion_error__test__theFileNametheGraph_dupuulinkvvaluesvlinkgraphP (graphP)\000graphP (void)""\000int (graphP)\000\000\000\000\000\000\000\000\000\000\000\000\000\000int (graphP, char *)\000\000int (graphP, char **)\000int (graphP, char *, int)\000int (graphP, graphP)\000int (graphP, graphP, int)\000int (graphP, int)\000\000\000\000\000\000\000\000\000\000int (graphP, int, int)\000int (graphP, int, int, int, int)\000\000int (graphP, unsigned int)\000void (graphP *)\000void (graphP)\000gp_DupGraph\000gp_New\000gp_ExtendWith_DrawPlanar\000gp_ExtendWith_K23Search\000gp_ExtendWith_K33Search\000gp_ExtendWith_K4Search\000gp_ExtendWith_Outerplanarity\000gp_ExtendWith_Planarity\000gp_GetEdgeCapacity\000gp_GetN\000gp_LowerBoundEdgeStorage\000gp_LowerBoundEdges\000gp_LowerBoundVertices\000gp_UpperBoundEdgeStorage\000gp_UpperBoundEdges\000gp_UpperBoundVertices\000gp_DrawPlanar_RenderToFile\000gp_Read\000gp_DrawPlanar_RenderToString\000gp_Write\000gp_CopyGraph\000gp_TestEmbedResultIntegrity\000gp_DeleteEdge\000gp_EdgeInUse\000gp_EnsureEdgeCapacity\000gp_GetFirstEdge\000gp_GetNeighbor\000gp_GetNextEdge\000gp_GetVertexDegree\000gp_InitGraph\000gp_IsEdge\000gp_IsVertex\000gp_FindEdge\000gp_AddEdge\000gp_DynamicAddEdge\000gp_Embed\000gp_Free\000gp_ReinitGraph\320\004\030\230\001\360\010\000\t\014\2104\210{\230#\230Q\330\014\022\220,\230a\230q\340\010\027\220x\230q\240\004\240A\200A\330\010\023\320\0230\260\001\260\024\260\\\300\023\300A\330\014\022\220,\230a\230q\200A\330\010\027\320\0270\260\001\260\024\260Q\200A\330\010\023\320\023+\2501\250D\260\014\270C\270q\330\014\022\220,\230a\230q\200A\330\010\023\320\023*\250!\2504\250|\2703\270a\330\014\022\220,\230a\230q\200A\360\006\000\t\014\2104\210{\230#\230Q\330\014\022\220,\230a\330\020\021\360\006\000\t\n\330\014\017\210y\230\010\240\003\2403\240a\330\020\026\220j\240\001\240\021\330\010\017\320\017\037\230q\330\014\022\220*\230A\330\020\021\330\023\024\340\010\013\2104\210x\220s\230#\230Y\240h\250a\330\014\022\220*\230A\330\020\021\360\006\000\t\024\220=\240\001\240\024\240\\\260\031\270,\300c\310\021\330\014\022\220,""\230a\230q\200A\330\010\027\320\027*\250!\2504\250q\200A\330\010\013\2104\210t\220:\230Q\230a\330\014\022\220,\230a\330\0208\270\001\270\021\360\006\000\t\030\220~\240Q\240d\250,\260a\200A\330\010\013\2104\210t\220:\230Q\230a\330\014\022\220,\230a\330\020=\270Q\270a\360\006\000\t\030\220}\240A\240T\250\034\260Q\200A\330\010\013\2104\210t\220:\230Q\230a\330\014\022\220,\230a\330\020?\270q\300\001\360\006\000\t\030\220\177\240a\240t\250<\260q\200A\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\330\020B\300!\3001\360\006\000\t\030\320\027'\240q\250\004\250L\270\001\200A\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\230s\240!\2401\340\010\027\320\027*\250!\2504\250|\2701\200A\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\230s\240!\2401\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\230s\240!\2401\340\010\027\220|\2401\240D\250\014\260C\260q\200A\330\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\023\320\023%\240Q\240d\250,\260c\270\027\300\003\3007\310#\310Q\330\014\022\220,\230a\330\020\021\330\020\023\2201\220D\230\001\320\031*\250!\320+>\270a\270q\200A\330\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\023\220;\230a\230t\240<\250s\260'\270\023\270G\3003\300a\330\014\022\220,\230a\330\020D\300A\300T\310\021\310!\330\020\037\230q\320 3\2601\260A\200A\330\010\023\320\023,\250A\250T\260\034\270S\300\001\330\014\022\220,\230a\230q\200A\330\010\023\220=\240\001\240\024\240\\\260\023\260C\260q\330\014\022\220,\230a\230q\200A\330\010%\240Q\330\010\023\320\0230\260\001\260\024\260\\\300\021\320BS\320SV\320VW\330\014\022\220,\230a\230q\340\010\t\330\014\023\220?\240'\250\021\250!\330\010\017\210}\230A\330\014\022\220,""\230a\330\020\021\330\027\030\340\014\020\220\001\220\021\200A\330\010\027\320\027-\250Q\250d\260!\200A\330\010\025\220X\320\035/\250u\260C\260q\330\037'\320';\2705\300\003\3001\330%-\250]\270%\270s\300!\330*+\330\010\013\2104\210q\330\014\022\220*\230A\330\0203\2601\260A\360\n\000\t\036\230\\\250\027\260\001\260\021\330\010'\240q\340\010\023\2209\230A\230T\240\034\250]\270+\300S\310\001\330\014\022\220,\230a\330\020*\250!\2501\200A\330\010\023\320\023)\250\021\250$\250l\320:M\310S\320PQ\330\014\022\220,\230a\330\020\021\330\020\022\220!\2201\200A\330\020\037\230q\240\004\240A\200A\340\010\035\230[\250\007\250q\260\001\330\010$\240A\340\010\023\2208\2301\230D\240\014\250J\260c\270\021\330\014\022\220,\230a\230q\200A\340\010\035\230\\\250\027\260\001\260\021\330\010'\240q\340\010\023\320\023.\250a\250t\260<\270}\310C\310q\330\014\022\220,\230a\320\037E\300Q\300a\200A\330\010\t\330\r\017\210s\220$\320\026,\250D\260\001\330\r\017\210r\220\024\320\025+\2504\250q\330\024 \240\001\240\024\240\\\260\021\200A\330\010\t\330\r\017\210s\220$\320\026/\250t\2601\330\r\017\210r\220\024\320\025.\250d\260!\330\024\036\230a\230t\240<\250q\200\001\330\004\n\210+\220Q\320\004\035\230Q\330\0104\260L\300\001\300\024\300Q\330\010\013\210=\230\003\2301\330\014\022\220+\230Q\230a\340\010\037\230u\240A\330\020\030\230\001\230\021\230)\2401\330\010\021\220\035\230a\340\010\017\210q\320\004Y\320YZ\330\010\037\320\037;\2701\330\020\024\220L\320 2\260,\270a\340\010\013\210=\230\003\2303\230d\240-\250s\260!\330\014\022\220,\230a\230q\340\010\017\210q\320\004*\250!\330\010\037\230y\250\001\250\024\250\\\270\021\330\010\013\210=\230\003\2303\230d\240-\250s\260!\330\014\022\220,\230a\230q\340\010\017\210q";
+    #else /* compression: none (6480 bytes) */
+const char* const bytes = ".Failed embed integrity check.Failed to convert C string to Python string.Failed to extend graph with DrawPlanar structures.Failed to extend graph with K23Search structures.Failed to extend graph with K33Search structures.Failed to extend graph with K4Search structures.Failed to extend graph with Outerplanarity structures.Failed to extend graph with Planarity structures.Failed to perform embed operation.Failed to render embedding to C string.Failed to render embedding to file 'Graph is not initialized.Invalid destination graph: wrapped graphP is NULL.Invalid graph format specifier \"Invalid link index for ulink: 'Invalid link index for vlink: 'Invalid source graph: wrapped graphP is NULL.NoneNote that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Source and destination graphs must have the same order to copy graphP struct.Source graph has not been initialized.''., ?add_note and vlink = disableenable' failed.gcgp_AddEdge() failed: unable to add edge (u, v) = (gp_CopyGraph() failed.gp_DeleteEdge() failed: invalid edge 'gp_DupGraph() failed.gp_DynamicAddEdge() failed: unable to add edge (u, v) = (gp_EdgeInUse() failed: invalid edge index 'gp_EnsureEdgeCapacity() failed to set edge capacity to gp_EnsureVertexCapacity() failed.gp_GetFirstEdge() failed: invalid vertex intex 'gp_GetNeighbor() failed: invalid edge index 'gp_GetNextEdge() failed: invalid edge index 'gp_New() failed.gp_Read() failed.gp_Write() of graph to '' is not a valid vertex label.\" is not one of 'gam'.isenabledno default __reduce__ due to non-trivial __cinit__planarity/full/graph.pyx<stringsource>) with ulink = AT_EDGE_CAPACITY_LIMITEMBEDFLAGS_DRAWPLANAREMBEDFLAGS_OUTERPLANAREMBEDFLAGS_PLANAREMBEDFLAGS_SEARCHFORK23EMBEDFLAGS_SEARCHFORK33EMBEDFLAGS_SEARCHFORK4FALSEFileNameGraphGraph.__reduce_cython__Graph.__setstate_cython__Graph.gp_AddEdgeGraph.gp_CopyGraphGraph.gp_DeleteEdgeGraph.""gp_DrawPlanar_RenderToFileGraph.gp_DrawPlanar_RenderToStringGraph.gp_DupGraphGraph.gp_DynamicAddEdgeGraph.gp_EdgeInUseGraph.gp_EmbedGraph.gp_EnsureEdgeCapacityGraph.gp_EnsureVertexCapacityGraph.gp_ExtendWith_DrawPlanarGraph.gp_ExtendWith_K23SearchGraph.gp_ExtendWith_K33SearchGraph.gp_ExtendWith_K4SearchGraph.gp_ExtendWith_OuterplanarityGraph.gp_ExtendWith_PlanarityGraph.gp_FindEdgeGraph.gp_GetEdgeCapacityGraph.gp_GetFirstEdgeGraph.gp_GetNGraph.gp_GetNeighborGraph.gp_GetNextEdgeGraph.gp_GetVertexDegreeGraph.gp_IsEdgeGraph.gp_IsVertexGraph.gp_LowerBoundEdgeStorageGraph.gp_LowerBoundEdgesGraph.gp_LowerBoundVerticesGraph.gp_ReadGraph.gp_ResetGraphStorageGraph.gp_TestEmbedResultIntegrityGraph.gp_UpperBoundEdgeStorageGraph.gp_UpperBoundEdgesGraph.gp_UpperBoundVerticesGraph.gp_WriteNONEMBEDDABLENOTOKOK__Pyx_PyDict_NextRefTRUEWRITE_ADJLISTWRITE_ADJMATRIXWRITE_G6aasyncio.coroutinescheck_resultcline_in_tracebackcopy_of_orig_grapheembedFlagsembed_resultencoded__func__g__getstate__gp_AddEdgegp_CopyGraphgp_DeleteEdgegp_DrawPlanar_RenderToFilegp_DrawPlanar_RenderToStringgp_DupGraphgp_DynamicAddEdgegp_EdgeInUsegp_Embedgp_EnsureEdgeCapacitygp_EnsureVertexCapacitygp_ExtendWith_DrawPlanargp_ExtendWith_K23Searchgp_ExtendWith_K33Searchgp_ExtendWith_K4Searchgp_ExtendWith_Outerplanaritygp_ExtendWith_Planaritygp_FindEdgegp_GetEdgeCapacitygp_GetFirstEdgegp_GetNgp_GetNeighborgp_GetNextEdgegp_GetVertexDegreegp_IsEdgegp_IsVertexgp_LowerBoundEdgeStoragegp_LowerBoundEdgesgp_LowerBoundVerticesgp_Readgp_ResetGraphStoragegp_TestEmbedResultIntegritygp_UpperBoundEdgeStoragegp_UpperBoundEdgesgp_UpperBoundVerticesgp_WritegraphLibinfile_nameint_is_coroutineitemsm__main__modemode_code__module__n__name__new_edge_capacitynew_graphoutfile_nameplanarity.fullplanarity.full.graphpop__pyx_state__qualname____reduce____reduce_cython____reduce_ex__renditionStringreturnself__set_name__setdefault__setstate____setstate_cython__src_graphsrc_graph_uninit_errorstring_conversion_error__test__theFileNametheGraph_dupuulin""kvvaluesvlinkgraphP (graphP)\000graphP (void)\000int (graphP)\000\000\000\000\000\000\000\000\000\000\000\000\000\000int (graphP, char *)\000\000int (graphP, char **)\000int (graphP, char *, int)\000int (graphP, graphP)\000int (graphP, graphP, int)\000int (graphP, int)\000\000\000\000\000\000\000\000\000\000int (graphP, int, int)\000int (graphP, int, int, int, int)\000\000int (graphP, unsigned int)\000void (graphP *)\000void (graphP)\000gp_DupGraph\000gp_New\000gp_ExtendWith_DrawPlanar\000gp_ExtendWith_K23Search\000gp_ExtendWith_K33Search\000gp_ExtendWith_K4Search\000gp_ExtendWith_Outerplanarity\000gp_ExtendWith_Planarity\000gp_GetEdgeCapacity\000gp_GetN\000gp_LowerBoundEdgeStorage\000gp_LowerBoundEdges\000gp_LowerBoundVertices\000gp_UpperBoundEdgeStorage\000gp_UpperBoundEdges\000gp_UpperBoundVertices\000gp_DrawPlanar_RenderToFile\000gp_Read\000gp_DrawPlanar_RenderToString\000gp_Write\000gp_CopyGraph\000gp_TestEmbedResultIntegrity\000gp_DeleteEdge\000gp_EdgeInUse\000gp_EnsureEdgeCapacity\000gp_EnsureVertexCapacity\000gp_GetFirstEdge\000gp_GetNeighbor\000gp_GetNextEdge\000gp_GetVertexDegree\000gp_IsEdge\000gp_IsVertex\000gp_FindEdge\000gp_AddEdge\000gp_DynamicAddEdge\000gp_Embed\000gp_Free\000gp_ResetGraphStorage\320\004\030\230\001\360\010\000\t\014\2104\210{\230#\230Q\330\014\022\220,\230a\230q\340\010\027\220x\230q\240\004\240A\200A\330\010\023\320\0230\260\001\260\024\260\\\300\023\300A\330\014\022\220,\230a\230q\200A\330\010\027\320\0270\260\001\260\024\260Q\200A\330\010\023\320\023+\2501\250D\260\014\270C\270q\330\014\022\220,\230a\230q\200A\330\010\023\320\023+\2501\250D\260\014\270C\270s\300!\330\014\022\220,\230a\230q\200A\330\010\023\320\023*\250!\2504\250|\2703\270a\330\014\022\220,\230a\230q\200A\360\006\000\t\014\2104\210{\230#\230Q\330\014\022\220,\230a\330\020\021\360\006\000\t\n\330\014\017\210y\230\010\240\003\2403\240a\330\020\026\220j\240\001\240\021\330\010\017\320\017\037\230q\330\014\022\220*\230A\330\020\021\330\023\024\340\010\013\2104\210x""\220s\230#\230Y\240h\250a\330\014\022\220*\230A\330\020\021\360\006\000\t\024\220=\240\001\240\024\240\\\260\031\270,\300c\310\021\330\014\022\220,\230a\230q\200A\330\010\027\320\027*\250!\2504\250q\200A\330\010\013\2104\210t\220:\230Q\230a\330\014\022\220,\230a\330\0208\270\001\270\021\360\006\000\t\030\220~\240Q\240d\250,\260a\200A\330\010\013\2104\210t\220:\230Q\230a\330\014\022\220,\230a\330\020=\270Q\270a\360\006\000\t\030\220}\240A\240T\250\034\260Q\200A\330\010\013\2104\210t\220:\230Q\230a\330\014\022\220,\230a\330\020?\270q\300\001\360\006\000\t\030\220\177\240a\240t\250<\260q\200A\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\330\020B\300!\3001\360\006\000\t\030\320\027'\240q\250\004\250L\270\001\200A\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\230s\240!\2401\340\010\027\320\027*\250!\2504\250|\2701\200A\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\230s\240!\2401\330\010\013\2104\210t\220<\230q\240\001\330\014\022\220,\230a\230s\240!\2401\340\010\027\220|\2401\240D\250\014\260C\260q\200A\330\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\023\320\023%\240Q\240d\250,\260c\270\027\300\003\3007\310#\310Q\330\014\022\220,\230a\330\020\021\330\020\023\2201\220D\230\001\320\031*\250!\320+>\270a\270q\200A\330\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\013\2106\220\023\220B\220d\230&\240\003\2401\330\014\022\220,\230a\330\0201\260\021\260!\340\010\023\220;\230a\230t\240<\250s\260'\270\023\270G\3003\300a\330\014\022\220,\230a\330\020D\300A\300T\310\021\310!\330\020\037\230q\320 3\2601\260A\200A\330\010\023\320\023,\250A\250T\260\034\270S\300\001\330\014\022\220,\230a\230q\200A\330\010%\240Q\330\010\023\320\0230\260\001\260\024\260\\\300\021\320BS\320SV\320VW\330\014\022\220,\230a\230q\340\010\t\330\014\023\220?""\240'\250\021\250!\330\010\017\210}\230A\330\014\022\220,\230a\330\020\021\330\027\030\340\014\020\220\001\220\021\200A\330\020%\240Q\240d\250!\200A\330\010\027\320\027-\250Q\250d\260!\200A\330\010\025\220X\320\035/\250u\260C\260q\330\037'\320';\2705\300\003\3001\330%-\250]\270%\270s\300!\330*+\330\010\013\2104\210q\330\014\022\220*\230A\330\0203\2601\260A\360\n\000\t\036\230\\\250\027\260\001\260\021\330\010'\240q\340\010\023\2209\230A\230T\240\034\250]\270+\300S\310\001\330\014\022\220,\230a\330\020*\250!\2501\200A\330\010\023\320\023)\250\021\250$\250l\320:M\310S\320PQ\330\014\022\220,\230a\330\020\021\330\020\022\220!\2201\200A\340\010\035\230[\250\007\250q\260\001\330\010$\240A\340\010\023\2208\2301\230D\240\014\250J\260c\270\021\330\014\022\220,\230a\230q\200A\340\010\035\230\\\250\027\260\001\260\021\330\010'\240q\340\010\023\320\023.\250a\250t\260<\270}\310C\310q\330\014\022\220,\230a\320\037E\300Q\300a\200A\330\010\t\330\r\017\210s\220$\320\026,\250D\260\001\330\r\017\210r\220\024\320\025+\2504\250q\330\024 \240\001\240\024\240\\\260\021\200A\330\010\t\330\r\017\210s\220$\320\026/\250t\2601\330\r\017\210r\220\024\320\025.\250d\260!\330\024\036\230a\230t\240<\250q\200\001\330\004\n\210+\220Q\320\004\035\230Q\330\0104\260L\300\001\300\024\300Q\330\010\013\210=\230\003\2301\330\014\022\220+\230Q\230a\340\010\037\230u\240A\330\020\030\230\001\230\021\230)\2401\330\010\021\220\035\230a\340\010\017\210q\320\004Y\320YZ\330\010\037\320\037;\2701\330\020\024\220L\320 2\260,\270a\340\010\013\210=\230\003\2303\230d\240-\250s\260!\330\014\022\220,\230a\230q\340\010\017\210q\320\004*\250!\330\010\037\230y\250\001\250\024\250\\\270\021\330\010\013\210=\230\003\2303\230d\240-\250s\260!\330\014\022\220,\230a\230q\340\010\017\210q";
     PyObject *data = NULL;
     CYTHON_UNUSED_VAR(__Pyx_DecompressString);
     #endif
@@ -12097,27 +12097,27 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 44};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_n};
-    __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_InitGraph, __pyx_mstate->__pyx_kp_b_iso88591_A_Cq_aq, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_EnsureVertexCapacity, __pyx_mstate->__pyx_kp_b_iso88591_A_1D_Cs_aq, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 48};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_ReinitGraph, __pyx_mstate->__pyx_kp_b_iso88591_A_q_A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 51};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 48};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_new_edge_capacity};
-    __pyx_mstate_global->__pyx_codeobj_tab[2] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_EnsureEdgeCapacity, __pyx_mstate->__pyx_kp_b_iso88591_A_l_MSPQ_a_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[2])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_EnsureEdgeCapacity, __pyx_mstate->__pyx_kp_b_iso88591_A_l_MSPQ_a_1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 54};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
+    __pyx_mstate_global->__pyx_codeobj_tab[2] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_ResetGraphStorage, __pyx_mstate->__pyx_kp_b_iso88591_A_Qd, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[2])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 57};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[3] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetEdgeCapacity, __pyx_mstate->__pyx_kp_b_iso88591_A_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[3])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[3] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetN, __pyx_mstate->__pyx_kp_b_iso88591_4_Q_aq_xq_A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[3])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 60};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 66};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[4] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetN, __pyx_mstate->__pyx_kp_b_iso88591_4_Q_aq_xq_A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[4])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[4] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetEdgeCapacity, __pyx_mstate->__pyx_kp_b_iso88591_A_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[4])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 69};
@@ -12155,64 +12155,64 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate_global->__pyx_codeobj_tab[11] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_DeleteEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_8_Qd_a, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[11])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 156};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[12] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_LowerBoundEdges, __pyx_mstate->__pyx_kp_b_iso88591_A_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[12])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 159};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[13] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_UpperBoundEdges, __pyx_mstate->__pyx_kp_b_iso88591_A_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[13])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 162};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
-    __pyx_mstate_global->__pyx_codeobj_tab[14] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_IsEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_s_t1_r_d_at_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[14])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 169};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
-    __pyx_mstate_global->__pyx_codeobj_tab[15] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_EdgeInUse, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_Qa_AT_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[15])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 177};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[16] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_LowerBoundEdgeStorage, __pyx_mstate->__pyx_kp_b_iso88591_A_0_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[16])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 180};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[17] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_UpperBoundEdgeStorage, __pyx_mstate->__pyx_kp_b_iso88591_A_0_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[17])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 183};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
-    __pyx_mstate_global->__pyx_codeobj_tab[18] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetNextEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_q_at_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[18])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 191};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
-    __pyx_mstate_global->__pyx_codeobj_tab[19] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetNeighbor, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_q_at_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[19])) goto bad;
-  }
-  {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 199};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 156};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_v};
-    __pyx_mstate_global->__pyx_codeobj_tab[20] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetFirstEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_q_a_B_1_q_L, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[20])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[12] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetFirstEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_q_a_B_1_q_L, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[12])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 207};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 164};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[21] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_LowerBoundVertices, __pyx_mstate->__pyx_kp_b_iso88591_A_Qd, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[21])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[13] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_LowerBoundVertices, __pyx_mstate->__pyx_kp_b_iso88591_A_Qd_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[13])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 210};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 167};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
-    __pyx_mstate_global->__pyx_codeobj_tab[22] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_UpperBoundVertices, __pyx_mstate->__pyx_kp_b_iso88591_A_Qd, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[22])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[14] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_UpperBoundVertices, __pyx_mstate->__pyx_kp_b_iso88591_A_Qd_2, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[14])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 213};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 170};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_v};
-    __pyx_mstate_global->__pyx_codeobj_tab[23] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_IsVertex, __pyx_mstate->__pyx_kp_b_iso88591_A_s_D_r_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[23])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[15] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_IsVertex, __pyx_mstate->__pyx_kp_b_iso88591_A_s_D_r_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[15])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 177};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
+    __pyx_mstate_global->__pyx_codeobj_tab[16] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetNextEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_q_at_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[16])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 185};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
+    __pyx_mstate_global->__pyx_codeobj_tab[17] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_IsEdge, __pyx_mstate->__pyx_kp_b_iso88591_A_s_t1_r_d_at_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[17])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 192};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
+    __pyx_mstate_global->__pyx_codeobj_tab[18] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_GetNeighbor, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_q_at_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[18])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 200};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
+    __pyx_mstate_global->__pyx_codeobj_tab[19] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_LowerBoundEdges, __pyx_mstate->__pyx_kp_b_iso88591_A_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[19])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 203};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
+    __pyx_mstate_global->__pyx_codeobj_tab[20] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_UpperBoundEdges, __pyx_mstate->__pyx_kp_b_iso88591_A_4q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[20])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 206};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_e};
+    __pyx_mstate_global->__pyx_codeobj_tab[21] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_EdgeInUse, __pyx_mstate->__pyx_kp_b_iso88591_A_4t_Qa_a_Qa_AT_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[21])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 214};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
+    __pyx_mstate_global->__pyx_codeobj_tab[22] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_LowerBoundEdgeStorage, __pyx_mstate->__pyx_kp_b_iso88591_A_0_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[22])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 217};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self};
+    __pyx_mstate_global->__pyx_codeobj_tab[23] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graph_pyx, __pyx_mstate->__pyx_n_u_gp_UpperBoundEdgeStorage, __pyx_mstate->__pyx_kp_b_iso88591_A_0_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[23])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 4, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 220};
