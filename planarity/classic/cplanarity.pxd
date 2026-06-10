@@ -12,10 +12,6 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_EnsureVertexCapacity(graphP theGraph, int N)
     void gp_Free(graphP *pGraph)
 
-    ctypedef struct edgeRec:
-        pass
-    ctypedef edgeRec * edgeRecP
-
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 

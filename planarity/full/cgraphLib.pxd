@@ -47,20 +47,12 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DeleteEdge(graphP theGraph, int e)
 
-    ctypedef struct vertexRec:
-        pass
-    ctypedef edgeRec * vertexRecP
-
     int gp_GetFirstEdge(graphP theGraph, int v)
 
     int gp_LowerBoundVertices(graphP theGraph)
     int gp_UpperBoundVertices(graphP theGraph)
 
     int gp_IsVertex(graphP theGraph, int v)
-
-    ctypedef struct edgeRec:
-        pass
-    ctypedef edgeRec * edgeRecP
 
     int gp_GetNextEdge(graphP theGraph, int e)
 
