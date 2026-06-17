@@ -1,5 +1,5 @@
 The Edge Addition Planarity Suite
-Copyright (c) 1997-2025, John M. Boyer
+Copyright (c) 1997-2026, John M. Boyer
 All rights reserved. Includes a reference implementation of the following:
 
 * John M. Boyer. "Subgraph Homeomorphism via the Edge Addition Planarity Algorithm".
