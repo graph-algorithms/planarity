@@ -60,9 +60,9 @@ Planarity (the 'planarity' Python package; the software) is released
 under [this BSD-3-Clause license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
 
    Copyright (c) 2016-2026, Planarity Developers<br/>
-   Aric Hagberg <aric.hagberg@gmail.com><br/>
-   Wanda B. K. Boyer <wbkboyer@gmail.com><br/>
    John M. Boyer <john.boyer.phd@gmail.com><br/>
+   Wanda B. K. Boyer <wbkboyer@gmail.com><br/>
+   Aric Hagberg <aric.hagberg@gmail.com><br/>
    All rights reserved.<br/>
 
    Planarity includes the Edge Addition Planarity Suite, which is<br/> 
