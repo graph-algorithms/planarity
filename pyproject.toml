@@ -10,9 +10,9 @@ build-backend = "setuptools.build_meta"
 name = "planarity"
 
 authors = [
-    {name = "Aric Hagberg", email = "aric.hagberg@gmail.com"},
-    {name = "Wanda B. K. Boyer", email = "wbkboyer@gmail.com"},
     {name = "John M. Boyer", email = "john.boyer.phd@gmail.com"},
+    {name = "Wanda B. K. Boyer", email = "wbkboyer@gmail.com"},
+    {name = "Aric Hagberg", email = "aric.hagberg@gmail.com"},
 ]
 
 # NOTE: Only one of authors and maintainers is required, per
