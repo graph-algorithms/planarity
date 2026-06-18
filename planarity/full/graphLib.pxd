@@ -2,7 +2,7 @@
 
 This definition file corresponds to the graphLib.pyx implementation file, and 
 allows other Cython modules access to bare wrappers of the C graphLib API.
-//cython.readthedocs.io/en/latest/src/userguide/sharing_declarations.html#sharing-extension-types
+https://cython.readthedocs.io/en/latest/src/userguide/sharing_declarations.html#sharing-extension-types
 """
 from planarity.full cimport cgraphLib
 from planarity.full.cgraphLib cimport graphP, G6ReadIteratorP, G6WriteIteratorP
