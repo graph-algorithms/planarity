@@ -1891,7 +1891,7 @@ void _AttachEdgeRecord(graphP theGraph, int v, int e, int link, int newEdge)
  gp_RestoreEdge() are used, and algorithms push and pop hidden edges onto and
  from a stack. A example of this is shown by detaching edges with
  gp_ContractEdge() or gp_IdentifyVertices(), and then reattaching them with
- gp_RestoreIdentifications(), which unwinds the stack with gp_RestoreVertex().
+ gp_RestoreVertices(), which unwinds the stack with gp_RestoreVertex().
  ****************************************************************************/
 
 void _DetachEdgeRecord(graphP theGraph, int e)
@@ -2446,7 +2446,7 @@ int _ContractEdge(graphP theGraph, int e)
 
  An algorithm that identifies a series of vertices, either through
  directly calling this method or via gp_ContractEdge(), can unwind
- the identifications using gp_RestoreIdentifications(), which
+ the identifications using gp_RestoreVertices(), which
  invokes gp_RestoreVertex() repeatedly.
 
  Returns OK on success, NOTOK on internal failure
