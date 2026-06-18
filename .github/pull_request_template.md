@@ -34,4 +34,4 @@ Please check only relevant options:
 Paste terminal log snippets here
 ```
 
-<details>
+</details>
