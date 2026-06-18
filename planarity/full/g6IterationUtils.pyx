@@ -22,9 +22,9 @@ cdef class G6ReadIterator:
             raise ValueError(
                 "Graph to populate is not allocated."
             ) from invalid_graph_error
-        
+
         self._g6ReadIterator = NULL
-        
+
         if graphLib.g6_NewReader(&self._g6ReadIterator, curr_graph._theGraph) != graphLib.OK:
             raise MemoryError(
                 "Unable to initialize G6ReadIterator, as call to "
@@ -39,24 +39,31 @@ cdef class G6ReadIterator:
             # graphP will be cleaned up with gp_Free()
             graphLib.g6_FreeReader(&self._g6ReadIterator)
 
-    def g6_InitReaderWithFileName(self, str infile_name):
+    def g6_InitReaderWithFileName(self, str infile_name) -> int:
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = infile_name.encode('utf-8')
         cdef const char *encodedInfileName = encoded
-        if graphLib.g6_InitReaderWithFileName(self._g6ReadIterator, encodedInfileName) != graphLib.OK:
+
+        result = graphLib.g6_InitReaderWithFileName(self._g6ReadIterator, encodedInfileName)
+        if result != graphLib.OK:
             raise RuntimeError(
                 f"Unable to initialize reader with filename, as "
                 "g6_InitReaderWithFileName() in EAPS graphLib failed."
             )
 
-    def g6_ReadGraph(self):
-        if graphLib.g6_ReadGraph(self._g6ReadIterator) != graphLib.OK:
+        return result
+
+    def g6_ReadGraph(self) -> int:
+        result = graphLib.g6_ReadGraph(self._g6ReadIterator)
+        if result != graphLib.OK:
             raise RuntimeError(
                 f"Unable to read graph, as g6_ReadGraph() in EAPS graphLib "
                 "failed."
             )
 
-    def g6_EndReached(self):
+        return result
+
+    def g6_EndReached(self) -> int:
         return graphLib.g6_EndReached(self._g6ReadIterator)
 
 
@@ -85,14 +92,20 @@ cdef class G6WriteIterator:
         if self._g6WriteIterator != NULL:
             graphLib.g6_FreeWriter(&self._g6WriteIterator)
 
-    def g6_InitWriterWithFileName(self, str outfile_name):
+    def g6_InitWriterWithFileName(self, str outfile_name) -> int:
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = outfile_name.encode('utf-8')
         cdef const char *encodedOutputFileName = encoded
 
-        if graphLib.g6_InitWriterWithFileName(self._g6WriteIterator, encodedOutputFileName) != graphLib.OK:
+        result = graphLib.g6_InitWriterWithFileName(self._g6WriteIterator, encodedOutputFileName)
+        if result != graphLib.OK:
             raise RuntimeError(f"Unable to initialize writer with filename, as g6_InitWriterWithFileName() in EAPS graphLib failed.")
 
-    def g6_WriteGraph(self):
-        if graphLib.g6_WriteGraph(self._g6WriteIterator) != graphLib.OK:
+        return result
+
+    def g6_WriteGraph(self) -> int:
+        result = graphLib.g6_WriteGraph(self._g6WriteIterator)
+        if result != graphLib.OK:
             raise RuntimeError(f"Unable to write graph, as g6_WriteGraph() in EAPS graphLib failed.")
+
+        return result

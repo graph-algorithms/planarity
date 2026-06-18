@@ -9,7 +9,9 @@ cdef extern from "../c/graphLib/graph.h":
     ctypedef graphStruct * graphP
 
     graphP gp_New()
+
     int gp_EnsureVertexCapacity(graphP theGraph, int N)
+
     void gp_Free(graphP *pGraph)
 
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
@@ -31,6 +33,8 @@ cdef extern from "../c/graphLib/graph.h":
     int EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY
 
     int gp_GetDirection(graphP theGraph, int v)
+
+    int AT_EDGE_CAPACITY_LIMIT
 
 
 cdef extern from "../c/graphLib/graphDFSUtils.h":
