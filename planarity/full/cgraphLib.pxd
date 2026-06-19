@@ -231,7 +231,7 @@ cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
 
     int NONEMBEDDABLE
 
-    int gp_GetEmbedFlags(theGraph)
+    int gp_GetEmbedFlags(graphP theGraph)
 
     int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR, EMBEDFLAGS_OUTERPLANAR
     int EMBEDFLAGS_SEARCHFORK23, EMBEDFLAGS_SEARCHFORK33, EMBEDFLAGS_SEARCHFORK4

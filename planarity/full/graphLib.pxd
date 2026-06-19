@@ -158,9 +158,10 @@ cdef int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infi
 
 cdef int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator)
 
+#cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator)
 cdef bool g6_EndReached(G6ReadIteratorP theG6ReadIterator)
+#cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator)
 cdef int g6_FreeReader(G6ReadIteratorP *pG6ReadIterator)
-
 
 # Surfaced from planarity/c/graphLib/io/g6-write-iterator.h
 cdef int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph)
@@ -180,7 +181,7 @@ cdef int gp_Detach_Planarity(graphP theGraph)
 cdef int gp_Embed(graphP theGraph, unsigned int embedFlags)
 cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult)
 
-cdef int gp_GetEmbedFlags(theGraph)
+cdef int gp_GetEmbedFlags(graphP theGraph)
 
 cdef unsigned gp_GetObstructionMinorType(graphP theGraph)
 

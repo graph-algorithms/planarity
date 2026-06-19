@@ -168,19 +168,19 @@ cdef graphP gp_DupGraph(graphP theGraph):
 
 
 cdef int gp_CopyAdjacencyLists(graphP dstGraph, graphP srcGraph):
-    pass
+    return cgraphLib.gp_CopyAdjacencyLists(dstGraph, srcGraph)
 
 
 cdef int gp_CreateRandomGraph(graphP theGraph):
-    pass
+    return cgraphLib.gp_CreateRandomGraph(theGraph)
 
 
 cdef int gp_CreateRandomGraphEx(graphP theGraph, int numEdges):
-    pass
+    return cgraphLib.gp_CreateRandomGraphEx(theGraph, numEdges)
 
 
 cdef int gp_IsNeighbor(graphP theGraph, int u, int v):
-    pass
+    return cgraphLib.gp_IsNeighbor(theGraph, u, v)
 
 
 cdef int gp_FindEdge(graphP theGraph, int u, int v):
@@ -192,19 +192,19 @@ cdef int gp_GetVertexDegree(graphP theGraph, int v):
 
 
 cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned direction):
-    pass
+    return cgraphLib.gp_IsNeighborDirected(theGraph, u, v, direction)
 
 
 cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned direction):
-    pass
+    return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)
 
 
 cdef int gp_GetVertexInDegree(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_GetVertexInDegree(theGraph, v)
 
 
 cdef int gp_GetVertexOutDegree(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_GetVertexOutDegree(theGraph, v)
 
 
 cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
@@ -216,7 +216,7 @@ cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
 
 
 cdef int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink):
-    pass
+    return cgraphLib.gp_InsertEdge(theGraph, u, e_u, e_ulink, v, e_v, e_vlink)
 
 
 cdef int gp_DeleteEdge(graphP theGraph, int e):
@@ -224,35 +224,35 @@ cdef int gp_DeleteEdge(graphP theGraph, int e):
 
 
 cdef void gp_HideEdge(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_HideEdge(theGraph, e)
 
 
 cdef void gp_RestoreEdge(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_RestoreEdge(theGraph, e)
 
 
 cdef int gp_HideVertex(graphP theGraph, int vertex):
-    pass
+    return cgraphLib.gp_HideVertex(theGraph, vertex)
 
 
 cdef int gp_RestoreVertex(graphP theGraph):
-    pass
+    return cgraphLib.gp_RestoreVertex(theGraph)
 
 
 cdef int gp_ContractEdge(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_ContractEdge(theGraph, e)
 
 
 cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):
-    pass
+    return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)
 
 
 cdef int gp_RestoreVertices(graphP theGraph):
-    pass
+    return cgraphLib.gp_RestoreVertices(theGraph)
 
 
 cdef int gp_GetGraphFlags(graphP theGraph):
-    pass
+    return cgraphLib.gp_GetGraphFlags(theGraph)
 
 
 cdef int gp_GetFirstEdge(graphP theGraph, int v):
@@ -260,23 +260,23 @@ cdef int gp_GetFirstEdge(graphP theGraph, int v):
 
 
 cdef int gp_GetLastEdge(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_GetLastEdge(theGraph, v)
 
 
 cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):
-    pass
+    return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)
 
 
 cdef void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge):
-    pass
+    cgraphLib.gp_SetFirstEdge(theGraph, v, newFirstEdge)
 
 
 cdef void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge):
-    pass
+    cgraphLib.gp_SetLastEdge(theGraph, v, newFirstEdge)
 
 
 cdef void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge):
-    pass
+    cgraphLib.gp_SetEdgeByLink(theGraph, v, theLink, newEdge)
 
 
 cdef int gp_LowerBoundVertices(graphP theGraph):
@@ -288,19 +288,19 @@ cdef int gp_UpperBoundVertices(graphP theGraph):
 
 
 cdef int gp_LowerBoundVirtualVertices(graphP theGraph):
-    pass
+    return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)
 
 
 cdef int gp_UpperBoundVirtualVertices(graphP theGraph):
-    pass
+    return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)
 
 
 cdef int gp_LowerBoundVertexStorage(graphP theGraph):
-    pass
+    return cgraphLib.gp_LowerBoundVertexStorage(theGraph)
 
 
 cdef int gp_UpperBoundVertexStorage(graphP theGraph):
-    pass
+    return cgraphLib.gp_UpperBoundVertexStorage(theGraph)
 
 
 cdef int gp_IsVertex(graphP theGraph, int v):
@@ -308,63 +308,63 @@ cdef int gp_IsVertex(graphP theGraph, int v):
 
 
 cdef int gp_IsVirtualVertex(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_IsVirtualVertex(theGraph, v)
 
 
 cdef int gp_IsNotVertex(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_IsNotVertex(theGraph, v)
 
 
 cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)
 
 
 cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):
-    pass
+    return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)
 
 
 cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):
-    pass
+    return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)
 
 
 cdef int gp_GetIndex(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_GetIndex(theGraph, v)
 
 
 cdef void gp_SetIndex(graphP theGraph, int v, int theIndex):
-    pass
+    cgraphLib.gp_SetIndex(theGraph, v, theIndex)
 
 
 cdef void gp_InitFlags(graphP theGraph, int v):
-    pass
+    cgraphLib.gp_InitFlags(theGraph, v)
 
 
 cdef int gp_GetVisited(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_GetVisited(theGraph, v)
 
 
 cdef void gp_ClearVisited(graphP theGraph, int v):
-    pass
+    cgraphLib.gp_ClearVisited(theGraph, v)
 
 
 cdef void gp_SetVisited(graphP theGraph, int v):
-    pass
+    cgraphLib.gp_SetVisited(theGraph, v)
 
 
 cdef int gp_GetMarked(graphP theGraph, int v):
-    pass
+    return cgraphLib.gp_GetMarked(theGraph, v)
 
 
 cdef void gp_ClearMarked(graphP theGraph, int v):
-    pass
+    cgraphLib.gp_ClearMarked(theGraph, v)
 
 
 cdef void gp_SetMarked(graphP theGraph, int v):
-    pass
+    cgraphLib.gp_SetMarked(theGraph, v)
 
 
 cdef int gp_GetTwin(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetTwin(theGraph, e)
 
 
 cdef int gp_GetNextEdge(graphP theGraph, int e):
@@ -372,23 +372,23 @@ cdef int gp_GetNextEdge(graphP theGraph, int e):
 
 
 cdef int gp_GetPrevEdge(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetPrevEdge(theGraph, e)
 
 
 cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):
-    pass
+    return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)
 
 
 cdef void gp_SetNextEdge(graphP theGraph, int e, int newNextEdge):
-    pass
+    cgraphLib.gp_SetNextEdge(theGraph, e, newNextEdge)
 
 
 cdef void gp_SetPrevEdge(graphP theGraph, int e, int newPrevEdge):
-    pass
+    cgraphLib.gp_SetPrevEdge(theGraph, e, newPrevEdge)
 
 
 cdef void gp_SetAdjacentEdge(graphP theGraph, int e, int theLink, int newEdge):
-    pass
+    cgraphLib.gp_SetAdjacentEdge(theGraph, e, theLink, newEdge)
 
 
 cdef int gp_IsEdge(graphP theGraph, int e):
@@ -396,7 +396,7 @@ cdef int gp_IsEdge(graphP theGraph, int e):
 
 
 cdef int gp_IsNotEdge(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_IsNotEdge(theGraph, e)
 
 
 cdef int gp_GetNeighbor(graphP theGraph, int e):
@@ -404,75 +404,75 @@ cdef int gp_GetNeighbor(graphP theGraph, int e):
 
 
 cdef void gp_SetNeighbor(graphP theGraph, int e, int v):
-    pass
+    cgraphLib.gp_SetNeighbor(theGraph, e, v)
 
 
 cdef void gp_InitEdgeFlags(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_InitEdgeFlags(theGraph, e)
 
 
 cdef int gp_GetEdgeVisited(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetEdgeVisited(theGraph, e)
 
 
 cdef void gp_ClearEdgeVisited(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_ClearEdgeVisited(theGraph, e)
 
 
 cdef void gp_SetEdgeVisited(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_SetEdgeVisited(theGraph, e)
 
 
 cdef int gp_GetEdgeMarked(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetEdgeMarked(theGraph, e)
 
 
 cdef void gp_ClearEdgeMarked(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_ClearEdgeMarked(theGraph, e)
 
 
 cdef void gp_SetEdgeMarked(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_SetEdgeMarked(theGraph, e)
 
 
 cdef int gp_GetEdgeType(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetEdgeType(theGraph, e)
 
 
 cdef void gp_ClearEdgeType(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_ClearEdgeType(theGraph, e)
 
 
 cdef void gp_SetEdgeType(graphP theGraph, int e, int type):
-    pass
+    cgraphLib.gp_SetEdgeType(theGraph, e, type)
 
 
 cdef void gp_ResetEdgeType(graphP theGraph, int e, int type):
-    pass
+    cgraphLib.gp_ResetEdgeType(theGraph, e, type)
 
 
 cdef int gp_GetEdgeFlagInverted(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetEdgeFlagInverted(theGraph, e)
 
 
 cdef void gp_SetEdgeFlagInverted(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_SetEdgeFlagInverted(theGraph, e)
 
 
 cdef void gp_ClearEdgeFlagInverted(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_ClearEdgeFlagInverted(theGraph, e)
 
 
 cdef void gp_XorEdgeFlagInverted(graphP theGraph, int e):
-    pass
+    cgraphLib.gp_XorEdgeFlagInverted(theGraph, e)
 
 
 cdef int gp_GetDirection(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_GetDirection(theGraph, e)
 
 
 cdef void gp_SetDirection(graphP theGraph, int e, int direction):
-    pass
+    cgraphLib.gp_SetDirection(theGraph, e, direction)
 
 
 cdef int gp_LowerBoundEdges(graphP theGraph):
@@ -488,7 +488,7 @@ cdef int gp_EdgeInUse(graphP theGraph, int e):
 
 
 cdef int gp_EdgeNotInUse(graphP theGraph, int e):
-    pass
+    return cgraphLib.gp_EdgeNotInUse(theGraph, e)
 
 
 cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
@@ -505,7 +505,7 @@ cdef int gp_Read(graphP theGraph, char *FileName):
 
 
 cdef int gp_ReadFromString(graphP theGraph, char *inputStr):
-    pass
+    return cgraphLib.gp_ReadFromString(theGraph, inputStr)
 
 
 cdef int gp_Write(graphP theGraph, char *FileName, int Mode):
@@ -513,7 +513,7 @@ cdef int gp_Write(graphP theGraph, char *FileName, int Mode):
 
 
 cdef int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode):
-    pass
+    return cgraphLib.gp_WriteToString(theGraph, pOutputStr, writeMode)
 
 
 # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
@@ -522,7 +522,7 @@ cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):
 
 
 cdef int g6_InitReaderWithString(G6ReadIteratorP theG6ReadIterator, char *inputString):
-    pass
+    return cgraphLib.g6_InitReaderWithString(theG6ReadIterator, inputString)
 
 
 cdef int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName):
@@ -533,10 +533,12 @@ cdef int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator):
     return cgraphLib.g6_ReadGraph(theG6ReadIterator)
 
 
+#cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator):
 cdef bool g6_EndReached(G6ReadIteratorP theG6ReadIterator):
     return cgraphLib.g6_EndReached(theG6ReadIterator)
 
 
+#cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):
 cdef int g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):
     cgraphLib.g6_FreeReader(pG6ReadIterator)
 
@@ -547,7 +549,7 @@ cdef int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph):
 
 
 cdef int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString):
-    pass
+    return cgraphLib.g6_InitWriterWithString(theG6WriteIterator, pOutputString)
 
 
 cdef int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName):
@@ -568,7 +570,7 @@ cdef int gp_ExtendWith_Planarity(graphP theGraph):
 
 
 cdef int gp_Detach_Planarity(graphP theGraph):
-    pass
+    return cgraphLib.gp_Detach_Planarity(theGraph)
 
 
 cdef int gp_Embed(graphP theGraph, unsigned int embedFlags):
@@ -579,12 +581,12 @@ cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embe
     return cgraphLib.gp_TestEmbedResultIntegrity(theGraph, origGraph, embedResult)
 
 
-cdef int gp_GetEmbedFlags(theGraph):
-    pass
+cdef int gp_GetEmbedFlags(graphP theGraph):
+    return cgraphLib.gp_GetEmbedFlags(theGraph)
 
 
 cdef unsigned gp_GetObstructionMinorType(graphP theGraph):
-    pass
+    return cgraphLib.gp_GetObstructionMinorType(theGraph)
 
 
 # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
@@ -593,7 +595,7 @@ cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):
 
 
 cdef int gp_Detach_Outerplanarity(graphP theGraph):
-    pass
+    return cgraphLib.gp_Detach_Outerplanarity(theGraph)
 
 
 # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
@@ -602,7 +604,7 @@ cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):
 
 
 cdef int gp_Detach_DrawPlanar(graphP theGraph):
-    pass
+    return cgraphLib.gp_Detach_DrawPlanar(theGraph)
 
 
 cdef int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName):
@@ -614,27 +616,27 @@ cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionStri
 
 
 cdef int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v):
-    pass
+    return cgraphLib.gp_DrawPlanar_GetVertexPosition(theEmbedding, v)
 
 
 cdef int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v):
-    pass
+    return cgraphLib.gp_DrawPlanar_GetVertexStart(theEmbedding, v)
 
 
 cdef int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v):
-    pass
+    return cgraphLib.gp_DrawPlanar_GetVertexEnd(theEmbedding, v)
 
 
 cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):
-    pass
+    return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)
 
 
 cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):
-    pass
+    return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)
 
 
 cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):
-    pass
+    return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)
 
 
 # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
@@ -643,7 +645,7 @@ cdef int gp_ExtendWith_K23Search(graphP theGraph):
 
 
 cdef int gp_Detach_K23Search(graphP theGraph):
-    pass
+    return cgraphLib.gp_Detach_K23Search(theGraph)
 
 
 # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
@@ -652,12 +654,13 @@ cdef int gp_ExtendWith_K33Search(graphP theGraph):
 
 
 cdef int gp_Detach_K33Search(graphP theGraph):
-    pass
+    return cgraphLib.gp_Detach_K33Search(theGraph)
 
 
 # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK4Search.h":
 cdef int gp_ExtendWith_K4Search(graphP theGraph):
     return cgraphLib.gp_ExtendWith_K4Search(theGraph)
 
+
 cdef int gp_Detach_K4Search(graphP theGraph):
-    pass
+    return cgraphLib.gp_Detach_K4Search(theGraph)
