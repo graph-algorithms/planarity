@@ -533,13 +533,11 @@ cdef int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator):
     return cgraphLib.g6_ReadGraph(theG6ReadIterator)
 
 
-#cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator):
-cdef bool g6_EndReached(G6ReadIteratorP theG6ReadIterator):
+cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator):
     return cgraphLib.g6_EndReached(theG6ReadIterator)
 
 
-#cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):
-cdef int g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):
+cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):
     cgraphLib.g6_FreeReader(pG6ReadIterator)
 
 
