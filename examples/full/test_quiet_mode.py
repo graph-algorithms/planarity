@@ -72,3 +72,8 @@ if __name__ == "__main__":
     except RuntimeError as e:
         print('-'*25)
         traceback.print_exception(e)
+
+    # Shouldn't actually get to this point if you chose an invalid filename, but
+    # for demonstrative purposes, we should always call the method to free the
+    # reader before exiting scope.
+    reader.g6_FreeReader()
