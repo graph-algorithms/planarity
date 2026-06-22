@@ -45,7 +45,9 @@ if __name__ == "__main__":
     else:
         print("Success: graph written to string matches the input string.")
 
+    g6_encoded_graph = g6_encoded_graph.replace('\n', '\\n')
+    output = output.replace('\n', '\\n')
     print(
-        f"\t.g6 encoded input: '{g6_encoded_graph.replace('\n', '\\n')}' "
-        f"was written as '{output.replace('\n', '\\n')}'"
+        f"\t.g6 encoded input: '{g6_encoded_graph}' "
+        f"was written as '{output}'"
     )
