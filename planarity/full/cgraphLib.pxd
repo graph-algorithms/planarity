@@ -13,8 +13,8 @@ cdef extern from "../c/graphLib/lowLevelUtils/apiutils.h":
 
 
 cdef extern from "../c/graphLib/graphLib.h":
-    char *gp_GetProjectVersionFull()
-    char *gp_GetLibPlanarityVersionFull()
+    const char *gp_GetProjectVersionFull()
+    const char *gp_GetLibPlanarityVersionFull()
 
 
 cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
@@ -122,7 +122,7 @@ cdef extern from "../c/graphLib/graph.h":
     void gp_SetPrevEdge(graphP theGraph, int e, int newPrevEdge)
     void gp_SetAdjacentEdge(graphP theGraph, int e, int theLink, int newEdge)
 
-    int gp_IsEdge(graphP theGraph, int v)
+    int gp_IsEdge(graphP theGraph, int e)
     int gp_IsNotEdge(graphP theGraph, int e)
 
     int gp_GetNeighbor(graphP theGraph, int e)

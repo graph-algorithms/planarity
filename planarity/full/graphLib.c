@@ -2923,29 +2923,29 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_New(void) {
 /* "planarity/full/graphLib.pyx":130
  * 
  * 
- * cdef int gp_EnsureVertexCapacity(graphP theGraph, int n):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, n)
+ * cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, N)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(graphP __pyx_v_theGraph, int __pyx_v_n) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(graphP __pyx_v_theGraph, int __pyx_v_N) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":131
  * 
- * cdef int gp_EnsureVertexCapacity(graphP theGraph, int n):
- *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, n)             # <<<<<<<<<<<<<<
+ * cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):
+ *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, N)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_EnsureVertexCapacity(__pyx_v_theGraph, __pyx_v_n);
+  __pyx_r = gp_EnsureVertexCapacity(__pyx_v_theGraph, __pyx_v_N);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":130
  * 
  * 
- * cdef int gp_EnsureVertexCapacity(graphP theGraph, int n):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, n)
+ * cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, N)
  * 
 */
 

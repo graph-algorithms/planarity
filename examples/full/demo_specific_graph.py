@@ -124,8 +124,8 @@ def specific_graph(
             "or file (f)? (Select any other input to dismiss.)\n\t"
         )
         if choice.lower() == "s":
-            print(graph_for_embedding.gp_DrawPlanar_RenderToString())
-            pass
+            _, rendition_string = graph_for_embedding.gp_DrawPlanar_RenderToString()
+            print(rendition_string)
         elif choice.lower() == "f":
             render_outfile = Path.joinpath(
                 outdir, f"{infile.stem}.s.{command}.render.txt"

@@ -11,7 +11,7 @@ from planarity.full.cgraphLib cimport graphP, G6ReadIteratorP, G6WriteIteratorP
 # Surfaced from planarity/c/graphLib/graph.h
 cdef graphP gp_New()
 
-cdef int gp_EnsureVertexCapacity(graphP theGraph, int n)
+cdef int gp_EnsureVertexCapacity(graphP theGraph, int N)
 cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
 cdef void gp_ResetGraphStorage(graphP theGraph)
 
@@ -103,7 +103,7 @@ cdef void gp_SetNextEdge(graphP theGraph, int e, int newNextEdge)
 cdef void gp_SetPrevEdge(graphP theGraph, int e, int newPrevEdge)
 cdef void gp_SetAdjacentEdge(graphP theGraph, int e, int theLink, int newEdge)
 
-cdef int gp_IsEdge(graphP theGraph, int v)
+cdef int gp_IsEdge(graphP theGraph, int e)
 cdef int gp_IsNotEdge(graphP theGraph, int e)
 
 cdef int gp_GetNeighbor(graphP theGraph, int e)

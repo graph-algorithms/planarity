@@ -18,6 +18,15 @@ cdef class G6ReadIterator:
     cdef graphLib.G6ReadIteratorP _g6ReadIterator
 
     def __cinit__(self, curr_graph: graph.Graph):
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             curr_graph.gp_GetN()
         except RuntimeError as invalid_graph_error:
@@ -34,6 +43,15 @@ cdef class G6ReadIterator:
             )
 
     def __dealloc__(self):
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         if self._g6ReadIterator != NULL:
             # NOTE: g6_FreeReader() NULLs out the pointer to currGraph on
             # the C layer; Python will then clean up the instance variables
@@ -42,6 +60,15 @@ cdef class G6ReadIterator:
             graphLib.g6_FreeReader(&self._g6ReadIterator)
 
     def g6_InitReaderWithString(self, str input_string) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         cdef bytes encoded = input_string.encode('utf-8')
         cdef const char *encodedInputString = encoded
 
@@ -55,6 +82,15 @@ cdef class G6ReadIterator:
         return result
 
     def g6_InitReaderWithFileName(self, str infile_name) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         cdef bytes encoded = infile_name.encode('utf-8')
         cdef const char *encodedInfileName = encoded
 
@@ -68,6 +104,15 @@ cdef class G6ReadIterator:
         return result
 
     def g6_ReadGraph(self) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         result = graphLib.g6_ReadGraph(self._g6ReadIterator)
         if result != graphLib.OK:
             raise RuntimeError(
@@ -78,12 +123,26 @@ cdef class G6ReadIterator:
         return result
 
     def g6_EndReached(self) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         return graphLib.g6_EndReached(self._g6ReadIterator)
 
     def g6_FreeReader(self) -> None:
+        """
+
+        Args:
+
+        Raises:
+
+        """
         if self._g6ReadIterator == NULL:
-            # FIXME: Should I bother erroring out, since g6_FreeReader() already
-            # safeguards against double-free issues?
             raise RuntimeError(
                 "G6ReadIterator's underlying g6ReadIterator has already been "
                 "freed."
@@ -97,6 +156,15 @@ cdef class G6WriteIterator:
     cdef char *_outputString
 
     def __cinit__(self, graph.Graph graph_to_write):
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             if graph_to_write.gp_GetN() == 0:
                 raise ValueError(
@@ -117,10 +185,21 @@ cdef class G6WriteIterator:
         self._outputString = NULL
 
     def __dealloc__(self):
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         if self._g6WriteIterator != NULL:
             graphLib.g6_FreeWriter(&self._g6WriteIterator)
 
         if self._outputString != NULL:
+            free(self._outputString)
+            self._outputString = NULL
             raise RuntimeError(
                 "G6WriteIterator was initialized with string, but you did not "
                 "call g6_FreeWriter(), so you have not received the string "
@@ -128,6 +207,15 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithString(self) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         result = graphLib.g6_InitWriterWithString(self._g6WriteIterator, &(self._outputString))
         if result != graphLib.OK:
             raise RuntimeError(
@@ -138,6 +226,15 @@ cdef class G6WriteIterator:
         return result
 
     def g6_InitWriterWithFileName(self, str outfile_name) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         cdef bytes encoded = outfile_name.encode('utf-8')
         cdef const char *encodedOutputFileName = encoded
 
@@ -151,6 +248,15 @@ cdef class G6WriteIterator:
         return result
 
     def g6_WriteGraph(self) -> int:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         result = graphLib.g6_WriteGraph(self._g6WriteIterator)
         if result != graphLib.OK:
             raise RuntimeError(
@@ -161,9 +267,16 @@ cdef class G6WriteIterator:
         return result
 
     def g6_FreeWriter(self) -> str | None:
+        """
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
         if self._g6WriteIterator == NULL:
-            # FIXME: Should I bother erroring out, since g6_FreeWriter() already
-            # safeguards against double-free issues?
             raise RuntimeError(
                 "G6WriteIterator's underlying g6WriteIterator has already been "
                 "freed."

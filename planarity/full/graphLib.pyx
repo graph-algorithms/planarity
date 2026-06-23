@@ -127,8 +127,8 @@ cdef graphP gp_New():
     return cgraphLib.gp_New()
 
 
-cdef int gp_EnsureVertexCapacity(graphP theGraph, int n):
-    return cgraphLib.gp_EnsureVertexCapacity(theGraph, n)
+cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):
+    return cgraphLib.gp_EnsureVertexCapacity(theGraph, N)
 
 
 cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity):
