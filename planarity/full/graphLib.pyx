@@ -24,6 +24,7 @@ OK = cgraphLib.OK
 NOTOK = cgraphLib.NOTOK
 TRUE = cgraphLib.TRUE
 FALSE = cgraphLib.FALSE
+NIL = cgraphLib.NIL
 
 # Surfaced from planarity/c/graphLib/graph.h
 VERTEX_VISITED_MASK = cgraphLib.VERTEX_VISITED_MASK

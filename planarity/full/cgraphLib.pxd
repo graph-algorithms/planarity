@@ -18,7 +18,7 @@ cdef extern from "../c/graphLib/graphLib.h":
 
 
 cdef extern from "../c/graphLib/lowLevelUtils/appconst.h":
-    cdef int OK, NOTOK, TRUE, FALSE
+    cdef int OK, NOTOK, TRUE, FALSE, NIL
 
 
 cdef extern from "../c/graphLib/graph.h":

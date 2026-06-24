@@ -19,6 +19,10 @@ NOTOK = graphLib.NOTOK
 
 TRUE = graphLib.TRUE
 FALSE = graphLib.FALSE
+NIL = graphLib.NIL
+
+EDGEFLAG_DIRECTION_INONLY = graphLib.EDGEFLAG_DIRECTION_INONLY
+EDGEFLAG_DIRECTION_OUTONLY = graphLib.EDGEFLAG_DIRECTION_OUTONLY
 
 AT_EDGE_CAPACITY_LIMIT = graphLib.AT_EDGE_CAPACITY_LIMIT
 
@@ -354,40 +358,65 @@ cdef class Graph:
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
     def gp_FindDirectedEdge(self, int u, int v, unsigned direction) -> int:
-        """
+        """Find directed index of edge between u and v if it exists in graph
 
         Args:
+            u: index of a vertex in graph
+            v: index of another vertex in graph
+            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY
 
         Returns:
+            NIL if edge not found, or the index e of the directed edge between
+            u and v
 
         Raises:
-
+            ValueError if u or v are not valid vertex labels, or if direction is
+            neither EDGEFLAG_DIRECTION_INONLY nor EDGEFLAG_DIRECTION_OUTONLY
         """
-        raise NotImplementedError("")
+        if not self.gp_IsVertex(u):
+            raise ValueError(f"'{u}' is not a valid vertex label.")
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(f"'{v}' is not a valid vertex label.")
+
+        if direction not in (EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY):
+            raise ValueError(f"'{direction}' is not a valid direction flag.")
+
+        return graphLib.gp_FindDirectedEdge(self._theGraph, u, v, direction)
 
     def gp_GetVertexInDegree(self, int v) -> int:
-        """
+        """Gets in-degree of v, including undirected edges
 
         Args:
+            v: index of a vertex in graph
 
         Returns:
+            The in-degree of the vertex with index v
 
         Raises:
-
+            ValueError if v is not a valid vertex label
         """
-        raise NotImplementedError("")
+        if not self.gp_IsVertex(v):
+            raise ValueError(f"'{v}' is not a valid vertex label.")
+
+        return graphLib.gp_GetVertexInDegree(self._theGraph, v)
 
     def gp_GetVertexOutDegree(self, int v) -> int:
-        """
+        """Gets out-degree of v, including undirected edges
 
         Args:
+            v: index of a vertex in graph
 
         Returns:
+            The out-degree of the vertex with index v
 
         Raises:
-
+            ValueError if v is not a valid vertex label
         """
-        raise NotImplementedError("")
+        if not self.gp_IsVertex(v):
+            raise ValueError(f"'{v}' is not a valid vertex label.")
+
+        return graphLib.gp_GetVertexOutDegree(self._theGraph, v)
 
     def gp_AddEdge(self, int u, int ulink, int v, int vlink)  -> int:
         """Adds edge between two vertices (if sufficient space)
@@ -437,7 +466,7 @@ cdef class Graph:
         return result
 
     def gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink) -> int:
-        """Adds edge between two vertices
+        """Adds edge between two vertices, resizing structures if necessessary
 
         Args:
             u: index of a vertex in graph
@@ -481,98 +510,241 @@ cdef class Graph:
         return result
 
     def gp_InsertEdge(self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink) -> int:
-        """
+        """Insert edge between u and v in specific position of adjacency lists
 
         Args:
+            u: index of a vertex in graph
+            e_u: index of edge in u's adjacency list to which new edge shall be
+                adjacent
+            e_ulink: 0 or 1; the direction of adjacency of the new edge to e_u
+            v: index of a vertex in graph
+            e_v: index of edge in v's adjacency list to which new edge shall be
+                adjacent
+            e_vlink: 0 or 1; the direction of adjacency of the new edge to e_v
 
         Returns:
+            OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge would
+            exceed the graph's edge capacity (in which case the caller must
+            call gp_EnsureEdgeCapacity() and retry).
 
         Raises:
-
+            ValueError if u, e_u, v, e_v are not valid vertex labels, if e_ulink
+                or e_vlink are neither 0 nor 1, 
+            RuntimeError if gp_InsertEdge() returned anything other than OK or
+                AT_EDGE_CAPACITY_LIMIT
         """
-        raise NotImplementedError("")
+        if not self.gp_IsVertex(u):
+            raise ValueError(f"u = {u} is not a valid vertex label.")
+
+        if not self.gp_IsVertex(e_u):
+            raise ValueError(f"e_u = {e_u} is not a valid vertex label.")
+
+        if e_ulink != 0 and e_ulink != 1:
+            raise ValueError(
+                f"Invalid link index e_ulink = {e_ulink}"
+            )
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(f"v = {v} is not a valid vertex label.")
+
+        if not self.gp_IsVertex(e_v):
+            raise ValueError(f"e_v = {e_v} is not a valid vertex label.")
+
+        if e_vlink != 0 and e_vlink != 1:
+            raise ValueError(
+                f"Invalid link index e_vlink = {e_vlink}"
+            )
+
+        result = graphLib.gp_InsertEdge(self._theGraph, u, e_u, e_ulink, v, e_v, e_vlink)
+        if result != OK and result != AT_EDGE_CAPACITY_LIMIT:
+            raise RuntimeError(
+                "gp_InsertEdge() failed: unable to insert edge (u, v) = "
+                f"({u}, {v}) adjacent to e_u = {e_u} by e_ulink = {e_ulink} in "
+                f"u's adjacency list and adjacent to e_v = {e_v} by e_vlink = "
+                f"{e_vlink} in v's adjacency list."
+            )
+
+        return result
 
     def gp_DeleteEdge(self, int e) -> int:
+        """Deletes edge with index e from the graph
+
+        Args:
+            e: index of edge in graph to delete
+
+        Returns:
+            OK if e was successfully deleted
+
+        Raises:
+            ValueError if e is not a valid edge index
+            RuntimeError if gp_DeleteEdge() returned anything other than OK
+        """
         if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_DeleteEdge() failed: invalid edge '{e}'."
+            raise ValueError(
+                f"gp_DeleteEdge() failed: invalid edge e = {e}"
             )
 
         result = graphLib.gp_DeleteEdge(self._theGraph, e)
         if result != OK:
             raise RuntimeError(
-                f"gp_DeleteEdge() failed: unable to delete edge e = {e}."
+                f"gp_DeleteEdge() failed: unable to delete edge e = {e}"
             )
 
         return result
 
     def gp_HideEdge(self, int e) -> None:
-        """
+        """Hides edge with index e within the graph
 
         Args:
+            e: index of edge in graph to hide
 
         Raises:
-
+            ValueError if e is not a valid edge index
         """
-        raise NotImplementedError("")
+        # FIXME: underlying gp_HideEdge() does the following checks, but then
+        # silently returns if any are met; should I perform these checks and explicitly fail?
+        #  (
+        #       e < gp_LowerBoundEdges(theGraph) ||
+        #       e >= gp_UpperBoundEdges(theGraph) ||
+        #       gp_EdgeNotInUse(theGraph, e)
+        #  )
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_HideEdge() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_HideEdge(self._theGraph, e)
 
     def gp_RestoreEdge(self, int e) -> None:
-        """
+        """Restore edge to adjacency lists from which it was previously removed
 
         Args:
+            e: index of edge in graph to restore
 
         Raises:
-
+            ValueError if e is not a valid edge index
         """
-        raise NotImplementedError("")
+        # FIXME: underlying gp_RestoreEdge() does the following checks, but then
+        # silently returns if any are met; should I perform these checks and explicitly fail?
+        #  (
+        #       e < gp_LowerBoundEdges(theGraph) ||
+        #       e >= gp_UpperBoundEdges(theGraph) ||
+        #       gp_EdgeNotInUse(theGraph, e)
+        #  )
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_RestoreEdge() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_RestoreEdge(self._theGraph, e)
 
     def gp_HideVertex(self, int vertex) -> int:
-        """
+        """Hides vertex within the graph
 
         Args:
+            vertex: index of vertex in graph to hide
 
         Returns:
+            OK if vertex successfully hidden
 
         Raises:
-
+            ValueError if vertex is not a valid index
+            RuntimeError if gp_HideVertex() returned anything other than OK
         """
-        raise NotImplementedError("")
+        if not self.gp_IsVertex(vertex):
+            raise ValueError(
+                f"gp_HideVertex() failed: invalid vertex index {vertex}"
+            )
+
+        result = graphLib.gp_HideVertex(self._theGraph, vertex)
+        if result != OK:
+            raise RuntimeError(
+                f"gp_HideVertex() failed: unable to hide vertex {vertex}."
+            )
 
     def gp_RestoreVertex(self) -> int:
-        """
-
-        Args:
+        """Restore last vertex hidden during an edge contraction or vertex identification 
+        and extricates its adjacency list from the vertex with which it was
+        merged.
 
         Returns:
+            OK if vertex was restored
 
         Raises:
-
+            ValueError if vertex is not a valid index
+            RuntimeError if gp_RestoreVertex() returned anything other than OK
         """
-        raise NotImplementedError("")
+        result = graphLib.gp_RestoreVertex(self._theGraph)
+        if result != OK:
+            raise RuntimeError(
+                f"gp_RestoreVertex() failed: unable to restore vertex."
+            )
+
+        return result
 
     def gp_ContractEdge(self, int e) -> int:
-        """
+        """Contracts the edge e = (u, v) by hiding e and identifying v with u
 
         Args:
+            e: index of edge in graph to contract
 
         Returns:
+            OK if gp_ContractEdge() returned OK
 
         Raises:
-
+            ValueError if e is not a valid edge index
+            RuntimeError if gp_ContractEdge() returned anything other than OK
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_ContractEdge() failed: invalid edge e = {e}"
+            )
+
+        result = graphLib.gp_ContractEdge(self._theGraph, e)
+        if result != OK:
+            raise RuntimeError(
+                f"gp_ContractEdge() failed: unable to contract edge e = {e}"
+            )
+
+        return result
 
     def gp_IdentifyVertices(self, int u, int v, int eBefore) -> int:
-        """
+        """Identify vertex v with u by transferring all adjacencies from v to u
 
         Args:
+            u: index of vertex in graph to which v will be identified
+            v: index of vertex in graph to identify with u
+            eBefore: the index in u's adjacency list before which v's adjacencies
+                should be inserted, or NIL to append the edges to u's list
 
         Returns:
+            OK if v is successfully identified with u
 
         Raises:
-
+            ValueError if u or v are invalid vertex indices, or if eBefore is
+                neither NIL nor a valid edge index
+            RuntimeError if gp_IdentifyVertices() returned anything other than OK
         """
-        raise NotImplementedError("")
+        if not self.gp_IsVertex(u):
+            raise ValueError(f"'{u}' is not a valid vertex label.")
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(f"'{v}' is not a valid vertex label.")
+
+        if not self.gp_IsEdge(eBefore) and eBefore != NIL:
+            raise ValueError(
+                "gp_IdentifyVertices() failed: invalid edge index eBefore = "
+                f"{eBefore} before which to insert v's adjacencies."
+            )
+        
+        result = graphLib.gp_IdentifyVertices(self._theGraph, u, v, eBefore)
+        if result != OK:
+            raise RuntimeError(
+                f"gp_IdentifyVertices() failed: unable to identify v = {v} "
+                f"with u = {u}"
+            )
+
+        return result
 
     def gp_RestoreVertices(self) -> int:
         """
@@ -599,8 +771,20 @@ cdef class Graph:
         raise NotImplementedError("")
 
     def gp_GetFirstEdge(self, int v) -> int:
+        """Get index of first edge incident to vertex v
+
+        Args:
+            v: index of vertex in graph for which you wish to get the first edge
+                in its adjacency list
+
+        Returns:
+            The index of the first edge in v's adjacency list
+
+        Raises:
+            ValueError if v is not a valid vertex index
+        """
         if not self.gp_IsVertex(v):
-            raise RuntimeError(
+            raise ValueError(
                 f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
             )
 
@@ -1374,14 +1558,14 @@ cdef class Graph:
         raise NotImplementedError("")
 
     def gp_ExtendWith_Planarity(self) -> int:
-        """
-
-        Args:
+        """Extends graph with structures necessary for Planarity
 
         Returns:
+            OK if graph successfully extended with the Planarity extension
 
         Raises:
-
+            RuntimeError if gp_ExtendWith_Planarity() returned anything other 
+            than OK
         """
         result = graphLib.gp_ExtendWith_Planarity(self._theGraph)
         if result != OK:
@@ -1426,14 +1610,14 @@ cdef class Graph:
         return check_result
 
     def gp_ExtendWith_Outerplanarity(self) -> int:
-        """
-
-        Args:
+        """Extends graph with structures necessary for Outerplanarity
 
         Returns:
+            OK if graph successfully extended with Outerplanarity extension
 
         Raises:
-
+            RuntimeError if gp_ExtendWith_Outerplanarity() returned anything
+            other than OK
         """
         result = graphLib.gp_ExtendWith_Outerplanarity(self._theGraph)
         if result != OK:
@@ -1444,14 +1628,14 @@ cdef class Graph:
         return result
 
     def gp_ExtendWith_DrawPlanar(self) -> int:
-        """
-
-        Args:
+        """Extends graph with structures necessary for DrawPlanar extension
 
         Returns:
+            OK if graph successfully extended with DrawPlanar extension
 
         Raises:
-
+            RuntimeError if gp_ExtendWith_DrawPlanar() returned anything other
+            than OK
         """
         result = graphLib.gp_ExtendWith_DrawPlanar(self._theGraph)
         if result != OK:
@@ -1509,14 +1693,14 @@ cdef class Graph:
             ) from string_conversion_error
 
     def gp_ExtendWith_K23Search(self) -> int:
-        """
-
-        Args:
+        """Extends graph with structures necessary for K_{2, 3} search
 
         Returns:
+            OK if graph successfully extended with K23Search extension
 
         Raises:
-
+            RuntimeError if gp_ExtendWith_K23Search() returned anything other 
+            than OK
         """
         result = graphLib.gp_ExtendWith_K23Search(self._theGraph)
         if result != OK:
@@ -1527,14 +1711,14 @@ cdef class Graph:
         return result
 
     def gp_ExtendWith_K33Search(self) -> int:
-        """
-
-        Args:
+        """Extends graph with structures necessary for K_{3, 3} search
 
         Returns:
+            OK if graph successfully extended with K33Search extension
 
         Raises:
-
+            RuntimeError if gp_ExtendWith_K33Search() returned anything other 
+            than OK
         """
         result = graphLib.gp_ExtendWith_K33Search(self._theGraph)
         if result != OK:
@@ -1545,14 +1729,14 @@ cdef class Graph:
         return result
 
     def gp_ExtendWith_K4Search(self) -> int:
-        """
-
-        Args:
+        """Extends graph with structures necessary for K_4 search
 
         Returns:
+            OK if graph successfully extended with K4Search extension
 
         Raises:
-
+            RuntimeError if gp_ExtendWith_K4Search() returned anything other 
+            than OK
         """
         result = graphLib.gp_ExtendWith_K4Search(self._theGraph)
         if result != OK:

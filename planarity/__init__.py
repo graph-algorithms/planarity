@@ -20,6 +20,7 @@ from .full.graphLib import (
     NOTOK,
     TRUE,
     FALSE,
+    NIL,
 )
 from .full.graphLib import (
     gp_GetProjectVersionFull,
