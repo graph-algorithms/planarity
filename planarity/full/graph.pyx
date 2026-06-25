@@ -772,17 +772,7 @@ cdef class Graph:
 
         Returns:
             An integer representing the flags set on the graphP
-
-        Raises:
-            RuntimeError if the Graph's graphP is not initialized
         """
-        # NOTE: I do not check if we have ensured vertex capacity at this point,
-        # since the flags would still be valid
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_GetGraphFlags() failed: the graph is not initialized."
-            )
-
         return graphLib.gp_GetGraphFlags(self._theGraph)
 
     def gp_GetFirstEdge(self, int v) -> int:
@@ -797,15 +787,8 @@ cdef class Graph:
             list
 
         Raises:
-            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_GetFirstEdge() failed: the graph is not initialized."
-            )
-
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
@@ -824,15 +807,8 @@ cdef class Graph:
             The index into the edge array of the last edge in v's adjacency list
 
         Raises:
-            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_GetLastEdge() failed: the graph is not initialized."
-            )
-
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_GetLastEdge() failed: invalid vertex intex v = {v}"
@@ -854,16 +830,9 @@ cdef class Graph:
             indicated by theLink
 
         Raises:
-            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index or invalid direction
                 theLink
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_GetEdgeByLink() failed: the graph is not initialized."
-            )
-
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_GetEdgeByLink() failed: invalid vertex intex v = {v}"
@@ -887,15 +856,8 @@ cdef class Graph:
                 to set as the first edge in v's adjacency list
 
         Raises:
-            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index or invalid newFirstEdge
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_SetFirstEdge() failed: the graph is not initialized."
-            )
-
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_SetFirstEdge() failed: invalid vertex intex v = {v}"
@@ -919,15 +881,8 @@ cdef class Graph:
                 to set as the last edge in v's adjacency list
 
         Raises:
-            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index or invalid newLastEdge
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_SetLastEdge() failed: the graph is not initialized."
-            )
-
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_SetLastEdge() failed: invalid vertex intex v = {v}"
@@ -953,15 +908,8 @@ cdef class Graph:
                 to set as the edge at link theLink in v's adjacency list
 
         Raises:
-            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index or invalid newEdge
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_SetEdgeByLink() failed: the graph is not initialized."
-            )
-
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_SetEdgeByLink() failed: invalid vertex intex v = {v}"
@@ -980,16 +928,7 @@ cdef class Graph:
 
         Returns:
             The lower bound of the vertex indices
-
-        Raises:
-            RuntimeError if self._theGraph is not initialized
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_LowerBoundVertices() failed: the graph is not initialized."
-            )
-
         return graphLib.gp_LowerBoundVertices(self._theGraph)
 
     def gp_UpperBoundVertices(self) -> int:
@@ -997,16 +936,7 @@ cdef class Graph:
 
         Returns:
             The upper bound of the vertex indices
-
-        Raises:
-            RuntimeError if self._theGraph is not initialized
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_UpperBoundVertices() failed: the graph is not initialized."
-            )
-
         return graphLib.gp_UpperBoundVertices(self._theGraph)
 
     def gp_LowerBoundVirtualVertices(self) -> int:
@@ -1014,17 +944,7 @@ cdef class Graph:
 
         Returns:
             The lower bound of the virtual vertex indices
-
-        Raises:
-            RuntimeError if self._theGraph is not initialized
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_LowerBoundVirtualVertices() failed: the graph is not "
-                "initialized."
-            )
-
         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
 
     def gp_UpperBoundVirtualVertices(self) -> int:
@@ -1032,150 +952,212 @@ cdef class Graph:
 
         Returns:
             The upper bound of the virtual vertex indices
-
-        Raises:
-            RuntimeError if self._theGraph is not initialized
         """
-        # FIXME: Should I check that the graph also has a nonzero order and size?
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_UpperBoundVirtualVertices() failed: the graph is not "
-                "initialized."
-            )
-
         return graphLib.gp_UpperBoundVirtualVertices(self._theGraph)
 
     def gp_LowerBoundVertexStorage(self) -> int:
-        """
-
-        Args:
+        """Get lower bound of graph's non-virtual and virtual vertex indices
 
         Returns:
-
-        Raises:
-
+            The lower bound for all non-virtual and virtual vertices, to be used
+            for iteration.
         """
-        raise NotImplementedError("")
+        return graphLib.gp_LowerBoundVertexStorage(self._theGraph)
 
     def gp_UpperBoundVertexStorage(self) -> int:
-        """
-
-        Args:
+        """Get upper bound of graph's non-virtual and virtual vertex indices
 
         Returns:
-
-        Raises:
-
+            The upper bound for all non-virtual and virtual vertices, to be used
+            for iteration.
         """
-        raise NotImplementedError("")
+        return graphLib.gp_UpperBoundVertexStorage(self._theGraph)
 
     def gp_IsVertex(self, int v) -> int:
-        """
+        """Determine if index v corresponds to a non-virtual vertex
 
         Args:
+            v: candidate to test whether the index corresponds to a non-virtual
+                vertex in the graph
 
         Returns:
-
-        Raises:
-
+            TRUE if v is within the allowed bounds for vertices and if the
+            value returned by the C-layer call to gp_IsVertex() is truthy,
+            otherwise FALSE.
         """
-        return (
+        if (
             (v >= self.gp_LowerBoundVertices()) and
             (v < self.gp_UpperBoundVertices()) and
             graphLib.gp_IsVertex(self._theGraph, v)
-        )
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_IsVirtualVertex(self, int v) -> int:
-        """
+        """Determine if index v corresponds to a virtual vertex
 
         Args:
+            v: candidate to test whether the index corresponds to a virtual
+                vertex in the graph
 
         Returns:
-
-        Raises:
-
+            TRUE if v is within the allowed bounds for virtual vertices and if
+            the value returned by the C-layer call to gp_IsVirtualVertex() is
+            truthy, otherwise FALSE.
         """
-        raise NotImplementedError("")
+        if (
+            (v >= self.gp_LowerBoundVirtualVertices()) and
+            (v < self.gp_UpperBoundVirtualVertices()) and
+            graphLib.gp_IsVirtualVertex(self._theGraph, v)
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_IsNotVertex(self, int v) -> int:
-        """
+        """Determine if index v does not correspond to a non-virtual vertex
 
         Args:
+            v: candidate to test whether the index does not correspond to a
+                non-virtual vertex in the graph
 
         Returns:
-
-        Raises:
-
+            TRUE if v is not within the allowed bounds for non-virtual vertices,
+            or if the value returned by the C-layer call to gp_IsNotVertex() is
+            truthy, otherwise FALSE.
         """
-        raise NotImplementedError("")
+        if (
+            (v < self.gp_LowerBoundVertices()) or
+            (v >= self.gp_UpperBoundlVertices()) or
+            graphLib.gp_IsNotVertex(self._theGraph, v)
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_IsNotVirtualVertex(self, int v) -> int:
-        """
+        """Determine if index v does not correspond to a virtual vertex
 
         Args:
+            v: candidate to test whether the index does not correspond to a
+                virtual vertex in the graph
 
         Returns:
-
-        Raises:
-
+            TRUE if v is not within the allowed bounds for virtual vertices or
+            if the value returned by the C-layer call to gp_IsNotVirtualVertex()
+            is truthy, otherwise FALSE.
         """
-        raise NotImplementedError("")
+        if (
+            (v < self.gp_LowerBoundVirtualVertices()) or
+            (v >= self.gp_UpperBoundVirtualVertices()) or
+            graphLib.gp_IsNotVirtualVertex(self._theGraph, v)
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_VirtualVertexInUse(self, int virtualVertex) -> int:
-        """
+        """Determines if virtualVertex corresponds to a virtual vertex in use
 
         Args:
+            virtualVertex: candidate to test whether the index corresponds to a
+                virtual vertex in the graph that is in use (i.e., has at least
+                one edge in its adjacency list)
 
         Returns:
-
-        Raises:
-
+            TRUE if virtualVertex is a valid virtual vertex and is in use,
+            otherwise FALSE.
         """
-        raise NotImplementedError("")
+        if (
+            self.gp_IsVirtualVertex(virtualVertex) and
+            graphLib.gp_VirtualVertexInUse(self._theGraph, virtualVertex)
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_VirtualVertexNotInUse(self, int virtualVertex) -> int:
-        """
+        """Determines if virtualVertex corresponds to a virtual vertex in use
 
         Args:
+            virtualVertex: candidate to test whether the index corresponds to a
+                virtual vertex in the graph that is in use (i.e., has at least
+                one edge in its adjacency list)
 
         Returns:
-
-        Raises:
-
+            TRUE if virtualVertex is a valid virtual vertex and is not in use,
+            FALSE if virtualVertex is not a valid virtual vertex or if it is
+            a virtual vertex but is in use.
         """
-        raise NotImplementedError("")
+        if (
+            self.gp_IsVirtualVertex(virtualVertex) and
+            graphLib.gp_VirtualVertexNotInUse(self._theGraph, virtualVertex)
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_GetIndex(self, int v) -> int:
-        """
+        """Set index of vertex v to theIndex
 
         Args:
+            v: index of vertex in graph whose index field you wish to get
 
         Returns:
+            The value of the index field of the vertex record corresponding to v
 
         Raises:
-
+            ValueError if v doesn't correspond to a non-virtual or virtual
+            vertex.
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_GetIndex() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetIndex(self._theGraph, v)
 
     def gp_SetIndex(self, int v, int theIndex) -> None:
-        """
+        """Set index of vertex v to theIndex
 
         Args:
+            v: index of vertex in graph whose index you wish to set to theIndex
+            theIndex: new index you wish to assign to VertexRec's index field
 
         Raises:
-
+            ValueError if v or theIndex don't correspond to a non-virtual or
+            virtual vertex.
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_SetIndex() failed: invalid vertex v = {v}"
+            )
+
+        if not (self.gp_IsVertex(theIndex) or self.gp_IsVirtualVertex(theIndex)):
+            raise ValueError(
+                f"gp_SetIndex() failed: invalid value theIndex = {theIndex} to "
+                "which you wish to set the index of v = {v}"
+            )
+
+        graphLib.gp_SetIndex(self._theGraph, v, theIndex)
 
     def gp_InitFlags(self, int v) -> None:
-        """
+        """Resets the flags for a given vertex
 
         Args:
+            v: index of vertex in graph whose flags you wish to reset to 0
 
         Raises:
-
+            ValueError if v does not correspond to a non-virtual nor virtual
+            vertex.
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_InitFlags() failed: invalid vertex v = {v}"
+            )
+
+        graphLib.gp_InitFlags(self._theGraph, v)
 
     def gp_GetVisited(self, int v) -> int:
         """
@@ -1333,15 +1315,15 @@ cdef class Graph:
         Returns:
 
 
-        Raises:
-            
-
         """
-        return (
-            (e >= self.gp_LowerBoundEdgeStorage()) and
-            (e < self.gp_UpperBoundEdgeStorage()) and
-            graphLib.gp_IsEdge(self._theGraph, e)
-        )
+        if (
+                (e >= self.gp_LowerBoundEdgeStorage()) and
+                (e < self.gp_UpperBoundEdgeStorage()) and
+                graphLib.gp_IsEdge(self._theGraph, e)
+        ):
+            return TRUE
+
+        return FALSE
 
     def gp_IsNotEdge(self, int e) -> int:
         """
@@ -1353,7 +1335,10 @@ cdef class Graph:
         Raises:
 
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            return TRUE
+
+        return FALSE
 
     def gp_GetNeighbor(self, int e) -> int:
         if not self.gp_IsEdge(e):
