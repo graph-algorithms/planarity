@@ -58,7 +58,7 @@ cdef class Graph:
             N: The number of vertices
 
         Returns:
-            OK, the only acceptable return code from the C graphLib
+            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -83,7 +83,7 @@ cdef class Graph:
             requiredEdgeCapacity: The required edge capacity
 
         Returns:
-            OK, the only acceptable return code from the C graphLib
+            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -98,7 +98,7 @@ cdef class Graph:
         return result
 
     def gp_ResetGraphStorage(self) -> None:
-        """Resets graph storage (including extensions)."""
+        """Resets graph storage (including 'subclass' extension data)."""
         graphLib.gp_ResetGraphStorage(self._theGraph)
 
     def gp_GetN(self) -> int:
@@ -106,41 +106,23 @@ cdef class Graph:
 
         Returns:
             The number of vertices in the graph.
-
-        Raises:
-            RuntimeError if the graphP the Graph wraps is NULL
         """
-        if self._theGraph == NULL:
-            raise RuntimeError("Graph is not initialized.")
-
         return graphLib.gp_GetN(self._theGraph)
 
     def gp_GetNV(self) -> int:
-        """Getter for the number of virtual vertices in the graph.
+        """Getter for the number of virtual vertices available in the graph.
 
         Returns:
-            The number of virtual vertices in the graph.
-
-        Raises:
-            RuntimeError if the graphP the Graph wraps is NULL
+            The number of virtual vertices available in the graph.
         """
-        if self._theGraph == NULL:
-            raise RuntimeError("Graph is not initialized.")
-
         return graphLib.gp_GetNV(self._theGraph)
 
     def gp_GetM(self) -> int:
-        """Getter for number of edges of graph, M.
+        """Getter for number of edges in the graph, M.
 
         Returns:
             The number of edges in the graph.
-
-        Raises:
-            RuntimeError if the graphP the Graph wraps is NULL.
         """
-        if self._theGraph == NULL:
-            raise RuntimeError("gp_GetM() failed: Graph is not initialized.")
-
         return graphLib.gp_GetM(self._theGraph)
 
     def gp_GetEdgeCapacity(self) -> int:
@@ -149,60 +131,33 @@ cdef class Graph:
         Returns:
             The edge capacity of the graph.
         """
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "gp_GetEdgeCapacity() failed: Graph is not initialized."
-            )
         return graphLib.gp_GetEdgeCapacity(self._theGraph)
 
-    def gp_CopyGraph(self, Graph src_graph) -> int:
-        """Copies src_graph into the destination Graph referred to by self
+    def gp_CopyGraph(self, Graph srcGraph) -> int:
+        """Copies src_graph into the destination Graph referred to by self.
 
         Args:
-            src_graph: the Graph wrapping the graphP you wish to to copy into
+            srcGraph: the Graph wrapping the graphP you wish to to copy into
                 the current Graph's graphP.
 
         Returns:
-            The only acceptable return code from the C graphLib, OK
+            Returns OK on success (exception otherwise)
 
         Raises:
-            RuntimeError if the Graph's graphP is NULL, or if the C layer
-                gp_CopyGraph() failed and returned anything other than OK.
-            ValueError if the graphP is not initialized, or if the order of the
-                src_graph doesn't match the destination graph (self)
+            RuntimeError if C graphlib version of this function failed.
         """
-        # NOTE: this is interpreting the self as the dstGraph, i.e. copying
-        # the Graph wrapper that is passed in as the srcGraph
-        if self._theGraph == NULL:
-            raise RuntimeError(
-                "Invalid destination graph: wrapped graphP is NULL."
-            )
-
-        try:
-            if src_graph.gp_GetN() == 0:
-                raise ValueError("Source graph has not been initialized.")
-        except RuntimeError as src_graph_uninit_error:
-            raise ValueError(
-                "Invalid source graph: wrapped graphP is NULL."
-            ) from src_graph_uninit_error
-
-        if self.gp_GetN() != src_graph.gp_GetN():
-            raise ValueError(
-                "Source and destination graphs must have the same order "
-                "to copy graphP struct.")
-
-        result = graphLib.gp_CopyGraph(self._theGraph, src_graph._theGraph)
+        # Parameter validation done by the C layer function
+        result = graphLib.gp_CopyGraph(self._theGraph, srcGraph._theGraph)
         if result != OK:
             raise RuntimeError(f"gp_CopyGraph() failed.")
 
         return result
 
     def gp_DupGraph(self) -> Graph:
-        """Creates a Graph wrapping a copy of the current Graph's graphP
+        """Creates a Graph wrapping a copy of the current Graph's graphP.
 
         Returns:
-            A new Graph which wraps a duplicate graphP of the current Graphs'
-            graphP.
+            A new Graph containing a duplicate of the current Graph's graphP.
 
         Raises:
             MemoryError if gp_DupGraph() failed to duplicate this Graph's graphP
@@ -217,89 +172,82 @@ cdef class Graph:
 
         return new_graph
 
-    def gp_CopyAdjacencyLists(self, Graph src_graph) -> int:
-        """Copies adjacency lists of src_graph into current Graph's graphP
+    def gp_CopyAdjacencyLists(self, Graph srcGraph) -> int:
+        """Copies adjacency lists of src_graph into current Graph's graphP.
 
         Args:
-            src_graph: a Graph that wraps the graphP whose adjacency lists you
+            srcGraph: a Graph that wraps the graphP whose adjacency lists you
                 wish to copy into the self's graphP.
 
         Returns:
-            The only acceptable return code from the C graphLib, OK
+            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if the C layer gp_CopyAdjacencyLists() failed and
                 returned anything other than OK.
         """
-        result = graphLib.gp_CopyAdjacencyLists(self._theGraph, src_graph._theGraph)
+        result = graphLib.gp_CopyAdjacencyLists(self._theGraph, srcGraph._theGraph)
         if result != OK:
             raise RuntimeError(
-                "Unable to copy adjacency lists from source graph to this "
-                "graph."
+                "Unable to copy adjacency lists from to this graph."
             )
 
         return result
 
     def gp_CreateRandomGraph(self) -> int:
-        """Creates a random graph with an arbitrary number of edges
+        """Creates a simple connected graph with a random number of edges,
+        up to the limit of the graph's edge capacity.
 
         Returns:
-            OK if return value from C layer was OK
+            Returns OK on success (exception otherwise)
 
         Raises:
-            RuntimeError if return value from C layer was not OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_CreateRandomGraph(self._theGraph)
         if result != OK:
-            raise RuntimeError(
-                "Unable to create random graph."
-            )
+            raise RuntimeError("Unable to create random graph.")
 
         return result
 
-    def gp_CreateRandomGraphEx(self, int num_edges) -> int:
-        """Creates a random graph with a given number of edges
+    def gp_CreateRandomGraphEx(self, int numEdges) -> int:
+        """Creates a simple connected graph with numEdges edges. If numEdges
+        does not exceed 3N-6, then the generated graph will be planar.
 
         Args:
-            num_edges: number of edges you wish random graph to have
+            numEdges: the desired number of edges for the generated graph
 
         Returns:
-            OK if return value from C layer was OK
+            Returns OK on success (exception otherwise)
 
         Raises:
-            RuntimeError if return value from C layer was not OK
+            RuntimeError if C graphlib version of this function failed.
         """
-        result = graphLib.gp_CreateRandomGraphEx(self._theGraph, num_edges)
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_CreateRandomGraphEx(self._theGraph, numEdges)
         if result != OK:
             raise RuntimeError(
-                f"Unable to create random graph with num_edges = {num_edges}."
+                f"Unable to create random graph with num_edges = {numEdges}."
             )
 
         return result
 
     def gp_IsNeighbor(self, int u, int v) -> int:
-        """Checks if two vertices are neighbors in the graph
+        """Checks if a vertex or virtual vertex is a neighbor of another vertex
+         or virtual vertex in the graph.
 
         Args:
-            u: index of a vertex in graph
-            v: index of another vertex in graph
+            u: index of a vertex or virtual vertices in the graph
+            v: index of another vertex or virtual vertex in the graph
 
         Returns:
             TRUE if u and v are neighbors, FALSE otherwise
-        
-        Raises:
-            ValueError if u or v are not valid vertex labels
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_IsNeighbor(self._theGraph, u, v)
 
     def gp_FindEdge(self, int u, int v) -> int:
-        """Find index of edge between u and v if it exists in graph
+        """Find index of edge between u and v if it exists in graph.
 
         Args:
             u: index of a vertex in graph
@@ -307,33 +255,20 @@ cdef class Graph:
 
         Returns:
             NIL if edge not found, or the index e of the edge between u and v
-
-        Raises:
-            ValueError if u or v are not valid vertex labels
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_FindEdge(self._theGraph, u, v)
 
     def gp_GetVertexDegree(self, int v) -> int:
-        """Gets degree of vertex with given index
+        """Gets the number of incident edges of the vertex with given index.
 
         Args:
-            v: index of a vertex in graph
+            v: index of a vertex in the graph
 
         Returns:
-            Degree of vertex with index v in graph
-
-        Raises:
-            ValueError if v is not a valid vertex label
+            The degree of vertex v in the graph
         """
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_GetVertexDegree(self._theGraph, v)
 
     def gp_IsNeighborDirected(self, int u, int v, unsigned direction) -> int:
@@ -345,18 +280,10 @@ cdef class Graph:
             direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY
 
         Returns:
-            TRUE if u and v are neighbors and the direction of the edge is
-                either 0 or matches the given direction, FALSE otherwise
-
-        Raises:
-            ValueError if u or v are not valid vertex labels
+            TRUE if u and v are neighbors (the edge is undirected or matches 
+            the given direction, FALSE otherwise
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
     def gp_FindDirectedEdge(self, int u, int v, unsigned direction) -> int:
@@ -370,20 +297,8 @@ cdef class Graph:
         Returns:
             NIL if edge not found, or the index e of the directed edge between
             u and v
-
-        Raises:
-            ValueError if u or v are not valid vertex labels, or if direction is
-            neither EDGEFLAG_DIRECTION_INONLY nor EDGEFLAG_DIRECTION_OUTONLY
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
-        if direction not in (EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY):
-            raise ValueError(f"'{direction}' is not a valid direction flag.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_FindDirectedEdge(self._theGraph, u, v, direction)
 
     def gp_GetVertexInDegree(self, int v) -> int:
@@ -394,13 +309,8 @@ cdef class Graph:
 
         Returns:
             The in-degree of the vertex with index v
-
-        Raises:
-            ValueError if v is not a valid vertex label
         """
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_GetVertexInDegree(self._theGraph, v)
 
     def gp_GetVertexOutDegree(self, int v) -> int:
@@ -411,17 +321,12 @@ cdef class Graph:
 
         Returns:
             The out-degree of the vertex with index v
-
-        Raises:
-            ValueError if v is not a valid vertex label
         """
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
+        # Parameter validation is done by the C layer function
         return graphLib.gp_GetVertexOutDegree(self._theGraph, v)
 
     def gp_AddEdge(self, int u, int ulink, int v, int vlink)  -> int:
-        """Adds edge between two vertices (if sufficient space)
+        """Adds edge between two vertices (if sufficient edge capacity)
 
         Args:
             u: index of a vertex in graph
@@ -437,27 +342,22 @@ cdef class Graph:
                 gp_DynamicAddEdge()).
 
         Raises:
-            ValueError if u or v are not valid vertex labels, or ulink or vlink
-                are anything other than 0 or 1
+            ValueError if ulink or vlink are anything other than 0 or 1
             RuntimeError if gp_AddEdge() returned anything other than OK or
                 AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
+        # These have to be checked until the C API checks them.
         if ulink != 0 and ulink != 1:
             raise ValueError(
                 f"Invalid link index for ulink: '{ulink}'."
             )
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
 
         if vlink != 0 and vlink != 1:
             raise ValueError(
                 f"Invalid link index for vlink: '{vlink}'."
             )
 
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_AddEdge(self._theGraph, u, ulink, v, vlink)
         if result != OK and result != AT_EDGE_CAPACITY_LIMIT:
             raise RuntimeError(
@@ -479,29 +379,24 @@ cdef class Graph:
                 list should become adjacent to v by its 0 or 1 link
 
         Returns:
-            Returns OK on success
+            Returns OK on success (exception otherwise)
 
         Raises:
-            ValueError if u or v are not valid vertex labels, or ulink or vlink
-                are anything other than 0 or 1
-            RuntimeError if gp_AddEdge() returned anything other than OK
+            ValueError ulink or vlink are anything other than 0 or 1
+            RuntimeError if gp_DynamicAddEdge() returned anything other than OK
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
+        # These have to be checked until the C API checks them.
         if ulink != 0 and ulink != 1:
             raise ValueError(
                 f"Invalid link index for ulink: '{ulink}'."
             )
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
 
         if vlink != 0 and vlink != 1:
             raise ValueError(
                 f"Invalid link index for vlink: '{vlink}'."
             )
 
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_DynamicAddEdge(self._theGraph, u, ulink, v, vlink)
         if result != OK:
             raise RuntimeError(
@@ -512,51 +407,28 @@ cdef class Graph:
         return result
 
     def gp_InsertEdge(self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink) -> int:
-        """Insert edge between u and v in specific position of adjacency lists
+        """Insert edge between u and v in specific positions of adjacency lists
 
         Args:
             u: index of a vertex in graph
-            e_u: index of edge in u's adjacency list to which new edge shall be
-                adjacent
-            e_ulink: 0 or 1; the direction of adjacency of the new edge to e_u
+            e_u: new edge is added next to this edge in u's adjacency list
+            e_ulink: 0 or 1; which side of e_u to add new edge (or which side
+                of the adjacency list of u if e_u is NIL)
             v: index of a vertex in graph
-            e_v: index of edge in v's adjacency list to which new edge shall be
-                adjacent
-            e_vlink: 0 or 1; the direction of adjacency of the new edge to e_v
+            e_v: new edge is added next to this edge in v's adjacency list
+            e_vlink: 0 or 1; which side of e_v to add new edge (or which side
+                of the adjacency list of v if e_v is NIL)
 
         Returns:
             OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge would
-            exceed the graph's edge capacity (in which case the caller must
-            call gp_EnsureEdgeCapacity() and retry).
+            exceed the graph's edge capacity (gp_EnsureEdgeCapacity() can be
+            called before this method).
 
         Raises:
-            ValueError if u, e_u, v, e_v are not valid vertex labels, if e_ulink
-                or e_vlink are neither 0 nor 1, 
             RuntimeError if gp_InsertEdge() returned anything other than OK or
                 AT_EDGE_CAPACITY_LIMIT
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"u = {u} is not a valid vertex label.")
-
-        if not self.gp_IsVertex(e_u):
-            raise ValueError(f"e_u = {e_u} is not a valid vertex label.")
-
-        if e_ulink != 0 and e_ulink != 1:
-            raise ValueError(
-                f"Invalid link index e_ulink = {e_ulink}"
-            )
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"v = {v} is not a valid vertex label.")
-
-        if not self.gp_IsVertex(e_v):
-            raise ValueError(f"e_v = {e_v} is not a valid vertex label.")
-
-        if e_vlink != 0 and e_vlink != 1:
-            raise ValueError(
-                f"Invalid link index e_vlink = {e_vlink}"
-            )
-
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_InsertEdge(self._theGraph, u, e_u, e_ulink, v, e_v, e_vlink)
         if result != OK and result != AT_EDGE_CAPACITY_LIMIT:
             raise RuntimeError(
@@ -578,14 +450,9 @@ cdef class Graph:
             OK if e was successfully deleted
 
         Raises:
-            ValueError if e is not a valid edge index
             RuntimeError if gp_DeleteEdge() returned anything other than OK
         """
-        if not self.gp_IsEdge(e):
-            raise ValueError(
-                f"gp_DeleteEdge() failed: invalid edge e = {e}"
-            )
-
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_DeleteEdge(self._theGraph, e)
         if result != OK:
             raise RuntimeError(
