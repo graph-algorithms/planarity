@@ -36,43 +36,34 @@ EMBEDFLAGS_SEARCHFORK4 = graphLib.EMBEDFLAGS_SEARCHFORK4
 
 cdef class Graph:
     def __cinit__(self):
-        """
-
-        Args:
-
-        Returns:
-
-        Raises:
-
-        """
+        """Allocates the underlying graph structure with gp_New()"""
         global global_id_count
         self._theGraph = graphLib.gp_New()
         if self._theGraph == NULL:
             raise MemoryError("gp_New() failed.")
 
     def __dealloc__(self):
-        """
-
-        Args:
-
-        Returns:
-
-        Raises:
-
-        """
+        """Frees the underlying graph structure with gp_Free()."""
         if self._theGraph != NULL:
             graphLib.gp_Free(&self._theGraph)
 
     def gp_EnsureVertexCapacity(self, int N) -> int:
-        """
+        """Allocates memory needed for storage of graph data, especially 
+        N vertices, N virtual vertices, and space for either 3N edges 
+        or the amount set by gp_EnsureEdgeCapacity(). This method does
+        not currently support being called more than once to increase
+        vertex capacity beyond the initial setting for N.
 
-        Args:
+        Args: 
+            N: The number of vertices
 
         Returns:
+            OK, the only acceptable return code from the C graphLib
 
         Raises:
-
+            RuntimeError if C graphlib version of this function failed.
         """
+        # Parameter validation done by the C layer function
         result = graphLib.gp_EnsureVertexCapacity(self._theGraph, N)
         if result != OK:
             raise RuntimeError(
@@ -81,30 +72,37 @@ cdef class Graph:
 
         return result
 
-    def gp_EnsureEdgeCapacity(self, int new_edge_capacity) -> int:
-        """
+    def gp_EnsureEdgeCapacity(self, int requiredEdgeCapacity) -> int:
+        """Ensures that the graph has or will have space for at least
+        requiredEdgeCapacity edges. This method can be called multiple
+        times to increase edge capacity as needed. If the graph already
+        has at least requiredEdgeCapacity edges, then this method 
+        simply returns (edge capacity is not reduced). 
 
         Args:
+            requiredEdgeCapacity: The required edge capacity
 
         Returns:
+            OK, the only acceptable return code from the C graphLib
 
         Raises:
-
+            RuntimeError if C graphlib version of this function failed.
         """
-        result = graphLib.gp_EnsureEdgeCapacity(self._theGraph, new_edge_capacity)
+        # Parameter validation done by the C layer function
+        result = graphLib.gp_EnsureEdgeCapacity(self._theGraph, requiredEdgeCapacity)
         if result != OK:
             raise RuntimeError(
                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "
-                f"{new_edge_capacity}.")
+                f"{requiredEdgeCapacity}.")
 
         return result
 
     def gp_ResetGraphStorage(self) -> None:
-        """Resets graph storage (including extensions)"""
+        """Resets graph storage (including extensions)."""
         graphLib.gp_ResetGraphStorage(self._theGraph)
 
     def gp_GetN(self) -> int:
-        """Getter for the number of vertices in the graph
+        """Getter for the number of vertices in the graph.
 
         Returns:
             The number of vertices in the graph.
@@ -118,7 +116,7 @@ cdef class Graph:
         return graphLib.gp_GetN(self._theGraph)
 
     def gp_GetNV(self) -> int:
-        """Getter for the number of virtual vertices in the graph
+        """Getter for the number of virtual vertices in the graph.
 
         Returns:
             The number of virtual vertices in the graph.
@@ -132,13 +130,13 @@ cdef class Graph:
         return graphLib.gp_GetNV(self._theGraph)
 
     def gp_GetM(self) -> int:
-        """Getter for number of edges of graph, M
+        """Getter for number of edges of graph, M.
 
         Returns:
-            The number of edges in the graph
+            The number of edges in the graph.
 
         Raises:
-            RuntimeError if the graphP the Graph wraps is NULL
+            RuntimeError if the graphP the Graph wraps is NULL.
         """
         if self._theGraph == NULL:
             raise RuntimeError("Graph is not initialized.")
@@ -146,10 +144,10 @@ cdef class Graph:
         return graphLib.gp_GetM(self._theGraph)
 
     def gp_GetEdgeCapacity(self) -> int:
-        """Getter for edge capacity of graph
+        """Getter for the edge capacity of the graph.
 
         Returns:
-            The edge capacity of the graph
+            The edge capacity of the graph.
         """
         return graphLib.gp_GetEdgeCapacity(self._theGraph)
 
