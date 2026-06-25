@@ -272,8 +272,8 @@ cdef void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge):
     cgraphLib.gp_SetFirstEdge(theGraph, v, newFirstEdge)
 
 
-cdef void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge):
-    cgraphLib.gp_SetLastEdge(theGraph, v, newFirstEdge)
+cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):
+    cgraphLib.gp_SetLastEdge(theGraph, v, newLastEdge)
 
 
 cdef void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge):

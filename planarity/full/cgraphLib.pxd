@@ -76,7 +76,7 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_GetEdgeByLink(graphP theGraph, int v, int theLink)
 
     void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge)
-    void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge)
+    void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge)
     void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge)
 
     int gp_LowerBoundVertices(graphP theGraph)

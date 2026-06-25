@@ -139,7 +139,7 @@ cdef class Graph:
             RuntimeError if the graphP the Graph wraps is NULL.
         """
         if self._theGraph == NULL:
-            raise RuntimeError("Graph is not initialized.")
+            raise RuntimeError("gp_GetM() failed: Graph is not initialized.")
 
         return graphLib.gp_GetM(self._theGraph)
 
@@ -149,6 +149,10 @@ cdef class Graph:
         Returns:
             The edge capacity of the graph.
         """
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_GetEdgeCapacity() failed: Graph is not initialized."
+            )
         return graphLib.gp_GetEdgeCapacity(self._theGraph)
 
     def gp_CopyGraph(self, Graph src_graph) -> int:
@@ -745,28 +749,41 @@ cdef class Graph:
         return result
 
     def gp_RestoreVertices(self) -> int:
-        """
-
-        Args:
+        """Restores all vertices hidden during an edge contraction or vertex identification
 
         Returns:
+            OK if all vertices hidden during an edge contraction or vertex
+            identification are restored successfully
 
         Raises:
-
+            RuntimeError if gp_RestoreVertices() returned anything other than OK
         """
-        raise NotImplementedError("")
+        result = graphLib.gp_RestoreVertices(self._theGraph)
+        if result != OK:
+            raise RuntimeError(
+                "gp_RestoreVertices() failed: unable to restores all vertices "
+                "hidden during an edge contraction or vertex identification."
+            )
+
+        return result
 
     def gp_GetGraphFlags(self) -> int:
-        """
-
-        Args:
+        """Returns flags set on the Graph's graphP
 
         Returns:
+            An integer representing the flags set on the graphP
 
         Raises:
-
+            RuntimeError if the Graph's graphP is not initialized
         """
-        raise NotImplementedError("")
+        # NOTE: I do not check if we have ensured vertex capacity at this point,
+        # since the flags would still be valid
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_GetGraphFlags() failed: the graph is not initialized."
+            )
+
+        return graphLib.gp_GetGraphFlags(self._theGraph)
 
     def gp_GetFirstEdge(self, int v) -> int:
         """Get index of first edge incident to vertex v
@@ -776,11 +793,19 @@ cdef class Graph:
                 in its adjacency list
 
         Returns:
-            The index of the first edge in v's adjacency list
+            The index into the edge array of the first edge in v's adjacency
+            list
 
         Raises:
+            RuntimeError if self._theGraph is not initialized
             ValueError if v is not a valid vertex index
         """
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_GetFirstEdge() failed: the graph is not initialized."
+            )
+
         if not self.gp_IsVertex(v):
             raise ValueError(
                 f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
@@ -789,106 +814,236 @@ cdef class Graph:
         return graphLib.gp_GetFirstEdge(self._theGraph, v)
 
     def gp_GetLastEdge(self, int v) -> int:
-        """
+        """Get index of last edge incident to vertex v
 
         Args:
+            v: index of vertex in graph for which you wish to get the last edge
+                in its adjacency list
 
         Returns:
+            The index into the edge array of the last edge in v's adjacency list
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
+            ValueError if v is not a valid vertex index
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_GetLastEdge() failed: the graph is not initialized."
+            )
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_GetLastEdge() failed: invalid vertex intex v = {v}"
+            )
+
+        return graphLib.gp_GetLastEdge(self._theGraph, v)
 
     def gp_GetEdgeByLink(self, int v, int theLink) -> int:
-        """
+        """Get index of edge incident to v in the direction indicated by theLink
 
         Args:
+            v: index of vertex in graph for which you wish to get the incident
+                edge in direction theLink
+            theLink: the direction of adjacency for the edge to return, either
+                first (0) or last (1)
 
         Returns:
+            The index into the edge array of the edge incident to v in direction
+            indicated by theLink
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
+            ValueError if v is not a valid vertex index or invalid direction
+                theLink
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_GetEdgeByLink() failed: the graph is not initialized."
+            )
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_GetEdgeByLink() failed: invalid vertex intex v = {v}"
+            )
+        
+        if theLink != 0 and theLink != 1:
+            raise ValueError(
+                "gp_GetEdgeByLink() failed: invalid value for theLink = "
+                f"{theLink}"
+            )
+
+        return graphLib.gp_GetEdgeByLink(self._theGraph, v, theLink)
 
     def gp_SetFirstEdge(self, int v, int newFirstEdge) -> None:
-        """
+        """Sets first edge in v's adjacency list to newFirstEdge
 
         Args:
+            v: index of vertex in graph for which you wish to set the first edge
+                in its adjacency list
+            newFirstEdge: the index of an edge in the edge array that you wish
+                to set as the first edge in v's adjacency list
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
+            ValueError if v is not a valid vertex index or invalid newFirstEdge
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_SetFirstEdge() failed: the graph is not initialized."
+            )
 
-    def gp_SetLastEdge(self, int v, int newFirstEdge) -> None:
-        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_SetFirstEdge() failed: invalid vertex intex v = {v}"
+            )
+        
+        if not self.gp_IsEdge(newFirstEdge):
+            raise ValueError(
+                f"gp_SetFirstEdge() failed: newFirstEdge = {newFirstEdge} "
+                "is not a valid edge index."
+            )
+
+        graphLib.gp_SetFirstEdge(self._theGraph, v, newFirstEdge)
+
+    def gp_SetLastEdge(self, int v, int newLastEdge) -> None:
+        """Sets last edge in v's adjacency list to newLastEdge
 
         Args:
+            v: index of vertex in graph for which you wish to set the last edge
+                in its adjacency list
+            newLastEdge: the index of an edge in the edge array that you wish
+                to set as the last edge in v's adjacency list
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
+            ValueError if v is not a valid vertex index or invalid newLastEdge
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_SetLastEdge() failed: the graph is not initialized."
+            )
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_SetLastEdge() failed: invalid vertex intex v = {v}"
+            )
+        
+        if not self.gp_IsEdge(newLastEdge):
+            raise ValueError(
+                f"gp_SetLastEdge() failed: newLastEdge = {newLastEdge} "
+                "is not a valid edge index."
+            )
+
+        graphLib.gp_SetLastEdge(self._theGraph, v, newLastEdge)
 
     def gp_SetEdgeByLink(self, int v, int theLink, int newEdge) -> None:
-        """
+        """Set index of edge incident to v in the direction indicated by theLink
 
         Args:
+            v: index of vertex in graph for which you wish to set the incident
+                edge in direction theLink
+            theLink: the direction of adjacency for which edge to set, either
+                first (0) or last (1)
+            newEdge: the index of an edge in the edge array that you wish
+                to set as the edge at link theLink in v's adjacency list
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
+            ValueError if v is not a valid vertex index or invalid newEdge
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_SetEdgeByLink() failed: the graph is not initialized."
+            )
+
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_SetEdgeByLink() failed: invalid vertex intex v = {v}"
+            )
+        
+        if not self.gp_IsEdge(newEdge):
+            raise ValueError(
+                f"gp_SetEdgeByLink() failed: newEdge = {newEdge} "
+                "is not a valid edge index."
+            )
+
+        graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
 
     def gp_LowerBoundVertices(self) -> int:
-        """
-
-        Args:
+        """Get the lower bound of the graph's vertex indices
 
         Returns:
+            The lower bound of the vertex indices
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
         """
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_LowerBoundVertices() failed: the graph is not initialized."
+            )
+
         return graphLib.gp_LowerBoundVertices(self._theGraph)
 
     def gp_UpperBoundVertices(self) -> int:
-        """
-
-        Args:
+        """Get the upper bound of the graph's vertex indices
 
         Returns:
+            The upper bound of the vertex indices
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
         """
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_UpperBoundVertices() failed: the graph is not initialized."
+            )
+
         return graphLib.gp_UpperBoundVertices(self._theGraph)
 
     def gp_LowerBoundVirtualVertices(self) -> int:
-        """
-
-        Args:
+        """Get the lower bound of the graph's virtual vertex indices
 
         Returns:
+            The lower bound of the virtual vertex indices
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_LowerBoundVirtualVertices() failed: the graph is not "
+                "initialized."
+            )
+
+        return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
 
     def gp_UpperBoundVirtualVertices(self) -> int:
-        """
-
-        Args:
+        """Get the upper bound of the graph's virtual vertex indices
 
         Returns:
+            The upper bound of the virtual vertex indices
 
         Raises:
-
+            RuntimeError if self._theGraph is not initialized
         """
-        raise NotImplementedError("")
+        # FIXME: Should I check that the graph also has a nonzero order and size?
+        if self._theGraph == NULL:
+            raise RuntimeError(
+                "gp_UpperBoundVirtualVertices() failed: the graph is not "
+                "initialized."
+            )
+
+        return graphLib.gp_UpperBoundVirtualVertices(self._theGraph)
 
     def gp_LowerBoundVertexStorage(self) -> int:
         """

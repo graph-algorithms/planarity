@@ -59,7 +59,7 @@ cdef int gp_GetLastEdge(graphP theGraph, int v)
 cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink)
 
 cdef void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge)
-cdef void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge)
+cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge)
 cdef void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge)
 
 cdef int gp_LowerBoundVertices(graphP theGraph)

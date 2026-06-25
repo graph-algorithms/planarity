@@ -4128,27 +4128,27 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetFirstEdge(graphP __pyx_v_th
 /* "planarity/full/graphLib.pyx":275
  * 
  * 
- * cdef void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge):             # <<<<<<<<<<<<<<
- *     cgraphLib.gp_SetLastEdge(theGraph, v, newFirstEdge)
+ * cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):             # <<<<<<<<<<<<<<
+ *     cgraphLib.gp_SetLastEdge(theGraph, v, newLastEdge)
  * 
 */
 
-static void __pyx_f_9planarity_4full_8graphLib_gp_SetLastEdge(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_newFirstEdge) {
+static void __pyx_f_9planarity_4full_8graphLib_gp_SetLastEdge(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_newLastEdge) {
 
   /* "planarity/full/graphLib.pyx":276
  * 
- * cdef void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge):
- *     cgraphLib.gp_SetLastEdge(theGraph, v, newFirstEdge)             # <<<<<<<<<<<<<<
+ * cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):
+ *     cgraphLib.gp_SetLastEdge(theGraph, v, newLastEdge)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  gp_SetLastEdge(__pyx_v_theGraph, __pyx_v_v, __pyx_v_newFirstEdge);
+  gp_SetLastEdge(__pyx_v_theGraph, __pyx_v_v, __pyx_v_newLastEdge);
 
   /* "planarity/full/graphLib.pyx":275
  * 
  * 
- * cdef void gp_SetLastEdge(graphP theGraph, int v, int newFirstEdge):             # <<<<<<<<<<<<<<
- *     cgraphLib.gp_SetLastEdge(theGraph, v, newFirstEdge)
+ * cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):             # <<<<<<<<<<<<<<
+ *     cgraphLib.gp_SetLastEdge(theGraph, v, newLastEdge)
  * 
 */
 
