@@ -31,6 +31,11 @@ EDGEFLAG_DIRECTION_OUTONLY = graphLib.EDGEFLAG_DIRECTION_OUTONLY
 
 AT_EDGE_CAPACITY_LIMIT = graphLib.AT_EDGE_CAPACITY_LIMIT
 
+WRITE_ADJLIST = graphLib.WRITE_ADJLIST
+WRITE_ADJMATRIX = graphLib.WRITE_ADJMATRIX
+WRITE_G6 = graphLib.WRITE_G6
+
+
 EMBEDFLAGS_PLANAR = graphLib.EMBEDFLAGS_PLANAR
 EMBEDFLAGS_DRAWPLANAR = graphLib.EMBEDFLAGS_DRAWPLANAR
 EMBEDFLAGS_OUTERPLANAR = graphLib.EMBEDFLAGS_OUTERPLANAR
@@ -1627,101 +1632,125 @@ cdef class Graph:
         graphLib.gp_XorEdgeFlagInverted(self._theGraph, e)
 
     def gp_GetDirection(self, int e) -> int:
-        """
+        """Get direction of edge e
 
         Args:
+            e: an in-use edge for which you wish to determine the direction
 
         Returns:
+            The direction of the edge e
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_GetDirection() failed: invalid edge e = {e}"
+            )
+
+        return graphLib.gp_GetDirection(self._theGraph, e)
 
     def gp_SetDirection(self, int e, int direction) -> None:
-        """
+        """Set direction of edge e
 
         Args:
+            e: an in-use edge for which you wish to set the direction
+            direction: either 0 (undirected), EDGEFLAG_DIRECTION_INONLY, or
+                EDGEFLAG_DIRECTION_OUTONLY
 
         Raises:
-
+            ValueError if e is not a valid in-use edge, or direction is invalid
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_SetDirection() failed: invalid edge e = {e}"
+            )
+
+        if direction not in (0, EDGEFLAG_DIRECTION_INONLY, EDGEFLAG_DIRECTION_OUTONLY):
+            raise ValueError(
+                f"gp_SetDirection() failed: invalid direction = {direction}"
+            )
+
+        graphLib.gp_SetDirection(self._theGraph, e, direction)
 
     def gp_LowerBoundEdges(self) -> int:
-        """
-
-        Args:
+        """Get the lower bound for edges
 
         Returns:
-
-        Raises:
-
+            The lower bound for edges
         """
         return graphLib.gp_LowerBoundEdges(self._theGraph)
 
     def gp_UpperBoundEdges(self) -> int:
-        """
-
-        Args:
+        """Get the upper bound for edges: the lower bound + M + numEdgeHoles
 
         Returns:
-
-        Raises:
-
+            The upper bound for edges
         """
         return graphLib.gp_UpperBoundEdges(self._theGraph)
 
     def gp_EdgeInUse(self, int e) -> int:
-        """
+        """Is edge in-use, i.e., is neighbor vertex set
 
         Args:
+            e: candidate edge to determine whether it is in-use
 
         Returns:
+            TRUE if edge is in-use, FALSE otherwise
 
         Raises:
-
+            ValueError if e is not a valid edge
         """
         if not self.gp_IsEdge(e):
             raise ValueError(
                 f"gp_EdgeInUse() failed: invalid edge index  e = {e}"
             )
 
-        return graphLib.gp_EdgeInUse(self._theGraph, e)
+        if graphLib.gp_EdgeInUse(self._theGraph, e):
+            return TRUE
+
+        return FALSE
 
     def gp_EdgeNotInUse(self, int e) -> int:
-        """
+        """Is edge not in-use
 
         Args:
+            e: candidate edge to determine whether it is not in-use
 
         Returns:
+            TRUE if edge is not in-use, FALSE otherwise
 
         Raises:
-
+            ValueError if e is not a valid edge
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_EdgeNotInUse() failed: invalid edge index  e = {e}"
+            )
+
+        if graphLib.gp_EdgeNotInUse(self._theGraph, e):
+            return TRUE
+
+        return FALSE
 
     def gp_LowerBoundEdgeStorage(self) -> int:
-        """
-
-        Args:
+        """Get lower bound for edge storage; for iterating over all edge storage
 
         Returns:
-
-        Raises:
-
+            The lower bound for edge storage
         """
         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
 
     def gp_UpperBoundEdgeStorage(self) -> int:
-        """
+        """Get Upper bound for edge storage; for iterating over all edge storage
 
-        Args:
+        Note that this value depends on the edge capacity, and possibly extends
+        past the current number of in-use edges and edge holes.
 
         Returns:
-
-        Raises:
-
+            The upper bound for edge storage
         """
         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
 
@@ -1757,33 +1786,29 @@ cdef class Graph:
         """
         raise NotImplementedError("")
 
-    def gp_Write(self, str fileName, str writeMode) -> None:
+    def gp_Write(self, str fileName, int writeMode) -> None:
         """Writes the graph to the file named fileName in the writeMode format.
 
         Args:
-            fileName: a string containing the name of the file to write to
-            writeMode: the desired output format, e.g., graphLib.WRITE_ADJLIST,
-                graphLib.WRITE_ADJMATRIX, or graphLib.WRITE_G6
+            fileName: a string containing the name of the file to which to write
+            writeMode: the desired output format, i.e., WRITE_ADJLIST,
+                WRITE_ADJMATRIX, or WRITE_G6
 
         Raises:
+            ValueError if writeMode is not WRITE_ADJLIST, WRITE_ADJMATRIX,
+                or WRITE_G6
             RuntimeError if C graphlib version of this function failed.
-
         """
-        mode_code = (graphLib.WRITE_ADJLIST if writeMode == "a"
-                         else (graphLib.WRITE_ADJMATRIX if writeMode == "m" 
-                               else (graphLib.WRITE_G6 if writeMode == "g"
-                                     else None)))
-        if not mode_code:
+        if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
             raise ValueError(
-                f"Invalid graph format specifier '{writeMode}'' is not one of "
-                "'gam'."
-                )
+                f"gp_Write() failed: invalid writeMode = {writeMode}"
+            )
 
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = fileName.encode('utf-8')
         cdef const char *encodedFileName = encoded
 
-        result = graphLib.gp_Write(self._theGraph, encodedFileName, mode_code)
+        result = graphLib.gp_Write(self._theGraph, encodedFileName, writeMode)
         if result != OK:
             raise RuntimeError(
                 f"gp_Write() of graph to '{fileName}' failed."
@@ -1793,16 +1818,49 @@ cdef class Graph:
         """Writes the graph to a string in the writeMode format.
 
         Args:
-            writeMode: the desired output format, e.g., graphLib.WRITE_ADJLIST,
-                graphLib.WRITE_ADJMATRIX, or graphLib.WRITE_G6
+            writeMode: the desired output format, i.e., WRITE_ADJLIST,
+                WRITE_ADJMATRIX, or WRITE_G6
 
         Returns:
             A Python string containing the graph serialized into the chosen format.
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            ValueError if writeMode is not WRITE_ADJLIST, WRITE_ADJMATRIX,
+                or WRITE_G6
+            RuntimeError if C graphlib version of this function failed, if the
+                outputString is NULL, or if decoding the bytes to produce the
+                Python string failed.
         """
-        raise NotImplementedError("")
+        if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
+            raise ValueError(
+                f"gp_WriteToString() failed: invalid writeMode = {writeMode}"
+            )
+
+        cdef char *outputString = NULL
+        if graphLib.gp_WriteToString(self._theGraph, &outputString, writeMode) != OK:
+            if outputString != NULL:
+                free(outputString)
+                outputString = NULL
+
+            raise RuntimeError(
+                "gp_WriteToString() failed: unable to write graph to string."
+            )
+
+        if outputString == NULL:
+            raise RuntimeError(
+                "gp_WriteToString() failed: outputString is NULL"
+            )
+        
+        output_bytes = outputString[:]
+        free(outputString)
+        outputString = NULL
+        try:
+            return output_bytes.decode('UTF-8')
+        except Exception as string_conversion_error:
+            raise RuntimeError(
+                "gp_WriteToString() failed: failed to convert C string to "
+                "Python string."
+            ) from string_conversion_error
 
     def gp_ExtendWith_Planarity(self) -> int:
         """Extends graph with structures necessary for Planarity

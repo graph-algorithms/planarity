@@ -28,6 +28,9 @@ from planarity import (
     OK,
     NONEMBEDDABLE,
     NOTOK,
+    WRITE_ADJLIST,
+    WRITE_ADJMATRIX,
+    WRITE_G6,
     Graph,
 )
 
@@ -47,7 +50,7 @@ def specific_graph(
         infile: Path,
         outdir: Optional[Path],
         command: str,
-        output_mode: str,
+        output_mode: int,
 ) -> int:
     """Run gp_Embed() for the specified algorithm and output the result to file
     
@@ -61,25 +64,31 @@ def specific_graph(
         infile: name of graph input file to read
         outdir: parent directory under which to make output directory
         command: algorithm command specifier
-        output_mode: desired output format: .g6 (g), Adjacency List (a), or
-            Adjacency Matrix (m)
+        output_mode: the desired output format, i.e., WRITE_ADJLIST,
+            WRITE_ADJMATRIX, or WRITE_G6
     
     Returns:
         OK, NONEMBEDDABLE, or NOTOK based on the embed_result
     
     Raises:
-        ValueError: If invalid command specifier provided
+        ValueError: If invalid command specifier provided, if the output_mode is
+            invalid, or if the outdir is invalid
         RuntimeError: If unable to extend graph for the specified command, or if
             embedding result does not match integrity check result
     """
     gp_SetQuietMode(QUIETMODE_NONE)
+
+    if output_mode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
+        raise ValueError(
+            f"Invalid output_mode = {output_mode}"
+        )
 
     embed_flags = get_embed_flags(command)
 
     if outdir is None:
         outdir = infile.parent
     if outdir.is_file():
-        raise argparse.ArgumentTypeError(
+        raise ValueError(
             f"Output directory '{outdir}' corresponds to a file."
         )
     
@@ -235,12 +244,22 @@ if __name__ == "__main__":
         command.strip() for command in re.split(r'[ ,.;]', args.commands)
     ] if args.commands else PLANARITY_ALGORITHM_SPECIFIERS()
 
+    output_mode = (WRITE_ADJLIST if args.mode == "a"
+                         else (WRITE_ADJMATRIX if args.mode == "m" 
+                               else (WRITE_G6 if args.mode == "g"
+                                     else None)))
+
+    if not output_mode:
+        raise ValueError(
+            f"Invalid argument for mode = {args.mode}; only accepted values "
+            "are g (.g6), a (Adjacency List), or m (Adjacency Matrix)"
+        )
+
     for command in commands:
         embed_result = specific_graph(
                                         infile=args.infile,
                                         outdir=args.outdir,
                                         command=command,
-                                        output_mode=args.mode,
+                                        output_mode=output_mode,
                                     )
         print_embed_result(command=command, embed_result=embed_result)
-
