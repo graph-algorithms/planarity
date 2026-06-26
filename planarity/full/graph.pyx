@@ -1578,14 +1578,14 @@ cdef class Graph:
         """
         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
 
-    def gp_Read(self, str fileName) -> int:
-        """
+    def gp_Read(self, str fileName) -> None:
+        """Reads the graph from the file named fileName.
 
         Args:
-
-        Returns:
+            fileName: a string containing the name of the file to read from
 
         Raises:
+            RuntimeError if C graphlib version of this function failed.
 
         """
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
@@ -1598,28 +1598,28 @@ cdef class Graph:
                 f"gp_Read() failed for infile '{fileName}'."
             )
 
-        return result
-
     def gp_ReadFromString(self, str inputStr) -> int:
-        """
+        """Reads the graph from the given input string.
 
         Args:
-
-        Returns:
+            inputStr: a string containing the graph to read.
 
         Raises:
+            RuntimeError if C graphlib version of this function failed.
 
         """
         raise NotImplementedError("")
 
-    def gp_Write(self, str fileName, str writeMode) -> int:
-        """
+    def gp_Write(self, str fileName, str writeMode) -> None:
+        """Writes the graph to the file named fileName in the writeMode format.
 
         Args:
-
-        Returns:
+            fileName: a string containing the name of the file to write to
+            writeMode: the desired output format, e.g., graphLib.WRITE_ADJLIST,
+                graphLib.WRITE_ADJMATRIX, or graphLib.WRITE_G6
 
         Raises:
+            RuntimeError if C graphlib version of this function failed.
 
         """
         mode_code = (graphLib.WRITE_ADJLIST if writeMode == "a"
@@ -1642,19 +1642,18 @@ cdef class Graph:
                 f"gp_Write() of graph to '{fileName}' failed."
                 )
 
-        return result
-
-    def gp_WriteToString(self, int writeMode) -> tuple[int, str]:
-        """
+    def gp_WriteToString(self, int writeMode) -> str:
+        """Writes the graph to a string in the writeMode format.
 
         Args:
+            writeMode: the desired output format, e.g., graphLib.WRITE_ADJLIST,
+                graphLib.WRITE_ADJMATRIX, or graphLib.WRITE_G6
 
         Returns:
-            A tuple containing the only acceptable return code if no error
-            encountered (OK) and the graph in the chosen format as a Python
-            string.
-        Raises:
+            A Python string containing the graph serialized into the chosen format.
 
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
         """
         raise NotImplementedError("")
 
