@@ -272,7 +272,7 @@ cdef class Graph:
         return graphLib.gp_GetVertexDegree(self._theGraph, v)
 
     def gp_IsNeighborDirected(self, int u, int v, unsigned direction) -> int:
-        """Checks if edge exists in a given direction between two vertices
+        """Checks if edge exists in a given direction between two vertices.
 
         Args:
             u: index of a vertex in graph
@@ -287,7 +287,7 @@ cdef class Graph:
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
     def gp_FindDirectedEdge(self, int u, int v, unsigned direction) -> int:
-        """Find directed index of edge between u and v if it exists in graph
+        """Find directed index of edge between u and v if it exists in graph.
 
         Args:
             u: index of a vertex in graph
@@ -314,7 +314,7 @@ cdef class Graph:
         return graphLib.gp_GetVertexInDegree(self._theGraph, v)
 
     def gp_GetVertexOutDegree(self, int v) -> int:
-        """Gets out-degree of v, including undirected edges
+        """Gets out-degree of v, including undirected edges.
 
         Args:
             v: index of a vertex in graph
@@ -326,7 +326,7 @@ cdef class Graph:
         return graphLib.gp_GetVertexOutDegree(self._theGraph, v)
 
     def gp_AddEdge(self, int u, int ulink, int v, int vlink)  -> int:
-        """Adds edge between two vertices (if sufficient edge capacity)
+        """Adds edge between two vertices (if sufficient edge capacity).
 
         Args:
             u: index of a vertex in graph
@@ -368,7 +368,7 @@ cdef class Graph:
         return result
 
     def gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink) -> int:
-        """Adds edge between two vertices, resizing structures if necessessary
+        """Adds edge between two vertices, resizing structures if necessessary.
 
         Args:
             u: index of a vertex in graph
@@ -407,7 +407,7 @@ cdef class Graph:
         return result
 
     def gp_InsertEdge(self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink) -> int:
-        """Insert edge between u and v in specific positions of adjacency lists
+        """Insert edge between u and v in specific positions of adjacency lists.
 
         Args:
             u: index of a vertex in graph
@@ -441,13 +441,13 @@ cdef class Graph:
         return result
 
     def gp_DeleteEdge(self, int e) -> int:
-        """Deletes edge with index e from the graph
+        """Deletes edge with index e from the graph.
 
         Args:
             e: index of edge in graph to delete
 
         Returns:
-            OK if e was successfully deleted
+            OK if e was successfully deleted (exception otherwise)
 
         Raises:
             RuntimeError if gp_DeleteEdge() returned anything other than OK
@@ -462,69 +462,41 @@ cdef class Graph:
         return result
 
     def gp_HideEdge(self, int e) -> None:
-        """Hides edge with index e within the graph
+        """Hides edge with index e within the graph. The edge still exists
+        in edge storage but has been unhooked from the adjacency lists of
+        its endpoint vertices. See gp_RestoreEdge()
 
         Args:
             e: index of edge in graph to hide
-
-        Raises:
-            ValueError if e is not a valid edge index
         """
-        # FIXME: underlying gp_HideEdge() does the following checks, but then
-        # silently returns if any are met; should I perform these checks and explicitly fail?
-        #  (
-        #       e < gp_LowerBoundEdges(theGraph) ||
-        #       e >= gp_UpperBoundEdges(theGraph) ||
-        #       gp_EdgeNotInUse(theGraph, e)
-        #  )
-        if not self.gp_IsEdge(e):
-            raise ValueError(
-                f"gp_HideEdge() failed: invalid edge e = {e}"
-            )
-
+        # Parameter validation is done by the C layer function
         graphLib.gp_HideEdge(self._theGraph, e)
 
     def gp_RestoreEdge(self, int e) -> None:
-        """Restore edge to adjacency lists from which it was previously removed
+        """Restore edge to adjacency lists from which it was previously hidden.
 
         Args:
             e: index of edge in graph to restore
-
-        Raises:
-            ValueError if e is not a valid edge index
         """
-        # FIXME: underlying gp_RestoreEdge() does the following checks, but then
-        # silently returns if any are met; should I perform these checks and explicitly fail?
-        #  (
-        #       e < gp_LowerBoundEdges(theGraph) ||
-        #       e >= gp_UpperBoundEdges(theGraph) ||
-        #       gp_EdgeNotInUse(theGraph, e)
-        #  )
-        if not self.gp_IsEdge(e):
-            raise ValueError(
-                f"gp_RestoreEdge() failed: invalid edge e = {e}"
-            )
-
+        # Parameter validation is done by the C layer function
         graphLib.gp_RestoreEdge(self._theGraph, e)
 
     def gp_HideVertex(self, int vertex) -> int:
-        """Hides vertex within the graph
+        """Hides vertex within the graph by hiding its edges and storing 
+        additional internal information that enables the vertex to be 
+        restored by gp_RestoreVertex() if and only if vertices are 
+        restored in the exact opposite order in which they were hidden.
 
         Args:
             vertex: index of vertex in graph to hide
 
         Returns:
-            OK if vertex successfully hidden
+            OK if vertex successfully hidden (exception otherwise)
 
         Raises:
-            ValueError if vertex is not a valid index
             RuntimeError if gp_HideVertex() returned anything other than OK
         """
-        if not self.gp_IsVertex(vertex):
-            raise ValueError(
-                f"gp_HideVertex() failed: invalid vertex index {vertex}"
-            )
-
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_HideVertex(self._theGraph, vertex)
         if result != OK:
             raise RuntimeError(
@@ -532,17 +504,17 @@ cdef class Graph:
             )
 
     def gp_RestoreVertex(self) -> int:
-        """Restore last vertex hidden during an edge contraction or vertex identification 
-        and extricates its adjacency list from the vertex with which it was
-        merged.
+        """Restore the last vertex hidden by gp_HideVertex(). If the vertex was
+        hidden as part of an edge contraction or vertex identification, then its
+        adjacency list is extricated from the vertex with which it was merged.
 
         Returns:
-            OK if vertex was restored
+            OK if the last vertex hidden was restored (exception otherwise)
 
         Raises:
-            ValueError if vertex is not a valid index
             RuntimeError if gp_RestoreVertex() returned anything other than OK
         """
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_RestoreVertex(self._theGraph)
         if result != OK:
             raise RuntimeError(
@@ -552,23 +524,18 @@ cdef class Graph:
         return result
 
     def gp_ContractEdge(self, int e) -> int:
-        """Contracts the edge e = (u, v) by hiding e and identifying v with u
+        """Contracts the edge e = (u, v) by hiding e and identifying v with u.
 
         Args:
             e: index of edge in graph to contract
 
         Returns:
-            OK if gp_ContractEdge() returned OK
+            OK if gp_ContractEdge() returned OK (exception otherwise)
 
         Raises:
-            ValueError if e is not a valid edge index
             RuntimeError if gp_ContractEdge() returned anything other than OK
         """
-        if not self.gp_IsEdge(e):
-            raise ValueError(
-                f"gp_ContractEdge() failed: invalid edge e = {e}"
-            )
-
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_ContractEdge(self._theGraph, e)
         if result != OK:
             raise RuntimeError(
@@ -578,7 +545,7 @@ cdef class Graph:
         return result
 
     def gp_IdentifyVertices(self, int u, int v, int eBefore) -> int:
-        """Identify vertex v with u by transferring all adjacencies from v to u
+        """Identify vertex v with u by transferring all adjacencies from v to u.
 
         Args:
             u: index of vertex in graph to which v will be identified
@@ -587,25 +554,12 @@ cdef class Graph:
                 should be inserted, or NIL to append the edges to u's list
 
         Returns:
-            OK if v is successfully identified with u
+            OK if v is successfully identified with u (exception otherwise)
 
         Raises:
-            ValueError if u or v are invalid vertex indices, or if eBefore is
-                neither NIL nor a valid edge index
             RuntimeError if gp_IdentifyVertices() returned anything other than OK
         """
-        if not self.gp_IsVertex(u):
-            raise ValueError(f"'{u}' is not a valid vertex label.")
-
-        if not self.gp_IsVertex(v):
-            raise ValueError(f"'{v}' is not a valid vertex label.")
-
-        if not self.gp_IsEdge(eBefore) and eBefore != NIL:
-            raise ValueError(
-                "gp_IdentifyVertices() failed: invalid edge index eBefore = "
-                f"{eBefore} before which to insert v's adjacencies."
-            )
-        
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_IdentifyVertices(self._theGraph, u, v, eBefore)
         if result != OK:
             raise RuntimeError(
@@ -616,15 +570,16 @@ cdef class Graph:
         return result
 
     def gp_RestoreVertices(self) -> int:
-        """Restores all vertices hidden during an edge contraction or vertex identification
+        """Restores all vertices hidden during a series of hide vertex, 
+        edge contraction or vertex identification operations.
 
         Returns:
-            OK if all vertices hidden during an edge contraction or vertex
-            identification are restored successfully
+            OK if all vertices hidden are restored successfully (exception otherwise)
 
         Raises:
             RuntimeError if gp_RestoreVertices() returned anything other than OK
         """
+        # Parameter validation is done by the C layer function
         result = graphLib.gp_RestoreVertices(self._theGraph)
         if result != OK:
             raise RuntimeError(
@@ -643,66 +598,61 @@ cdef class Graph:
         return graphLib.gp_GetGraphFlags(self._theGraph)
 
     def gp_GetFirstEdge(self, int v) -> int:
-        """Get index of first edge incident to vertex v
+        """Get index of first edge incident to vertex v.
 
         Args:
-            v: index of vertex in graph for which you wish to get the first edge
-                in its adjacency list
+            v: index of a vertex in the graph
 
         Returns:
-            The index into the edge array of the first edge in v's adjacency
-            list
+            The index of the first edge in v's adjacency list
 
         Raises:
             ValueError if v is not a valid vertex index
         """
-        if not self.gp_IsVertex(v):
+        if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
-                f"gp_GetFirstEdge() failed: invalid vertex intex '{v}'."
+                f"gp_GetFirstEdge() failed: invalid vertex index '{v}'."
             )
 
         return graphLib.gp_GetFirstEdge(self._theGraph, v)
 
     def gp_GetLastEdge(self, int v) -> int:
-        """Get index of last edge incident to vertex v
+        """Get index of last edge incident to vertex v.
 
         Args:
-            v: index of vertex in graph for which you wish to get the last edge
-                in its adjacency list
+            v: index of a vertex in the graph
 
         Returns:
-            The index into the edge array of the last edge in v's adjacency list
+            The index of the last edge in v's adjacency list
 
         Raises:
             ValueError if v is not a valid vertex index
         """
-        if not self.gp_IsVertex(v):
+        if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
-                f"gp_GetLastEdge() failed: invalid vertex intex v = {v}"
+                f"gp_GetLastEdge() failed: invalid vertex index v = {v}"
             )
 
         return graphLib.gp_GetLastEdge(self._theGraph, v)
 
     def gp_GetEdgeByLink(self, int v, int theLink) -> int:
-        """Get index of edge incident to v in the direction indicated by theLink
+        """Get the first or last edge in the adjacency list of v, indicated by theLink
 
         Args:
-            v: index of vertex in graph for which you wish to get the incident
-                edge in direction theLink
+            v: index of a vertex in the graph
             theLink: the direction of adjacency for the edge to return, either
                 first (0) or last (1)
 
         Returns:
-            The index into the edge array of the edge incident to v in direction
-            indicated by theLink
+            The index of the first or last edge in V's adjacency list 
 
         Raises:
-            ValueError if v is not a valid vertex index or invalid direction
-                theLink
+            ValueError if v is not a valid vertex index or theLink is an
+                invalid direction indicator (0 or 1)
         """
-        if not self.gp_IsVertex(v):
+        if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
-                f"gp_GetEdgeByLink() failed: invalid vertex intex v = {v}"
+                f"gp_GetEdgeByLink() failed: invalid vertex index v = {v}"
             )
         
         if theLink != 0 and theLink != 1:
@@ -714,23 +664,22 @@ cdef class Graph:
         return graphLib.gp_GetEdgeByLink(self._theGraph, v, theLink)
 
     def gp_SetFirstEdge(self, int v, int newFirstEdge) -> None:
-        """Sets first edge in v's adjacency list to newFirstEdge
+        """Sets the first edge in v's adjacency list to newFirstEdge
 
         Args:
-            v: index of vertex in graph for which you wish to set the first edge
-                in its adjacency list
-            newFirstEdge: the index of an edge in the edge array that you wish
-                to set as the first edge in v's adjacency list
+            v: index of a vertex in the graph
+            newFirstEdge: the index of an edge to set as the first edge 
+                in v's adjacency list
 
         Raises:
-            ValueError if v is not a valid vertex index or invalid newFirstEdge
+            ValueError for invalid vertex v or edge newFirstEdge
         """
-        if not self.gp_IsVertex(v):
+        if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
-                f"gp_SetFirstEdge() failed: invalid vertex intex v = {v}"
+                f"gp_SetFirstEdge() failed: invalid vertex index v = {v}"
             )
         
-        if not self.gp_IsEdge(newFirstEdge):
+        if self.gp_IsNotEdge(newFirstEdge) or self.gp_EdgeNotInUse(newFirstEdge):
             raise ValueError(
                 f"gp_SetFirstEdge() failed: newFirstEdge = {newFirstEdge} "
                 "is not a valid edge index."
@@ -739,7 +688,7 @@ cdef class Graph:
         graphLib.gp_SetFirstEdge(self._theGraph, v, newFirstEdge)
 
     def gp_SetLastEdge(self, int v, int newLastEdge) -> None:
-        """Sets last edge in v's adjacency list to newLastEdge
+        """Sets the last edge in v's adjacency list to newLastEdge.
 
         Args:
             v: index of vertex in graph for which you wish to set the last edge
@@ -748,14 +697,14 @@ cdef class Graph:
                 to set as the last edge in v's adjacency list
 
         Raises:
-            ValueError if v is not a valid vertex index or invalid newLastEdge
+            ValueError for invalid vertex v or edge newLastEdge
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
-                f"gp_SetLastEdge() failed: invalid vertex intex v = {v}"
+                f"gp_SetLastEdge() failed: invalid vertex index v = {v}"
             )
         
-        if not self.gp_IsEdge(newLastEdge):
+        if self.gp_IsNotEdge(newLastEdge) or self.gp_EdgeNotInUse(newLastEdge):
             raise ValueError(
                 f"gp_SetLastEdge() failed: newLastEdge = {newLastEdge} "
                 "is not a valid edge index."
@@ -764,25 +713,24 @@ cdef class Graph:
         graphLib.gp_SetLastEdge(self._theGraph, v, newLastEdge)
 
     def gp_SetEdgeByLink(self, int v, int theLink, int newEdge) -> None:
-        """Set index of edge incident to v in the direction indicated by theLink
+        """Set the first or last edge in v's adjacency list, indicated by theLink.
 
         Args:
-            v: index of vertex in graph for which you wish to set the incident
-                edge in direction theLink
+            v: index of a vertex in the graph
             theLink: the direction of adjacency for which edge to set, either
                 first (0) or last (1)
-            newEdge: the index of an edge in the edge array that you wish
-                to set as the edge at link theLink in v's adjacency list
+            newEdge: the index of an edge to set as the first or last edge
+                in v's adjacency list
 
         Raises:
             ValueError if v is not a valid vertex index or invalid newEdge
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
-                f"gp_SetEdgeByLink() failed: invalid vertex intex v = {v}"
+                f"gp_SetEdgeByLink() failed: invalid vertex index v = {v}"
             )
         
-        if not self.gp_IsEdge(newEdge):
+        if self.gp_IsNotEdge(newEdge) or self.gp_EdgeNotInUse(newEdge):
             raise ValueError(
                 f"gp_SetEdgeByLink() failed: newEdge = {newEdge} "
                 "is not a valid edge index."
@@ -791,7 +739,7 @@ cdef class Graph:
         graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
 
     def gp_LowerBoundVertices(self) -> int:
-        """Get the lower bound of the graph's vertex indices
+        """Get the lower bound of the graph's vertex indices.
 
         Returns:
             The lower bound of the vertex indices
@@ -799,7 +747,7 @@ cdef class Graph:
         return graphLib.gp_LowerBoundVertices(self._theGraph)
 
     def gp_UpperBoundVertices(self) -> int:
-        """Get the upper bound of the graph's vertex indices
+        """Get the upper bound of the graph's vertex indices.
 
         Returns:
             The upper bound of the vertex indices
@@ -807,15 +755,15 @@ cdef class Graph:
         return graphLib.gp_UpperBoundVertices(self._theGraph)
 
     def gp_LowerBoundVirtualVertices(self) -> int:
-        """Get the lower bound of the graph's virtual vertex indices
+        """Get the lower bound of the graph's virtual vertex indices.
 
         Returns:
-            The lower bound of the virtual vertex indices
+            The lower bound of the virtual vertex indices.
         """
         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
 
     def gp_UpperBoundVirtualVertices(self) -> int:
-        """Get the upper bound of the graph's virtual vertex indices
+        """Get the upper bound of the graph's virtual vertex indices.
 
         Returns:
             The upper bound of the virtual vertex indices
@@ -823,29 +771,30 @@ cdef class Graph:
         return graphLib.gp_UpperBoundVirtualVertices(self._theGraph)
 
     def gp_LowerBoundVertexStorage(self) -> int:
-        """Get lower bound of graph's non-virtual and virtual vertex indices
+        """Get lower bound of graph's storage for non-virtual and virtual vertices.
+        Use gp_LowerBoundVertices() unless you know why you're using this.
 
         Returns:
             The lower bound for all non-virtual and virtual vertices, to be used
-            for iteration.
+            for some types of iteration.
         """
         return graphLib.gp_LowerBoundVertexStorage(self._theGraph)
 
     def gp_UpperBoundVertexStorage(self) -> int:
-        """Get upper bound of graph's non-virtual and virtual vertex indices
+        """Get upper bound of graph's storage for non-virtual and virtual vertices.
+        Use gp_UpperBoundVertices() unless you know why you're using this.
 
         Returns:
             The upper bound for all non-virtual and virtual vertices, to be used
-            for iteration.
+            for some types of iteration.
         """
         return graphLib.gp_UpperBoundVertexStorage(self._theGraph)
 
     def gp_IsVertex(self, int v) -> int:
-        """Determine if index v corresponds to a non-virtual vertex
+        """Determine if index v corresponds to a non-virtual vertex.
 
         Args:
-            v: candidate to test whether the index corresponds to a non-virtual
-                vertex in the graph
+            v: candidate index of a non-virtual vertex in the graph
 
         Returns:
             TRUE if v is within the allowed bounds for vertices and if the
@@ -865,8 +814,7 @@ cdef class Graph:
         """Determine if index v corresponds to a virtual vertex
 
         Args:
-            v: candidate to test whether the index corresponds to a virtual
-                vertex in the graph
+            v: candidate index of a virtual vertex in the graph
 
         Returns:
             TRUE if v is within the allowed bounds for virtual vertices and if
@@ -886,8 +834,7 @@ cdef class Graph:
         """Determine if index v does not correspond to a non-virtual vertex
 
         Args:
-            v: candidate to test whether the index does not correspond to a
-                non-virtual vertex in the graph
+            v: candidate index of a non-virtual vertex in the graph
 
         Returns:
             TRUE if v is not within the allowed bounds for non-virtual vertices,
@@ -907,8 +854,7 @@ cdef class Graph:
         """Determine if index v does not correspond to a virtual vertex
 
         Args:
-            v: candidate to test whether the index does not correspond to a
-                virtual vertex in the graph
+            v: candidate index of a virtual vertex in the graph
 
         Returns:
             TRUE if v is not within the allowed bounds for virtual vertices or
@@ -925,12 +871,11 @@ cdef class Graph:
         return FALSE
 
     def gp_VirtualVertexInUse(self, int virtualVertex) -> int:
-        """Determines if virtualVertex corresponds to a virtual vertex in use
+        """Determines if virtualVertex corresponds to a virtual vertex in use.
+        A virtual vertex is in use if it has any incident edges.
 
         Args:
-            virtualVertex: candidate to test whether the index corresponds to a
-                virtual vertex in the graph that is in use (i.e., has at least
-                one edge in its adjacency list)
+            virtualVertex: candidate virtual vertex to test
 
         Returns:
             TRUE if virtualVertex is a valid virtual vertex and is in use,
@@ -945,12 +890,10 @@ cdef class Graph:
         return FALSE
 
     def gp_VirtualVertexNotInUse(self, int virtualVertex) -> int:
-        """Determines if virtualVertex corresponds to a virtual vertex in use
+        """Determines if virtualVertex corresponds to a virtual vertex not in use.
 
         Args:
-            virtualVertex: candidate to test whether the index corresponds to a
-                virtual vertex in the graph that is in use (i.e., has at least
-                one edge in its adjacency list)
+            virtualVertex: candidate virtual vertex to test 
 
         Returns:
             TRUE if virtualVertex is a valid virtual vertex and is not in use,
@@ -966,10 +909,10 @@ cdef class Graph:
         return FALSE
 
     def gp_GetIndex(self, int v) -> int:
-        """Set index of vertex v to theIndex
+        """Get the index data member value of vertex v
 
         Args:
-            v: index of vertex in graph whose index field you wish to get
+            v: the vertex in the graph whose index field to get
 
         Returns:
             The value of the index field of the vertex record corresponding to v
@@ -986,11 +929,11 @@ cdef class Graph:
         return graphLib.gp_GetIndex(self._theGraph, v)
 
     def gp_SetIndex(self, int v, int theIndex) -> None:
-        """Set index of vertex v to theIndex
+        """Set the index data member of vertex v to theIndex
 
         Args:
-            v: index of vertex in graph whose index you wish to set to theIndex
-            theIndex: new index you wish to assign to VertexRec's index field
+            v: the vertex in the graph whose index to set to theIndex
+            theIndex: new value you wish to assign to the vertex's index field
 
         Raises:
             ValueError if v or theIndex don't correspond to a non-virtual or
@@ -1010,14 +953,13 @@ cdef class Graph:
         graphLib.gp_SetIndex(self._theGraph, v, theIndex)
 
     def gp_InitFlags(self, int v) -> None:
-        """Resets the flags for a given vertex
+        """Resets (clears) all flags for a given vertex.
 
         Args:
-            v: index of vertex in graph whose flags you wish to reset to 0
+            v: index of vertex in graph whose flags you wish to clear
 
         Raises:
-            ValueError if v does not correspond to a non-virtual nor virtual
-            vertex.
+            ValueError if v is not a non-virtual nor virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
