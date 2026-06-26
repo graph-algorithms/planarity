@@ -176,10 +176,10 @@ cdef extern from "../c/graphLib/graph.h":
 
 
 cdef extern from "../c/graphLib/io/graphIO.h":
-    int gp_Read(graphP theGraph, char *FileName)
+    int gp_Read(graphP theGraph, char *fileName)
     int gp_ReadFromString(graphP theGraph, char *inputStr)
 
-    int gp_Write(graphP theGraph, char *FileName, int Mode)
+    int gp_Write(graphP theGraph, char *fileName, int writeMode)
     int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
 
     int WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_DEBUGINFO, WRITE_G6

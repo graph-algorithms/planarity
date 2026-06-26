@@ -501,16 +501,16 @@ cdef int gp_UpperBoundEdgeStorage(graphP theGraph):
 
 
 # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
-cdef int gp_Read(graphP theGraph, char *FileName):
-    return cgraphLib.gp_Read(theGraph, FileName)
+cdef int gp_Read(graphP theGraph, char *fileName):
+    return cgraphLib.gp_Read(theGraph, fileName)
 
 
 cdef int gp_ReadFromString(graphP theGraph, char *inputStr):
     return cgraphLib.gp_ReadFromString(theGraph, inputStr)
 
 
-cdef int gp_Write(graphP theGraph, char *FileName, int Mode):
-    return cgraphLib.gp_Write(theGraph, FileName, Mode)
+cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):
+    return cgraphLib.gp_Write(theGraph, fileName, writeMode)
 
 
 cdef int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode):

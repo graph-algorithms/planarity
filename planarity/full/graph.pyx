@@ -1578,7 +1578,7 @@ cdef class Graph:
         """
         return graphLib.gp_UpperBoundEdgeStorage(self._theGraph)
 
-    def gp_Read(self, str infile_name) -> int:
+    def gp_Read(self, str fileName) -> int:
         """
 
         Args:
@@ -1589,18 +1589,18 @@ cdef class Graph:
 
         """
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = infile_name.encode('utf-8')
-        cdef const char *FileName = encoded
+        cdef bytes encoded = fileName.encode('utf-8')
+        cdef const char *encodedFileName = encoded
 
-        result = graphLib.gp_Read(self._theGraph, FileName)
+        result = graphLib.gp_Read(self._theGraph, encodedFileName)
         if result != OK:
             raise RuntimeError(
-                f"gp_Read() failed for infile '{infile_name}'."
+                f"gp_Read() failed for infile '{fileName}'."
             )
 
         return result
 
-    def gp_ReadFromString(self, str input_str) -> int:
+    def gp_ReadFromString(self, str inputStr) -> int:
         """
 
         Args:
@@ -1612,7 +1612,7 @@ cdef class Graph:
         """
         raise NotImplementedError("")
 
-    def gp_Write(self, str outfile_name, str mode) -> int:
+    def gp_Write(self, str fileName, str writeMode) -> int:
         """
 
         Args:
@@ -1622,24 +1622,24 @@ cdef class Graph:
         Raises:
 
         """
-        mode_code = (graphLib.WRITE_ADJLIST if mode == "a"
-                         else (graphLib.WRITE_ADJMATRIX if mode == "m" 
-                               else (graphLib.WRITE_G6 if mode == "g"
+        mode_code = (graphLib.WRITE_ADJLIST if writeMode == "a"
+                         else (graphLib.WRITE_ADJMATRIX if writeMode == "m" 
+                               else (graphLib.WRITE_G6 if writeMode == "g"
                                      else None)))
         if not mode_code:
             raise ValueError(
-                f"Invalid graph format specifier '{mode}'' is not one of "
+                f"Invalid graph format specifier '{writeMode}'' is not one of "
                 "'gam'."
                 )
 
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = outfile_name.encode('utf-8')
-        cdef const char *theFileName = encoded
+        cdef bytes encoded = fileName.encode('utf-8')
+        cdef const char *encodedFileName = encoded
 
-        result = graphLib.gp_Write(self._theGraph, theFileName, mode_code)
+        result = graphLib.gp_Write(self._theGraph, encodedFileName, mode_code)
         if result != OK:
             raise RuntimeError(
-                f"gp_Write() of graph to '{outfile_name}' failed."
+                f"gp_Write() of graph to '{fileName}' failed."
                 )
 
         return result

@@ -143,10 +143,10 @@ cdef int gp_UpperBoundEdgeStorage(graphP theGraph)
 
 
 # Surfaced from planarity/c/graphLib/io/graphIO.h
-cdef int gp_Read(graphP theGraph, char *FileName)
+cdef int gp_Read(graphP theGraph, char *fileName)
 cdef int gp_ReadFromString(graphP theGraph, char *inputStr)
 
-cdef int gp_Write(graphP theGraph, char *FileName, int Mode)
+cdef int gp_Write(graphP theGraph, char *fileName, int writeMode)
 cdef int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
 
 
