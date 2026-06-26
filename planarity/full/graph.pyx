@@ -723,7 +723,8 @@ cdef class Graph:
                 in v's adjacency list
 
         Raises:
-            ValueError if v is not a valid vertex index or invalid newEdge
+            ValueError if v is not a valid vertex, if theLink is not 0 nor 1, or
+            invalid newEdge
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -733,7 +734,13 @@ cdef class Graph:
         if self.gp_IsNotEdge(newEdge) or self.gp_EdgeNotInUse(newEdge):
             raise ValueError(
                 f"gp_SetEdgeByLink() failed: newEdge = {newEdge} "
-                "is not a valid edge index."
+                "is not a valid edge."
+            )
+        
+        if theLink != 0 and theLink != 1:
+            raise ValueError(
+                "gp_SetEdgeByLink() failed: invalid value for theLink = "
+                f"{theLink}"
             )
 
         graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
@@ -969,161 +976,277 @@ cdef class Graph:
         graphLib.gp_InitFlags(self._theGraph, v)
 
     def gp_GetVisited(self, int v) -> int:
-        """
+        """Get visited flag for v
 
         Args:
+            v: index of vertex in graph whose visited flag you wish to get
 
         Returns:
+            The visited flag for v, i.e. the result of applying the 
+            VERTEX_VISITED_MASK to v's flags
 
         Raises:
-
+            ValueError if v is neither a non-virtual nor a virtual vertex
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_GetVisited() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetVisited(self._theGraph, v)
 
     def gp_ClearVisited(self, int v) -> None:
-        """
+        """Clear visited flag for v
 
         Args:
+            v: index of vertex in graph whose visited flag you wish to clear
 
         Raises:
-
+            ValueError if v is neither a non-virtual nor a virtual vertex
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_ClearVisited() failed: invalid vertex v = {v}"
+            )
+
+        graphLib.gp_ClearVisited(self._theGraph, v)
 
     def gp_SetVisited(self, int v) -> None:
-        """
+        """Set visited flag for v
 
         Args:
+            v: index of vertex in graph whose visited flag you wish to set
 
         Raises:
-
+            ValueError if v is neither a non-virtual nor a virtual vertex
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_SetVisited() failed: invalid vertex v = {v}"
+            )
+
+        graphLib.gp_SetVisited(self._theGraph, v)
 
     def gp_GetMarked(self, int v) -> int:
-        """
+        """Get marked flag for v
 
         Args:
+            v: vertex whose marked flag you wish to get
 
         Returns:
+            The result of bitwise and of v's flags with VERTEX_MARKED_MASK
 
         Raises:
-
+            ValueError if v is neither a non-virtual nor a virtual vertex
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_GetMarked() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetMarked(self._theGraph, v)
 
     def gp_ClearMarked(self, int v) -> None:
-        """
+        """Clear marked flag for v
 
         Args:
+            v: vertex whose marked flag you wish to clear
 
         Raises:
-
+            ValueError if v is neither a non-virtual nor a virtual vertex
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_ClearMarked() failed: invalid vertex v = {v}"
+            )
+
+        graphLib.gp_ClearMarked(self._theGraph, v)
 
     def gp_SetMarked(self, int v) -> None:
-        """
+        """Set marked flag for v
 
         Args:
+            v: vertex whose marked flag you wish to set
 
         Raises:
-
+            ValueError if v is neither a non-virtual nor a virtual vertex
         """
-        raise NotImplementedError("")
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_SetMarked() failed: invalid vertex v = {v}"
+            )
+
+        graphLib.gp_SetMarked(self._theGraph, v)
 
     def gp_GetTwin(self, int e) -> int:
-        """
+        """Get the twin edge record of the edge record indicated by e
 
         Args:
+            e: edge whose twin edge record you wish to get
 
         Returns:
+            The twin edge record of e
 
         Raises:
-
-        """
-        raise NotImplementedError("")
-
-    def gp_GetNextEdge(self, int e) -> int:
-        """
-
-        Args:
-
-        Returns:
-
-        Raises:
-
+            ValueError if e is not a valid edge
         """
         if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_GetNextEdge() failed: invalid edge index '{e}'."
+            raise ValueError(
+                f"gp_GetTwin() failed: invalid edge e = {e}"
+            )
+        
+        return graphLib.gp_GetTwin(self._theGraph, e)
+
+    def gp_GetNextEdge(self, int e) -> int:
+        """Get next edge after e
+
+        Args:
+            e: edge for which you wish to get next edge
+
+        Returns:
+            The next edge after e
+
+        Raises:
+            ValueError if e is not a valid edge
+        """
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_GetNextEdge() failed: invalid edge index e = {e}"
             )
 
         return graphLib.gp_GetNextEdge(self._theGraph, e)
 
     def gp_GetPrevEdge(self, int e) -> int:
-        """
+        """Get previous edge before e
 
         Args:
+            e: edge for which you wish to get previous edge
 
         Returns:
+            The previous edge before e
 
         Raises:
-
+            ValueError if e is not a valid edge
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_GetPrevEdge() failed: invalid edge index e = {e}"
+            )
+
+        return graphLib.gp_GetPrevEdge(self._theGraph, e)
 
     def gp_GetAdjacentEdge(self, int e, int theLink) -> int:
-        """
+        """Get edge adjacent to e in direction indicated by theLink
 
         Args:
+            e: edge for which you wish to get edge adjacent in direction theLink
+            theLink: either 0 for next edge or 1 for previous edge
 
         Returns:
+            The edge adjacent to e in direction theLink
 
         Raises:
-
+            ValueError if e is not a valid edge or if theLink is neither 0 nor 1
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_GetAdjacentEdge() failed: invalid edge e = {e}"
+            )
+
+        if theLink != 0 and theLink != 1:
+            raise ValueError(
+                "gp_GetAdjacentEdge() failed: invalid value for theLink = "
+                f"{theLink}"
+            )
+
+        return graphLib.gp_GetAdjacentEdge(self._theGraph, e, theLink)
 
     def gp_SetNextEdge(self, int e, int newNextEdge) -> None:
-        """
+        """Set next edge before e to newNextEdge
 
         Args:
+            e: edge for which you wish to get previous edge
+            newNextEdge: edge which you wish to set as new next edge of e
 
         Raises:
-
+            ValueError if e or newNextEdge is not a valid edge
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_SetNextEdge() failed: invalid edge e = {e}"
+            )
+
+        if not self.gp_IsEdge(newNextEdge):
+            raise ValueError(
+                "gp_SetNextEdge() failed: invalid edge newNextEdge = "
+                f"{newNextEdge}"
+            )
+
+        graphLib.gp_SetNextEdge(self._theGraph, e, newNextEdge)
 
     def gp_SetPrevEdge(self, int e, int newPrevEdge) -> None:
-        """
+        """Set previous edge before e to newPrevEdge
 
         Args:
+            e: edge for which you wish to get previous edge
+            newPrevEdge: edge which you wish to set as new previous edge of e
 
         Raises:
-
+            ValueError if e or newPrevEdge is not a valid edge
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_SetPrevEdge() failed: invalid edge e = {e}"
+            )
+
+        if not self.gp_IsEdge(newPrevEdge):
+            raise ValueError(
+                "gp_SetPrevEdge() failed: invalid edge newPrevEdge = "
+                f"{newPrevEdge}"
+            )
+
+        graphLib.gp_SetPrevEdge(self._theGraph, e, newPrevEdge)
 
     def gp_SetAdjacentEdge(self, int e, int theLink, int newEdge) -> None:
-        """
+        """Set edge adjacent to e in direction indicated by theLink
 
         Args:
+            e: edge for which you wish to set edge adjacent in direction theLink
+            theLink: either 0 for next edge or 1 for previous edge
+            newEdge: edge you wish to set as adjacent to e in direction theLink
 
         Raises:
-
+            ValueError if e is not a valid edge, if theLink is neither 0 nor 1,
+            or if newEdge is not a valid edge
         """
-        raise NotImplementedError("")
+        if not self.gp_IsEdge(e):
+            raise ValueError(
+                f"gp_SetAdjacentEdge() failed: invalid edge e = {e}"
+            )
+
+        if theLink != 0 and theLink != 1:
+            raise ValueError(
+                "gp_SetAdjacentEdge() failed: invalid value for theLink = "
+                f"{theLink}"
+            )
+
+        if not self.gp_IsEdge(newEdge):
+            raise ValueError(
+                "gp_SetAdjacentEdge() failed: invalid edge newEdge = "
+                f"{newEdge}"
+            )
+
+        graphLib.gp_SetAdjacentEdge(self._theGraph, e, theLink, newEdge)
 
     def gp_IsEdge(self, int e) -> int:
-        """
+        """Check if e corresponds to an edge in the graph
 
         Args:
-
+            e: candidate edge to verify is an edge in the graph
 
         Returns:
-
-
+            True if e is a valid edge and the value returned by C-layer
+            gp_IsEdge() is truthy, FALSE otherwise.
         """
         if (
                 (e >= self.gp_LowerBoundEdgeStorage()) and
@@ -1135,24 +1258,39 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotEdge(self, int e) -> int:
-        """
+        """Check if e does not correspond to an edge in the graph
 
         Args:
+            e: candidate edge to verify is not an edge in the graph
 
         Returns:
-
-        Raises:
-
+            TRUE if e is not a valid edge or the value returned by C-layer
+            gp_IsNotEdge() is truthy, FALSE otherwise.
         """
-        if not self.gp_IsEdge(e):
+        if (
+                (e < self.gp_LowerBoundEdgeStorage()) or
+                (e >= self.gp_UpperBoundEdgeStorage()) or
+                graphLib.gp_IsNotEdge(self._theGraph, e)
+        ):
             return TRUE
 
         return FALSE
 
     def gp_GetNeighbor(self, int e) -> int:
+        """Get neighbor of edge e
+
+        Args:
+            e: an edge in the graph
+
+        Returns:
+            The vertex which is the neighbor of edge e
+
+        Raises:
+            ValueError if e is not a valid edge
+        """
         if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_GetNeighbor() failed: invalid edge index '{e}'."
+            raise ValueError(
+                f"gp_GetNeighbor() failed: invalid edge e = {e}"
             )
 
         return graphLib.gp_GetNeighbor(self._theGraph, e)
@@ -1382,8 +1520,8 @@ cdef class Graph:
 
         """
         if not self.gp_IsEdge(e):
-            raise RuntimeError(
-                f"gp_EdgeInUse() failed: invalid edge index '{e}'."
+            raise ValueError(
+                f"gp_EdgeInUse() failed: invalid edge index  e = {e}"
             )
 
         return graphLib.gp_EdgeInUse(self._theGraph, e)
