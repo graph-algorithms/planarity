@@ -1823,14 +1823,25 @@ cdef class Graph:
         return result
     
     def gp_Embed(self, int embedFlags) -> int:
-        """
+        """Modifies the graph to be either an embedding of the original
+        graph or a minimal subgraph obstructing embedding. The type of
+        embedding or obstruction depends on the setting of embedFlags.
+        With graphlib.EMBEDFLAGS_PLANAR, the graph is modified to either
+        contain a planar embedding (an adjacency list rotation scheme) 
+        of the graph or a subgraph homeomorphic to K_{3,3} or K_5. 
 
         Args:
+            embedFlags: graphlib.EMBEDFLAGS_* value indicating the 
+                embedding algorithm to run.
 
         Returns:
+            OK if an embedding was created (if a desired homeomorphic
+                subgraph was not found).
+            NONEMBEDDABE if a minimal obstructing subgraph (or the
+                desired homeomorphic subgraph) was found.
 
         Raises:
-
+            RuntimeError if C graphlib version of this function failed.
         """
         embed_result = graphLib.gp_Embed(self._theGraph, embedFlags)
         if embed_result != OK and embed_result != NONEMBEDDABLE:
@@ -1838,21 +1849,26 @@ cdef class Graph:
 
         return embed_result
 
-    def gp_TestEmbedResultIntegrity(self, Graph copy_of_orig_graph, int embed_result) -> int:
-        """
+    def gp_TestEmbedResultIntegrity(self, Graph origGraph, int embedResult) -> int:
+        """Tests whether the graph has valid content based on the
+        embedding algorithm performed by gp_Embed(), a copy of the 
+        original graph input to it, and the result it returned.
 
         Args:
+            origGraph: a copy of the graph before gp_Embed()
+            embedResult: the result returned by gp_Embed()
 
         Returns:
+            OK or NONEMBEDDABLE on success (matching embedResult) 
 
         Raises:
-
+            RuntimeError if C graphlib version of this function failed.
         """
         check_result = graphLib.gp_TestEmbedResultIntegrity(
-                self._theGraph, copy_of_orig_graph._theGraph, embed_result
+                self._theGraph, origGraph._theGraph, embedResult
             )
         if check_result != OK and check_result != NONEMBEDDABLE:
-            raise RuntimeError("Failed embed integrity check.")
+            raise RuntimeError("Failed embed result integrity check.")
 
         return check_result
 
