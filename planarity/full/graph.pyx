@@ -21,6 +21,11 @@ TRUE = graphLib.TRUE
 FALSE = graphLib.FALSE
 NIL = graphLib.NIL
 
+EDGE_TYPE_CHILD = graphLib.EDGE_TYPE_CHILD
+EDGE_TYPE_FORWARD = graphLib.EDGE_TYPE_FORWARD
+EDGE_TYPE_PARENT = graphLib.EDGE_TYPE_PARENT
+EDGE_TYPE_BACK = graphLib.EDGE_TYPE_BACK
+
 EDGEFLAG_DIRECTION_INONLY = graphLib.EDGEFLAG_DIRECTION_INONLY
 EDGEFLAG_DIRECTION_OUTONLY = graphLib.EDGEFLAG_DIRECTION_OUTONLY
 
@@ -1091,7 +1096,7 @@ cdef class Graph:
         Raises:
             ValueError if e is not a valid in-use edge
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_GetTwin() failed: invalid edge e = {e}"
@@ -1111,7 +1116,7 @@ cdef class Graph:
         Raises:
             ValueError if e is not a valid in-use edge
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_GetNextEdge() failed: invalid edge index e = {e}"
@@ -1131,7 +1136,7 @@ cdef class Graph:
         Raises:
             ValueError if e is not a valid in-use edge
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_GetPrevEdge() failed: invalid edge index e = {e}"
@@ -1154,7 +1159,7 @@ cdef class Graph:
             ValueError if e is not a valid in-use edge or 
             if theLink is neither 0 nor 1
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_GetAdjacentEdge() failed: invalid edge e = {e}"
@@ -1179,13 +1184,13 @@ cdef class Graph:
             ValueError if e is not a valid in-use edge, or if
             newNextEdge is neither NIL nor a valid in-use edge 
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_SetNextEdge() failed: invalid edge e = {e}"
             )
 
-        if newEdge != NIL and not self.gp_EdgeInUse(newNextEdge):
+        if newNextEdge != NIL and not self.gp_EdgeInUse(newNextEdge):
             raise ValueError(
                 "gp_SetNextEdge() failed: invalid edge newNextEdge = "
                 f"{newNextEdge}"
@@ -1204,7 +1209,7 @@ cdef class Graph:
             ValueError if e is not a valid in-use edge, or if
             newPrevEdge is neither NIL nor a valid in-use edge
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_SetPrevEdge() failed: invalid edge e = {e}"
@@ -1231,7 +1236,7 @@ cdef class Graph:
             newEdge is neither NIL nor a valid in-use edge, or if
             theLink is neither 0 nor 1
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_SetAdjacentEdge() failed: invalid edge e = {e}"
@@ -1303,7 +1308,7 @@ cdef class Graph:
         Raises:
             ValueError if e is not a valid in-use edge
         """
-        # The Python-level gp_EdgeInUse() checks gp_IsEdge()
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
             raise ValueError(
                 f"gp_GetNeighbor() failed: invalid edge e = {e}"
@@ -1312,172 +1317,314 @@ cdef class Graph:
         return graphLib.gp_GetNeighbor(self._theGraph, e)
 
     def gp_SetNeighbor(self, int e, int v) -> None:
-        """
+        """Set neighbor vertex of edge e to v
 
         Args:
-
+            e: an in-use edge whose neighbor vertex you wish to set
+            v: the vertex you wish to set as the neighbor of edge e
         Raises:
-
+            ValueError if e is not a valid in-use edge, or if v is not a 
+            non-virtual nor virtual vertex.
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_SetNeighbor() failed: invalid edge e = {e}"
+            )
+
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                f"gp_SetNeighbor() failed: invalid vertex v = {v}"
+            )
+
+        graphLib.gp_SetNeighbor(self._theGraph, e, v)
 
     def gp_InitEdgeFlags(self, int e) -> None:
-        """
+        """Initialize edge flags of in-use edge e
 
         Args:
+            e: an in-use edge whose edge flags you wish to initialize
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_InitEdgeFlags() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_InitEdgeFlags(self._theGraph, e)
 
     def gp_GetEdgeVisited(self, int e) -> int:
-        """
+        """Get edge visited flag for in-use edge e
 
         Args:
+            e: an in-use edge whose edge visited flag you wish to get
 
         Returns:
+            The edge visited flag for e, i.e., 0 (falsy) or EDGE_VISITED_MASK (truthy)
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_GetEdgeVisited() failed: invalid edge e = {e}"
+            )
+
+        return graphLib.gp_GetEdgeVisited(self._theGraph, e)
 
     def gp_ClearEdgeVisited(self, int e) -> None:
-        """
+        """Clears edge visited flag for in-use edge e
 
         Args:
+            e: an in-use edge whose edge visited flag you wish to clear
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_ClearEdgeVisited() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_ClearEdgeVisited(self._theGraph, e)
 
     def gp_SetEdgeVisited(self, int e) -> None:
-        """
+        """Set edge visited flag for in-use edge e
 
         Args:
+            e: an in-use edge whose edge visited flag you wish to set
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_SetEdgeVisited() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_SetEdgeVisited(self._theGraph, e)
 
     def gp_GetEdgeMarked(self, int e) -> int:
-        """
+        """Get edge marked flag for in-use edge e
 
         Args:
+            e: an in-use edge whose edge marked flag you wish to get
 
         Returns:
+            The edge visited flag for e, i.e., 0 (falsy) or EDGE_MARKED_MASK (truthy)
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_GetEdgeMarked() failed: invalid edge e = {e}"
+            )
+
+        return graphLib.gp_GetEdgeMarked(self._theGraph, e)
 
     def gp_ClearEdgeMarked(self, int e) -> None:
-        """
+        """Clears edge marked flag for in-use edge e
 
         Args:
+            e: an in-use edge whose edge marked flag you wish to clear
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_ClearEdgeMarked() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_ClearEdgeMarked(self._theGraph, e)
 
     def gp_SetEdgeMarked(self, int e) -> None:
-        """
+        """Set edge marked flag for in-use edge e
 
         Args:
+            e: an in-use edge whose edge marked flag you wish to set
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_SetEdgeMarked() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_SetEdgeMarked(self._theGraph, e)
 
     def gp_GetEdgeType(self, int e) -> int:
-        """
+        """Get edge type for in-use edge e
 
         Args:
+            e: an in-use edge whose edge type you wish to get
 
         Returns:
+            The edge type of e, i.e., the bits set when one performs bitwise and
+            with EDGE_TYPE_MASK, which the caller will have to check against
+            EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_GetEdgeType() failed: invalid edge e = {e}"
+            )
+
+        return graphLib.gp_GetEdgeType(self._theGraph, e)
 
     def gp_ClearEdgeType(self, int e) -> None:
-        """
+        """Clears the edge type for in-use edge e
 
         Args:
+            e: an in-use edge whose edge type you wish to clear
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_ClearEdgeType() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_ClearEdgeType(self._theGraph, e)
 
     def gp_SetEdgeType(self, int e, int type) -> None:
-        """
+        """Sets edge type of in-use edge e to type
 
         Args:
+            e: an in-use edge whose edge type you wish to set for the first time
+                to the given type
+            type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
+                or EDGE_TYPE_BACK
 
         Raises:
-
+            ValueError if e is not a valid in-use edge or if type is not a valid
+            edge type
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_SetEdgeType() failed: invalid edge e = {e}"
+            )
+
+        if type not in (EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK):
+            raise ValueError(
+                f"gp_SetEdgeType() failed: invalid edge type = {type}"
+            )
+
+        graphLib.gp_SetEdgeType(self._theGraph, e, type)
 
     def gp_ResetEdgeType(self, int e, int type) -> None:
-        """
+        """Reset edge type for in-use edge e to type, clearing existing type
 
         Args:
+            e: an in-use edge whose edge type you wish to reset to type
+            type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
+                or EDGE_TYPE_BACK
 
         Raises:
-
+            ValueError if e is not a valid in-use edge or if type is not a valid
+            edge type
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_ResetEdgeType() failed: invalid edge e = {e}"
+            )
+
+        if type not in (EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK):
+            raise ValueError(
+                f"gp_ResetEdgeType() failed: invalid edge type = {type}"
+            )
+
+        graphLib.gp_ResetEdgeType(self._theGraph, e, type)
 
     def gp_GetEdgeFlagInverted(self, int e) -> int:
-        """
+        """Get edge inverted flag for in-use edge e
 
         Args:
+            e: an in-use edge for which you wish to get the edge inverted flag
 
         Returns:
+            The edge inverted flag of e
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_GetEdgeFlagInverted() failed: invalid edge e = {e}"
+            )
+
+        return graphLib.gp_GetEdgeFlagInverted(self._theGraph, e)
 
     def gp_SetEdgeFlagInverted(self, int e) -> None:
-        """
+        """Set edge inverted flag for in-use edge e
 
         Args:
+            e: an in-use edge for which you wish to set the edge inverted flag
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_SetEdgeFlagInverted() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_SetEdgeFlagInverted(self._theGraph, e)
 
     def gp_ClearEdgeFlagInverted(self, int e) -> None:
-        """
+        """Clear edge inverted flag for in-use edge e
 
         Args:
+            e: an in-use edge for which you wish to clear the edge inverted flag
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_ClearEdgeFlagInverted() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_ClearEdgeFlagInverted(self._theGraph, e)
 
     def gp_XorEdgeFlagInverted(self, int e) -> None:
-        """
+        """XOR edge inverted flag with EDGEFLAG_INVERTED_MASK
 
         Args:
+            e: an in-use edge for which you wish to XOR the edge inverted flag
+                with EDGEFLAG_INVERTED_MASK
 
         Raises:
-
+            ValueError if e is not a valid in-use edge
         """
-        raise NotImplementedError("")
+        # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
+        if not self.gp_EdgeInUse(e):
+            raise ValueError(
+                f"gp_XorEdgeFlagInverted() failed: invalid edge e = {e}"
+            )
+
+        graphLib.gp_XorEdgeFlagInverted(self._theGraph, e)
 
     def gp_GetDirection(self, int e) -> int:
         """

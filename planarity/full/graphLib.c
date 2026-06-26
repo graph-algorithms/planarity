@@ -5970,29 +5970,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage(graphP __
 /* "planarity/full/graphLib.pyx":504
  * 
  * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
- * cdef int gp_Read(graphP theGraph, char *FileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Read(theGraph, FileName)
+ * cdef int gp_Read(graphP theGraph, char *fileName):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Read(theGraph, fileName)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_Read(graphP __pyx_v_theGraph, char *__pyx_v_FileName) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_Read(graphP __pyx_v_theGraph, char *__pyx_v_fileName) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":505
  * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
- * cdef int gp_Read(graphP theGraph, char *FileName):
- *     return cgraphLib.gp_Read(theGraph, FileName)             # <<<<<<<<<<<<<<
+ * cdef int gp_Read(graphP theGraph, char *fileName):
+ *     return cgraphLib.gp_Read(theGraph, fileName)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_Read(__pyx_v_theGraph, __pyx_v_FileName);
+  __pyx_r = gp_Read(__pyx_v_theGraph, __pyx_v_fileName);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":504
  * 
  * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
- * cdef int gp_Read(graphP theGraph, char *FileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Read(theGraph, FileName)
+ * cdef int gp_Read(graphP theGraph, char *fileName):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Read(theGraph, fileName)
  * 
 */
 
@@ -6038,29 +6038,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ReadFromString(graphP __pyx_v_t
 /* "planarity/full/graphLib.pyx":512
  * 
  * 
- * cdef int gp_Write(graphP theGraph, char *FileName, int Mode):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Write(theGraph, FileName, Mode)
+ * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_Write(graphP __pyx_v_theGraph, char *__pyx_v_FileName, int __pyx_v_Mode) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_Write(graphP __pyx_v_theGraph, char *__pyx_v_fileName, int __pyx_v_writeMode) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":513
  * 
- * cdef int gp_Write(graphP theGraph, char *FileName, int Mode):
- *     return cgraphLib.gp_Write(theGraph, FileName, Mode)             # <<<<<<<<<<<<<<
+ * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):
+ *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_Write(__pyx_v_theGraph, __pyx_v_FileName, __pyx_v_Mode);
+  __pyx_r = gp_Write(__pyx_v_theGraph, __pyx_v_fileName, __pyx_v_writeMode);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":512
  * 
  * 
- * cdef int gp_Write(graphP theGraph, char *FileName, int Mode):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Write(theGraph, FileName, Mode)
+ * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)
  * 
 */
 
