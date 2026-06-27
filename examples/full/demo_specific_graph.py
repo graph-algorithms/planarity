@@ -121,11 +121,11 @@ def specific_graph(
             f"'{infile}'."
         )
 
-    # NOTE: When the embed_result is OK for K_{2,3}, K_{3,3}, and K_4
-    # homeomorph search, the graph contents are thrown away by their respective
-    # EmbedPostprocess, so the output will be the empty graph, i.e. there is no
-    # subgraph homeomorphic to the target homeomorph
-    graph_for_embedding.gp_Write(str(outfile), output_mode)
+    if (
+        (embed_result == OK and command in ("p", "d", "o")) or
+        (embed_result == NONEMBEDDABLE and command in ("2", "3", "4"))
+    ):
+        graph_for_embedding.gp_Write(str(outfile), output_mode)
 
     if embed_result == OK and command == "d":
         choice = input(

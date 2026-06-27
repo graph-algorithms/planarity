@@ -1774,7 +1774,7 @@ cdef class Graph:
                 f"gp_Read() failed for infile '{fileName}'."
             )
 
-    def gp_ReadFromString(self, str inputStr) -> int:
+    def gp_ReadFromString(self, str inputStr) -> None:
         """Reads the graph from the given input string.
 
         Args:
@@ -1782,9 +1782,14 @@ cdef class Graph:
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
-
         """
-        raise NotImplementedError("")
+        cdef bytes encoded = inputStr.encode('utf-8')
+        cdef const char *encodedInputString = encoded
+
+        if graphLib.gp_ReadFromString(self._theGraph, encodedInputString) != OK:
+            raise RuntimeError(
+                "gp_ReadFromString() failed: unable to read from input string."
+            )
 
     def gp_Write(self, str fileName, int writeMode) -> None:
         """Writes the graph to the file named fileName in the writeMode format.
