@@ -25,6 +25,8 @@ EDGE_TYPE_CHILD = graphLib.EDGE_TYPE_CHILD
 EDGE_TYPE_FORWARD = graphLib.EDGE_TYPE_FORWARD
 EDGE_TYPE_PARENT = graphLib.EDGE_TYPE_PARENT
 EDGE_TYPE_BACK = graphLib.EDGE_TYPE_BACK
+EDGE_TYPE_TREE = graphLib.EDGE_TYPE_TREE
+EDGE_TYPE_NOTDEFINED = graphLib.EDGE_TYPE_NOTDEFINED
 
 EDGEFLAG_DIRECTION_INONLY = graphLib.EDGEFLAG_DIRECTION_INONLY
 EDGEFLAG_DIRECTION_OUTONLY = graphLib.EDGEFLAG_DIRECTION_OUTONLY
@@ -57,7 +59,7 @@ cdef class Graph:
         if self._theGraph != NULL:
             graphLib.gp_Free(&self._theGraph)
 
-    def gp_EnsureVertexCapacity(self, int N) -> int:
+    def gp_EnsureVertexCapacity(self, int N) -> None:
         """Allocates memory needed for storage of graph data, especially 
         N vertices, N virtual vertices, and space for either 3N edges 
         or the amount set by gp_EnsureEdgeCapacity(). This method does
@@ -66,9 +68,6 @@ cdef class Graph:
 
         Args: 
             N: The number of vertices
-
-        Returns:
-            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -80,9 +79,7 @@ cdef class Graph:
                 f"gp_EnsureVertexCapacity() failed for given order {N}."
             )
 
-        return result
-
-    def gp_EnsureEdgeCapacity(self, int requiredEdgeCapacity) -> int:
+    def gp_EnsureEdgeCapacity(self, int requiredEdgeCapacity) -> None:
         """Ensures that the graph has or will have space for at least
         requiredEdgeCapacity edges. This method can be called multiple
         times to increase edge capacity as needed. If the graph already
@@ -91,9 +88,6 @@ cdef class Graph:
 
         Args:
             requiredEdgeCapacity: The required edge capacity
-
-        Returns:
-            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -104,8 +98,6 @@ cdef class Graph:
             raise RuntimeError(
                 "gp_EnsureEdgeCapacity() failed to set edge capacity to "
                 f"{requiredEdgeCapacity}.")
-
-        return result
 
     def gp_ResetGraphStorage(self) -> None:
         """Resets graph storage (including 'subclass' extension data)."""
@@ -143,15 +135,12 @@ cdef class Graph:
         """
         return graphLib.gp_GetEdgeCapacity(self._theGraph)
 
-    def gp_CopyGraph(self, Graph srcGraph) -> int:
+    def gp_CopyGraph(self, Graph srcGraph) -> None:
         """Copies src_graph into the destination Graph referred to by self.
 
         Args:
             srcGraph: the Graph wrapping the graphP you wish to to copy into
                 the current Graph's graphP.
-
-        Returns:
-            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -160,8 +149,6 @@ cdef class Graph:
         result = graphLib.gp_CopyGraph(self._theGraph, srcGraph._theGraph)
         if result != OK:
             raise RuntimeError(f"gp_CopyGraph() failed.")
-
-        return result
 
     def gp_DupGraph(self) -> Graph:
         """Creates a Graph wrapping a copy of the current Graph's graphP.
@@ -182,15 +169,12 @@ cdef class Graph:
 
         return new_graph
 
-    def gp_CopyAdjacencyLists(self, Graph srcGraph) -> int:
+    def gp_CopyAdjacencyLists(self, Graph srcGraph) -> None:
         """Copies adjacency lists of src_graph into current Graph's graphP.
 
         Args:
             srcGraph: a Graph that wraps the graphP whose adjacency lists you
                 wish to copy into the self's graphP.
-
-        Returns:
-            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if the C layer gp_CopyAdjacencyLists() failed and
@@ -202,14 +186,9 @@ cdef class Graph:
                 "Unable to copy adjacency lists from to this graph."
             )
 
-        return result
-
-    def gp_CreateRandomGraph(self) -> int:
+    def gp_CreateRandomGraph(self) -> None:
         """Creates a simple connected graph with a random number of edges,
         up to the limit of the graph's edge capacity.
-
-        Returns:
-            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -218,17 +197,12 @@ cdef class Graph:
         if result != OK:
             raise RuntimeError("Unable to create random graph.")
 
-        return result
-
-    def gp_CreateRandomGraphEx(self, int numEdges) -> int:
+    def gp_CreateRandomGraphEx(self, int numEdges) -> None:
         """Creates a simple connected graph with numEdges edges. If numEdges
         does not exceed 3N-6, then the generated graph will be planar.
 
         Args:
             numEdges: the desired number of edges for the generated graph
-
-        Returns:
-            Returns OK on success (exception otherwise)
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -239,8 +213,6 @@ cdef class Graph:
             raise RuntimeError(
                 f"Unable to create random graph with num_edges = {numEdges}."
             )
-
-        return result
 
     def gp_IsNeighbor(self, int u, int v) -> int:
         """Checks if a vertex or virtual vertex is a neighbor of another vertex
@@ -377,7 +349,7 @@ cdef class Graph:
 
         return result
 
-    def gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink) -> int:
+    def gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink) -> None:
         """Adds edge between two vertices, resizing structures if necessessary.
 
         Args:
@@ -388,12 +360,9 @@ cdef class Graph:
             vlink: either 0 or 1; indicates whether the edge record to u in v's
                 list should become adjacent to v by its 0 or 1 link
 
-        Returns:
-            Returns OK on success (exception otherwise)
-
         Raises:
             ValueError ulink or vlink are anything other than 0 or 1
-            RuntimeError if gp_DynamicAddEdge() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # These have to be checked until the C API checks them.
         if ulink != 0 and ulink != 1:
@@ -413,8 +382,6 @@ cdef class Graph:
                 "gp_DynamicAddEdge() failed: unable to add edge (u, v) = "
                 f"({u}, {v}) with ulink = {ulink} and vlink = {vlink}."
             )
-
-        return result
 
     def gp_InsertEdge(self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink) -> int:
         """Insert edge between u and v in specific positions of adjacency lists.
@@ -450,17 +417,14 @@ cdef class Graph:
 
         return result
 
-    def gp_DeleteEdge(self, int e) -> int:
+    def gp_DeleteEdge(self, int e) -> None:
         """Deletes edge with index e from the graph.
 
         Args:
             e: index of edge in graph to delete
 
-        Returns:
-            OK if e was successfully deleted (exception otherwise)
-
         Raises:
-            RuntimeError if gp_DeleteEdge() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # Parameter validation is done by the C layer function
         result = graphLib.gp_DeleteEdge(self._theGraph, e)
@@ -468,8 +432,6 @@ cdef class Graph:
             raise RuntimeError(
                 f"gp_DeleteEdge() failed: unable to delete edge e = {e}"
             )
-
-        return result
 
     def gp_HideEdge(self, int e) -> None:
         """Hides edge with index e within the graph. The edge still exists
@@ -491,7 +453,7 @@ cdef class Graph:
         # Parameter validation is done by the C layer function
         graphLib.gp_RestoreEdge(self._theGraph, e)
 
-    def gp_HideVertex(self, int vertex) -> int:
+    def gp_HideVertex(self, int vertex) -> None:
         """Hides vertex within the graph by hiding its edges and storing 
         additional internal information that enables the vertex to be 
         restored by gp_RestoreVertex() if and only if vertices are 
@@ -500,11 +462,8 @@ cdef class Graph:
         Args:
             vertex: index of vertex in graph to hide
 
-        Returns:
-            OK if vertex successfully hidden (exception otherwise)
-
         Raises:
-            RuntimeError if gp_HideVertex() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # Parameter validation is done by the C layer function
         result = graphLib.gp_HideVertex(self._theGraph, vertex)
@@ -513,16 +472,13 @@ cdef class Graph:
                 f"gp_HideVertex() failed: unable to hide vertex {vertex}."
             )
 
-    def gp_RestoreVertex(self) -> int:
+    def gp_RestoreVertex(self) -> None:
         """Restore the last vertex hidden by gp_HideVertex(). If the vertex was
         hidden as part of an edge contraction or vertex identification, then its
         adjacency list is extricated from the vertex with which it was merged.
 
-        Returns:
-            OK if the last vertex hidden was restored (exception otherwise)
-
         Raises:
-            RuntimeError if gp_RestoreVertex() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # Parameter validation is done by the C layer function
         result = graphLib.gp_RestoreVertex(self._theGraph)
@@ -531,19 +487,14 @@ cdef class Graph:
                 f"gp_RestoreVertex() failed: unable to restore vertex."
             )
 
-        return result
-
-    def gp_ContractEdge(self, int e) -> int:
+    def gp_ContractEdge(self, int e) -> None:
         """Contracts the edge e = (u, v) by hiding e and identifying v with u.
 
         Args:
             e: index of edge in graph to contract
 
-        Returns:
-            OK if gp_ContractEdge() returned OK (exception otherwise)
-
         Raises:
-            RuntimeError if gp_ContractEdge() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # Parameter validation is done by the C layer function
         result = graphLib.gp_ContractEdge(self._theGraph, e)
@@ -552,9 +503,7 @@ cdef class Graph:
                 f"gp_ContractEdge() failed: unable to contract edge e = {e}"
             )
 
-        return result
-
-    def gp_IdentifyVertices(self, int u, int v, int eBefore) -> int:
+    def gp_IdentifyVertices(self, int u, int v, int eBefore) -> None:
         """Identify vertex v with u by transferring all adjacencies from v to u.
 
         Args:
@@ -563,11 +512,8 @@ cdef class Graph:
             eBefore: the index in u's adjacency list before which v's adjacencies
                 should be inserted, or NIL to append the edges to u's list
 
-        Returns:
-            OK if v is successfully identified with u (exception otherwise)
-
         Raises:
-            RuntimeError if gp_IdentifyVertices() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # Parameter validation is done by the C layer function
         result = graphLib.gp_IdentifyVertices(self._theGraph, u, v, eBefore)
@@ -577,17 +523,12 @@ cdef class Graph:
                 f"with u = {u}"
             )
 
-        return result
-
-    def gp_RestoreVertices(self) -> int:
+    def gp_RestoreVertices(self) -> None:
         """Restores all vertices hidden during a series of hide vertex, 
         edge contraction or vertex identification operations.
 
-        Returns:
-            OK if all vertices hidden are restored successfully (exception otherwise)
-
         Raises:
-            RuntimeError if gp_RestoreVertices() returned anything other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         # Parameter validation is done by the C layer function
         result = graphLib.gp_RestoreVertices(self._theGraph)
@@ -596,8 +537,6 @@ cdef class Graph:
                 "gp_RestoreVertices() failed: unable to restores all vertices "
                 "hidden during an edge contraction or vertex identification."
             )
-
-        return result
 
     def gp_GetGraphFlags(self) -> int:
         """Returns flags set on the Graph's graphP
@@ -1302,10 +1241,10 @@ cdef class Graph:
         return FALSE
 
     def gp_GetNeighbor(self, int e) -> int:
-        """Get the neighbor vertex indicated by edge e.
+        """Get the neighbor vertex indicated by an in-use edge e.
 
         Args:
-            e: an edge in the adjacency list of a vertex v
+            e: an in-use edge in the adjacency list of a vertex v
 
         Returns:
             The vertex that e indicates is a neighbor of vertex v
@@ -1322,14 +1261,14 @@ cdef class Graph:
         return graphLib.gp_GetNeighbor(self._theGraph, e)
 
     def gp_SetNeighbor(self, int e, int v) -> None:
-        """Set neighbor vertex of edge e to v
+        """Set the neighbor vertex of an in-use edge e to v.
 
         Args:
             e: an in-use edge whose neighbor vertex you wish to set
             v: the vertex you wish to set as the neighbor of edge e
         Raises:
             ValueError if e is not a valid in-use edge, or if v is not a 
-            non-virtual nor virtual vertex.
+            non-virtual nor a virtual vertex.
         """
         # The Cython-level gp_EdgeInUse() checks gp_IsEdge()
         if not self.gp_EdgeInUse(e):
@@ -1345,7 +1284,7 @@ cdef class Graph:
         graphLib.gp_SetNeighbor(self._theGraph, e, v)
 
     def gp_InitEdgeFlags(self, int e) -> None:
-        """Initialize edge flags of in-use edge e
+        """Initialize the edge flags of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge flags you wish to initialize
@@ -1362,7 +1301,7 @@ cdef class Graph:
         graphLib.gp_InitEdgeFlags(self._theGraph, e)
 
     def gp_GetEdgeVisited(self, int e) -> int:
-        """Get edge visited flag for in-use edge e
+        """Get the edge visited flag of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge visited flag you wish to get
@@ -1382,7 +1321,7 @@ cdef class Graph:
         return graphLib.gp_GetEdgeVisited(self._theGraph, e)
 
     def gp_ClearEdgeVisited(self, int e) -> None:
-        """Clears edge visited flag for in-use edge e
+        """Clears the edge visited flag of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge visited flag you wish to clear
@@ -1399,7 +1338,7 @@ cdef class Graph:
         graphLib.gp_ClearEdgeVisited(self._theGraph, e)
 
     def gp_SetEdgeVisited(self, int e) -> None:
-        """Set edge visited flag for in-use edge e
+        """Set the edge visited flag of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge visited flag you wish to set
@@ -1416,7 +1355,7 @@ cdef class Graph:
         graphLib.gp_SetEdgeVisited(self._theGraph, e)
 
     def gp_GetEdgeMarked(self, int e) -> int:
-        """Get edge marked flag for in-use edge e
+        """Get the edge marked flag of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge marked flag you wish to get
@@ -1436,7 +1375,7 @@ cdef class Graph:
         return graphLib.gp_GetEdgeMarked(self._theGraph, e)
 
     def gp_ClearEdgeMarked(self, int e) -> None:
-        """Clears edge marked flag for in-use edge e
+        """Clears the edge marked flag of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge marked flag you wish to clear
@@ -1453,7 +1392,7 @@ cdef class Graph:
         graphLib.gp_ClearEdgeMarked(self._theGraph, e)
 
     def gp_SetEdgeMarked(self, int e) -> None:
-        """Set edge marked flag for in-use edge e
+        """Set the edge marked flag of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge marked flag you wish to set
@@ -1470,15 +1409,15 @@ cdef class Graph:
         graphLib.gp_SetEdgeMarked(self._theGraph, e)
 
     def gp_GetEdgeType(self, int e) -> int:
-        """Get edge type for in-use edge e
+        """Get the edge type of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge type you wish to get
 
         Returns:
-            The edge type of e, i.e., the bits set when one performs bitwise and
-            with EDGE_TYPE_MASK, which the caller will have to check against
-            EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK
+            The edge type of e if set, i.e., EDGE_TYPE_NOTDEFINED, 
+            EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, 
+            EDGE_TYPE_BACK, or EDGE_TYPE_TREE
 
         Raises:
             ValueError if e is not a valid in-use edge
@@ -1492,7 +1431,7 @@ cdef class Graph:
         return graphLib.gp_GetEdgeType(self._theGraph, e)
 
     def gp_ClearEdgeType(self, int e) -> None:
-        """Clears the edge type for in-use edge e
+        """Clears the edge type of an in-use edge e.
 
         Args:
             e: an in-use edge whose edge type you wish to clear
@@ -1509,13 +1448,15 @@ cdef class Graph:
         graphLib.gp_ClearEdgeType(self._theGraph, e)
 
     def gp_SetEdgeType(self, int e, int type) -> None:
-        """Sets edge type of in-use edge e to type
+        """Sets the edge type of an in-use edge e to type for the first
+        time. To change the type after setting the first time, use
+        gp_ClearEdgeType() first, or use gp_ResetEdgeType().
 
         Args:
             e: an in-use edge whose edge type you wish to set for the first time
                 to the given type
             type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-                or EDGE_TYPE_BACK
+                EDGE_TYPE_BACK, or EDGE_TYPE_TREE
 
         Raises:
             ValueError if e is not a valid in-use edge or if type is not a valid
@@ -1527,7 +1468,7 @@ cdef class Graph:
                 f"gp_SetEdgeType() failed: invalid edge e = {e}"
             )
 
-        if type not in (EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK):
+        if type not in (EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK, EDGE_TYPE_TREE):
             raise ValueError(
                 f"gp_SetEdgeType() failed: invalid edge type = {type}"
             )
@@ -1535,12 +1476,12 @@ cdef class Graph:
         graphLib.gp_SetEdgeType(self._theGraph, e, type)
 
     def gp_ResetEdgeType(self, int e, int type) -> None:
-        """Reset edge type for in-use edge e to type, clearing existing type
+        """Reset the edge type of in-use edge e to type, clearing the previous type.
 
         Args:
             e: an in-use edge whose edge type you wish to reset to type
             type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-                or EDGE_TYPE_BACK
+                EDGE_TYPE_BACK, or EDGE_TYPE_TREE
 
         Raises:
             ValueError if e is not a valid in-use edge or if type is not a valid
@@ -1552,7 +1493,7 @@ cdef class Graph:
                 f"gp_ResetEdgeType() failed: invalid edge e = {e}"
             )
 
-        if type not in (EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK):
+        if type not in (EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK, EDGE_TYPE_TREE):
             raise ValueError(
                 f"gp_ResetEdgeType() failed: invalid edge type = {type}"
             )
@@ -1560,7 +1501,7 @@ cdef class Graph:
         graphLib.gp_ResetEdgeType(self._theGraph, e, type)
 
     def gp_GetEdgeFlagInverted(self, int e) -> int:
-        """Get edge inverted flag for in-use edge e
+        """Get the edge inverted flag of an in-use edge e.
 
         Args:
             e: an in-use edge for which you wish to get the edge inverted flag
@@ -1580,7 +1521,7 @@ cdef class Graph:
         return graphLib.gp_GetEdgeFlagInverted(self._theGraph, e)
 
     def gp_SetEdgeFlagInverted(self, int e) -> None:
-        """Set edge inverted flag for in-use edge e
+        """Set the edge inverted flag of an in-use edge e.
 
         Args:
             e: an in-use edge for which you wish to set the edge inverted flag
@@ -1597,7 +1538,7 @@ cdef class Graph:
         graphLib.gp_SetEdgeFlagInverted(self._theGraph, e)
 
     def gp_ClearEdgeFlagInverted(self, int e) -> None:
-        """Clear edge inverted flag for in-use edge e
+        """Clear the edge inverted flag of an in-use edge e.
 
         Args:
             e: an in-use edge for which you wish to clear the edge inverted flag
@@ -1614,11 +1555,10 @@ cdef class Graph:
         graphLib.gp_ClearEdgeFlagInverted(self._theGraph, e)
 
     def gp_XorEdgeFlagInverted(self, int e) -> None:
-        """XOR edge inverted flag with EDGEFLAG_INVERTED_MASK
+        """Toggle the edge inverted flag of an in-use edge e.
 
         Args:
-            e: an in-use edge for which you wish to XOR the edge inverted flag
-                with EDGEFLAG_INVERTED_MASK
+            e: an in-use edge for which you wish to toggle the edge inverted flag
 
         Raises:
             ValueError if e is not a valid in-use edge
@@ -1632,7 +1572,7 @@ cdef class Graph:
         graphLib.gp_XorEdgeFlagInverted(self._theGraph, e)
 
     def gp_GetDirection(self, int e) -> int:
-        """Get direction of edge e
+        """Get the direction flag of an in-use edge e.
 
         Args:
             e: an in-use edge for which you wish to determine the direction
@@ -1652,7 +1592,7 @@ cdef class Graph:
         return graphLib.gp_GetDirection(self._theGraph, e)
 
     def gp_SetDirection(self, int e, int direction) -> None:
-        """Set direction of edge e
+        """Set the direction flag of an in-use edge e.
 
         Args:
             e: an in-use edge for which you wish to set the direction
@@ -1676,7 +1616,7 @@ cdef class Graph:
         graphLib.gp_SetDirection(self._theGraph, e, direction)
 
     def gp_LowerBoundEdges(self) -> int:
-        """Get the lower bound for edges
+        """Get the lower bound for edges.
 
         Returns:
             The lower bound for edges
@@ -1684,7 +1624,7 @@ cdef class Graph:
         return graphLib.gp_LowerBoundEdges(self._theGraph)
 
     def gp_UpperBoundEdges(self) -> int:
-        """Get the upper bound for edges: the lower bound + M + numEdgeHoles
+        """Get the upper bound for edges (the lower bound + M + numEdgeHoles).
 
         Returns:
             The upper bound for edges
@@ -1692,51 +1632,43 @@ cdef class Graph:
         return graphLib.gp_UpperBoundEdges(self._theGraph)
 
     def gp_EdgeInUse(self, int e) -> int:
-        """Is edge in-use, i.e., is neighbor vertex set
+        """Determines if an edge is in-use, i.e., if the neighbor vertex is set.
 
         Args:
-            e: candidate edge to determine whether it is in-use
+            e: candidate edge to test
 
         Returns:
-            TRUE if edge is in-use, FALSE otherwise
-
-        Raises:
-            ValueError if e is not a valid edge
+            TRUE if the edge is valid and in-use, FALSE otherwise
         """
-        if not self.gp_IsEdge(e):
-            raise ValueError(
-                f"gp_EdgeInUse() failed: invalid edge index  e = {e}"
-            )
-
-        if graphLib.gp_EdgeInUse(self._theGraph, e):
+        if self.gp_IsEdge(e) and graphLib.gp_EdgeInUse(self._theGraph, e):
             return TRUE
 
         return FALSE
 
     def gp_EdgeNotInUse(self, int e) -> int:
-        """Is edge not in-use
+        """Determines if an edge is not in-use.
 
         Args:
-            e: candidate edge to determine whether it is not in-use
+            e: candidate edge to test
 
         Returns:
-            TRUE if edge is not in-use, FALSE otherwise
-
-        Raises:
-            ValueError if e is not a valid edge
+            TRUE if edge is either invalid or valid but not in-use, FALSE otherwise
         """
-        if not self.gp_IsEdge(e):
-            raise ValueError(
-                f"gp_EdgeNotInUse() failed: invalid edge index  e = {e}"
-            )
+        if self.gp_EdgeInUse(e):
+            return FALSE
+    
+        return TRUE
+    
+        #if not self.gp_IsEdge(e):
+        #    return TRUE;
 
-        if graphLib.gp_EdgeNotInUse(self._theGraph, e):
-            return TRUE
+        #if graphLib.gp_EdgeNotInUse(self._theGraph, e):
+        #    return TRUE
 
-        return FALSE
+        #return FALSE
 
     def gp_LowerBoundEdgeStorage(self) -> int:
-        """Get lower bound for edge storage; for iterating over all edge storage
+        """Get the lower bound for edge storage; for iterating over all edge storage.
 
         Returns:
             The lower bound for edge storage
@@ -1744,10 +1676,10 @@ cdef class Graph:
         return graphLib.gp_LowerBoundEdgeStorage(self._theGraph)
 
     def gp_UpperBoundEdgeStorage(self) -> int:
-        """Get Upper bound for edge storage; for iterating over all edge storage
+        """Get the upper bound for edge storage; for iterating over all edge storage.
 
         Note that this value depends on the edge capacity, and possibly extends
-        past the current number of in-use edges and edge holes.
+        past the current number of in-use edges.
 
         Returns:
             The upper bound for edge storage
@@ -1867,23 +1799,22 @@ cdef class Graph:
                 "Python string."
             ) from string_conversion_error
 
-    def gp_ExtendWith_Planarity(self) -> int:
-        """Extends graph with structures necessary for Planarity
+    def gp_ExtendWith_Planarity(self) -> None:
+        """Dynamically subclasses the graph with the Planarity extension, which
+        adds the data structures and methods necessary for planar graph embedding 
+        minimal planarity-obstructing subgraph isolation.
 
         Returns:
             OK if graph successfully extended with the Planarity extension
 
         Raises:
-            RuntimeError if gp_ExtendWith_Planarity() returned anything other 
-            than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_ExtendWith_Planarity(self._theGraph)
         if result != OK:
             raise RuntimeError(
                 "Failed to extend graph with Planarity structures."
             )
-
-        return result
     
     def gp_Embed(self, int embedFlags) -> int:
         """Modifies the graph to be either an embedding of the original
@@ -1935,15 +1866,16 @@ cdef class Graph:
 
         return check_result
 
-    def gp_ExtendWith_Outerplanarity(self) -> int:
-        """Extends graph with structures necessary for Outerplanarity
+    def gp_ExtendWith_Outerplanarity(self) -> None:
+        """Dynamically subclasses the graph with the Outerplanarity extension, 
+        which adds the data structures and methods necessary for outerplanar 
+        graph embedding minimal outerplanarity-obstructing subgraph isolation.
 
         Returns:
             OK if graph successfully extended with Outerplanarity extension
 
         Raises:
-            RuntimeError if gp_ExtendWith_Outerplanarity() returned anything
-            other than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_ExtendWith_Outerplanarity(self._theGraph)
         if result != OK:
@@ -1951,17 +1883,17 @@ cdef class Graph:
                 "Failed to extend graph with Outerplanarity structures."
             )
 
-        return result
-
     def gp_ExtendWith_DrawPlanar(self) -> int:
-        """Extends graph with structures necessary for DrawPlanar extension
+        """Dynamically subclasses the graph with the DrawPlanar extension, which
+        adds the data structures and methods necessary for embedding and then
+        drawing an ASCII rendition of a planar graph and for generating a 
+        visibility representation of the planar graph embedding..
 
         Returns:
             OK if graph successfully extended with DrawPlanar extension
 
         Raises:
-            RuntimeError if gp_ExtendWith_DrawPlanar() returned anything other
-            than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_ExtendWith_DrawPlanar(self._theGraph)
         if result != OK:
@@ -1971,37 +1903,36 @@ cdef class Graph:
 
         return result
 
-    def gp_DrawPlanar_RenderToFile(self, str outfile_name) -> int:
-        """
+    def gp_DrawPlanar_RenderToFile(self, str theFileName) -> None:
+        """Draws into a file an ASCII rendition of a planar graph 
+        embedding created by gp_Embed().
 
         Args:
-
-        Returns:
+            theFileName: the name of the file in which to place the 
+                ASCII rendition of the planar graph embedding
 
         Raises:
-
+            RuntimeError if C graphlib version of this function failed.
         """
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = outfile_name.encode('utf-8')
-        cdef const char *theFileName = encoded
+        cdef bytes encoded = theFileName.encode('utf-8')
+        cdef const char *encodedFileName = encoded
 
-        result = graphLib.gp_DrawPlanar_RenderToFile(self._theGraph, theFileName)
+        result = graphLib.gp_DrawPlanar_RenderToFile(self._theGraph, encodedFileName)
         if result != OK:
             raise RuntimeError(
-                f"Failed to render embedding to file '{outfile_name}'."
+                f"Failed to render embedding to file '{theFileName}'."
             )
 
-        return result
-
-    def gp_DrawPlanar_RenderToString(self) -> tuple[int, str]:
-        """
-
-        Args:
+    def gp_DrawPlanar_RenderToString(self) -> str:
+        """Draws into a string an ASCII rendition of a planar graph 
+        embedding created by gp_Embed().
 
         Returns:
+            The string containing the ASCII rendition
 
         Raises:
-
+            RuntimeError if C graphlib version of this function failed.
         """
         cdef char* renditionString = NULL
 
@@ -2012,21 +1943,19 @@ cdef class Graph:
         rendition_bytes = renditionString[:]
         free(renditionString)
         try:
-            return (result, rendition_bytes.decode('ascii'))
+            return rendition_bytes.decode('ascii')
         except Exception as string_conversion_error:
             raise RuntimeError(
                 "Failed to convert C string to Python string."
             ) from string_conversion_error
 
-    def gp_ExtendWith_K23Search(self) -> int:
-        """Extends graph with structures necessary for K_{2, 3} search
-
-        Returns:
-            OK if graph successfully extended with K23Search extension
+    def gp_ExtendWith_K23Search(self) -> None:
+        """Dynamically subclasses the graph with the K23Search extension, which
+        adds the data structures and methods necessary to search for a subgraph
+        homeomorphic to K_{2, 3}.
 
         Raises:
-            RuntimeError if gp_ExtendWith_K23Search() returned anything other 
-            than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_ExtendWith_K23Search(self._theGraph)
         if result != OK:
@@ -2034,17 +1963,13 @@ cdef class Graph:
                 "Failed to extend graph with K23Search structures."
             )
 
-        return result
-
-    def gp_ExtendWith_K33Search(self) -> int:
-        """Extends graph with structures necessary for K_{3, 3} search
-
-        Returns:
-            OK if graph successfully extended with K33Search extension
+    def gp_ExtendWith_K33Search(self) -> None:
+        """Dynamically subclasses the graph with the K33Search extension, which
+        adds the data structures and methods necessary to search for a subgraph
+        homeomorphic to K_{3, 3}.
 
         Raises:
-            RuntimeError if gp_ExtendWith_K33Search() returned anything other 
-            than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_ExtendWith_K33Search(self._theGraph)
         if result != OK:
@@ -2052,22 +1977,16 @@ cdef class Graph:
                 "Failed to extend graph with K33Search structures."
             )
 
-        return result
-
-    def gp_ExtendWith_K4Search(self) -> int:
-        """Extends graph with structures necessary for K_4 search
-
-        Returns:
-            OK if graph successfully extended with K4Search extension
+    def gp_ExtendWith_K4Search(self) -> None:
+        """Dynamically subclasses the graph with the K4Search extension, which
+        adds the data structures and methods necessary to search for a subgraph
+        homeomorphic to K_4.
 
         Raises:
-            RuntimeError if gp_ExtendWith_K4Search() returned anything other 
-            than OK
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_ExtendWith_K4Search(self._theGraph)
         if result != OK:
             raise RuntimeError(
                 "Failed to extend graph with K4Search structures."
             )
-
-        return result
