@@ -48,7 +48,11 @@ EMBEDFLAGS_SEARCHFORK4 = graphLib.EMBEDFLAGS_SEARCHFORK4
 
 cdef class Graph:
     def __cinit__(self):
-        """Allocates the underlying graph structure with gp_New()"""
+        """Allocates the underlying graph structure with gp_New().
+
+        Raises:
+            MemoryError if C graphlib version of gp_New() failed.
+        """
         global global_id_count
         self._theGraph = graphLib.gp_New()
         if self._theGraph == NULL:
