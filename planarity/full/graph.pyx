@@ -2061,7 +2061,23 @@ cdef class Graph:
         # implement this functionality at the Cython layer until the fix is
         # effected
         # return graphLib.gp_GetVertexFromBicompRoot(self._theGraph, R)
-        raise NotImplementedError("gp_GetVertexFromBicompRoot() workaround not yet implemented")
+
+        c = self.gp_GetDFSChildFromBicompRoot(R)
+        if not self.gp_IsVertex(c):
+            raise RuntimeError(
+                "gp_GetVertexFromBicompRoot() failed: invalid DFS child c = "
+                f"{c} for bicomp root R = {R}"
+            )
+
+        bicomp_root = self.gp_GetParent(c)
+        if bicomp_root == NIL:
+            raise RuntimeError(
+                f"gp_GetVertexFromBicompRoot() failed: c = {c} should not be "
+                "the root of the DFS tree."
+            )
+
+        return bicomp_root
+
 
     def gp_IsBicompRoot(self, int v) -> int:
         """Determines whether a given non-virtual or virtual vertex is a 
