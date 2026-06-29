@@ -181,8 +181,7 @@ cdef class Graph:
                 wish to copy into the self's graphP.
 
         Raises:
-            RuntimeError if the C layer gp_CopyAdjacencyLists() failed and
-                returned anything other than OK.
+            RuntimeError if C graphlib version of this function failed.
         """
         result = graphLib.gp_CopyAdjacencyLists(self._theGraph, srcGraph._theGraph)
         if result != OK:
@@ -1809,8 +1808,7 @@ cdef class Graph:
         operations.
 
         Raises:
-            RuntimeError if C-layer gp_ExtendWith_DFSUtils() returns anything
-            other than OK.
+            RuntimeError if C graphlib version of this function failed.
         """
         if graphLib.gp_ExtendWith_DFSUtils(self._theGraph) != OK:
             raise RuntimeError(
@@ -1819,11 +1817,14 @@ cdef class Graph:
             )
 
     def gp_DepthFirstSearch(self) -> None:
-        """COMING SOON
+        """Performs a depth-first search (DFS) to give vertices values for their
+        depth first indices (DFIs) and DFS parents and give edges value for
+        their types. See gp_GetParent(), gp_GetIndex(), and gp_GetEdgeType().
+        This method also sets GRAPHFLAGS_DFSNUMBERED. This method performs
+        gp_ExtendWith_DFSUtils() if not already done.
 
         Raises:
-            RuntimeError if C-layer gp_DepthFirstSearch() returns anything
-            other than OK.
+            RuntimeError if C graphlib version of this function failed.
         """
         if graphLib.gp_DepthFirstSearch(self._theGraph) != OK:
             raise RuntimeError(
@@ -1831,11 +1832,16 @@ cdef class Graph:
             )
 
     def gp_SortVertices(self) -> None:
-        """Sort vertices in ascending order according to DFI
+        """Sort vertices in ascending order according to their DFIs.
+        This method invokes gp_DepthFirstSearch(), if it has not already
+        been done. This method sets GRAPHFLAGS_SORTEDBYDFI. A second
+        invocation of this method restores vertices to their original
+        order and clears GRAPHFLAGS_SORTEDBYDFI. When GRAPHFLAGS_SORTEDBYDFI
+        is set, the index values of all vertices are changed from their DFIs 
+        to their original index positions in vertex storage. 
 
         Raises:
-            RuntimeError if C-layer gp_SortVertices() returns anything other
-            than OK.
+            RuntimeError if C graphlib version of this function failed.
         """
         if graphLib.gp_SortVertices(self._theGraph) != OK:
             raise RuntimeError(
@@ -1843,11 +1849,12 @@ cdef class Graph:
             )
 
     def gp_ComputeLowpoints(self) -> None:
-        """Compute lowpoints of each vertex in graph; performs least ancestor calculations first
+        """Computes lowpoints and least ancestors for all vertices. This method
+        first performs gp_DepthFirstSearch() and gp_SortVertices() if they
+        have not already been done.
 
         Raises:
-            RuntimeError if C-layer gp_ComputeLowpoints() returns anything other
-            than OK.
+            RuntimeError if C graphlib version of this function failed.
         """
         if graphLib.gp_ComputeLowpoints(self._theGraph) != OK:
             raise RuntimeError(
@@ -1855,11 +1862,12 @@ cdef class Graph:
             )
 
     def gp_ComputeLeastAncestors(self) -> None:
-        """COMING SOON
+        """Computes least ancestor values for all vertices. This method
+        first performs gp_DepthFirstSearch() and gp_SortVertices() if they
+        have not already been done.
 
         Raises:
-            RuntimeError if C-layer gp_ComputeLeastAncestors() returns anything
-            other than OK.
+            RuntimeError if C graphlib version of this function failed.
         """
         if graphLib.gp_ComputeLeastAncestors(self._theGraph) != OK:
             raise RuntimeError(
@@ -1867,14 +1875,14 @@ cdef class Graph:
             )
 
     def gp_GetParent(self, int v) -> int:
-        """Get DFS parent of vertex v
+        """Get DFS parent of vertex v, once gp_DepthFirstSearch() has been called.
 
         Args:
             v: a vertex in the graph whose DFS parent you wish to obtain
 
         Returns:
             The DFS parent of v in the graph, or NIL if v is the root of the
-            DFS tree
+            DFS tree (or if gp_DepthFirstSearch() has not been called).
 
         Raises:
             ValueError if v is not a valid vertex
@@ -1887,7 +1895,7 @@ cdef class Graph:
         return graphLib.gp_GetParent(self._theGraph, v)
 
     def gp_GetLeastAncestor(self, int v) -> int:
-        """Get least ancestor of vertex v (after least ancestors are computed)
+        """Get least ancestor of vertex v, after least ancestors are computed.
 
         Args:
             v: a vertex in the graph whose least ancestor you wish to obtain
@@ -1907,7 +1915,7 @@ cdef class Graph:
         return graphLib.gp_GetLeastAncestor(self._theGraph, v)
 
     def gp_GetLowpoint(self, int v) -> int:
-        """Get lowpoint value of vertex v (after lowpoint values are computed)
+        """Get lowpoint value of vertex v, after lowpoint values are computed.
 
         Args:
             v: a vertex in the graph whose lowpoint value you wish to obtain
@@ -1926,7 +1934,8 @@ cdef class Graph:
         return graphLib.gp_GetLowpoint(self._theGraph, v)
 
     def gp_IsDFSTreeRoot(self, int v) -> int:
-        """Determine if vertex v corresponds to DFS root, i.e. DFS parent is NIL
+        """Determine if vertex v corresponds to DFS tree root (if DFS parent is NIL).
+        This method assumes that gp_DepthFirstSearch() has been called.
 
         Args:
             v: a vertex in the graph you wish to determine is the DFS tree root
@@ -1955,7 +1964,8 @@ cdef class Graph:
 
 
     def gp_IsNotDFSTreeRoot(self, int v) -> int:
-        """Determine if vertex v is not the DFS root, i.e. DFS parent is not NIL
+        """Determine if vertex v is not the DFS roo (if DFS parent is not NIL).
+        This method assumes that gp_DepthFirstSearch() has been called.
 
         Args:
             v: a vertex in the graph you wish to determine is not the DFS tree
@@ -1984,7 +1994,9 @@ cdef class Graph:
         raise NotImplementedError("gp_IsNotDFSTreeRoot() workaround not yet implemented")
 
     def gp_GetBicompRootFromDFSChild(self, int c) -> int:
-        """COMING SOON
+        """Given a DFS child c of a vertex v, this method returns the biconneced 
+        component (bicomp) root of v associated with c. The bicomp root is a 
+        virtual vertex.
 
         Args:
             c: DFS child for which you wish to determine the root of the bicomp
@@ -2004,13 +2016,14 @@ cdef class Graph:
         return graphLib.gp_GetBicompRootFromDFSChild(self._theGraph, c)
 
     def gp_GetDFSChildFromBicompRoot(self, int R) -> int:
-        """COMING SOON
+        """Given a biconnected component root R (a virtual vertex), this method
+        returns the DFS child c of a vertex v that R represents. 
 
         Args:
             R: root of a bicomp for which you wish to determine the DFS child
 
         Returns:
-            The DFS child of the bicomp root R
+            The DFS child of v that is within the bicomp rooted by R
 
         Raises:
             ValueError if R is not a virtual vertex
@@ -2024,14 +2037,14 @@ cdef class Graph:
         return graphLib.gp_GetDFSChildFromBicompRoot(self._theGraph, R)
 
     def gp_GetVertexFromBicompRoot(self, int R) -> int:
-        """COMING SOON
+        """Given a biconnected component root R (a virtual vertex), this method
+        returns the vertex v that R represents.
 
         Args:
-            R: virtual vertex representing the root of the child bicomp of v
+            R: virtual vertex representing the root of a child bicomp of v
 
         Returns:
-            The vertex v corresponding to the root of the child bicomp, the
-            given virtual vertex R
+            The vertex v corresponding to the root R of a child bicomp
 
         Raises:
             ValueError if R is not a valid virtual vertex
@@ -2051,7 +2064,11 @@ cdef class Graph:
         raise NotImplementedError("gp_GetVertexFromBicompRoot() workaround not yet implemented")
 
     def gp_IsBicompRoot(self, int v) -> int:
-        """COMING SOON
+        """Determines whether a given non-virtual or virtual vertex is a 
+        biconnected component root. This method essentially just returns
+        whether v is a virtual vertex; it may not be in use in a separate
+        biconnected component. To test if a bicomp root is in use, please
+        see gp_VirtualVertexInUse().
 
         Args:
             v: a vertex in the graph which you wish to determine is the root
@@ -2075,14 +2092,15 @@ cdef class Graph:
         return FALSE
 
     def gp_IsSeparatedDFSChild(self, int theChild) -> int:
-        """COMING SOON
+        """Determines whether a given vertex (theChild) is in a 
+        separate biconnected component from its DFS parent, v.
 
         Args:
-            theChild: a vertex in the graph... COMING SOON
+            theChild: a vertex in the graph
 
         Returns:
-            TRUE if theChild is separated from the DFS ancestors and other
-            children of v (the cut vertex), FALSE otherwise
+            TRUE if theChild is in a separate bicomp from its DFS parent, v;
+            FALSE otherwise
 
         Raises:
             ValueError if theChild is not a valid vertex
@@ -2099,14 +2117,15 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotSeparatedDFSChild(self, int theChild) -> int:
-        """COMING SOON
+        """Determines whether a given vertex (theChild) is not in a 
+        separate biconnected component from its DFS parent, v.
 
         Args:
-            theChild: a vertex in the graph... COMING SOON
+            theChild: a vertex in the graph.
 
         Returns:
-            TRUE if theChild is not separated from the DFS ancestors and other
-            children of v (the cut vertex), FALSE otherwise
+            FALSE if theChild is in a separate bicomp from its DFS parent, v;
+            TRUE otherwise
 
         Raises:
             ValueError if theChild is not a valid vertex
