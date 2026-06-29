@@ -1949,6 +1949,132 @@ cdef class Graph:
                 "Failed to convert C string to Python string."
             ) from string_conversion_error
 
+    def gp_DrawPlanar_GetVertexPosition(self, int v) -> int:
+        """Get the vertical position of a vertex v.
+
+        Args:
+            v: a vertex for which you wish to get the vertical position
+
+        Returns:
+            The vertical position value for v
+
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
+        """
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_DrawPlanar_GetVertexPosition(self._theGraph, v)
+        if result < 0:
+            raise RuntimeError(
+                "Underlying gp_DrawPlanar_GetVertexPosition() reported failure."
+            )
+
+        return result
+
+    def gp_DrawPlanar_GetVertexStart(self, int v) -> int:
+        """Get the horizontal start position of a vertex v.
+
+        Args:
+            v: a vertex for which you wish to get the horizontal start position
+
+        Returns:
+            The horizontal start position value for v
+
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
+        """
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_DrawPlanar_GetVertexStart(self._theGraph, v)
+        if result < 0:
+            raise RuntimeError(
+                "Underlying gp_DrawPlanar_GetVertexStart() reported failure."
+            )
+
+        return result
+
+    def gp_DrawPlanar_GetVertexEnd(self, int v) -> int:
+        """Get the horizontal end position of a vertex v.
+
+        Args:
+            v: a vertex for which you wish to get the horizontal end position
+
+        Returns:
+            The horizontal end position value for v
+
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
+        """
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_DrawPlanar_GetVertexEnd(self._theGraph, v)
+        if result < 0:
+            raise RuntimeError(
+                "Underlying gp_DrawPlanar_GetVertexEnd() reported failure."
+            )
+
+        return result
+
+    def gp_DrawPlanar_GetEdgePosition(self, int e) -> int:
+        """Get the horizontal position of an edge e.
+
+        Args:
+            e: an edge for which you wish to get the horizontal position
+
+        Returns:
+            The horizontal position value for e
+
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
+        """
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_DrawPlanar_GetEdgePosition(self._theGraph, e)
+        if result < 0:
+            raise RuntimeError(
+                "Underlying gp_DrawPlanar_GetEdgePosition() reported failure."
+            )
+
+        return result
+
+    def gp_DrawPlanar_GetEdgeStart(self, int e) -> int:
+        """Get the vertical start position of an edge e.
+
+        Args:
+            e: an edge for which you wish to get the vertical start position
+
+        Returns:
+            The vertical start position value for e
+
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
+        """
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_DrawPlanar_GetEdgeStart(self._theGraph, e)
+        if result < 0:
+            raise RuntimeError(
+                "Underlying gp_DrawPlanar_GetEdgeStart() reported failure."
+            )
+
+        return result
+
+    def gp_DrawPlanar_GetEdgeEnd(self, int e) -> int:
+        """Get the vertical end position of an edge e.
+
+        Args:
+            e: an edge for which you wish to get the vertical end position
+
+        Returns:
+            The vertical end position value for e
+
+        Raises:
+            RuntimeError if C graphlib version of this function failed.
+        """
+        # Parameter validation is done by the C layer function
+        result = graphLib.gp_DrawPlanar_GetEdgeEnd(self._theGraph, e)
+        if result < 0:
+            raise RuntimeError(
+                "Underlying gp_DrawPlanar_GetEdgeEnd() reported failure."
+            )
+
+        return result
+    
     def gp_ExtendWith_K23Search(self) -> None:
         """Dynamically subclasses the graph with the K23Search extension, which
         adds the data structures and methods necessary to search for a subgraph
