@@ -60,7 +60,7 @@ int gp_Detach_Planarity(graphP theGraph)
 {
     // Free any data structures allocated by the ExtendWith function
 
-    // Indicate successful detachment of Outerplanarity
+    // Indicate successful detachment of Planarity
     theGraph->graphFlags &= ~GRAPHFLAGS_EXTENDEDWITH_PLANARITY;
     return OK;
 }
