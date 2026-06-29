@@ -57,6 +57,13 @@ WRITE_G6 = cgraphLib.WRITE_G6
 
 GRAPHFLAGS_ZEROBASEDIO = cgraphLib.GRAPHFLAGS_ZEROBASEDIO
 
+# Surfaced from planarity/c/graphLib/graphDFSUtils.h
+DFSUTILS_NAME = cgraphLib.DFSUTILS_NAME
+
+GRAPHFLAGS_EXTENDEDWITH_DFSUTILS = cgraphLib.GRAPHFLAGS_EXTENDEDWITH_DFSUTILS
+GRAPHFLAGS_DFSNUMBERED = cgraphLib.GRAPHFLAGS_DFSNUMBERED
+GRAPHFLAGS_SORTEDBYDFI = cgraphLib.GRAPHFLAGS_SORTEDBYDFI
+
 # Surfaced from planarity/c/graphLib/planarityRelated/graphPlanarity.h
 PLANARITY_NAME = cgraphLib.PLANARITY_NAME
 
@@ -561,6 +568,84 @@ cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):
 
 cdef void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator):
     cgraphLib.g6_FreeWriter(pG6WriteIterator)
+
+
+# Wraps functions declared in "planarity/c/graphLib/graphDFSUtils.h"
+cdef int gp_ExtendWith_DFSUtils(graphP theGraph):
+    return cgraphLib.gp_ExtendWith_DFSUtils(theGraph)
+
+
+cdef int gp_Detach_DFSUtils(graphP theGraph):
+    return cgraphLib.gp_Detach_DFSUtils(theGraph)
+
+
+cdef int gp_DepthFirstSearch(graphP theGraph):
+    return cgraphLib.gp_DepthFirstSearch(theGraph)
+
+
+cdef int gp_SortVertices(graphP theGraph):
+    return cgraphLib.gp_SortVertices(theGraph)
+
+
+cdef int gp_ComputeLowpoints(graphP theGraph):
+    return cgraphLib.gp_ComputeLowpoints(theGraph)
+
+
+cdef int gp_ComputeLeastAncestors(graphP theGraph):
+    return cgraphLib.gp_ComputeLeastAncestors(theGraph)
+
+
+cdef int gp_GetParent(graphP theGraph, int v):
+    return cgraphLib.gp_GetParent(theGraph, v)
+
+
+cdef int gp_GetLeastAncestor(graphP theGraph, int v):
+    return cgraphLib.gp_GetLeastAncestor(theGraph, v)
+
+
+cdef int gp_GetLowpoint(graphP theGraph, int v):
+    return cgraphLib.gp_GetLowpoint(theGraph, v)
+
+
+# FIXME: The EAPS macros call private gp_GetVertexParent() rather than
+# public gp_GetParent(), but anywhere these macros are used also #include
+# the private header (hence why nothing broke earlier), so we need to 
+# implement this functionality at the Cython layer until the fix is
+# effected
+# cdef int gp_IsDFSTreeRoot(graphP theGraph, int v):
+#     return cgraphLib.gp_IsDFSTreeRoot(theGraph, v)
+
+
+# cdef int gp_IsNotDFSTreeRoot(graphP theGraph, int v):
+#     return cgraphLib.gp_IsNotDFSTreeRoot(theGraph, v)
+
+
+cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):
+    return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)
+
+
+cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):
+    return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)
+
+# FIXME: The EAPS macros call private gp_GetVertexParent() rather than
+# public gp_GetParent(), but anywhere these macros are used also #include
+# the private header (hence why nothing broke earlier), so we need to 
+# implement this functionality at the Cython layer until the fix is
+# effected
+# cdef int gp_GetVertexFromBicompRoot(graphP theGraph, int R):
+#     return cgraphLib.gp_GetVertexFromBicompRoot(theGraph, R)
+
+
+cdef int gp_IsBicompRoot(graphP theGraph, int v):
+    return cgraphLib.gp_IsBicompRoot(theGraph, v)
+
+
+cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):
+    return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)
+
+
+cdef int gp_IsNotSeparatedDFSChild(graphP theGraph, int theChild):
+    return cgraphLib.gp_IsNotSeparatedDFSChild(theGraph, theChild)
 
 
 # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphPlanarity.h":

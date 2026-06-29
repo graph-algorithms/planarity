@@ -218,6 +218,41 @@ cdef extern from "../c/graphLib/io/g6-write-iterator.h":
     void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator)
 
 
+cdef extern from "../c/graphLib/graphDFSUtils.h":
+    const char *DFSUTILS_NAME
+
+    int gp_ExtendWith_DFSUtils(graphP theGraph)
+    int gp_Detach_DFSUtils(graphP theGraph)
+
+    int GRAPHFLAGS_EXTENDEDWITH_DFSUTILS, GRAPHFLAGS_DFSNUMBERED, GRAPHFLAGS_SORTEDBYDFI
+
+    int gp_DepthFirstSearch(graphP theGraph)
+    int gp_SortVertices(graphP theGraph)
+    int gp_ComputeLowpoints(graphP theGraph)
+    int gp_ComputeLeastAncestors(graphP theGraph)
+
+    int gp_GetParent(graphP theGraph, int v)
+    int gp_GetLeastAncestor(graphP theGraph, int v)
+    int gp_GetLowpoint(graphP theGraph, int v)
+
+    # FIXME: We fail to link due to issue where these macros call private 
+    # gp_GetVertexParent() rather than public gp_GetParent()
+    # int gp_IsDFSTreeRoot(graphP theGraph, int v)
+    # int  gp_IsNotDFSTreeRoot(graphP theGraph, int v)
+
+    int  gp_GetBicompRootFromDFSChild(graphP theGraph, int c)
+    int  gp_GetDFSChildFromBicompRoot(graphP theGraph, int R)
+
+    # FIXME: We fail to link due to issue where this macro calls private
+    # gp_GetVertexParent() rather than public gp_GetParent()
+    # int  gp_GetVertexFromBicompRoot(graphP theGraph, int R)
+
+    int  gp_IsBicompRoot(graphP theGraph, int v)
+
+    int  gp_IsSeparatedDFSChild(graphP theGraph, int theChild)
+    int  gp_IsNotSeparatedDFSChild(graphP theGraph, int theChild)
+
+
 cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
     const char *PLANARITY_NAME
 

@@ -1799,6 +1799,325 @@ cdef class Graph:
                 "Python string."
             ) from string_conversion_error
 
+    def gp_ExtendWith_DFSUtils(self) -> None:
+        """Dynamically subclasses the graph with the DFSUtils extension, which
+        adds the data structures and methods necessary for performing DFS-related
+        operations.
+
+        Raises:
+            RuntimeError if C-layer gp_ExtendWith_DFSUtils() returns anything
+            other than OK.
+        """
+        if graphLib.gp_ExtendWith_DFSUtils(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_ExtendWith_DFSUtils() failed: unable to extend graph with "
+                "DFSUtils structures"
+            )
+
+    def gp_DepthFirstSearch(self) -> None:
+        """COMING SOON
+
+        Raises:
+            RuntimeError if C-layer gp_DepthFirstSearch() returns anything
+            other than OK.
+        """
+        if graphLib.gp_DepthFirstSearch(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_DepthFirstSearch() failed: unable to perform DFS on graph."
+            )
+
+    def gp_SortVertices(self) -> None:
+        """Sort vertices in ascending order according to DFI
+
+        Raises:
+            RuntimeError if C-layer gp_SortVertices() returns anything other
+            than OK.
+        """
+        if graphLib.gp_SortVertices(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_SortVertices() failed."
+            )
+
+    def gp_ComputeLowpoints(self) -> None:
+        """Compute lowpoints of each vertex in graph; performs least ancestor calculations first
+
+        Raises:
+            RuntimeError if C-layer gp_ComputeLowpoints() returns anything other
+            than OK.
+        """
+        if graphLib.gp_ComputeLowpoints(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_ComputeLowpoints() failed."
+            )
+
+    def gp_ComputeLeastAncestors(self) -> None:
+        """COMING SOON
+
+        Raises:
+            RuntimeError if C-layer gp_ComputeLeastAncestors() returns anything
+            other than OK.
+        """
+        if graphLib.gp_ComputeLeastAncestors(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_ComputeLeastAncestors() failed."
+            )
+
+    def gp_GetParent(self, int v) -> int:
+        """Get DFS parent of vertex v
+
+        Args:
+            v: a vertex in the graph whose DFS parent you wish to obtain
+
+        Returns:
+            The DFS parent of v in the graph, or NIL if v is the root of the
+            DFS tree
+
+        Raises:
+            ValueError if v is not a valid vertex
+        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_GetParent() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetParent(self._theGraph, v)
+
+    def gp_GetLeastAncestor(self, int v) -> int:
+        """Get least ancestor of vertex v (after least ancestors are computed)
+
+        Args:
+            v: a vertex in the graph whose least ancestor you wish to obtain
+
+        Returns:
+            The least ancestor of v, or NIL if least ancestor values have not
+            yet been computed.
+
+        Raises:
+            ValueError if v is not a valid vertex.
+        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_GetLeastAncestor() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetLeastAncestor(self._theGraph, v)
+
+    def gp_GetLowpoint(self, int v) -> int:
+        """Get lowpoint value of vertex v (after lowpoint values are computed)
+
+        Args:
+            v: a vertex in the graph whose lowpoint value you wish to obtain
+
+        Returns:
+            The lowpoint of v, or NIL if lowpoints have not yet been computed.
+
+        Raises:
+            ValueError if v is not a valid vertex.
+        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_GetLowpoint() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetLowpoint(self._theGraph, v)
+
+    def gp_IsDFSTreeRoot(self, int v) -> int:
+        """Determine if vertex v corresponds to DFS root, i.e. DFS parent is NIL
+
+        Args:
+            v: a vertex in the graph you wish to determine is the DFS tree root
+
+        Returns:
+            TRUE if v is the DFS tree root, FALSE otherwise
+
+        Raises:
+            ValueError if v is not a valid vertex
+        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_IsDFSTreeRoot() failed: invalid vertex v = {v}"
+            )
+
+        # FIXME: The EAPS macros call private gp_GetVertexParent() rather than
+        # public gp_GetParent(), but anywhere these macros are used also #include
+        # the private header (hence why nothing broke earlier), so we need to 
+        # implement this functionality at the Cython layer until the fix is
+        # effected
+        # if graphLib.gp_IsDFSTreeRoot(self._theGraph, v):
+        #     return TRUE
+
+        # return FALSE
+        raise NotImplementedError("gp_IsDFSTreeRoot() workaround not yet implemented")
+
+
+    def gp_IsNotDFSTreeRoot(self, int v) -> int:
+        """Determine if vertex v is not the DFS root, i.e. DFS parent is not NIL
+
+        Args:
+            v: a vertex in the graph you wish to determine is not the DFS tree
+                root
+
+        Returns:
+            TRUE if v is not the DFS tree root, FALSE otherwise
+
+        Raises:
+            ValueError if v is not a valid vertex
+        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_IsNotDFSTreeRoot() failed: invalid vertex v = {v}"
+            )
+
+        # FIXME: The EAPS macros call private gp_GetVertexParent() rather than
+        # public gp_GetParent(), but anywhere these macros are used also #include
+        # the private header (hence why nothing broke earlier), so we need to 
+        # implement this functionality at the Cython layer until the fix is
+        # effected
+        # if graphLib.gp_IsNotDFSTreeRoot(self._theGraph, v):
+        #     return TRUE
+
+        # return FALSE
+        raise NotImplementedError("gp_IsNotDFSTreeRoot() workaround not yet implemented")
+
+    def gp_GetBicompRootFromDFSChild(self, int c) -> int:
+        """COMING SOON
+
+        Args:
+            c: DFS child for which you wish to determine the root of the bicomp
+                containing c
+
+        Returns:
+            The root of the bicomp containing c
+
+        Raises:
+            ValueError if c is not a valid vertex
+        """
+        if not self.gp_IsVertex(c):
+            raise ValueError(
+                f"gp_GetBicompRootFromDFSChild() failed: invalid vertex c = {c}"
+            )
+
+        return graphLib.gp_GetBicompRootFromDFSChild(self._theGraph, c)
+
+    def gp_GetDFSChildFromBicompRoot(self, int R) -> int:
+        """COMING SOON
+
+        Args:
+            R: root of a bicomp for which you wish to determine the DFS child
+
+        Returns:
+            The DFS child of the bicomp root R
+
+        Raises:
+            ValueError if R is not a virtual vertex
+        """
+        if not self.gp_IsVirtualVertex(R):
+            raise ValueError(
+                "gp_GetDFSChildFromBicompRoot() failed: invalid virtual vertex "
+                f"R = {R} for bicomp root."
+            )
+
+        return graphLib.gp_GetDFSChildFromBicompRoot(self._theGraph, R)
+
+    def gp_GetVertexFromBicompRoot(self, int R) -> int:
+        """COMING SOON
+
+        Args:
+            R: virtual vertex representing the root of the child bicomp of v
+
+        Returns:
+            The vertex v corresponding to the root of the child bicomp, the
+            given virtual vertex R
+
+        Raises:
+            ValueError if R is not a valid virtual vertex
+        """
+        if not self.gp_IsVirtualVertex(R):
+            raise ValueError(
+                "gp_GetVertexFromBicompRoot() failed: invalid virtual vertex "
+                f"R = {R} for bicomp root."
+            )
+
+        # FIXME: The EAPS macros call private gp_GetVertexParent() rather than
+        # public gp_GetParent(), but anywhere these macros are used also #include
+        # the private header (hence why nothing broke earlier), so we need to 
+        # implement this functionality at the Cython layer until the fix is
+        # effected
+        # return graphLib.gp_GetVertexFromBicompRoot(self._theGraph, R)
+        raise NotImplementedError("gp_GetVertexFromBicompRoot() workaround not yet implemented")
+
+    def gp_IsBicompRoot(self, int v) -> int:
+        """COMING SOON
+
+        Args:
+            v: a vertex in the graph which you wish to determine is the root
+                of a bicomp
+
+        Returns:
+            TRUE if v is a bicomp root, FALSE otherwise
+
+        Raises:
+            ValueError if v is not a valid non-virtual nor virtual vertex
+        """
+        if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
+            raise ValueError(
+                "gp_IsBicompRoot() failed: invalid candidate bicomp root v = "
+                f"{v}"
+            )
+
+        if graphLib.gp_IsBicompRoot(self._theGraph, v):
+            return TRUE
+
+        return FALSE
+
+    def gp_IsSeparatedDFSChild(self, int theChild) -> int:
+        """COMING SOON
+
+        Args:
+            theChild: a vertex in the graph... COMING SOON
+
+        Returns:
+            TRUE if theChild is separated from the DFS ancestors and other
+            children of v (the cut vertex), FALSE otherwise
+
+        Raises:
+            ValueError if theChild is not a valid vertex
+        """
+        if not self.gp_IsVertex(theChild):
+            raise ValueError(
+                "gp_IsSeparatedDFSChild() failed: invalid vertex theChild = "
+                f"{theChild}"
+            )
+
+        if graphLib.gp_IsSeparatedDFSChild(self._theGraph, theChild):
+            return TRUE
+
+        return FALSE
+
+    def gp_IsNotSeparatedDFSChild(self, int theChild) -> int:
+        """COMING SOON
+
+        Args:
+            theChild: a vertex in the graph... COMING SOON
+
+        Returns:
+            TRUE if theChild is not separated from the DFS ancestors and other
+            children of v (the cut vertex), FALSE otherwise
+
+        Raises:
+            ValueError if theChild is not a valid vertex
+        """
+        if not self.gp_IsVertex(theChild):
+            raise ValueError(
+                "gp_IsNotSeparatedDFSChild() failed: invalid vertex theChild = "
+                f"{theChild}"
+            )
+
+        if graphLib.gp_IsNotSeparatedDFSChild(self._theGraph, theChild):
+            return TRUE
+
+        return FALSE
+
     def gp_ExtendWith_Planarity(self) -> None:
         """Dynamically subclasses the graph with the Planarity extension, which
         adds the data structures and methods necessary for planar graph embedding 
@@ -1815,7 +2134,7 @@ cdef class Graph:
             raise RuntimeError(
                 "Failed to extend graph with Planarity structures."
             )
-    
+
     def gp_Embed(self, int embedFlags) -> int:
         """Modifies the graph to be either an embedding of the original
         graph or a minimal subgraph obstructing embedding. The type of

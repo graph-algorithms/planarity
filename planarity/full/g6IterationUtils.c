@@ -1139,6 +1139,7 @@ static int __Pyx_init_co_variables(void) {
 #include "../c/graphLib/io/graphIO.h"
 #include "../c/graphLib/io/g6-read-iterator.h"
 #include "../c/graphLib/io/g6-write-iterator.h"
+#include "../c/graphLib/graphDFSUtils.h"
 #include "../c/graphLib/planarityRelated/graphPlanarity.h"
 #include "../c/graphLib/planarityRelated/graphOuterplanarity.h"
 #include "../c/graphLib/planarityRelated/graphDrawPlanar.h"
