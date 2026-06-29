@@ -54,6 +54,8 @@ In [12]: print(planarity.mapping(edgelist))
 
 See [here](https://github.com/graph-algorithms/planarity/tree/master/examples) for more examples.
 
+For further details on development setup and installation, please see [this](https://github.com/graph-algorithms/planarity/wiki/1.-Setup-Instructions) wiki page on the [`planarity` repository](https://github.com/graph-algorithms/planarity).
+
 ## License
 
 Planarity (the 'planarity' Python package; the software) is released
