@@ -1951,17 +1951,18 @@ cdef class Graph:
                 f"gp_IsDFSTreeRoot() failed: invalid vertex v = {v}"
             )
 
-        # FIXME: The EAPS macros call private gp_GetVertexParent() rather than
-        # public gp_GetParent(), but anywhere these macros are used also #include
-        # the private header (hence why nothing broke earlier), so we need to 
-        # implement this functionality at the Cython layer until the fix is
-        # effected
+        # FIXME: This EAPS macro call private gp_GetVertexParent() rather than
+        # public gp_GetParent(), so we implement it at this level for now and
+        # should switch to the commented-out call-through once it is fixed.
+        #
         # if graphLib.gp_IsDFSTreeRoot(self._theGraph, v):
         #     return TRUE
-
+        #
         # return FALSE
-        raise NotImplementedError("gp_IsDFSTreeRoot() workaround not yet implemented")
-
+        if self.gp_IsNotVertex(self.gp_GetParent(v)):
+            return TRUE
+        
+        return FALSE
 
     def gp_IsNotDFSTreeRoot(self, int v) -> int:
         """Determine if vertex v is not the DFS roo (if DFS parent is not NIL).
@@ -1982,16 +1983,18 @@ cdef class Graph:
                 f"gp_IsNotDFSTreeRoot() failed: invalid vertex v = {v}"
             )
 
-        # FIXME: The EAPS macros call private gp_GetVertexParent() rather than
-        # public gp_GetParent(), but anywhere these macros are used also #include
-        # the private header (hence why nothing broke earlier), so we need to 
-        # implement this functionality at the Cython layer until the fix is
-        # effected
+        # FIXME: This EAPS macro call private gp_GetVertexParent() rather than
+        # public gp_GetParent(), so we implement it at this level for now and
+        # should switch to the commented-out call-through once it is fixed.
+        #         
         # if graphLib.gp_IsNotDFSTreeRoot(self._theGraph, v):
         #     return TRUE
-
+        #
         # return FALSE
-        raise NotImplementedError("gp_IsNotDFSTreeRoot() workaround not yet implemented")
+        if not self.gp_IsDFSTreeRoot(v):
+            return TRUE
+        
+        return FALSE
 
     def gp_GetBicompRootFromDFSChild(self, int c) -> int:
         """Given a DFS child c of a vertex v, this method returns the biconneced 
@@ -2055,11 +2058,9 @@ cdef class Graph:
                 f"R = {R} for bicomp root."
             )
 
-        # FIXME: The EAPS macros call private gp_GetVertexParent() rather than
-        # public gp_GetParent(), but anywhere these macros are used also #include
-        # the private header (hence why nothing broke earlier), so we need to 
-        # implement this functionality at the Cython layer until the fix is
-        # effected
+        # FIXME: This EAPS macro call private gp_GetVertexParent() rather than
+        # public gp_GetParent(), so we implement it at this level for now and
+        # should switch to the commented-out call-through once it is fixed.
         # return graphLib.gp_GetVertexFromBicompRoot(self._theGraph, R)
 
         c = self.gp_GetDFSChildFromBicompRoot(R)

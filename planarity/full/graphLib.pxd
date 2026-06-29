@@ -186,7 +186,8 @@ cdef int gp_GetLeastAncestor(graphP theGraph, int v)
 cdef int gp_GetLowpoint(graphP theGraph, int v)
 
 # FIXME: We fail to link due to issue where these macros call private
-# gp_GetVertexParent() rather than public gp_GetParent()
+# gp_GetVertexParent() rather than public gp_GetParent(). These can
+# be added in once EAPS is fixed.
 # cdef int gp_IsDFSTreeRoot(graphP theGraph, int v)
 # cdef int gp_IsNotDFSTreeRoot(graphP theGraph, int v)
 
@@ -194,7 +195,8 @@ cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c)
 cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R)
 
 # FIXME: We fail to link due to issue where this macro calls private 
-# gp_GetVertexParent() rather than public gp_GetParent()
+# gp_GetVertexParent() rather than public gp_GetParent(). This can
+# added in once EAPS is fixed.
 # cdef int gp_GetVertexFromBicompRoot(graphP theGraph, int R)
 
 cdef int gp_IsBicompRoot(graphP theGraph, int v)

@@ -607,11 +607,9 @@ cdef int gp_GetLowpoint(graphP theGraph, int v):
     return cgraphLib.gp_GetLowpoint(theGraph, v)
 
 
-# FIXME: The EAPS macros call private gp_GetVertexParent() rather than
-# public gp_GetParent(), but anywhere these macros are used also #include
-# the private header (hence why nothing broke earlier), so we need to 
-# implement this functionality at the Cython layer until the fix is
-# effected
+# FIXME: These EAPS macros call private gp_GetVertexParent() rather than
+# public gp_GetParent(), so we have implemented them in graph.pyx for now
+# and should switch to these commented-out versions once EAPS is fixed.
 # cdef int gp_IsDFSTreeRoot(graphP theGraph, int v):
 #     return cgraphLib.gp_IsDFSTreeRoot(theGraph, v)
 
@@ -627,11 +625,9 @@ cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):
 cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):
     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)
 
-# FIXME: The EAPS macros call private gp_GetVertexParent() rather than
-# public gp_GetParent(), but anywhere these macros are used also #include
-# the private header (hence why nothing broke earlier), so we need to 
-# implement this functionality at the Cython layer until the fix is
-# effected
+# FIXME: This EAPS macro calls private gp_GetVertexParent() rather than
+# public gp_GetParent(), so we have implemented it in graph.pyx for now
+# and should switch to this commented-out version once EAPS is fixed.
 # cdef int gp_GetVertexFromBicompRoot(graphP theGraph, int R):
 #     return cgraphLib.gp_GetVertexFromBicompRoot(theGraph, R)
 
