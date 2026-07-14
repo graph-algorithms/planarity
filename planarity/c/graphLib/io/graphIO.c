@@ -351,7 +351,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
 
     int graphType = 0;
     int N = 0, M = 0, u = NIL, v = NIL;
-    int zeroBasedOffset = gp_LowerBoundVertexStorage(theGraph) == 0 ? 1 : 0;
+    int zeroBasedOffset = gp_LowerBoundVertexStorage(theGraph) == ( 0 ) ? ( 1 ) : 0;
     char Line[MAXLINE + 1];
 
     memset(Line, '\0', (MAXLINE + 1));
