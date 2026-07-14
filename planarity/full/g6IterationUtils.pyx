@@ -54,8 +54,9 @@ cdef class G6ReadIterator:
             graphLib.g6_FreeReader(&self._g6ReadIterator)
 
     def g6_InitReaderWithString(self, str inputString) -> None:
-        """Initializes the G6 read iterator with a string to use as the 
-        input sourceof G6-encoded graphs.
+        """Initializes the G6 read iterator from a string.
+
+        The string is used as the input source of G6-encoded graphs.
 
         Args:
             inputString: the string to use as the input source
@@ -74,11 +75,12 @@ cdef class G6ReadIterator:
             )
 
     def g6_InitReaderWithFileName(self, str infileName) -> None:
-        """Initializes the G6 read iterator with the name of a file to use as the 
-        input source of G6-encoded graphs.
+        """Initializes the G6 read iterator from an input file name.
+
+        The file is used as the input source of G6-encoded graphs.
 
         Args:
-            infileName: a string containing the name of the file to use as the input source
+            infileName: a string containing the name of the input file
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -106,17 +108,20 @@ cdef class G6ReadIterator:
             )
 
     def g6_EndReached(self) -> int:
-        """Indicates whether or not the end of the input source has been reached.
+        """Indicates whether the input source has been exhausted.
 
-        Returns: TRUE if there are no more graphs to read, FALSE otherwise
+        Returns:
+            TRUE if there are no more graphs to read, FALSE otherwise.
         """
         return graphLib.g6_EndReached(self._g6ReadIterator)
 
     def g6_FreeReader(self) -> None:
-        """Frees the underlying G6 read iterator. Although the __dealloc__()
-        will do so if the API user does not, it is cleanest to directly call
-        this method for consistency with how the write iterator must be used.
-        The __dealloc__() avoids double freeing the iterator.
+        """Frees the underlying G6 read iterator.
+
+        Although __dealloc__() will do so if the API user does not, it is
+        cleanest to directly call this method for consistency with how the
+        write iterator must be used. The __dealloc__() avoids double freeing
+        the iterator.
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -166,12 +171,13 @@ cdef class G6WriteIterator:
         self._outputString = NULL
 
     def __dealloc__(self):
-        """Frees the underlying G6 write iterator with g6_FreeWriter(), if necessary.
-        However, if the output source is a string and if the API user did not directly 
-        call g6_FreeWriter(), then they did not receive the output string, so the
-        output string is freed and a RuntimeError is raised. If the output source is 
-        a file, then it is not an error but good practice to call g6_FreeWriter() before
-        the write iterator goes out of scope. 
+        """Frees the underlying G6 write iterator if necessary.
+
+        If the output source is a string and the API user did not directly
+        call g6_FreeWriter(), then they did not receive the output string, so
+        the output string is freed and a RuntimeError is raised. If the output
+        source is a file, then it is not an error but good practice to call
+        g6_FreeWriter() before the write iterator goes out of scope.
 
         Raises:
             RuntimeError if the output source is a string and the API user has not
@@ -191,8 +197,9 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithString(self) -> None:
-        """Initializes the G6 write iterator with an internal string to use as the
-        output source that will receive G6-encoded graphs.
+        """Initializes the G6 write iterator with an internal output string.
+
+        The string is used as the output source that receives G6-encoded graphs.
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -205,12 +212,12 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithFileName(self, str outfileName) -> None:
-        """Initializes the G6 write iterator with the name of a file to use as the 
-        output source that will receive G6-encoded graphs.
+        """Initializes the G6 write iterator from an output file name.
+
+        The file is used as the output source that receives G6-encoded graphs.
 
         Args:
-            outfileName: a string containing the name of the file to use as the 
-            output source
+            outfileName: a string containing the name of the output file
 
         Raises:
             RuntimeError if C graphlib version of this function failed.
@@ -238,12 +245,13 @@ cdef class G6WriteIterator:
             )
 
     def g6_FreeWriter(self) -> str | None:
-        """Frees the underlying G6 write iterator. This method must be 
-        called if the G6 write iterator was initialized to output to a string,
-        so that the API user can receive the string output. Otherwise, it
-        is still best to directly call this method even if the G6 write iterator
-        was initialized to output to a file. The __dealloc__() does also call
-        this method if it has not already been called.
+        """Frees the underlying G6 write iterator.
+
+        This method must be called if the G6 write iterator was initialized to
+        output to a string, so that the API user can receive the string output.
+        Otherwise, it is still best to directly call this method even if the G6
+        write iterator was initialized to output to a file. The __dealloc__()
+        does also call this method if it has not already been called.
 
         Returns:
             A Python string containing the G6-encoded output if the G6 write iterator
