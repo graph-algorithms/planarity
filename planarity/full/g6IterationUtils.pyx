@@ -18,14 +18,14 @@ cdef class G6ReadIterator:
     cdef graphLib.G6ReadIteratorP _g6ReadIterator
 
     def __cinit__(self, curr_graph: graph.Graph):
-        """Allocates the underlying G6 read iterator with g6_NewReader().
+        """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator.
 
         Args: 
             curr_graph: An allocated graph data structure that will be 
             iteratively populated with graphs from an input source. 
 
         Raises:
-            MemoryError if C graphlib version of gp_NewReader() failed.
+            MemoryError if C-layer graphLib version of gp_NewReader() failed.
             ValueError if curr_graph does not contain an allocated graph.
         """
         try:
@@ -44,7 +44,7 @@ cdef class G6ReadIterator:
             )
 
     def __dealloc__(self):
-        """Frees the underlying G6 read iterator with g6_FreeReader()."""
+        """Free the C-layer G6ReadIterator."""
         if self._g6ReadIterator != NULL:
             # NOTE: g6_FreeReader() NULLs out the pointer to currGraph on
             # the C layer, so that Python will be free to clean up the
@@ -54,14 +54,15 @@ cdef class G6ReadIterator:
             graphLib.g6_FreeReader(&self._g6ReadIterator)
 
     def g6_InitReaderWithString(self, str inputString) -> None:
-        """Initializes the G6 read iterator with a string to use as the 
-        input sourceof G6-encoded graphs.
+        """Initializes the G6ReadIterator with a string.
+
+        The string is used as the input source of G6-encoded graphs.
 
         Args:
             inputString: the string to use as the input source
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if C-layer graphLib version of this function failed.
         """
         cdef bytes encoded = inputString.encode('utf-8')
         cdef const char *encodedInputString = encoded
@@ -74,14 +75,15 @@ cdef class G6ReadIterator:
             )
 
     def g6_InitReaderWithFileName(self, str infileName) -> None:
-        """Initializes the G6 read iterator with the name of a file to use as the 
-        input source of G6-encoded graphs.
+        """Initializes the G6ReadIterator with an input file name.
+
+        The file is used as the input source of G6-encoded graphs.
 
         Args:
-            infileName: a string containing the name of the file to use as the input source
+            infileName: a string containing the name of the input file
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if C-layer graphLib version of this function failed.
         """
         cdef bytes encoded = infileName.encode('utf-8')
         cdef const char *encodedInfileName = encoded
@@ -97,7 +99,7 @@ cdef class G6ReadIterator:
         """Reads a G6-encoded graph from the input source.
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if C-layer graphLib version of this function failed.
         """
         result = graphLib.g6_ReadGraph(self._g6ReadIterator)
         if result != graphLib.OK:
@@ -106,20 +108,24 @@ cdef class G6ReadIterator:
             )
 
     def g6_EndReached(self) -> int:
-        """Indicates whether or not the end of the input source has been reached.
+        """Indicates whether the input source has been exhausted.
 
-        Returns: TRUE if there are no more graphs to read, FALSE otherwise
+        Returns:
+            TRUE if there are no more graphs to read, FALSE otherwise.
         """
         return graphLib.g6_EndReached(self._g6ReadIterator)
 
     def g6_FreeReader(self) -> None:
-        """Frees the underlying G6 read iterator. Although the __dealloc__()
-        will do so if the API user does not, it is cleanest to directly call
-        this method for consistency with how the write iterator must be used.
-        The __dealloc__() avoids double freeing the iterator.
+        """Free the C-layer G6ReadIterator.
+
+        Although __dealloc__() will do so if the API user does not, it is
+        cleanest to directly call this method for consistency with how the
+        writer must be used. The __dealloc__() avoids double freeing the reader,
+        and calls the same underlying method from the graphLib extension.
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if the self._g6ReadIterator has already been freed
+                and set to NULL.
         """
         if self._g6ReadIterator == NULL:
             raise RuntimeError(
@@ -134,14 +140,15 @@ cdef class G6WriteIterator:
     cdef char *_outputString
 
     def __cinit__(self, graph.Graph graph_to_write):
-        """Allocates the underlying G6 write iterator with gp_NewWriter().
+        """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator.
 
         Args: 
-            graph_to_write: An allocated graph data structure that can be 
-            iteratively populated with graphs to write to an output source. 
+            graph_to_write: A Cython wrapper graph.Graph of a C-layer graphP
+                that can be iteratively populated with graphs to write to an
+                output source. 
 
         Raises:
-            MemoryError if C graphlib version of gp_NewWriter() failed.
+            MemoryError if C-layer graphLib version of gp_NewWriter() failed.
             ValueError if graph_to_write does not contain an allocated graph
                 having a greater-than-zero number of vertices allocated
                 (see gp_EnsureVertexCapacity()).
@@ -166,12 +173,13 @@ cdef class G6WriteIterator:
         self._outputString = NULL
 
     def __dealloc__(self):
-        """Frees the underlying G6 write iterator with g6_FreeWriter(), if necessary.
-        However, if the output source is a string and if the API user did not directly 
-        call g6_FreeWriter(), then they did not receive the output string, so the
-        output string is freed and a RuntimeError is raised. If the output source is 
-        a file, then it is not an error but good practice to call g6_FreeWriter() before
-        the write iterator goes out of scope. 
+        """Free the C-layer G6WriteIterator and output string if non-NULL.
+
+        If the output source is a string and the API user did not directly
+        call g6_FreeWriter(), then they did not receive the output string, so
+        the output string is freed and a RuntimeError is raised. If the output
+        source is a file, then it is not an error but good practice to call
+        g6_FreeWriter() before the writer goes out of scope.
 
         Raises:
             RuntimeError if the output source is a string and the API user has not
@@ -191,11 +199,16 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithString(self) -> None:
-        """Initializes the G6 write iterator with an internal string to use as the
-        output source that will receive G6-encoded graphs.
+        """Initializes the G6WriteIterator with an output string.
+
+        The string is a member of the G6WriteIterator Cython wrapper class, and
+        is used as the output source that receives G6-encoded graphs. In order
+        to retrieve this output string after writing has concluded, one must
+        call self.g6_FreeWriter() to convert this self._outputString to a Python
+        string.
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if C-layer graphLib version of this function failed.
         """
         result = graphLib.g6_InitWriterWithString(self._g6WriteIterator, &(self._outputString))
         if result != graphLib.OK:
@@ -205,15 +218,15 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithFileName(self, str outfileName) -> None:
-        """Initializes the G6 write iterator with the name of a file to use as the 
-        output source that will receive G6-encoded graphs.
+        """Initializes the G6WriteIterator with an output file name.
+
+        The file is used as the output source that receives G6-encoded graphs.
 
         Args:
-            outfileName: a string containing the name of the file to use as the 
-            output source
+            outfileName: a string containing the name of the output file
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if C-layer graphLib version of this function failed.
         """
         cdef bytes encoded = outfileName.encode('utf-8')
         cdef const char *encodedOutputFileName = encoded
@@ -229,7 +242,7 @@ cdef class G6WriteIterator:
         """Writes a G6-encoded graph to the output source.
 
         Raises:
-            RuntimeError if C graphlib version of this function failed.
+            RuntimeError if C-layer graphLib version of this function failed.
         """
         result = graphLib.g6_WriteGraph(self._g6WriteIterator)
         if result != graphLib.OK:
@@ -238,21 +251,25 @@ cdef class G6WriteIterator:
             )
 
     def g6_FreeWriter(self) -> str | None:
-        """Frees the underlying G6 write iterator. This method must be 
-        called if the G6 write iterator was initialized to output to a string,
-        so that the API user can receive the string output. Otherwise, it
-        is still best to directly call this method even if the G6 write iterator
-        was initialized to output to a file. The __dealloc__() does also call
-        this method if it has not already been called.
+        """Free the C-layer G6WriteIterator.
+
+        This method *must* be called if the writer was initialized to output to
+        a string, so that the API user can receive the string output. Otherwise,
+        for the sake of consistency, it is still best to directly call this
+        method even if the writer was initialized to output to a file.
+
+        The __dealloc__() calls the same underlying method from the graphLib
+        extension if the self._g6WriteIterator has not yet been freed and set to
+        NULL.
 
         Returns:
-            A Python string containing the G6-encoded output if the G6 write iterator
-            was initialized to write to a string, or nothing if the G6 write iterator
-            was initialized to write to a file.
+            A Python string containing the G6-encoded output if the writer was
+            initialized to output to string, or None if it was initialized to
+            output to file.
 
         Raises:
-            RuntimeError if the G6 write iterator was initialized to output
-            to a string and the string cannot be decoded to a Python string.
+            RuntimeError if the G6WriteIterator was initialized to output to a
+                string and the string cannot be decoded to a Python string.
         """
         if self._g6WriteIterator == NULL:
             raise RuntimeError(
