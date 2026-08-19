@@ -4,5 +4,6 @@ cython
 build
 twine
 pytest
+cython-lint
 networkx
 matplotlib

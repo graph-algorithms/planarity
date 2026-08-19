@@ -16,3 +16,8 @@ planarity.egg-info/
 #Spyder project file
 .spyderproject
 
+# VSCode configuration
+.vscode/*
+
+# Pylint support
+.pylintrc
