@@ -2331,7 +2331,7 @@ int __pyx_module_is_main_planarity__full__graphLib = 0;
 /* Implementation of "planarity.full.graphLib" */
 /* #### Code section: global_var ### */
 /* #### Code section: string_decls ### */
-static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper for the Edge Addition Planarity Suite Graph Library\n\nWraps functions and macros that operate over graphP structs and to exposes the \nG6 read and write iterator machinery.\n\nNOTE: No bounds/error checking is done here, and is rather the responsibility\nof the caller to make sure these functions are being called legitimately.\n";
+static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper for the Edge Addition Planarity Suite Graph Library.\n\nWraps functions and macros that operate over graphP structs and to exposes the\nG6 read and write iterator machinery.\n\nNOTE: No bounds/error checking is done here, and is rather the responsibility\nof the caller to make sure these functions are being called legitimately.\n";
 /* #### Code section: decls ### */
 static PyObject *__pyx_pf_9planarity_4full_8graphLib_gp_GetQuietMode(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_8graphLib_2gp_SetQuietMode(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_newQuietMode); /* proto */
@@ -2552,7 +2552,7 @@ return 0;
 #endif
 /* #### Code section: module_code ### */
 
-/* "planarity/full/graphLib.pyx":113
+/* "planarity/full/graphLib.pyx":115
  * 
  * # Functions to be made available when importing package from Python
  * def gp_GetQuietMode() -> int:             # <<<<<<<<<<<<<<
@@ -2586,7 +2586,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_gp_GetQuietMode(CYTHON_UNUS
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_GetQuietMode", 0);
 
-  /* "planarity/full/graphLib.pyx":114
+  /* "planarity/full/graphLib.pyx":116
  * # Functions to be made available when importing package from Python
  * def gp_GetQuietMode() -> int:
  *     return cgraphLib.gp_GetQuietMode()             # <<<<<<<<<<<<<<
@@ -2594,14 +2594,14 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_gp_GetQuietMode(CYTHON_UNUS
  * 
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyLong_From_int(gp_GetQuietMode()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyLong_From_int(gp_GetQuietMode()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PyInt_FromNumber(&__pyx_t_1, NULL, 0) < (0)) __PYX_ERR(0, 114, __pyx_L1_error)
+  if (__Pyx_PyInt_FromNumber(&__pyx_t_1, NULL, 0) < (0)) __PYX_ERR(0, 116, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":113
+  /* "planarity/full/graphLib.pyx":115
  * 
  * # Functions to be made available when importing package from Python
  * def gp_GetQuietMode() -> int:             # <<<<<<<<<<<<<<
@@ -2620,7 +2620,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_gp_GetQuietMode(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":117
+/* "planarity/full/graphLib.pyx":119
  * 
  * 
  * def gp_SetQuietMode(int newQuietMode) -> None:             # <<<<<<<<<<<<<<
@@ -2668,32 +2668,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_newQuietMode,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 117, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 119, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 117, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 119, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_SetQuietMode", 0) < (0)) __PYX_ERR(0, 117, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "gp_SetQuietMode", 0) < (0)) __PYX_ERR(0, 119, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_SetQuietMode", 1, 1, 1, i); __PYX_ERR(0, 117, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("gp_SetQuietMode", 1, 1, 1, i); __PYX_ERR(0, 119, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 117, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 119, __pyx_L3_error)
     }
-    __pyx_v_newQuietMode = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_newQuietMode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L3_error)
+    __pyx_v_newQuietMode = __Pyx_PyLong_As_int(values[0]); if (unlikely((__pyx_v_newQuietMode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("gp_SetQuietMode", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 117, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("gp_SetQuietMode", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 119, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -2719,7 +2719,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_2gp_SetQuietMode(CYTHON_UNU
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("gp_SetQuietMode", 0);
 
-  /* "planarity/full/graphLib.pyx":118
+  /* "planarity/full/graphLib.pyx":120
  * 
  * def gp_SetQuietMode(int newQuietMode) -> None:
  *     cgraphLib.gp_SetQuietMode(newQuietMode)             # <<<<<<<<<<<<<<
@@ -2728,7 +2728,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_2gp_SetQuietMode(CYTHON_UNU
 */
   gp_SetQuietMode(__pyx_v_newQuietMode);
 
-  /* "planarity/full/graphLib.pyx":117
+  /* "planarity/full/graphLib.pyx":119
  * 
  * 
  * def gp_SetQuietMode(int newQuietMode) -> None:             # <<<<<<<<<<<<<<
@@ -2743,7 +2743,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_2gp_SetQuietMode(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":121
+/* "planarity/full/graphLib.pyx":123
  * 
  * 
  * def gp_GetProjectVersionFull() -> str:             # <<<<<<<<<<<<<<
@@ -2778,19 +2778,19 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_4gp_GetProjectVersionFull(C
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_GetProjectVersionFull", 0);
 
-  /* "planarity/full/graphLib.pyx":122
+  /* "planarity/full/graphLib.pyx":124
  * 
  * def gp_GetProjectVersionFull() -> str:
  *     cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()             # <<<<<<<<<<<<<<
  *     return encoded_version.decode('utf-8')
  * 
 */
-  __pyx_t_1 = __Pyx_PyBytes_FromString(gp_GetProjectVersionFull()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBytes_FromString(gp_GetProjectVersionFull()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_encoded_version = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "planarity/full/graphLib.pyx":123
+  /* "planarity/full/graphLib.pyx":125
  * def gp_GetProjectVersionFull() -> str:
  *     cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
  *     return encoded_version.decode('utf-8')             # <<<<<<<<<<<<<<
@@ -2798,13 +2798,13 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_4gp_GetProjectVersionFull(C
  * 
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_encoded_version, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_encoded_version, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":121
+  /* "planarity/full/graphLib.pyx":123
  * 
  * 
  * def gp_GetProjectVersionFull() -> str:             # <<<<<<<<<<<<<<
@@ -2824,7 +2824,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_4gp_GetProjectVersionFull(C
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":126
+/* "planarity/full/graphLib.pyx":128
  * 
  * 
  * def gp_GetLibPlanarityVersionFull() -> str:             # <<<<<<<<<<<<<<
@@ -2859,19 +2859,19 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionF
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gp_GetLibPlanarityVersionFull", 0);
 
-  /* "planarity/full/graphLib.pyx":127
+  /* "planarity/full/graphLib.pyx":129
  * 
  * def gp_GetLibPlanarityVersionFull() -> str:
  *     cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()             # <<<<<<<<<<<<<<
  *     return encoded_version.decode('utf-8')
  * 
 */
-  __pyx_t_1 = __Pyx_PyBytes_FromString(gp_GetLibPlanarityVersionFull()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBytes_FromString(gp_GetLibPlanarityVersionFull()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_encoded_version = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "planarity/full/graphLib.pyx":128
+  /* "planarity/full/graphLib.pyx":130
  * def gp_GetLibPlanarityVersionFull() -> str:
  *     cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
  *     return encoded_version.decode('utf-8')             # <<<<<<<<<<<<<<
@@ -2879,13 +2879,13 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionF
  * 
 */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_encoded_version, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_encoded_version, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":126
+  /* "planarity/full/graphLib.pyx":128
  * 
  * 
  * def gp_GetLibPlanarityVersionFull() -> str:             # <<<<<<<<<<<<<<
@@ -2905,7 +2905,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionF
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":134
+/* "planarity/full/graphLib.pyx":136
  * # subpackage's Cython modules
  * # Wraps functions declared in "planarity/c/graphLib/graph.h":
  * cdef graphP gp_New():             # <<<<<<<<<<<<<<
@@ -2916,7 +2916,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionF
 static graphP __pyx_f_9planarity_4full_8graphLib_gp_New(void) {
   graphP __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":135
+  /* "planarity/full/graphLib.pyx":137
  * # Wraps functions declared in "planarity/c/graphLib/graph.h":
  * cdef graphP gp_New():
  *     return cgraphLib.gp_New()             # <<<<<<<<<<<<<<
@@ -2926,7 +2926,7 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_New(void) {
   __pyx_r = gp_New();
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":134
+  /* "planarity/full/graphLib.pyx":136
  * # subpackage's Cython modules
  * # Wraps functions declared in "planarity/c/graphLib/graph.h":
  * cdef graphP gp_New():             # <<<<<<<<<<<<<<
@@ -2939,7 +2939,7 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_New(void) {
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":138
+/* "planarity/full/graphLib.pyx":140
  * 
  * 
  * cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):             # <<<<<<<<<<<<<<
@@ -2950,7 +2950,7 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_New(void) {
 static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(graphP __pyx_v_theGraph, int __pyx_v_N) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":139
+  /* "planarity/full/graphLib.pyx":141
  * 
  * cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):
  *     return cgraphLib.gp_EnsureVertexCapacity(theGraph, N)             # <<<<<<<<<<<<<<
@@ -2960,7 +2960,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(graphP __p
   __pyx_r = gp_EnsureVertexCapacity(__pyx_v_theGraph, __pyx_v_N);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":138
+  /* "planarity/full/graphLib.pyx":140
  * 
  * 
  * cdef int gp_EnsureVertexCapacity(graphP theGraph, int N):             # <<<<<<<<<<<<<<
@@ -2973,7 +2973,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(graphP __p
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":142
+/* "planarity/full/graphLib.pyx":144
  * 
  * 
  * cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity):             # <<<<<<<<<<<<<<
@@ -2984,7 +2984,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureVertexCapacity(graphP __p
 static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity(graphP __pyx_v_theGraph, int __pyx_v_requiredEdgeCapacity) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":143
+  /* "planarity/full/graphLib.pyx":145
  * 
  * cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity):
  *     return cgraphLib.gp_EnsureEdgeCapacity(theGraph, requiredEdgeCapacity)             # <<<<<<<<<<<<<<
@@ -2994,7 +2994,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity(graphP __pyx
   __pyx_r = gp_EnsureEdgeCapacity(__pyx_v_theGraph, __pyx_v_requiredEdgeCapacity);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":142
+  /* "planarity/full/graphLib.pyx":144
  * 
  * 
  * cdef int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity):             # <<<<<<<<<<<<<<
@@ -3007,7 +3007,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity(graphP __pyx
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":146
+/* "planarity/full/graphLib.pyx":148
  * 
  * 
  * cdef void gp_ResetGraphStorage(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3017,7 +3017,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EnsureEdgeCapacity(graphP __pyx
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage(graphP __pyx_v_theGraph) {
 
-  /* "planarity/full/graphLib.pyx":147
+  /* "planarity/full/graphLib.pyx":149
  * 
  * cdef void gp_ResetGraphStorage(graphP theGraph):
  *     cgraphLib.gp_ResetGraphStorage(theGraph)             # <<<<<<<<<<<<<<
@@ -3026,7 +3026,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage(graphP __pyx
 */
   gp_ResetGraphStorage(__pyx_v_theGraph);
 
-  /* "planarity/full/graphLib.pyx":146
+  /* "planarity/full/graphLib.pyx":148
  * 
  * 
  * cdef void gp_ResetGraphStorage(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3037,7 +3037,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage(graphP __pyx
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":150
+/* "planarity/full/graphLib.pyx":152
  * 
  * 
  * cdef void gp_Free(graphP *pGraph):             # <<<<<<<<<<<<<<
@@ -3047,7 +3047,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ResetGraphStorage(graphP __pyx
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_Free(graphP *__pyx_v_pGraph) {
 
-  /* "planarity/full/graphLib.pyx":151
+  /* "planarity/full/graphLib.pyx":153
  * 
  * cdef void gp_Free(graphP *pGraph):
  *     cgraphLib.gp_Free(pGraph)             # <<<<<<<<<<<<<<
@@ -3056,7 +3056,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_Free(graphP *__pyx_v_pGraph) {
 */
   gp_Free(__pyx_v_pGraph);
 
-  /* "planarity/full/graphLib.pyx":150
+  /* "planarity/full/graphLib.pyx":152
  * 
  * 
  * cdef void gp_Free(graphP *pGraph):             # <<<<<<<<<<<<<<
@@ -3067,7 +3067,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_Free(graphP *__pyx_v_pGraph) {
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":154
+/* "planarity/full/graphLib.pyx":156
  * 
  * 
  * cdef int gp_GetN(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3078,7 +3078,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_Free(graphP *__pyx_v_pGraph) {
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetN(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":155
+  /* "planarity/full/graphLib.pyx":157
  * 
  * cdef int gp_GetN(graphP theGraph):
  *     return cgraphLib.gp_GetN(theGraph)             # <<<<<<<<<<<<<<
@@ -3088,7 +3088,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetN(graphP __pyx_v_theGraph) {
   __pyx_r = gp_GetN(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":154
+  /* "planarity/full/graphLib.pyx":156
  * 
  * 
  * cdef int gp_GetN(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3101,7 +3101,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetN(graphP __pyx_v_theGraph) {
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":158
+/* "planarity/full/graphLib.pyx":160
  * 
  * 
  * cdef int gp_GetNV(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3112,7 +3112,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetN(graphP __pyx_v_theGraph) {
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetNV(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":159
+  /* "planarity/full/graphLib.pyx":161
  * 
  * cdef int gp_GetNV(graphP theGraph):
  *     return cgraphLib.gp_GetNV(theGraph)             # <<<<<<<<<<<<<<
@@ -3122,7 +3122,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetNV(graphP __pyx_v_theGraph) 
   __pyx_r = gp_GetNV(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":158
+  /* "planarity/full/graphLib.pyx":160
  * 
  * 
  * cdef int gp_GetNV(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3135,7 +3135,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetNV(graphP __pyx_v_theGraph) 
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":162
+/* "planarity/full/graphLib.pyx":164
  * 
  * 
  * cdef int gp_GetM(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3146,7 +3146,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetNV(graphP __pyx_v_theGraph) 
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetM(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":163
+  /* "planarity/full/graphLib.pyx":165
  * 
  * cdef int gp_GetM(graphP theGraph):
  *     return cgraphLib.gp_GetM(theGraph)             # <<<<<<<<<<<<<<
@@ -3156,7 +3156,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetM(graphP __pyx_v_theGraph) {
   __pyx_r = gp_GetM(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":162
+  /* "planarity/full/graphLib.pyx":164
  * 
  * 
  * cdef int gp_GetM(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3169,7 +3169,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetM(graphP __pyx_v_theGraph) {
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":166
+/* "planarity/full/graphLib.pyx":168
  * 
  * 
  * cdef int gp_GetEdgeCapacity(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3180,7 +3180,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetM(graphP __pyx_v_theGraph) {
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":167
+  /* "planarity/full/graphLib.pyx":169
  * 
  * cdef int gp_GetEdgeCapacity(graphP theGraph):
  *     return cgraphLib.gp_GetEdgeCapacity(theGraph)             # <<<<<<<<<<<<<<
@@ -3190,7 +3190,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity(graphP __pyx_v_
   __pyx_r = gp_GetEdgeCapacity(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":166
+  /* "planarity/full/graphLib.pyx":168
  * 
  * 
  * cdef int gp_GetEdgeCapacity(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3203,7 +3203,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity(graphP __pyx_v_
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":170
+/* "planarity/full/graphLib.pyx":172
  * 
  * 
  * cdef int gp_CopyGraph(graphP dstGraph, graphP srcGraph):             # <<<<<<<<<<<<<<
@@ -3214,7 +3214,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeCapacity(graphP __pyx_v_
 static int __pyx_f_9planarity_4full_8graphLib_gp_CopyGraph(graphP __pyx_v_dstGraph, graphP __pyx_v_srcGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":171
+  /* "planarity/full/graphLib.pyx":173
  * 
  * cdef int gp_CopyGraph(graphP dstGraph, graphP srcGraph):
  *     return cgraphLib.gp_CopyGraph(dstGraph, srcGraph)             # <<<<<<<<<<<<<<
@@ -3224,7 +3224,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CopyGraph(graphP __pyx_v_dstGra
   __pyx_r = gp_CopyGraph(__pyx_v_dstGraph, __pyx_v_srcGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":170
+  /* "planarity/full/graphLib.pyx":172
  * 
  * 
  * cdef int gp_CopyGraph(graphP dstGraph, graphP srcGraph):             # <<<<<<<<<<<<<<
@@ -3237,7 +3237,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CopyGraph(graphP __pyx_v_dstGra
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":174
+/* "planarity/full/graphLib.pyx":176
  * 
  * 
  * cdef graphP gp_DupGraph(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3248,7 +3248,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CopyGraph(graphP __pyx_v_dstGra
 static graphP __pyx_f_9planarity_4full_8graphLib_gp_DupGraph(graphP __pyx_v_theGraph) {
   graphP __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":175
+  /* "planarity/full/graphLib.pyx":177
  * 
  * cdef graphP gp_DupGraph(graphP theGraph):
  *     return cgraphLib.gp_DupGraph(theGraph)             # <<<<<<<<<<<<<<
@@ -3258,7 +3258,7 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_DupGraph(graphP __pyx_v_theG
   __pyx_r = gp_DupGraph(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":174
+  /* "planarity/full/graphLib.pyx":176
  * 
  * 
  * cdef graphP gp_DupGraph(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3271,7 +3271,7 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_DupGraph(graphP __pyx_v_theG
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":178
+/* "planarity/full/graphLib.pyx":180
  * 
  * 
  * cdef int gp_CopyAdjacencyLists(graphP dstGraph, graphP srcGraph):             # <<<<<<<<<<<<<<
@@ -3282,7 +3282,7 @@ static graphP __pyx_f_9planarity_4full_8graphLib_gp_DupGraph(graphP __pyx_v_theG
 static int __pyx_f_9planarity_4full_8graphLib_gp_CopyAdjacencyLists(graphP __pyx_v_dstGraph, graphP __pyx_v_srcGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":179
+  /* "planarity/full/graphLib.pyx":181
  * 
  * cdef int gp_CopyAdjacencyLists(graphP dstGraph, graphP srcGraph):
  *     return cgraphLib.gp_CopyAdjacencyLists(dstGraph, srcGraph)             # <<<<<<<<<<<<<<
@@ -3292,7 +3292,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CopyAdjacencyLists(graphP __pyx
   __pyx_r = gp_CopyAdjacencyLists(__pyx_v_dstGraph, __pyx_v_srcGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":178
+  /* "planarity/full/graphLib.pyx":180
  * 
  * 
  * cdef int gp_CopyAdjacencyLists(graphP dstGraph, graphP srcGraph):             # <<<<<<<<<<<<<<
@@ -3305,7 +3305,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CopyAdjacencyLists(graphP __pyx
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":182
+/* "planarity/full/graphLib.pyx":184
  * 
  * 
  * cdef int gp_CreateRandomGraph(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3316,7 +3316,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CopyAdjacencyLists(graphP __pyx
 static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraph(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":183
+  /* "planarity/full/graphLib.pyx":185
  * 
  * cdef int gp_CreateRandomGraph(graphP theGraph):
  *     return cgraphLib.gp_CreateRandomGraph(theGraph)             # <<<<<<<<<<<<<<
@@ -3326,7 +3326,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraph(graphP __pyx_
   __pyx_r = gp_CreateRandomGraph(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":182
+  /* "planarity/full/graphLib.pyx":184
  * 
  * 
  * cdef int gp_CreateRandomGraph(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -3339,7 +3339,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraph(graphP __pyx_
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":186
+/* "planarity/full/graphLib.pyx":188
  * 
  * 
  * cdef int gp_CreateRandomGraphEx(graphP theGraph, int numEdges):             # <<<<<<<<<<<<<<
@@ -3350,7 +3350,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraph(graphP __pyx_
 static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraphEx(graphP __pyx_v_theGraph, int __pyx_v_numEdges) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":187
+  /* "planarity/full/graphLib.pyx":189
  * 
  * cdef int gp_CreateRandomGraphEx(graphP theGraph, int numEdges):
  *     return cgraphLib.gp_CreateRandomGraphEx(theGraph, numEdges)             # <<<<<<<<<<<<<<
@@ -3360,7 +3360,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraphEx(graphP __py
   __pyx_r = gp_CreateRandomGraphEx(__pyx_v_theGraph, __pyx_v_numEdges);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":186
+  /* "planarity/full/graphLib.pyx":188
  * 
  * 
  * cdef int gp_CreateRandomGraphEx(graphP theGraph, int numEdges):             # <<<<<<<<<<<<<<
@@ -3373,7 +3373,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraphEx(graphP __py
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":190
+/* "planarity/full/graphLib.pyx":192
  * 
  * 
  * cdef int gp_IsNeighbor(graphP theGraph, int u, int v):             # <<<<<<<<<<<<<<
@@ -3384,7 +3384,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_CreateRandomGraphEx(graphP __py
 static int __pyx_f_9planarity_4full_8graphLib_gp_IsNeighbor(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":191
+  /* "planarity/full/graphLib.pyx":193
  * 
  * cdef int gp_IsNeighbor(graphP theGraph, int u, int v):
  *     return cgraphLib.gp_IsNeighbor(theGraph, u, v)             # <<<<<<<<<<<<<<
@@ -3394,7 +3394,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNeighbor(graphP __pyx_v_theGr
   __pyx_r = gp_IsNeighbor(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":190
+  /* "planarity/full/graphLib.pyx":192
  * 
  * 
  * cdef int gp_IsNeighbor(graphP theGraph, int u, int v):             # <<<<<<<<<<<<<<
@@ -3407,7 +3407,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNeighbor(graphP __pyx_v_theGr
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":194
+/* "planarity/full/graphLib.pyx":196
  * 
  * 
  * cdef int gp_FindEdge(graphP theGraph, int u, int v):             # <<<<<<<<<<<<<<
@@ -3418,7 +3418,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNeighbor(graphP __pyx_v_theGr
 static int __pyx_f_9planarity_4full_8graphLib_gp_FindEdge(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":195
+  /* "planarity/full/graphLib.pyx":197
  * 
  * cdef int gp_FindEdge(graphP theGraph, int u, int v):
  *     return cgraphLib.gp_FindEdge(theGraph, u, v)             # <<<<<<<<<<<<<<
@@ -3428,7 +3428,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_FindEdge(graphP __pyx_v_theGrap
   __pyx_r = gp_FindEdge(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":194
+  /* "planarity/full/graphLib.pyx":196
  * 
  * 
  * cdef int gp_FindEdge(graphP theGraph, int u, int v):             # <<<<<<<<<<<<<<
@@ -3441,7 +3441,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_FindEdge(graphP __pyx_v_theGrap
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":198
+/* "planarity/full/graphLib.pyx":200
  * 
  * 
  * cdef int gp_GetVertexDegree(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -3452,7 +3452,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_FindEdge(graphP __pyx_v_theGrap
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexDegree(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":199
+  /* "planarity/full/graphLib.pyx":201
  * 
  * cdef int gp_GetVertexDegree(graphP theGraph, int v):
  *     return cgraphLib.gp_GetVertexDegree(theGraph, v)             # <<<<<<<<<<<<<<
@@ -3462,7 +3462,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexDegree(graphP __pyx_v_
   __pyx_r = gp_GetVertexDegree(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":198
+  /* "planarity/full/graphLib.pyx":200
  * 
  * 
  * cdef int gp_GetVertexDegree(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -3475,20 +3475,20 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexDegree(graphP __pyx_v_
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":202
+/* "planarity/full/graphLib.pyx":204
  * 
  * 
- * cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned direction):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNeighborDirected(theGraph, u, v, direction)
- * 
+ * cdef int gp_IsNeighborDirected(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, int u, int v, unsigned direction
+ * ):
 */
 
 static int __pyx_f_9planarity_4full_8graphLib_gp_IsNeighborDirected(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v, unsigned int __pyx_v_direction) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":203
- * 
- * cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned direction):
+  /* "planarity/full/graphLib.pyx":207
+ *     graphP theGraph, int u, int v, unsigned direction
+ * ):
  *     return cgraphLib.gp_IsNeighborDirected(theGraph, u, v, direction)             # <<<<<<<<<<<<<<
  * 
  * 
@@ -3496,46 +3496,12 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNeighborDirected(graphP __pyx
   __pyx_r = gp_IsNeighborDirected(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v, __pyx_v_direction);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":202
+  /* "planarity/full/graphLib.pyx":204
  * 
  * 
- * cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned direction):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNeighborDirected(theGraph, u, v, direction)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":206
- * 
- * 
- * cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned direction):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_FindDirectedEdge(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v, unsigned int __pyx_v_direction) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":207
- * 
- * cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned direction):
- *     return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_FindDirectedEdge(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v, __pyx_v_direction);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":206
- * 
- * 
- * cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned direction):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)
- * 
+ * cdef int gp_IsNeighborDirected(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, int u, int v, unsigned direction
+ * ):
 */
 
   /* function exit code */
@@ -3546,6 +3512,40 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_FindDirectedEdge(graphP __pyx_v
 /* "planarity/full/graphLib.pyx":210
  * 
  * 
+ * cdef int gp_FindDirectedEdge(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, int u, int v, unsigned direction
+ * ):
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_FindDirectedEdge(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v, unsigned int __pyx_v_direction) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":213
+ *     graphP theGraph, int u, int v, unsigned direction
+ * ):
+ *     return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_FindDirectedEdge(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v, __pyx_v_direction);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":210
+ * 
+ * 
+ * cdef int gp_FindDirectedEdge(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, int u, int v, unsigned direction
+ * ):
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":216
+ * 
+ * 
  * cdef int gp_GetVertexInDegree(graphP theGraph, int v):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_GetVertexInDegree(theGraph, v)
  * 
@@ -3554,7 +3554,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_FindDirectedEdge(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexInDegree(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":211
+  /* "planarity/full/graphLib.pyx":217
  * 
  * cdef int gp_GetVertexInDegree(graphP theGraph, int v):
  *     return cgraphLib.gp_GetVertexInDegree(theGraph, v)             # <<<<<<<<<<<<<<
@@ -3564,7 +3564,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexInDegree(graphP __pyx_
   __pyx_r = gp_GetVertexInDegree(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":210
+  /* "planarity/full/graphLib.pyx":216
  * 
  * 
  * cdef int gp_GetVertexInDegree(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -3577,7 +3577,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexInDegree(graphP __pyx_
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":214
+/* "planarity/full/graphLib.pyx":220
  * 
  * 
  * cdef int gp_GetVertexOutDegree(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -3588,7 +3588,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexInDegree(graphP __pyx_
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexOutDegree(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":215
+  /* "planarity/full/graphLib.pyx":221
  * 
  * cdef int gp_GetVertexOutDegree(graphP theGraph, int v):
  *     return cgraphLib.gp_GetVertexOutDegree(theGraph, v)             # <<<<<<<<<<<<<<
@@ -3598,7 +3598,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexOutDegree(graphP __pyx
   __pyx_r = gp_GetVertexOutDegree(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":214
+  /* "planarity/full/graphLib.pyx":220
  * 
  * 
  * cdef int gp_GetVertexOutDegree(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -3611,7 +3611,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexOutDegree(graphP __pyx
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":218
+/* "planarity/full/graphLib.pyx":224
  * 
  * 
  * cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink):             # <<<<<<<<<<<<<<
@@ -3622,7 +3622,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVertexOutDegree(graphP __pyx
 static int __pyx_f_9planarity_4full_8graphLib_gp_AddEdge(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_ulink, int __pyx_v_v, int __pyx_v_vlink) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":219
+  /* "planarity/full/graphLib.pyx":225
  * 
  * cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
  *     return cgraphLib.gp_AddEdge(theGraph, u, ulink, v, vlink)             # <<<<<<<<<<<<<<
@@ -3632,7 +3632,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_AddEdge(graphP __pyx_v_theGraph
   __pyx_r = gp_AddEdge(__pyx_v_theGraph, __pyx_v_u, __pyx_v_ulink, __pyx_v_v, __pyx_v_vlink);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":218
+  /* "planarity/full/graphLib.pyx":224
  * 
  * 
  * cdef int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink):             # <<<<<<<<<<<<<<
@@ -3645,7 +3645,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_AddEdge(graphP __pyx_v_theGraph
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":222
+/* "planarity/full/graphLib.pyx":228
  * 
  * 
  * cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink):             # <<<<<<<<<<<<<<
@@ -3656,7 +3656,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_AddEdge(graphP __pyx_v_theGraph
 static int __pyx_f_9planarity_4full_8graphLib_gp_DynamicAddEdge(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_ulink, int __pyx_v_v, int __pyx_v_vlink) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":223
+  /* "planarity/full/graphLib.pyx":229
  * 
  * cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
  *     return cgraphLib.gp_DynamicAddEdge(theGraph, u, ulink, v, vlink)             # <<<<<<<<<<<<<<
@@ -3666,7 +3666,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DynamicAddEdge(graphP __pyx_v_t
   __pyx_r = gp_DynamicAddEdge(__pyx_v_theGraph, __pyx_v_u, __pyx_v_ulink, __pyx_v_v, __pyx_v_vlink);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":222
+  /* "planarity/full/graphLib.pyx":228
  * 
  * 
  * cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink):             # <<<<<<<<<<<<<<
@@ -3679,20 +3679,20 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DynamicAddEdge(graphP __pyx_v_t
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":226
+/* "planarity/full/graphLib.pyx":232
  * 
  * 
- * cdef int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_InsertEdge(theGraph, u, e_u, e_ulink, v, e_v, e_vlink)
- * 
+ * cdef int gp_InsertEdge(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink
+ * ):
 */
 
 static int __pyx_f_9planarity_4full_8graphLib_gp_InsertEdge(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_e_u, int __pyx_v_e_ulink, int __pyx_v_v, int __pyx_v_e_v, int __pyx_v_e_vlink) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":227
- * 
- * cdef int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink):
+  /* "planarity/full/graphLib.pyx":235
+ *     graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink
+ * ):
  *     return cgraphLib.gp_InsertEdge(theGraph, u, e_u, e_ulink, v, e_v, e_vlink)             # <<<<<<<<<<<<<<
  * 
  * 
@@ -3700,12 +3700,12 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_InsertEdge(graphP __pyx_v_theGr
   __pyx_r = gp_InsertEdge(__pyx_v_theGraph, __pyx_v_u, __pyx_v_e_u, __pyx_v_e_ulink, __pyx_v_v, __pyx_v_e_v, __pyx_v_e_vlink);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":226
+  /* "planarity/full/graphLib.pyx":232
  * 
  * 
- * cdef int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_InsertEdge(theGraph, u, e_u, e_ulink, v, e_v, e_vlink)
- * 
+ * cdef int gp_InsertEdge(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink
+ * ):
 */
 
   /* function exit code */
@@ -3713,7 +3713,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_InsertEdge(graphP __pyx_v_theGr
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":230
+/* "planarity/full/graphLib.pyx":238
  * 
  * 
  * cdef int gp_DeleteEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -3724,7 +3724,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_InsertEdge(graphP __pyx_v_theGr
 static int __pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":231
+  /* "planarity/full/graphLib.pyx":239
  * 
  * cdef int gp_DeleteEdge(graphP theGraph, int e):
  *     return cgraphLib.gp_DeleteEdge(theGraph, e)             # <<<<<<<<<<<<<<
@@ -3734,7 +3734,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge(graphP __pyx_v_theGr
   __pyx_r = gp_DeleteEdge(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":230
+  /* "planarity/full/graphLib.pyx":238
  * 
  * 
  * cdef int gp_DeleteEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -3747,7 +3747,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge(graphP __pyx_v_theGr
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":234
+/* "planarity/full/graphLib.pyx":242
  * 
  * 
  * cdef void gp_HideEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -3757,7 +3757,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DeleteEdge(graphP __pyx_v_theGr
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_HideEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":235
+  /* "planarity/full/graphLib.pyx":243
  * 
  * cdef void gp_HideEdge(graphP theGraph, int e):
  *     cgraphLib.gp_HideEdge(theGraph, e)             # <<<<<<<<<<<<<<
@@ -3766,7 +3766,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_HideEdge(graphP __pyx_v_theGra
 */
   gp_HideEdge(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":234
+  /* "planarity/full/graphLib.pyx":242
  * 
  * 
  * cdef void gp_HideEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -3777,7 +3777,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_HideEdge(graphP __pyx_v_theGra
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":238
+/* "planarity/full/graphLib.pyx":246
  * 
  * 
  * cdef void gp_RestoreEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -3787,7 +3787,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_HideEdge(graphP __pyx_v_theGra
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_RestoreEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":239
+  /* "planarity/full/graphLib.pyx":247
  * 
  * cdef void gp_RestoreEdge(graphP theGraph, int e):
  *     cgraphLib.gp_RestoreEdge(theGraph, e)             # <<<<<<<<<<<<<<
@@ -3796,7 +3796,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_RestoreEdge(graphP __pyx_v_the
 */
   gp_RestoreEdge(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":238
+  /* "planarity/full/graphLib.pyx":246
  * 
  * 
  * cdef void gp_RestoreEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -3807,7 +3807,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_RestoreEdge(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":242
+/* "planarity/full/graphLib.pyx":250
  * 
  * 
  * cdef int gp_HideVertex(graphP theGraph, int vertex):             # <<<<<<<<<<<<<<
@@ -3818,7 +3818,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_RestoreEdge(graphP __pyx_v_the
 static int __pyx_f_9planarity_4full_8graphLib_gp_HideVertex(graphP __pyx_v_theGraph, int __pyx_v_vertex) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":243
+  /* "planarity/full/graphLib.pyx":251
  * 
  * cdef int gp_HideVertex(graphP theGraph, int vertex):
  *     return cgraphLib.gp_HideVertex(theGraph, vertex)             # <<<<<<<<<<<<<<
@@ -3828,79 +3828,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_HideVertex(graphP __pyx_v_theGr
   __pyx_r = gp_HideVertex(__pyx_v_theGraph, __pyx_v_vertex);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":242
+  /* "planarity/full/graphLib.pyx":250
  * 
  * 
  * cdef int gp_HideVertex(graphP theGraph, int vertex):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_HideVertex(theGraph, vertex)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":246
- * 
- * 
- * cdef int gp_RestoreVertex(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_RestoreVertex(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_RestoreVertex(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":247
- * 
- * cdef int gp_RestoreVertex(graphP theGraph):
- *     return cgraphLib.gp_RestoreVertex(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_RestoreVertex(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":246
- * 
- * 
- * cdef int gp_RestoreVertex(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_RestoreVertex(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":250
- * 
- * 
- * cdef int gp_ContractEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ContractEdge(theGraph, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_ContractEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":251
- * 
- * cdef int gp_ContractEdge(graphP theGraph, int e):
- *     return cgraphLib.gp_ContractEdge(theGraph, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_ContractEdge(__pyx_v_theGraph, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":250
- * 
- * 
- * cdef int gp_ContractEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ContractEdge(theGraph, e)
  * 
 */
 
@@ -3912,29 +3844,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ContractEdge(graphP __pyx_v_the
 /* "planarity/full/graphLib.pyx":254
  * 
  * 
- * cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)
+ * cdef int gp_RestoreVertex(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_RestoreVertex(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_IdentifyVertices(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v, int __pyx_v_eBefore) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_RestoreVertex(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":255
  * 
- * cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):
- *     return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)             # <<<<<<<<<<<<<<
+ * cdef int gp_RestoreVertex(graphP theGraph):
+ *     return cgraphLib.gp_RestoreVertex(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_IdentifyVertices(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v, __pyx_v_eBefore);
+  __pyx_r = gp_RestoreVertex(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":254
  * 
  * 
- * cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)
+ * cdef int gp_RestoreVertex(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_RestoreVertex(theGraph)
  * 
 */
 
@@ -3946,29 +3878,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IdentifyVertices(graphP __pyx_v
 /* "planarity/full/graphLib.pyx":258
  * 
  * 
- * cdef int gp_RestoreVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_RestoreVertices(theGraph)
+ * cdef int gp_ContractEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ContractEdge(theGraph, e)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_RestoreVertices(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_ContractEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":259
  * 
- * cdef int gp_RestoreVertices(graphP theGraph):
- *     return cgraphLib.gp_RestoreVertices(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_ContractEdge(graphP theGraph, int e):
+ *     return cgraphLib.gp_ContractEdge(theGraph, e)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_RestoreVertices(__pyx_v_theGraph);
+  __pyx_r = gp_ContractEdge(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":258
  * 
  * 
- * cdef int gp_RestoreVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_RestoreVertices(theGraph)
+ * cdef int gp_ContractEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ContractEdge(theGraph, e)
  * 
 */
 
@@ -3980,29 +3912,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_RestoreVertices(graphP __pyx_v_
 /* "planarity/full/graphLib.pyx":262
  * 
  * 
- * cdef int gp_GetGraphFlags(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetGraphFlags(theGraph)
+ * cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetGraphFlags(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_IdentifyVertices(graphP __pyx_v_theGraph, int __pyx_v_u, int __pyx_v_v, int __pyx_v_eBefore) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":263
  * 
- * cdef int gp_GetGraphFlags(graphP theGraph):
- *     return cgraphLib.gp_GetGraphFlags(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):
+ *     return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_GetGraphFlags(__pyx_v_theGraph);
+  __pyx_r = gp_IdentifyVertices(__pyx_v_theGraph, __pyx_v_u, __pyx_v_v, __pyx_v_eBefore);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":262
  * 
  * 
- * cdef int gp_GetGraphFlags(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetGraphFlags(theGraph)
+ * cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IdentifyVertices(theGraph, u, v, eBefore)
  * 
 */
 
@@ -4014,29 +3946,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetGraphFlags(graphP __pyx_v_th
 /* "planarity/full/graphLib.pyx":266
  * 
  * 
- * cdef int gp_GetFirstEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetFirstEdge(theGraph, v)
+ * cdef int gp_RestoreVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_RestoreVertices(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_RestoreVertices(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":267
  * 
- * cdef int gp_GetFirstEdge(graphP theGraph, int v):
- *     return cgraphLib.gp_GetFirstEdge(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_RestoreVertices(graphP theGraph):
+ *     return cgraphLib.gp_RestoreVertices(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_GetFirstEdge(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_RestoreVertices(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":266
  * 
  * 
- * cdef int gp_GetFirstEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetFirstEdge(theGraph, v)
+ * cdef int gp_RestoreVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_RestoreVertices(theGraph)
  * 
 */
 
@@ -4048,29 +3980,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge(graphP __pyx_v_the
 /* "planarity/full/graphLib.pyx":270
  * 
  * 
- * cdef int gp_GetLastEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetLastEdge(theGraph, v)
+ * cdef int gp_GetGraphFlags(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetGraphFlags(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetLastEdge(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetGraphFlags(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":271
  * 
- * cdef int gp_GetLastEdge(graphP theGraph, int v):
- *     return cgraphLib.gp_GetLastEdge(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_GetGraphFlags(graphP theGraph):
+ *     return cgraphLib.gp_GetGraphFlags(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_GetLastEdge(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_GetGraphFlags(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":270
  * 
  * 
- * cdef int gp_GetLastEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetLastEdge(theGraph, v)
+ * cdef int gp_GetGraphFlags(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetGraphFlags(theGraph)
  * 
 */
 
@@ -4082,29 +4014,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetLastEdge(graphP __pyx_v_theG
 /* "planarity/full/graphLib.pyx":274
  * 
  * 
- * cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)
+ * cdef int gp_GetFirstEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetFirstEdge(theGraph, v)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeByLink(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_theLink) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetFirstEdge(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":275
  * 
- * cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):
- *     return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)             # <<<<<<<<<<<<<<
+ * cdef int gp_GetFirstEdge(graphP theGraph, int v):
+ *     return cgraphLib.gp_GetFirstEdge(theGraph, v)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_GetEdgeByLink(__pyx_v_theGraph, __pyx_v_v, __pyx_v_theLink);
+  __pyx_r = gp_GetFirstEdge(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":274
  * 
  * 
- * cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)
+ * cdef int gp_GetFirstEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetFirstEdge(theGraph, v)
  * 
 */
 
@@ -4116,6 +4048,74 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeByLink(graphP __pyx_v_th
 /* "planarity/full/graphLib.pyx":278
  * 
  * 
+ * cdef int gp_GetLastEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetLastEdge(theGraph, v)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetLastEdge(graphP __pyx_v_theGraph, int __pyx_v_v) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":279
+ * 
+ * cdef int gp_GetLastEdge(graphP theGraph, int v):
+ *     return cgraphLib.gp_GetLastEdge(theGraph, v)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetLastEdge(__pyx_v_theGraph, __pyx_v_v);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":278
+ * 
+ * 
+ * cdef int gp_GetLastEdge(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetLastEdge(theGraph, v)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":282
+ * 
+ * 
+ * cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeByLink(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_theLink) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":283
+ * 
+ * cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):
+ *     return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetEdgeByLink(__pyx_v_theGraph, __pyx_v_v, __pyx_v_theLink);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":282
+ * 
+ * 
+ * cdef int gp_GetEdgeByLink(graphP theGraph, int v, int theLink):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetEdgeByLink(theGraph, v, theLink)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":286
+ * 
+ * 
  * cdef void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge):             # <<<<<<<<<<<<<<
  *     cgraphLib.gp_SetFirstEdge(theGraph, v, newFirstEdge)
  * 
@@ -4123,7 +4123,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeByLink(graphP __pyx_v_th
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetFirstEdge(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_newFirstEdge) {
 
-  /* "planarity/full/graphLib.pyx":279
+  /* "planarity/full/graphLib.pyx":287
  * 
  * cdef void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge):
  *     cgraphLib.gp_SetFirstEdge(theGraph, v, newFirstEdge)             # <<<<<<<<<<<<<<
@@ -4132,7 +4132,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetFirstEdge(graphP __pyx_v_th
 */
   gp_SetFirstEdge(__pyx_v_theGraph, __pyx_v_v, __pyx_v_newFirstEdge);
 
-  /* "planarity/full/graphLib.pyx":278
+  /* "planarity/full/graphLib.pyx":286
  * 
  * 
  * cdef void gp_SetFirstEdge(graphP theGraph, int v, int newFirstEdge):             # <<<<<<<<<<<<<<
@@ -4143,7 +4143,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetFirstEdge(graphP __pyx_v_th
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":282
+/* "planarity/full/graphLib.pyx":290
  * 
  * 
  * cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):             # <<<<<<<<<<<<<<
@@ -4153,7 +4153,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetFirstEdge(graphP __pyx_v_th
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetLastEdge(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_newLastEdge) {
 
-  /* "planarity/full/graphLib.pyx":283
+  /* "planarity/full/graphLib.pyx":291
  * 
  * cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):
  *     cgraphLib.gp_SetLastEdge(theGraph, v, newLastEdge)             # <<<<<<<<<<<<<<
@@ -4162,7 +4162,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetLastEdge(graphP __pyx_v_the
 */
   gp_SetLastEdge(__pyx_v_theGraph, __pyx_v_v, __pyx_v_newLastEdge);
 
-  /* "planarity/full/graphLib.pyx":282
+  /* "planarity/full/graphLib.pyx":290
  * 
  * 
  * cdef void gp_SetLastEdge(graphP theGraph, int v, int newLastEdge):             # <<<<<<<<<<<<<<
@@ -4173,7 +4173,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetLastEdge(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":286
+/* "planarity/full/graphLib.pyx":294
  * 
  * 
  * cdef void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge):             # <<<<<<<<<<<<<<
@@ -4183,7 +4183,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetLastEdge(graphP __pyx_v_the
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeByLink(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_theLink, int __pyx_v_newEdge) {
 
-  /* "planarity/full/graphLib.pyx":287
+  /* "planarity/full/graphLib.pyx":295
  * 
  * cdef void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge):
  *     cgraphLib.gp_SetEdgeByLink(theGraph, v, theLink, newEdge)             # <<<<<<<<<<<<<<
@@ -4192,7 +4192,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeByLink(graphP __pyx_v_t
 */
   gp_SetEdgeByLink(__pyx_v_theGraph, __pyx_v_v, __pyx_v_theLink, __pyx_v_newEdge);
 
-  /* "planarity/full/graphLib.pyx":286
+  /* "planarity/full/graphLib.pyx":294
  * 
  * 
  * cdef void gp_SetEdgeByLink(graphP theGraph, int v, int theLink, int newEdge):             # <<<<<<<<<<<<<<
@@ -4203,7 +4203,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeByLink(graphP __pyx_v_t
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":290
+/* "planarity/full/graphLib.pyx":298
  * 
  * 
  * cdef int gp_LowerBoundVertices(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -4214,7 +4214,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeByLink(graphP __pyx_v_t
 static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":291
+  /* "planarity/full/graphLib.pyx":299
  * 
  * cdef int gp_LowerBoundVertices(graphP theGraph):
  *     return cgraphLib.gp_LowerBoundVertices(theGraph)             # <<<<<<<<<<<<<<
@@ -4224,79 +4224,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertices(graphP __pyx
   __pyx_r = gp_LowerBoundVertices(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":290
+  /* "planarity/full/graphLib.pyx":298
  * 
  * 
  * cdef int gp_LowerBoundVertices(graphP theGraph):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_LowerBoundVertices(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":294
- * 
- * 
- * cdef int gp_UpperBoundVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundVertices(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":295
- * 
- * cdef int gp_UpperBoundVertices(graphP theGraph):
- *     return cgraphLib.gp_UpperBoundVertices(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_UpperBoundVertices(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":294
- * 
- * 
- * cdef int gp_UpperBoundVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundVertices(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":298
- * 
- * 
- * cdef int gp_LowerBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVirtualVertices(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":299
- * 
- * cdef int gp_LowerBoundVirtualVertices(graphP theGraph):
- *     return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_LowerBoundVirtualVertices(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":298
- * 
- * 
- * cdef int gp_LowerBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)
  * 
 */
 
@@ -4308,29 +4240,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVirtualVertices(graph
 /* "planarity/full/graphLib.pyx":302
  * 
  * 
- * cdef int gp_UpperBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)
+ * cdef int gp_UpperBoundVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundVertices(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVirtualVertices(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertices(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":303
  * 
- * cdef int gp_UpperBoundVirtualVertices(graphP theGraph):
- *     return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_UpperBoundVertices(graphP theGraph):
+ *     return cgraphLib.gp_UpperBoundVertices(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_UpperBoundVirtualVertices(__pyx_v_theGraph);
+  __pyx_r = gp_UpperBoundVertices(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":302
  * 
  * 
- * cdef int gp_UpperBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)
+ * cdef int gp_UpperBoundVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundVertices(theGraph)
  * 
 */
 
@@ -4342,29 +4274,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVirtualVertices(graph
 /* "planarity/full/graphLib.pyx":306
  * 
  * 
- * cdef int gp_LowerBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundVertexStorage(theGraph)
+ * cdef int gp_LowerBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertexStorage(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVirtualVertices(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":307
  * 
- * cdef int gp_LowerBoundVertexStorage(graphP theGraph):
- *     return cgraphLib.gp_LowerBoundVertexStorage(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_LowerBoundVirtualVertices(graphP theGraph):
+ *     return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_LowerBoundVertexStorage(__pyx_v_theGraph);
+  __pyx_r = gp_LowerBoundVirtualVertices(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":306
  * 
  * 
- * cdef int gp_LowerBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundVertexStorage(theGraph)
+ * cdef int gp_LowerBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundVirtualVertices(theGraph)
  * 
 */
 
@@ -4376,29 +4308,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertexStorage(graphP 
 /* "planarity/full/graphLib.pyx":310
  * 
  * 
- * cdef int gp_UpperBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundVertexStorage(theGraph)
+ * cdef int gp_UpperBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertexStorage(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVirtualVertices(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":311
  * 
- * cdef int gp_UpperBoundVertexStorage(graphP theGraph):
- *     return cgraphLib.gp_UpperBoundVertexStorage(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_UpperBoundVirtualVertices(graphP theGraph):
+ *     return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_UpperBoundVertexStorage(__pyx_v_theGraph);
+  __pyx_r = gp_UpperBoundVirtualVertices(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":310
  * 
  * 
- * cdef int gp_UpperBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundVertexStorage(theGraph)
+ * cdef int gp_UpperBoundVirtualVertices(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundVirtualVertices(theGraph)
  * 
 */
 
@@ -4410,29 +4342,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertexStorage(graphP 
 /* "planarity/full/graphLib.pyx":314
  * 
  * 
- * cdef int gp_IsVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsVertex(theGraph, v)
+ * cdef int gp_LowerBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundVertexStorage(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundVertexStorage(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":315
  * 
- * cdef int gp_IsVertex(graphP theGraph, int v):
- *     return cgraphLib.gp_IsVertex(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_LowerBoundVertexStorage(graphP theGraph):
+ *     return cgraphLib.gp_LowerBoundVertexStorage(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_IsVertex(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_LowerBoundVertexStorage(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":314
  * 
  * 
- * cdef int gp_IsVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsVertex(theGraph, v)
+ * cdef int gp_LowerBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundVertexStorage(theGraph)
  * 
 */
 
@@ -4444,29 +4376,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsVertex(graphP __pyx_v_theGrap
 /* "planarity/full/graphLib.pyx":318
  * 
  * 
- * cdef int gp_IsVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsVirtualVertex(theGraph, v)
+ * cdef int gp_UpperBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundVertexStorage(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsVirtualVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundVertexStorage(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":319
  * 
- * cdef int gp_IsVirtualVertex(graphP theGraph, int v):
- *     return cgraphLib.gp_IsVirtualVertex(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_UpperBoundVertexStorage(graphP theGraph):
+ *     return cgraphLib.gp_UpperBoundVertexStorage(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_IsVirtualVertex(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_UpperBoundVertexStorage(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":318
  * 
  * 
- * cdef int gp_IsVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsVirtualVertex(theGraph, v)
+ * cdef int gp_UpperBoundVertexStorage(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundVertexStorage(theGraph)
  * 
 */
 
@@ -4478,29 +4410,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsVirtualVertex(graphP __pyx_v_
 /* "planarity/full/graphLib.pyx":322
  * 
  * 
- * cdef int gp_IsNotVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNotVertex(theGraph, v)
+ * cdef int gp_IsVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsVertex(theGraph, v)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":323
  * 
- * cdef int gp_IsNotVertex(graphP theGraph, int v):
- *     return cgraphLib.gp_IsNotVertex(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_IsVertex(graphP theGraph, int v):
+ *     return cgraphLib.gp_IsVertex(theGraph, v)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_IsNotVertex(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_IsVertex(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":322
  * 
  * 
- * cdef int gp_IsNotVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNotVertex(theGraph, v)
+ * cdef int gp_IsVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsVertex(theGraph, v)
  * 
 */
 
@@ -4512,29 +4444,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotVertex(graphP __pyx_v_theG
 /* "planarity/full/graphLib.pyx":326
  * 
  * 
- * cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)
+ * cdef int gp_IsVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsVirtualVertex(theGraph, v)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotVirtualVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsVirtualVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":327
  * 
- * cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):
- *     return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_IsVirtualVertex(graphP theGraph, int v):
+ *     return cgraphLib.gp_IsVirtualVertex(theGraph, v)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_IsNotVirtualVertex(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_IsVirtualVertex(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":326
  * 
  * 
- * cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)
+ * cdef int gp_IsVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsVirtualVertex(theGraph, v)
  * 
 */
 
@@ -4546,29 +4478,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotVirtualVertex(graphP __pyx
 /* "planarity/full/graphLib.pyx":330
  * 
  * 
- * cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)
+ * cdef int gp_IsNotVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsNotVertex(theGraph, v)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_VirtualVertexInUse(graphP __pyx_v_theGraph, int __pyx_v_virtualVertex) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":331
  * 
- * cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):
- *     return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)             # <<<<<<<<<<<<<<
+ * cdef int gp_IsNotVertex(graphP theGraph, int v):
+ *     return cgraphLib.gp_IsNotVertex(theGraph, v)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_VirtualVertexInUse(__pyx_v_theGraph, __pyx_v_virtualVertex);
+  __pyx_r = gp_IsNotVertex(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":330
  * 
  * 
- * cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)
+ * cdef int gp_IsNotVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsNotVertex(theGraph, v)
  * 
 */
 
@@ -4580,29 +4512,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_VirtualVertexInUse(graphP __pyx
 /* "planarity/full/graphLib.pyx":334
  * 
  * 
- * cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)
+ * cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_VirtualVertexNotInUse(graphP __pyx_v_theGraph, int __pyx_v_virtualVertex) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotVirtualVertex(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":335
  * 
- * cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):
- *     return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)             # <<<<<<<<<<<<<<
+ * cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):
+ *     return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_VirtualVertexNotInUse(__pyx_v_theGraph, __pyx_v_virtualVertex);
+  __pyx_r = gp_IsNotVirtualVertex(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":334
  * 
  * 
- * cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)
+ * cdef int gp_IsNotVirtualVertex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsNotVirtualVertex(theGraph, v)
  * 
 */
 
@@ -4614,29 +4546,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_VirtualVertexNotInUse(graphP __
 /* "planarity/full/graphLib.pyx":338
  * 
  * 
- * cdef int gp_GetIndex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetIndex(theGraph, v)
+ * cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetIndex(graphP __pyx_v_theGraph, int __pyx_v_v) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_VirtualVertexInUse(graphP __pyx_v_theGraph, int __pyx_v_virtualVertex) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":339
  * 
- * cdef int gp_GetIndex(graphP theGraph, int v):
- *     return cgraphLib.gp_GetIndex(theGraph, v)             # <<<<<<<<<<<<<<
+ * cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):
+ *     return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_GetIndex(__pyx_v_theGraph, __pyx_v_v);
+  __pyx_r = gp_VirtualVertexInUse(__pyx_v_theGraph, __pyx_v_virtualVertex);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":338
  * 
  * 
- * cdef int gp_GetIndex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetIndex(theGraph, v)
+ * cdef int gp_VirtualVertexInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_VirtualVertexInUse(theGraph, virtualVertex)
  * 
 */
 
@@ -4648,6 +4580,74 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetIndex(graphP __pyx_v_theGrap
 /* "planarity/full/graphLib.pyx":342
  * 
  * 
+ * cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_VirtualVertexNotInUse(graphP __pyx_v_theGraph, int __pyx_v_virtualVertex) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":343
+ * 
+ * cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):
+ *     return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_VirtualVertexNotInUse(__pyx_v_theGraph, __pyx_v_virtualVertex);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":342
+ * 
+ * 
+ * cdef int gp_VirtualVertexNotInUse(graphP theGraph, int virtualVertex):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_VirtualVertexNotInUse(theGraph, virtualVertex)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":346
+ * 
+ * 
+ * cdef int gp_GetIndex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetIndex(theGraph, v)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetIndex(graphP __pyx_v_theGraph, int __pyx_v_v) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":347
+ * 
+ * cdef int gp_GetIndex(graphP theGraph, int v):
+ *     return cgraphLib.gp_GetIndex(theGraph, v)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetIndex(__pyx_v_theGraph, __pyx_v_v);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":346
+ * 
+ * 
+ * cdef int gp_GetIndex(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetIndex(theGraph, v)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":350
+ * 
+ * 
  * cdef void gp_SetIndex(graphP theGraph, int v, int theIndex):             # <<<<<<<<<<<<<<
  *     cgraphLib.gp_SetIndex(theGraph, v, theIndex)
  * 
@@ -4655,7 +4655,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetIndex(graphP __pyx_v_theGrap
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetIndex(graphP __pyx_v_theGraph, int __pyx_v_v, int __pyx_v_theIndex) {
 
-  /* "planarity/full/graphLib.pyx":343
+  /* "planarity/full/graphLib.pyx":351
  * 
  * cdef void gp_SetIndex(graphP theGraph, int v, int theIndex):
  *     cgraphLib.gp_SetIndex(theGraph, v, theIndex)             # <<<<<<<<<<<<<<
@@ -4664,7 +4664,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetIndex(graphP __pyx_v_theGra
 */
   gp_SetIndex(__pyx_v_theGraph, __pyx_v_v, __pyx_v_theIndex);
 
-  /* "planarity/full/graphLib.pyx":342
+  /* "planarity/full/graphLib.pyx":350
  * 
  * 
  * cdef void gp_SetIndex(graphP theGraph, int v, int theIndex):             # <<<<<<<<<<<<<<
@@ -4675,7 +4675,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetIndex(graphP __pyx_v_theGra
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":346
+/* "planarity/full/graphLib.pyx":354
  * 
  * 
  * cdef void gp_InitFlags(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4685,7 +4685,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetIndex(graphP __pyx_v_theGra
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_InitFlags(graphP __pyx_v_theGraph, int __pyx_v_v) {
 
-  /* "planarity/full/graphLib.pyx":347
+  /* "planarity/full/graphLib.pyx":355
  * 
  * cdef void gp_InitFlags(graphP theGraph, int v):
  *     cgraphLib.gp_InitFlags(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4694,7 +4694,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_InitFlags(graphP __pyx_v_theGr
 */
   gp_InitFlags(__pyx_v_theGraph, __pyx_v_v);
 
-  /* "planarity/full/graphLib.pyx":346
+  /* "planarity/full/graphLib.pyx":354
  * 
  * 
  * cdef void gp_InitFlags(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4705,7 +4705,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_InitFlags(graphP __pyx_v_theGr
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":350
+/* "planarity/full/graphLib.pyx":358
  * 
  * 
  * cdef int gp_GetVisited(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4716,7 +4716,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_InitFlags(graphP __pyx_v_theGr
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetVisited(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":351
+  /* "planarity/full/graphLib.pyx":359
  * 
  * cdef int gp_GetVisited(graphP theGraph, int v):
  *     return cgraphLib.gp_GetVisited(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4726,7 +4726,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVisited(graphP __pyx_v_theGr
   __pyx_r = gp_GetVisited(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":350
+  /* "planarity/full/graphLib.pyx":358
  * 
  * 
  * cdef int gp_GetVisited(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4739,7 +4739,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVisited(graphP __pyx_v_theGr
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":354
+/* "planarity/full/graphLib.pyx":362
  * 
  * 
  * cdef void gp_ClearVisited(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4749,7 +4749,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetVisited(graphP __pyx_v_theGr
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ClearVisited(graphP __pyx_v_theGraph, int __pyx_v_v) {
 
-  /* "planarity/full/graphLib.pyx":355
+  /* "planarity/full/graphLib.pyx":363
  * 
  * cdef void gp_ClearVisited(graphP theGraph, int v):
  *     cgraphLib.gp_ClearVisited(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4758,7 +4758,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearVisited(graphP __pyx_v_th
 */
   gp_ClearVisited(__pyx_v_theGraph, __pyx_v_v);
 
-  /* "planarity/full/graphLib.pyx":354
+  /* "planarity/full/graphLib.pyx":362
  * 
  * 
  * cdef void gp_ClearVisited(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4769,7 +4769,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearVisited(graphP __pyx_v_th
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":358
+/* "planarity/full/graphLib.pyx":366
  * 
  * 
  * cdef void gp_SetVisited(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4779,7 +4779,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearVisited(graphP __pyx_v_th
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetVisited(graphP __pyx_v_theGraph, int __pyx_v_v) {
 
-  /* "planarity/full/graphLib.pyx":359
+  /* "planarity/full/graphLib.pyx":367
  * 
  * cdef void gp_SetVisited(graphP theGraph, int v):
  *     cgraphLib.gp_SetVisited(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4788,7 +4788,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetVisited(graphP __pyx_v_theG
 */
   gp_SetVisited(__pyx_v_theGraph, __pyx_v_v);
 
-  /* "planarity/full/graphLib.pyx":358
+  /* "planarity/full/graphLib.pyx":366
  * 
  * 
  * cdef void gp_SetVisited(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4799,7 +4799,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetVisited(graphP __pyx_v_theG
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":362
+/* "planarity/full/graphLib.pyx":370
  * 
  * 
  * cdef int gp_GetMarked(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4810,7 +4810,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetVisited(graphP __pyx_v_theG
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetMarked(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":363
+  /* "planarity/full/graphLib.pyx":371
  * 
  * cdef int gp_GetMarked(graphP theGraph, int v):
  *     return cgraphLib.gp_GetMarked(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4820,7 +4820,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetMarked(graphP __pyx_v_theGra
   __pyx_r = gp_GetMarked(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":362
+  /* "planarity/full/graphLib.pyx":370
  * 
  * 
  * cdef int gp_GetMarked(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4833,7 +4833,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetMarked(graphP __pyx_v_theGra
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":366
+/* "planarity/full/graphLib.pyx":374
  * 
  * 
  * cdef void gp_ClearMarked(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4843,7 +4843,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetMarked(graphP __pyx_v_theGra
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ClearMarked(graphP __pyx_v_theGraph, int __pyx_v_v) {
 
-  /* "planarity/full/graphLib.pyx":367
+  /* "planarity/full/graphLib.pyx":375
  * 
  * cdef void gp_ClearMarked(graphP theGraph, int v):
  *     cgraphLib.gp_ClearMarked(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4852,7 +4852,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearMarked(graphP __pyx_v_the
 */
   gp_ClearMarked(__pyx_v_theGraph, __pyx_v_v);
 
-  /* "planarity/full/graphLib.pyx":366
+  /* "planarity/full/graphLib.pyx":374
  * 
  * 
  * cdef void gp_ClearMarked(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4863,7 +4863,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearMarked(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":370
+/* "planarity/full/graphLib.pyx":378
  * 
  * 
  * cdef void gp_SetMarked(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4873,7 +4873,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearMarked(graphP __pyx_v_the
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetMarked(graphP __pyx_v_theGraph, int __pyx_v_v) {
 
-  /* "planarity/full/graphLib.pyx":371
+  /* "planarity/full/graphLib.pyx":379
  * 
  * cdef void gp_SetMarked(graphP theGraph, int v):
  *     cgraphLib.gp_SetMarked(theGraph, v)             # <<<<<<<<<<<<<<
@@ -4882,7 +4882,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetMarked(graphP __pyx_v_theGr
 */
   gp_SetMarked(__pyx_v_theGraph, __pyx_v_v);
 
-  /* "planarity/full/graphLib.pyx":370
+  /* "planarity/full/graphLib.pyx":378
  * 
  * 
  * cdef void gp_SetMarked(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -4893,7 +4893,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetMarked(graphP __pyx_v_theGr
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":374
+/* "planarity/full/graphLib.pyx":382
  * 
  * 
  * cdef int gp_GetTwin(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -4904,7 +4904,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetMarked(graphP __pyx_v_theGr
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetTwin(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":375
+  /* "planarity/full/graphLib.pyx":383
  * 
  * cdef int gp_GetTwin(graphP theGraph, int e):
  *     return cgraphLib.gp_GetTwin(theGraph, e)             # <<<<<<<<<<<<<<
@@ -4914,79 +4914,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetTwin(graphP __pyx_v_theGraph
   __pyx_r = gp_GetTwin(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":374
+  /* "planarity/full/graphLib.pyx":382
  * 
  * 
  * cdef int gp_GetTwin(graphP theGraph, int e):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_GetTwin(theGraph, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":378
- * 
- * 
- * cdef int gp_GetNextEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetNextEdge(theGraph, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":379
- * 
- * cdef int gp_GetNextEdge(graphP theGraph, int e):
- *     return cgraphLib.gp_GetNextEdge(theGraph, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_GetNextEdge(__pyx_v_theGraph, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":378
- * 
- * 
- * cdef int gp_GetNextEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetNextEdge(theGraph, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":382
- * 
- * 
- * cdef int gp_GetPrevEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetPrevEdge(theGraph, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetPrevEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":383
- * 
- * cdef int gp_GetPrevEdge(graphP theGraph, int e):
- *     return cgraphLib.gp_GetPrevEdge(theGraph, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_GetPrevEdge(__pyx_v_theGraph, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":382
- * 
- * 
- * cdef int gp_GetPrevEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetPrevEdge(theGraph, e)
  * 
 */
 
@@ -4998,29 +4930,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetPrevEdge(graphP __pyx_v_theG
 /* "planarity/full/graphLib.pyx":386
  * 
  * 
- * cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)
+ * cdef int gp_GetNextEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetNextEdge(theGraph, e)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetAdjacentEdge(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_theLink) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetNextEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":387
  * 
- * cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):
- *     return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)             # <<<<<<<<<<<<<<
+ * cdef int gp_GetNextEdge(graphP theGraph, int e):
+ *     return cgraphLib.gp_GetNextEdge(theGraph, e)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_GetAdjacentEdge(__pyx_v_theGraph, __pyx_v_e, __pyx_v_theLink);
+  __pyx_r = gp_GetNextEdge(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":386
  * 
  * 
- * cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)
+ * cdef int gp_GetNextEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetNextEdge(theGraph, e)
  * 
 */
 
@@ -5032,6 +4964,74 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetAdjacentEdge(graphP __pyx_v_
 /* "planarity/full/graphLib.pyx":390
  * 
  * 
+ * cdef int gp_GetPrevEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetPrevEdge(theGraph, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetPrevEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":391
+ * 
+ * cdef int gp_GetPrevEdge(graphP theGraph, int e):
+ *     return cgraphLib.gp_GetPrevEdge(theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetPrevEdge(__pyx_v_theGraph, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":390
+ * 
+ * 
+ * cdef int gp_GetPrevEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetPrevEdge(theGraph, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":394
+ * 
+ * 
+ * cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetAdjacentEdge(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_theLink) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":395
+ * 
+ * cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):
+ *     return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetAdjacentEdge(__pyx_v_theGraph, __pyx_v_e, __pyx_v_theLink);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":394
+ * 
+ * 
+ * cdef int gp_GetAdjacentEdge(graphP theGraph, int e, int theLink):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetAdjacentEdge(theGraph, e, theLink)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":398
+ * 
+ * 
  * cdef void gp_SetNextEdge(graphP theGraph, int e, int newNextEdge):             # <<<<<<<<<<<<<<
  *     cgraphLib.gp_SetNextEdge(theGraph, e, newNextEdge)
  * 
@@ -5039,7 +5039,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetAdjacentEdge(graphP __pyx_v_
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetNextEdge(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_newNextEdge) {
 
-  /* "planarity/full/graphLib.pyx":391
+  /* "planarity/full/graphLib.pyx":399
  * 
  * cdef void gp_SetNextEdge(graphP theGraph, int e, int newNextEdge):
  *     cgraphLib.gp_SetNextEdge(theGraph, e, newNextEdge)             # <<<<<<<<<<<<<<
@@ -5048,7 +5048,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetNextEdge(graphP __pyx_v_the
 */
   gp_SetNextEdge(__pyx_v_theGraph, __pyx_v_e, __pyx_v_newNextEdge);
 
-  /* "planarity/full/graphLib.pyx":390
+  /* "planarity/full/graphLib.pyx":398
  * 
  * 
  * cdef void gp_SetNextEdge(graphP theGraph, int e, int newNextEdge):             # <<<<<<<<<<<<<<
@@ -5059,7 +5059,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetNextEdge(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":394
+/* "planarity/full/graphLib.pyx":402
  * 
  * 
  * cdef void gp_SetPrevEdge(graphP theGraph, int e, int newPrevEdge):             # <<<<<<<<<<<<<<
@@ -5069,7 +5069,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetNextEdge(graphP __pyx_v_the
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetPrevEdge(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_newPrevEdge) {
 
-  /* "planarity/full/graphLib.pyx":395
+  /* "planarity/full/graphLib.pyx":403
  * 
  * cdef void gp_SetPrevEdge(graphP theGraph, int e, int newPrevEdge):
  *     cgraphLib.gp_SetPrevEdge(theGraph, e, newPrevEdge)             # <<<<<<<<<<<<<<
@@ -5078,7 +5078,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetPrevEdge(graphP __pyx_v_the
 */
   gp_SetPrevEdge(__pyx_v_theGraph, __pyx_v_e, __pyx_v_newPrevEdge);
 
-  /* "planarity/full/graphLib.pyx":394
+  /* "planarity/full/graphLib.pyx":402
  * 
  * 
  * cdef void gp_SetPrevEdge(graphP theGraph, int e, int newPrevEdge):             # <<<<<<<<<<<<<<
@@ -5089,7 +5089,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetPrevEdge(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":398
+/* "planarity/full/graphLib.pyx":406
  * 
  * 
  * cdef void gp_SetAdjacentEdge(graphP theGraph, int e, int theLink, int newEdge):             # <<<<<<<<<<<<<<
@@ -5099,7 +5099,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetPrevEdge(graphP __pyx_v_the
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetAdjacentEdge(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_theLink, int __pyx_v_newEdge) {
 
-  /* "planarity/full/graphLib.pyx":399
+  /* "planarity/full/graphLib.pyx":407
  * 
  * cdef void gp_SetAdjacentEdge(graphP theGraph, int e, int theLink, int newEdge):
  *     cgraphLib.gp_SetAdjacentEdge(theGraph, e, theLink, newEdge)             # <<<<<<<<<<<<<<
@@ -5108,7 +5108,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetAdjacentEdge(graphP __pyx_v
 */
   gp_SetAdjacentEdge(__pyx_v_theGraph, __pyx_v_e, __pyx_v_theLink, __pyx_v_newEdge);
 
-  /* "planarity/full/graphLib.pyx":398
+  /* "planarity/full/graphLib.pyx":406
  * 
  * 
  * cdef void gp_SetAdjacentEdge(graphP theGraph, int e, int theLink, int newEdge):             # <<<<<<<<<<<<<<
@@ -5119,7 +5119,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetAdjacentEdge(graphP __pyx_v
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":402
+/* "planarity/full/graphLib.pyx":410
  * 
  * 
  * cdef int gp_IsEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5130,7 +5130,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetAdjacentEdge(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_IsEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":403
+  /* "planarity/full/graphLib.pyx":411
  * 
  * cdef int gp_IsEdge(graphP theGraph, int e):
  *     return cgraphLib.gp_IsEdge(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5140,79 +5140,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsEdge(graphP __pyx_v_theGraph,
   __pyx_r = gp_IsEdge(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":402
+  /* "planarity/full/graphLib.pyx":410
  * 
  * 
  * cdef int gp_IsEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_IsEdge(theGraph, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":406
- * 
- * 
- * cdef int gp_IsNotEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNotEdge(theGraph, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":407
- * 
- * cdef int gp_IsNotEdge(graphP theGraph, int e):
- *     return cgraphLib.gp_IsNotEdge(theGraph, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_IsNotEdge(__pyx_v_theGraph, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":406
- * 
- * 
- * cdef int gp_IsNotEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsNotEdge(theGraph, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":410
- * 
- * 
- * cdef int gp_GetNeighbor(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetNeighbor(theGraph, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor(graphP __pyx_v_theGraph, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":411
- * 
- * cdef int gp_GetNeighbor(graphP theGraph, int e):
- *     return cgraphLib.gp_GetNeighbor(theGraph, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_GetNeighbor(__pyx_v_theGraph, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":410
- * 
- * 
- * cdef int gp_GetNeighbor(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetNeighbor(theGraph, e)
  * 
 */
 
@@ -5224,6 +5156,74 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor(graphP __pyx_v_theG
 /* "planarity/full/graphLib.pyx":414
  * 
  * 
+ * cdef int gp_IsNotEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsNotEdge(theGraph, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotEdge(graphP __pyx_v_theGraph, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":415
+ * 
+ * cdef int gp_IsNotEdge(graphP theGraph, int e):
+ *     return cgraphLib.gp_IsNotEdge(theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_IsNotEdge(__pyx_v_theGraph, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":414
+ * 
+ * 
+ * cdef int gp_IsNotEdge(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsNotEdge(theGraph, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":418
+ * 
+ * 
+ * cdef int gp_GetNeighbor(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetNeighbor(theGraph, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor(graphP __pyx_v_theGraph, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":419
+ * 
+ * cdef int gp_GetNeighbor(graphP theGraph, int e):
+ *     return cgraphLib.gp_GetNeighbor(theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetNeighbor(__pyx_v_theGraph, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":418
+ * 
+ * 
+ * cdef int gp_GetNeighbor(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetNeighbor(theGraph, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":422
+ * 
+ * 
  * cdef void gp_SetNeighbor(graphP theGraph, int e, int v):             # <<<<<<<<<<<<<<
  *     cgraphLib.gp_SetNeighbor(theGraph, e, v)
  * 
@@ -5231,7 +5231,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetNeighbor(graphP __pyx_v_theG
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetNeighbor(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_v) {
 
-  /* "planarity/full/graphLib.pyx":415
+  /* "planarity/full/graphLib.pyx":423
  * 
  * cdef void gp_SetNeighbor(graphP theGraph, int e, int v):
  *     cgraphLib.gp_SetNeighbor(theGraph, e, v)             # <<<<<<<<<<<<<<
@@ -5240,7 +5240,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetNeighbor(graphP __pyx_v_the
 */
   gp_SetNeighbor(__pyx_v_theGraph, __pyx_v_e, __pyx_v_v);
 
-  /* "planarity/full/graphLib.pyx":414
+  /* "planarity/full/graphLib.pyx":422
  * 
  * 
  * cdef void gp_SetNeighbor(graphP theGraph, int e, int v):             # <<<<<<<<<<<<<<
@@ -5251,7 +5251,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetNeighbor(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":418
+/* "planarity/full/graphLib.pyx":426
  * 
  * 
  * cdef void gp_InitEdgeFlags(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5261,7 +5261,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetNeighbor(graphP __pyx_v_the
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_InitEdgeFlags(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":419
+  /* "planarity/full/graphLib.pyx":427
  * 
  * cdef void gp_InitEdgeFlags(graphP theGraph, int e):
  *     cgraphLib.gp_InitEdgeFlags(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5270,7 +5270,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_InitEdgeFlags(graphP __pyx_v_t
 */
   gp_InitEdgeFlags(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":418
+  /* "planarity/full/graphLib.pyx":426
  * 
  * 
  * cdef void gp_InitEdgeFlags(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5281,7 +5281,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_InitEdgeFlags(graphP __pyx_v_t
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":422
+/* "planarity/full/graphLib.pyx":430
  * 
  * 
  * cdef int gp_GetEdgeVisited(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5292,7 +5292,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_InitEdgeFlags(graphP __pyx_v_t
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeVisited(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":423
+  /* "planarity/full/graphLib.pyx":431
  * 
  * cdef int gp_GetEdgeVisited(graphP theGraph, int e):
  *     return cgraphLib.gp_GetEdgeVisited(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5302,7 +5302,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeVisited(graphP __pyx_v_t
   __pyx_r = gp_GetEdgeVisited(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":422
+  /* "planarity/full/graphLib.pyx":430
  * 
  * 
  * cdef int gp_GetEdgeVisited(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5315,7 +5315,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeVisited(graphP __pyx_v_t
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":426
+/* "planarity/full/graphLib.pyx":434
  * 
  * 
  * cdef void gp_ClearEdgeVisited(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5325,7 +5325,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeVisited(graphP __pyx_v_t
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeVisited(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":427
+  /* "planarity/full/graphLib.pyx":435
  * 
  * cdef void gp_ClearEdgeVisited(graphP theGraph, int e):
  *     cgraphLib.gp_ClearEdgeVisited(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5334,7 +5334,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeVisited(graphP __pyx_
 */
   gp_ClearEdgeVisited(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":426
+  /* "planarity/full/graphLib.pyx":434
  * 
  * 
  * cdef void gp_ClearEdgeVisited(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5345,7 +5345,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeVisited(graphP __pyx_
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":430
+/* "planarity/full/graphLib.pyx":438
  * 
  * 
  * cdef void gp_SetEdgeVisited(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5355,7 +5355,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeVisited(graphP __pyx_
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeVisited(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":431
+  /* "planarity/full/graphLib.pyx":439
  * 
  * cdef void gp_SetEdgeVisited(graphP theGraph, int e):
  *     cgraphLib.gp_SetEdgeVisited(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5364,7 +5364,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeVisited(graphP __pyx_v_
 */
   gp_SetEdgeVisited(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":430
+  /* "planarity/full/graphLib.pyx":438
  * 
  * 
  * cdef void gp_SetEdgeVisited(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5375,7 +5375,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeVisited(graphP __pyx_v_
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":434
+/* "planarity/full/graphLib.pyx":442
  * 
  * 
  * cdef int gp_GetEdgeMarked(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5386,7 +5386,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeVisited(graphP __pyx_v_
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeMarked(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":435
+  /* "planarity/full/graphLib.pyx":443
  * 
  * cdef int gp_GetEdgeMarked(graphP theGraph, int e):
  *     return cgraphLib.gp_GetEdgeMarked(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5396,7 +5396,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeMarked(graphP __pyx_v_th
   __pyx_r = gp_GetEdgeMarked(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":434
+  /* "planarity/full/graphLib.pyx":442
  * 
  * 
  * cdef int gp_GetEdgeMarked(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5409,7 +5409,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeMarked(graphP __pyx_v_th
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":438
+/* "planarity/full/graphLib.pyx":446
  * 
  * 
  * cdef void gp_ClearEdgeMarked(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5419,7 +5419,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeMarked(graphP __pyx_v_th
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeMarked(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":439
+  /* "planarity/full/graphLib.pyx":447
  * 
  * cdef void gp_ClearEdgeMarked(graphP theGraph, int e):
  *     cgraphLib.gp_ClearEdgeMarked(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5428,7 +5428,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeMarked(graphP __pyx_v
 */
   gp_ClearEdgeMarked(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":438
+  /* "planarity/full/graphLib.pyx":446
  * 
  * 
  * cdef void gp_ClearEdgeMarked(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5439,7 +5439,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeMarked(graphP __pyx_v
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":442
+/* "planarity/full/graphLib.pyx":450
  * 
  * 
  * cdef void gp_SetEdgeMarked(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5449,7 +5449,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeMarked(graphP __pyx_v
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeMarked(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":443
+  /* "planarity/full/graphLib.pyx":451
  * 
  * cdef void gp_SetEdgeMarked(graphP theGraph, int e):
  *     cgraphLib.gp_SetEdgeMarked(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5458,7 +5458,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeMarked(graphP __pyx_v_t
 */
   gp_SetEdgeMarked(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":442
+  /* "planarity/full/graphLib.pyx":450
  * 
  * 
  * cdef void gp_SetEdgeMarked(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5469,7 +5469,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeMarked(graphP __pyx_v_t
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":446
+/* "planarity/full/graphLib.pyx":454
  * 
  * 
  * cdef int gp_GetEdgeType(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5480,7 +5480,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeMarked(graphP __pyx_v_t
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeType(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":447
+  /* "planarity/full/graphLib.pyx":455
  * 
  * cdef int gp_GetEdgeType(graphP theGraph, int e):
  *     return cgraphLib.gp_GetEdgeType(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5490,7 +5490,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeType(graphP __pyx_v_theG
   __pyx_r = gp_GetEdgeType(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":446
+  /* "planarity/full/graphLib.pyx":454
  * 
  * 
  * cdef int gp_GetEdgeType(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5503,7 +5503,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeType(graphP __pyx_v_theG
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":450
+/* "planarity/full/graphLib.pyx":458
  * 
  * 
  * cdef void gp_ClearEdgeType(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5513,7 +5513,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeType(graphP __pyx_v_theG
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeType(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":451
+  /* "planarity/full/graphLib.pyx":459
  * 
  * cdef void gp_ClearEdgeType(graphP theGraph, int e):
  *     cgraphLib.gp_ClearEdgeType(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5522,7 +5522,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeType(graphP __pyx_v_t
 */
   gp_ClearEdgeType(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":450
+  /* "planarity/full/graphLib.pyx":458
  * 
  * 
  * cdef void gp_ClearEdgeType(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5533,7 +5533,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeType(graphP __pyx_v_t
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":454
+/* "planarity/full/graphLib.pyx":462
  * 
  * 
  * cdef void gp_SetEdgeType(graphP theGraph, int e, int type):             # <<<<<<<<<<<<<<
@@ -5543,7 +5543,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeType(graphP __pyx_v_t
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeType(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_type) {
 
-  /* "planarity/full/graphLib.pyx":455
+  /* "planarity/full/graphLib.pyx":463
  * 
  * cdef void gp_SetEdgeType(graphP theGraph, int e, int type):
  *     cgraphLib.gp_SetEdgeType(theGraph, e, type)             # <<<<<<<<<<<<<<
@@ -5552,7 +5552,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeType(graphP __pyx_v_the
 */
   gp_SetEdgeType(__pyx_v_theGraph, __pyx_v_e, __pyx_v_type);
 
-  /* "planarity/full/graphLib.pyx":454
+  /* "planarity/full/graphLib.pyx":462
  * 
  * 
  * cdef void gp_SetEdgeType(graphP theGraph, int e, int type):             # <<<<<<<<<<<<<<
@@ -5563,7 +5563,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeType(graphP __pyx_v_the
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":458
+/* "planarity/full/graphLib.pyx":466
  * 
  * 
  * cdef void gp_ResetEdgeType(graphP theGraph, int e, int type):             # <<<<<<<<<<<<<<
@@ -5573,7 +5573,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeType(graphP __pyx_v_the
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ResetEdgeType(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_type) {
 
-  /* "planarity/full/graphLib.pyx":459
+  /* "planarity/full/graphLib.pyx":467
  * 
  * cdef void gp_ResetEdgeType(graphP theGraph, int e, int type):
  *     cgraphLib.gp_ResetEdgeType(theGraph, e, type)             # <<<<<<<<<<<<<<
@@ -5582,7 +5582,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ResetEdgeType(graphP __pyx_v_t
 */
   gp_ResetEdgeType(__pyx_v_theGraph, __pyx_v_e, __pyx_v_type);
 
-  /* "planarity/full/graphLib.pyx":458
+  /* "planarity/full/graphLib.pyx":466
  * 
  * 
  * cdef void gp_ResetEdgeType(graphP theGraph, int e, int type):             # <<<<<<<<<<<<<<
@@ -5593,7 +5593,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ResetEdgeType(graphP __pyx_v_t
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":462
+/* "planarity/full/graphLib.pyx":470
  * 
  * 
  * cdef int gp_GetEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5604,7 +5604,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ResetEdgeType(graphP __pyx_v_t
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeFlagInverted(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":463
+  /* "planarity/full/graphLib.pyx":471
  * 
  * cdef int gp_GetEdgeFlagInverted(graphP theGraph, int e):
  *     return cgraphLib.gp_GetEdgeFlagInverted(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5614,7 +5614,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeFlagInverted(graphP __py
   __pyx_r = gp_GetEdgeFlagInverted(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":462
+  /* "planarity/full/graphLib.pyx":470
  * 
  * 
  * cdef int gp_GetEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5627,7 +5627,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeFlagInverted(graphP __py
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":466
+/* "planarity/full/graphLib.pyx":474
  * 
  * 
  * cdef void gp_SetEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5637,7 +5637,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetEdgeFlagInverted(graphP __py
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeFlagInverted(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":467
+  /* "planarity/full/graphLib.pyx":475
  * 
  * cdef void gp_SetEdgeFlagInverted(graphP theGraph, int e):
  *     cgraphLib.gp_SetEdgeFlagInverted(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5646,7 +5646,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeFlagInverted(graphP __p
 */
   gp_SetEdgeFlagInverted(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":466
+  /* "planarity/full/graphLib.pyx":474
  * 
  * 
  * cdef void gp_SetEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5657,7 +5657,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeFlagInverted(graphP __p
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":470
+/* "planarity/full/graphLib.pyx":478
  * 
  * 
  * cdef void gp_ClearEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5667,7 +5667,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_SetEdgeFlagInverted(graphP __p
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeFlagInverted(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":471
+  /* "planarity/full/graphLib.pyx":479
  * 
  * cdef void gp_ClearEdgeFlagInverted(graphP theGraph, int e):
  *     cgraphLib.gp_ClearEdgeFlagInverted(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5676,7 +5676,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeFlagInverted(graphP _
 */
   gp_ClearEdgeFlagInverted(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":470
+  /* "planarity/full/graphLib.pyx":478
  * 
  * 
  * cdef void gp_ClearEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5687,7 +5687,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeFlagInverted(graphP _
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":474
+/* "planarity/full/graphLib.pyx":482
  * 
  * 
  * cdef void gp_XorEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5697,7 +5697,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_ClearEdgeFlagInverted(graphP _
 
 static void __pyx_f_9planarity_4full_8graphLib_gp_XorEdgeFlagInverted(graphP __pyx_v_theGraph, int __pyx_v_e) {
 
-  /* "planarity/full/graphLib.pyx":475
+  /* "planarity/full/graphLib.pyx":483
  * 
  * cdef void gp_XorEdgeFlagInverted(graphP theGraph, int e):
  *     cgraphLib.gp_XorEdgeFlagInverted(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5706,7 +5706,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_XorEdgeFlagInverted(graphP __p
 */
   gp_XorEdgeFlagInverted(__pyx_v_theGraph, __pyx_v_e);
 
-  /* "planarity/full/graphLib.pyx":474
+  /* "planarity/full/graphLib.pyx":482
  * 
  * 
  * cdef void gp_XorEdgeFlagInverted(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5717,7 +5717,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_XorEdgeFlagInverted(graphP __p
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":478
+/* "planarity/full/graphLib.pyx":486
  * 
  * 
  * cdef int gp_GetDirection(graphP theGraph, int e):             # <<<<<<<<<<<<<<
@@ -5728,7 +5728,7 @@ static void __pyx_f_9planarity_4full_8graphLib_gp_XorEdgeFlagInverted(graphP __p
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetDirection(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":479
+  /* "planarity/full/graphLib.pyx":487
  * 
  * cdef int gp_GetDirection(graphP theGraph, int e):
  *     return cgraphLib.gp_GetDirection(theGraph, e)             # <<<<<<<<<<<<<<
@@ -5738,75 +5738,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetDirection(graphP __pyx_v_the
   __pyx_r = gp_GetDirection(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":478
+  /* "planarity/full/graphLib.pyx":486
  * 
  * 
  * cdef int gp_GetDirection(graphP theGraph, int e):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_GetDirection(theGraph, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":482
- * 
- * 
- * cdef void gp_SetDirection(graphP theGraph, int e, int direction):             # <<<<<<<<<<<<<<
- *     cgraphLib.gp_SetDirection(theGraph, e, direction)
- * 
-*/
-
-static void __pyx_f_9planarity_4full_8graphLib_gp_SetDirection(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_direction) {
-
-  /* "planarity/full/graphLib.pyx":483
- * 
- * cdef void gp_SetDirection(graphP theGraph, int e, int direction):
- *     cgraphLib.gp_SetDirection(theGraph, e, direction)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  gp_SetDirection(__pyx_v_theGraph, __pyx_v_e, __pyx_v_direction);
-
-  /* "planarity/full/graphLib.pyx":482
- * 
- * 
- * cdef void gp_SetDirection(graphP theGraph, int e, int direction):             # <<<<<<<<<<<<<<
- *     cgraphLib.gp_SetDirection(theGraph, e, direction)
- * 
-*/
-
-  /* function exit code */
-}
-
-/* "planarity/full/graphLib.pyx":486
- * 
- * 
- * cdef int gp_LowerBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundEdges(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":487
- * 
- * cdef int gp_LowerBoundEdges(graphP theGraph):
- *     return cgraphLib.gp_LowerBoundEdges(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_LowerBoundEdges(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":486
- * 
- * 
- * cdef int gp_LowerBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundEdges(theGraph)
  * 
 */
 
@@ -5818,63 +5754,59 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges(graphP __pyx_v_
 /* "planarity/full/graphLib.pyx":490
  * 
  * 
- * cdef int gp_UpperBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundEdges(theGraph)
+ * cdef void gp_SetDirection(graphP theGraph, int e, int direction):             # <<<<<<<<<<<<<<
+ *     cgraphLib.gp_SetDirection(theGraph, e, direction)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges(graphP __pyx_v_theGraph) {
-  int __pyx_r;
+static void __pyx_f_9planarity_4full_8graphLib_gp_SetDirection(graphP __pyx_v_theGraph, int __pyx_v_e, int __pyx_v_direction) {
 
   /* "planarity/full/graphLib.pyx":491
  * 
- * cdef int gp_UpperBoundEdges(graphP theGraph):
- *     return cgraphLib.gp_UpperBoundEdges(theGraph)             # <<<<<<<<<<<<<<
+ * cdef void gp_SetDirection(graphP theGraph, int e, int direction):
+ *     cgraphLib.gp_SetDirection(theGraph, e, direction)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_UpperBoundEdges(__pyx_v_theGraph);
-  goto __pyx_L0;
+  gp_SetDirection(__pyx_v_theGraph, __pyx_v_e, __pyx_v_direction);
 
   /* "planarity/full/graphLib.pyx":490
  * 
  * 
- * cdef int gp_UpperBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_UpperBoundEdges(theGraph)
+ * cdef void gp_SetDirection(graphP theGraph, int e, int direction):             # <<<<<<<<<<<<<<
+ *     cgraphLib.gp_SetDirection(theGraph, e, direction)
  * 
 */
 
   /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
 }
 
 /* "planarity/full/graphLib.pyx":494
  * 
  * 
- * cdef int gp_EdgeInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_EdgeInUse(theGraph, e)
+ * cdef int gp_LowerBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundEdges(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse(graphP __pyx_v_theGraph, int __pyx_v_e) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdges(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":495
  * 
- * cdef int gp_EdgeInUse(graphP theGraph, int e):
- *     return cgraphLib.gp_EdgeInUse(theGraph, e)             # <<<<<<<<<<<<<<
+ * cdef int gp_LowerBoundEdges(graphP theGraph):
+ *     return cgraphLib.gp_LowerBoundEdges(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_EdgeInUse(__pyx_v_theGraph, __pyx_v_e);
+  __pyx_r = gp_LowerBoundEdges(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":494
  * 
  * 
- * cdef int gp_EdgeInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_EdgeInUse(theGraph, e)
+ * cdef int gp_LowerBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundEdges(theGraph)
  * 
 */
 
@@ -5886,29 +5818,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse(graphP __pyx_v_theGra
 /* "planarity/full/graphLib.pyx":498
  * 
  * 
- * cdef int gp_EdgeNotInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_EdgeNotInUse(theGraph, e)
+ * cdef int gp_UpperBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundEdges(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_EdgeNotInUse(graphP __pyx_v_theGraph, int __pyx_v_e) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdges(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":499
  * 
- * cdef int gp_EdgeNotInUse(graphP theGraph, int e):
- *     return cgraphLib.gp_EdgeNotInUse(theGraph, e)             # <<<<<<<<<<<<<<
+ * cdef int gp_UpperBoundEdges(graphP theGraph):
+ *     return cgraphLib.gp_UpperBoundEdges(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_EdgeNotInUse(__pyx_v_theGraph, __pyx_v_e);
+  __pyx_r = gp_UpperBoundEdges(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":498
  * 
  * 
- * cdef int gp_EdgeNotInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_EdgeNotInUse(theGraph, e)
+ * cdef int gp_UpperBoundEdges(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_UpperBoundEdges(theGraph)
  * 
 */
 
@@ -5920,29 +5852,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_EdgeNotInUse(graphP __pyx_v_the
 /* "planarity/full/graphLib.pyx":502
  * 
  * 
- * cdef int gp_LowerBoundEdgeStorage(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
+ * cdef int gp_EdgeInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_EdgeInUse(theGraph, e)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_EdgeInUse(graphP __pyx_v_theGraph, int __pyx_v_e) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":503
  * 
- * cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
- *     return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_EdgeInUse(graphP theGraph, int e):
+ *     return cgraphLib.gp_EdgeInUse(theGraph, e)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_LowerBoundEdgeStorage(__pyx_v_theGraph);
+  __pyx_r = gp_EdgeInUse(__pyx_v_theGraph, __pyx_v_e);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":502
  * 
  * 
- * cdef int gp_LowerBoundEdgeStorage(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
+ * cdef int gp_EdgeInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_EdgeInUse(theGraph, e)
  * 
 */
 
@@ -5954,6 +5886,74 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage(graphP __
 /* "planarity/full/graphLib.pyx":506
  * 
  * 
+ * cdef int gp_EdgeNotInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_EdgeNotInUse(theGraph, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_EdgeNotInUse(graphP __pyx_v_theGraph, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":507
+ * 
+ * cdef int gp_EdgeNotInUse(graphP theGraph, int e):
+ *     return cgraphLib.gp_EdgeNotInUse(theGraph, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_EdgeNotInUse(__pyx_v_theGraph, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":506
+ * 
+ * 
+ * cdef int gp_EdgeNotInUse(graphP theGraph, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_EdgeNotInUse(theGraph, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":510
+ * 
+ * 
+ * cdef int gp_LowerBoundEdgeStorage(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":511
+ * 
+ * cdef int gp_LowerBoundEdgeStorage(graphP theGraph):
+ *     return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_LowerBoundEdgeStorage(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":510
+ * 
+ * 
+ * cdef int gp_LowerBoundEdgeStorage(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_LowerBoundEdgeStorage(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":514
+ * 
+ * 
  * cdef int gp_UpperBoundEdgeStorage(graphP theGraph):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)
  * 
@@ -5962,7 +5962,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_LowerBoundEdgeStorage(graphP __
 static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":507
+  /* "planarity/full/graphLib.pyx":515
  * 
  * cdef int gp_UpperBoundEdgeStorage(graphP theGraph):
  *     return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)             # <<<<<<<<<<<<<<
@@ -5972,79 +5972,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_UpperBoundEdgeStorage(graphP __
   __pyx_r = gp_UpperBoundEdgeStorage(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":506
+  /* "planarity/full/graphLib.pyx":514
  * 
  * 
  * cdef int gp_UpperBoundEdgeStorage(graphP theGraph):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_UpperBoundEdgeStorage(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":511
- * 
- * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
- * cdef int gp_Read(graphP theGraph, char *fileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Read(theGraph, fileName)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_Read(graphP __pyx_v_theGraph, char *__pyx_v_fileName) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":512
- * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
- * cdef int gp_Read(graphP theGraph, char *fileName):
- *     return cgraphLib.gp_Read(theGraph, fileName)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_Read(__pyx_v_theGraph, __pyx_v_fileName);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":511
- * 
- * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
- * cdef int gp_Read(graphP theGraph, char *fileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Read(theGraph, fileName)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":515
- * 
- * 
- * cdef int gp_ReadFromString(graphP theGraph, char *inputStr):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ReadFromString(theGraph, inputStr)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_ReadFromString(graphP __pyx_v_theGraph, char *__pyx_v_inputStr) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":516
- * 
- * cdef int gp_ReadFromString(graphP theGraph, char *inputStr):
- *     return cgraphLib.gp_ReadFromString(theGraph, inputStr)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_ReadFromString(__pyx_v_theGraph, __pyx_v_inputStr);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":515
- * 
- * 
- * cdef int gp_ReadFromString(graphP theGraph, char *inputStr):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ReadFromString(theGraph, inputStr)
  * 
 */
 
@@ -6055,30 +5987,30 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ReadFromString(graphP __pyx_v_t
 
 /* "planarity/full/graphLib.pyx":519
  * 
- * 
- * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)
+ * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
+ * cdef int gp_Read(graphP theGraph, char *fileName):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Read(theGraph, fileName)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_Write(graphP __pyx_v_theGraph, char *__pyx_v_fileName, int __pyx_v_writeMode) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_Read(graphP __pyx_v_theGraph, char *__pyx_v_fileName) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":520
- * 
- * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):
- *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)             # <<<<<<<<<<<<<<
+ * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
+ * cdef int gp_Read(graphP theGraph, char *fileName):
+ *     return cgraphLib.gp_Read(theGraph, fileName)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_Write(__pyx_v_theGraph, __pyx_v_fileName, __pyx_v_writeMode);
+  __pyx_r = gp_Read(__pyx_v_theGraph, __pyx_v_fileName);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":519
  * 
- * 
- * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)
+ * # Wraps functions declared in "planarity/c/graphLib/io/graphIO.h":
+ * cdef int gp_Read(graphP theGraph, char *fileName):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Read(theGraph, fileName)
  * 
 */
 
@@ -6090,6 +6022,74 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Write(graphP __pyx_v_theGraph, 
 /* "planarity/full/graphLib.pyx":523
  * 
  * 
+ * cdef int gp_ReadFromString(graphP theGraph, char *inputStr):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ReadFromString(theGraph, inputStr)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_ReadFromString(graphP __pyx_v_theGraph, char *__pyx_v_inputStr) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":524
+ * 
+ * cdef int gp_ReadFromString(graphP theGraph, char *inputStr):
+ *     return cgraphLib.gp_ReadFromString(theGraph, inputStr)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_ReadFromString(__pyx_v_theGraph, __pyx_v_inputStr);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":523
+ * 
+ * 
+ * cdef int gp_ReadFromString(graphP theGraph, char *inputStr):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ReadFromString(theGraph, inputStr)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":527
+ * 
+ * 
+ * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_Write(graphP __pyx_v_theGraph, char *__pyx_v_fileName, int __pyx_v_writeMode) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":528
+ * 
+ * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):
+ *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_Write(__pyx_v_theGraph, __pyx_v_fileName, __pyx_v_writeMode);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":527
+ * 
+ * 
+ * cdef int gp_Write(graphP theGraph, char *fileName, int writeMode):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Write(theGraph, fileName, writeMode)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":531
+ * 
+ * 
  * cdef int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_WriteToString(theGraph, pOutputStr, writeMode)
  * 
@@ -6098,7 +6098,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Write(graphP __pyx_v_theGraph, 
 static int __pyx_f_9planarity_4full_8graphLib_gp_WriteToString(graphP __pyx_v_theGraph, char **__pyx_v_pOutputStr, int __pyx_v_writeMode) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":524
+  /* "planarity/full/graphLib.pyx":532
  * 
  * cdef int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode):
  *     return cgraphLib.gp_WriteToString(theGraph, pOutputStr, writeMode)             # <<<<<<<<<<<<<<
@@ -6108,79 +6108,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_WriteToString(graphP __pyx_v_th
   __pyx_r = gp_WriteToString(__pyx_v_theGraph, __pyx_v_pOutputStr, __pyx_v_writeMode);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":523
+  /* "planarity/full/graphLib.pyx":531
  * 
  * 
  * cdef int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_WriteToString(theGraph, pOutputStr, writeMode)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":528
- * 
- * # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
- * cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_g6_NewReader(G6ReadIteratorP *__pyx_v_pG6ReadIterator, graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":529
- * # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
- * cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):
- *     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = g6_NewReader(__pyx_v_pG6ReadIterator, __pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":528
- * 
- * # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
- * cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":532
- * 
- * 
- * cdef int g6_InitReaderWithString(G6ReadIteratorP theG6ReadIterator, char *inputString):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitReaderWithString(theG6ReadIterator, inputString)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithString(G6ReadIteratorP __pyx_v_theG6ReadIterator, char *__pyx_v_inputString) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":533
- * 
- * cdef int g6_InitReaderWithString(G6ReadIteratorP theG6ReadIterator, char *inputString):
- *     return cgraphLib.g6_InitReaderWithString(theG6ReadIterator, inputString)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = g6_InitReaderWithString(__pyx_v_theG6ReadIterator, __pyx_v_inputString);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":532
- * 
- * 
- * cdef int g6_InitReaderWithString(G6ReadIteratorP theG6ReadIterator, char *inputString):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitReaderWithString(theG6ReadIterator, inputString)
  * 
 */
 
@@ -6191,30 +6123,30 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithString(G6ReadIter
 
 /* "planarity/full/graphLib.pyx":536
  * 
- * 
- * cdef int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitReaderWithFileName(theG6ReadIterator, infileName)
+ * # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
+ * cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithFileName(G6ReadIteratorP __pyx_v_theG6ReadIterator, char *__pyx_v_infileName) {
+static int __pyx_f_9planarity_4full_8graphLib_g6_NewReader(G6ReadIteratorP *__pyx_v_pG6ReadIterator, graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":537
- * 
- * cdef int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName):
- *     return cgraphLib.g6_InitReaderWithFileName(theG6ReadIterator, infileName)             # <<<<<<<<<<<<<<
+ * # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
+ * cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):
+ *     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = g6_InitReaderWithFileName(__pyx_v_theG6ReadIterator, __pyx_v_infileName);
+  __pyx_r = g6_NewReader(__pyx_v_pG6ReadIterator, __pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":536
  * 
- * 
- * cdef int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitReaderWithFileName(theG6ReadIterator, infileName)
+ * # Wraps functions declared in "planarity/c/graphLib/io/g6-read-iterator.h":
+ * cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)
  * 
 */
 
@@ -6226,6 +6158,74 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithFileName(G6ReadIt
 /* "planarity/full/graphLib.pyx":540
  * 
  * 
+ * cdef int g6_InitReaderWithString(             # <<<<<<<<<<<<<<
+ *     G6ReadIteratorP theG6ReadIterator, char *inputString
+ * ):
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithString(G6ReadIteratorP __pyx_v_theG6ReadIterator, char *__pyx_v_inputString) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":543
+ *     G6ReadIteratorP theG6ReadIterator, char *inputString
+ * ):
+ *     return cgraphLib.g6_InitReaderWithString(theG6ReadIterator, inputString)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = g6_InitReaderWithString(__pyx_v_theG6ReadIterator, __pyx_v_inputString);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":540
+ * 
+ * 
+ * cdef int g6_InitReaderWithString(             # <<<<<<<<<<<<<<
+ *     G6ReadIteratorP theG6ReadIterator, char *inputString
+ * ):
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":546
+ * 
+ * 
+ * cdef int g6_InitReaderWithFileName(             # <<<<<<<<<<<<<<
+ *     G6ReadIteratorP theG6ReadIterator, char *infileName
+ * ):
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithFileName(G6ReadIteratorP __pyx_v_theG6ReadIterator, char *__pyx_v_infileName) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":549
+ *     G6ReadIteratorP theG6ReadIterator, char *infileName
+ * ):
+ *     return cgraphLib.g6_InitReaderWithFileName(theG6ReadIterator, infileName)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = g6_InitReaderWithFileName(__pyx_v_theG6ReadIterator, __pyx_v_infileName);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":546
+ * 
+ * 
+ * cdef int g6_InitReaderWithFileName(             # <<<<<<<<<<<<<<
+ *     G6ReadIteratorP theG6ReadIterator, char *infileName
+ * ):
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":552
+ * 
+ * 
  * cdef int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator):             # <<<<<<<<<<<<<<
  *     return cgraphLib.g6_ReadGraph(theG6ReadIterator)
  * 
@@ -6234,7 +6234,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_InitReaderWithFileName(G6ReadIt
 static int __pyx_f_9planarity_4full_8graphLib_g6_ReadGraph(G6ReadIteratorP __pyx_v_theG6ReadIterator) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":541
+  /* "planarity/full/graphLib.pyx":553
  * 
  * cdef int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator):
  *     return cgraphLib.g6_ReadGraph(theG6ReadIterator)             # <<<<<<<<<<<<<<
@@ -6244,7 +6244,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_ReadGraph(G6ReadIteratorP __pyx
   __pyx_r = g6_ReadGraph(__pyx_v_theG6ReadIterator);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":540
+  /* "planarity/full/graphLib.pyx":552
  * 
  * 
  * cdef int g6_ReadGraph(G6ReadIteratorP theG6ReadIterator):             # <<<<<<<<<<<<<<
@@ -6257,7 +6257,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_ReadGraph(G6ReadIteratorP __pyx
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":544
+/* "planarity/full/graphLib.pyx":556
  * 
  * 
  * cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator):             # <<<<<<<<<<<<<<
@@ -6268,7 +6268,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_ReadGraph(G6ReadIteratorP __pyx
 static int __pyx_f_9planarity_4full_8graphLib_g6_EndReached(G6ReadIteratorP __pyx_v_theG6ReadIterator) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":545
+  /* "planarity/full/graphLib.pyx":557
  * 
  * cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator):
  *     return cgraphLib.g6_EndReached(theG6ReadIterator)             # <<<<<<<<<<<<<<
@@ -6278,7 +6278,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_EndReached(G6ReadIteratorP __py
   __pyx_r = g6_EndReached(__pyx_v_theG6ReadIterator);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":544
+  /* "planarity/full/graphLib.pyx":556
  * 
  * 
  * cdef int g6_EndReached(G6ReadIteratorP theG6ReadIterator):             # <<<<<<<<<<<<<<
@@ -6291,7 +6291,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_EndReached(G6ReadIteratorP __py
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":548
+/* "planarity/full/graphLib.pyx":560
  * 
  * 
  * cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):             # <<<<<<<<<<<<<<
@@ -6301,7 +6301,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_EndReached(G6ReadIteratorP __py
 
 static void __pyx_f_9planarity_4full_8graphLib_g6_FreeReader(G6ReadIteratorP *__pyx_v_pG6ReadIterator) {
 
-  /* "planarity/full/graphLib.pyx":549
+  /* "planarity/full/graphLib.pyx":561
  * 
  * cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):
  *     cgraphLib.g6_FreeReader(pG6ReadIterator)             # <<<<<<<<<<<<<<
@@ -6310,7 +6310,7 @@ static void __pyx_f_9planarity_4full_8graphLib_g6_FreeReader(G6ReadIteratorP *__
 */
   g6_FreeReader(__pyx_v_pG6ReadIterator);
 
-  /* "planarity/full/graphLib.pyx":548
+  /* "planarity/full/graphLib.pyx":560
  * 
  * 
  * cdef void g6_FreeReader(G6ReadIteratorP *pG6ReadIterator):             # <<<<<<<<<<<<<<
@@ -6321,7 +6321,7 @@ static void __pyx_f_9planarity_4full_8graphLib_g6_FreeReader(G6ReadIteratorP *__
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":553
+/* "planarity/full/graphLib.pyx":565
  * 
  * # Wraps functions declared in "planarity/c/graphLib/io/g6-write-iterator.h"
  * cdef int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6332,7 +6332,7 @@ static void __pyx_f_9planarity_4full_8graphLib_g6_FreeReader(G6ReadIteratorP *__
 static int __pyx_f_9planarity_4full_8graphLib_g6_NewWriter(G6WriteIteratorP *__pyx_v_pG6WriteIterator, graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":554
+  /* "planarity/full/graphLib.pyx":566
  * # Wraps functions declared in "planarity/c/graphLib/io/g6-write-iterator.h"
  * cdef int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph):
  *     return cgraphLib.g6_NewWriter(pG6WriteIterator, theGraph)             # <<<<<<<<<<<<<<
@@ -6342,113 +6342,11 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_NewWriter(G6WriteIteratorP *__p
   __pyx_r = g6_NewWriter(__pyx_v_pG6WriteIterator, __pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":553
+  /* "planarity/full/graphLib.pyx":565
  * 
  * # Wraps functions declared in "planarity/c/graphLib/io/g6-write-iterator.h"
  * cdef int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph):             # <<<<<<<<<<<<<<
  *     return cgraphLib.g6_NewWriter(pG6WriteIterator, theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":557
- * 
- * 
- * cdef int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitWriterWithString(theG6WriteIterator, pOutputString)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithString(G6WriteIteratorP __pyx_v_theG6WriteIterator, char **__pyx_v_pOutputString) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":558
- * 
- * cdef int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString):
- *     return cgraphLib.g6_InitWriterWithString(theG6WriteIterator, pOutputString)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = g6_InitWriterWithString(__pyx_v_theG6WriteIterator, __pyx_v_pOutputString);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":557
- * 
- * 
- * cdef int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitWriterWithString(theG6WriteIterator, pOutputString)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":561
- * 
- * 
- * cdef int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitWriterWithFileName(theG6WriteIterator, outputFileName)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithFileName(G6WriteIteratorP __pyx_v_theG6WriteIterator, char *__pyx_v_outputFileName) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":562
- * 
- * cdef int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName):
- *     return cgraphLib.g6_InitWriterWithFileName(theG6WriteIterator, outputFileName)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = g6_InitWriterWithFileName(__pyx_v_theG6WriteIterator, __pyx_v_outputFileName);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":561
- * 
- * 
- * cdef int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_InitWriterWithFileName(theG6WriteIterator, outputFileName)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":565
- * 
- * 
- * cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_WriteGraph(theG6WriteIterator)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_g6_WriteGraph(G6WriteIteratorP __pyx_v_theG6WriteIterator) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":566
- * 
- * cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):
- *     return cgraphLib.g6_WriteGraph(theG6WriteIterator)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = g6_WriteGraph(__pyx_v_theG6WriteIterator);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":565
- * 
- * 
- * cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):             # <<<<<<<<<<<<<<
- *     return cgraphLib.g6_WriteGraph(theG6WriteIterator)
  * 
 */
 
@@ -6460,6 +6358,108 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_WriteGraph(G6WriteIteratorP __p
 /* "planarity/full/graphLib.pyx":569
  * 
  * 
+ * cdef int g6_InitWriterWithString(             # <<<<<<<<<<<<<<
+ *     G6WriteIteratorP theG6WriteIterator, char **pOutputString
+ * ):
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithString(G6WriteIteratorP __pyx_v_theG6WriteIterator, char **__pyx_v_pOutputString) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":572
+ *     G6WriteIteratorP theG6WriteIterator, char **pOutputString
+ * ):
+ *     return cgraphLib.g6_InitWriterWithString(theG6WriteIterator, pOutputString)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = g6_InitWriterWithString(__pyx_v_theG6WriteIterator, __pyx_v_pOutputString);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":569
+ * 
+ * 
+ * cdef int g6_InitWriterWithString(             # <<<<<<<<<<<<<<
+ *     G6WriteIteratorP theG6WriteIterator, char **pOutputString
+ * ):
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":575
+ * 
+ * 
+ * cdef int g6_InitWriterWithFileName(             # <<<<<<<<<<<<<<
+ *     G6WriteIteratorP theG6WriteIterator, char *outputFileName
+ * ):
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithFileName(G6WriteIteratorP __pyx_v_theG6WriteIterator, char *__pyx_v_outputFileName) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":578
+ *     G6WriteIteratorP theG6WriteIterator, char *outputFileName
+ * ):
+ *     return cgraphLib.g6_InitWriterWithFileName(             # <<<<<<<<<<<<<<
+ *         theG6WriteIterator, outputFileName
+ *     )
+*/
+  __pyx_r = g6_InitWriterWithFileName(__pyx_v_theG6WriteIterator, __pyx_v_outputFileName);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":575
+ * 
+ * 
+ * cdef int g6_InitWriterWithFileName(             # <<<<<<<<<<<<<<
+ *     G6WriteIteratorP theG6WriteIterator, char *outputFileName
+ * ):
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":583
+ * 
+ * 
+ * cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.g6_WriteGraph(theG6WriteIterator)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_g6_WriteGraph(G6WriteIteratorP __pyx_v_theG6WriteIterator) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":584
+ * 
+ * cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):
+ *     return cgraphLib.g6_WriteGraph(theG6WriteIterator)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = g6_WriteGraph(__pyx_v_theG6WriteIterator);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":583
+ * 
+ * 
+ * cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.g6_WriteGraph(theG6WriteIterator)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":587
+ * 
+ * 
  * cdef void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator):             # <<<<<<<<<<<<<<
  *     cgraphLib.g6_FreeWriter(pG6WriteIterator)
  * 
@@ -6467,7 +6467,7 @@ static int __pyx_f_9planarity_4full_8graphLib_g6_WriteGraph(G6WriteIteratorP __p
 
 static void __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter(G6WriteIteratorP *__pyx_v_pG6WriteIterator) {
 
-  /* "planarity/full/graphLib.pyx":570
+  /* "planarity/full/graphLib.pyx":588
  * 
  * cdef void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator):
  *     cgraphLib.g6_FreeWriter(pG6WriteIterator)             # <<<<<<<<<<<<<<
@@ -6476,7 +6476,7 @@ static void __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter(G6WriteIteratorP *_
 */
   g6_FreeWriter(__pyx_v_pG6WriteIterator);
 
-  /* "planarity/full/graphLib.pyx":569
+  /* "planarity/full/graphLib.pyx":587
  * 
  * 
  * cdef void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator):             # <<<<<<<<<<<<<<
@@ -6487,7 +6487,7 @@ static void __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter(G6WriteIteratorP *_
   /* function exit code */
 }
 
-/* "planarity/full/graphLib.pyx":574
+/* "planarity/full/graphLib.pyx":592
  * 
  * # Wraps functions declared in "planarity/c/graphLib/graphDFSUtils.h"
  * cdef int gp_ExtendWith_DFSUtils(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6498,7 +6498,7 @@ static void __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter(G6WriteIteratorP *_
 static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DFSUtils(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":575
+  /* "planarity/full/graphLib.pyx":593
  * # Wraps functions declared in "planarity/c/graphLib/graphDFSUtils.h"
  * cdef int gp_ExtendWith_DFSUtils(graphP theGraph):
  *     return cgraphLib.gp_ExtendWith_DFSUtils(theGraph)             # <<<<<<<<<<<<<<
@@ -6508,7 +6508,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DFSUtils(graphP __py
   __pyx_r = gp_ExtendWith_DFSUtils(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":574
+  /* "planarity/full/graphLib.pyx":592
  * 
  * # Wraps functions declared in "planarity/c/graphLib/graphDFSUtils.h"
  * cdef int gp_ExtendWith_DFSUtils(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6521,7 +6521,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DFSUtils(graphP __py
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":578
+/* "planarity/full/graphLib.pyx":596
  * 
  * 
  * cdef int gp_Detach_DFSUtils(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6532,7 +6532,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DFSUtils(graphP __py
 static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DFSUtils(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":579
+  /* "planarity/full/graphLib.pyx":597
  * 
  * cdef int gp_Detach_DFSUtils(graphP theGraph):
  *     return cgraphLib.gp_Detach_DFSUtils(theGraph)             # <<<<<<<<<<<<<<
@@ -6542,7 +6542,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DFSUtils(graphP __pyx_v_
   __pyx_r = gp_Detach_DFSUtils(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":578
+  /* "planarity/full/graphLib.pyx":596
  * 
  * 
  * cdef int gp_Detach_DFSUtils(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6555,7 +6555,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DFSUtils(graphP __pyx_v_
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":582
+/* "planarity/full/graphLib.pyx":600
  * 
  * 
  * cdef int gp_DepthFirstSearch(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6566,7 +6566,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DFSUtils(graphP __pyx_v_
 static int __pyx_f_9planarity_4full_8graphLib_gp_DepthFirstSearch(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":583
+  /* "planarity/full/graphLib.pyx":601
  * 
  * cdef int gp_DepthFirstSearch(graphP theGraph):
  *     return cgraphLib.gp_DepthFirstSearch(theGraph)             # <<<<<<<<<<<<<<
@@ -6576,7 +6576,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DepthFirstSearch(graphP __pyx_v
   __pyx_r = gp_DepthFirstSearch(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":582
+  /* "planarity/full/graphLib.pyx":600
  * 
  * 
  * cdef int gp_DepthFirstSearch(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6589,7 +6589,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DepthFirstSearch(graphP __pyx_v
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":586
+/* "planarity/full/graphLib.pyx":604
  * 
  * 
  * cdef int gp_SortVertices(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6600,7 +6600,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DepthFirstSearch(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_SortVertices(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":587
+  /* "planarity/full/graphLib.pyx":605
  * 
  * cdef int gp_SortVertices(graphP theGraph):
  *     return cgraphLib.gp_SortVertices(theGraph)             # <<<<<<<<<<<<<<
@@ -6610,7 +6610,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_SortVertices(graphP __pyx_v_the
   __pyx_r = gp_SortVertices(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":586
+  /* "planarity/full/graphLib.pyx":604
  * 
  * 
  * cdef int gp_SortVertices(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6623,7 +6623,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_SortVertices(graphP __pyx_v_the
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":590
+/* "planarity/full/graphLib.pyx":608
  * 
  * 
  * cdef int gp_ComputeLowpoints(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6634,7 +6634,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_SortVertices(graphP __pyx_v_the
 static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLowpoints(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":591
+  /* "planarity/full/graphLib.pyx":609
  * 
  * cdef int gp_ComputeLowpoints(graphP theGraph):
  *     return cgraphLib.gp_ComputeLowpoints(theGraph)             # <<<<<<<<<<<<<<
@@ -6644,7 +6644,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLowpoints(graphP __pyx_v
   __pyx_r = gp_ComputeLowpoints(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":590
+  /* "planarity/full/graphLib.pyx":608
  * 
  * 
  * cdef int gp_ComputeLowpoints(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6657,7 +6657,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLowpoints(graphP __pyx_v
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":594
+/* "planarity/full/graphLib.pyx":612
  * 
  * 
  * cdef int gp_ComputeLeastAncestors(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6668,7 +6668,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLowpoints(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLeastAncestors(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":595
+  /* "planarity/full/graphLib.pyx":613
  * 
  * cdef int gp_ComputeLeastAncestors(graphP theGraph):
  *     return cgraphLib.gp_ComputeLeastAncestors(theGraph)             # <<<<<<<<<<<<<<
@@ -6678,7 +6678,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLeastAncestors(graphP __
   __pyx_r = gp_ComputeLeastAncestors(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":594
+  /* "planarity/full/graphLib.pyx":612
  * 
  * 
  * cdef int gp_ComputeLeastAncestors(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6691,7 +6691,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLeastAncestors(graphP __
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":598
+/* "planarity/full/graphLib.pyx":616
  * 
  * 
  * cdef int gp_GetParent(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -6702,7 +6702,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ComputeLeastAncestors(graphP __
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetParent(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":599
+  /* "planarity/full/graphLib.pyx":617
  * 
  * cdef int gp_GetParent(graphP theGraph, int v):
  *     return cgraphLib.gp_GetParent(theGraph, v)             # <<<<<<<<<<<<<<
@@ -6712,7 +6712,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetParent(graphP __pyx_v_theGra
   __pyx_r = gp_GetParent(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":598
+  /* "planarity/full/graphLib.pyx":616
  * 
  * 
  * cdef int gp_GetParent(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -6725,7 +6725,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetParent(graphP __pyx_v_theGra
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":602
+/* "planarity/full/graphLib.pyx":620
  * 
  * 
  * cdef int gp_GetLeastAncestor(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -6736,7 +6736,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetParent(graphP __pyx_v_theGra
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetLeastAncestor(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":603
+  /* "planarity/full/graphLib.pyx":621
  * 
  * cdef int gp_GetLeastAncestor(graphP theGraph, int v):
  *     return cgraphLib.gp_GetLeastAncestor(theGraph, v)             # <<<<<<<<<<<<<<
@@ -6746,7 +6746,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetLeastAncestor(graphP __pyx_v
   __pyx_r = gp_GetLeastAncestor(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":602
+  /* "planarity/full/graphLib.pyx":620
  * 
  * 
  * cdef int gp_GetLeastAncestor(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -6759,7 +6759,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetLeastAncestor(graphP __pyx_v
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":606
+/* "planarity/full/graphLib.pyx":624
  * 
  * 
  * cdef int gp_GetLowpoint(graphP theGraph, int v):             # <<<<<<<<<<<<<<
@@ -6770,7 +6770,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetLeastAncestor(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_GetLowpoint(graphP __pyx_v_theGraph, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":607
+  /* "planarity/full/graphLib.pyx":625
  * 
  * cdef int gp_GetLowpoint(graphP theGraph, int v):
  *     return cgraphLib.gp_GetLowpoint(theGraph, v)             # <<<<<<<<<<<<<<
@@ -6780,113 +6780,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_GetLowpoint(graphP __pyx_v_theG
   __pyx_r = gp_GetLowpoint(__pyx_v_theGraph, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":606
+  /* "planarity/full/graphLib.pyx":624
  * 
  * 
  * cdef int gp_GetLowpoint(graphP theGraph, int v):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_GetLowpoint(theGraph, v)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":621
- * 
- * 
- * cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetBicompRootFromDFSChild(graphP __pyx_v_theGraph, int __pyx_v_c) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":622
- * 
- * cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):
- *     return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_GetBicompRootFromDFSChild(__pyx_v_theGraph, __pyx_v_c);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":621
- * 
- * 
- * cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":625
- * 
- * 
- * cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetDFSChildFromBicompRoot(graphP __pyx_v_theGraph, int __pyx_v_R) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":626
- * 
- * cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):
- *     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)             # <<<<<<<<<<<<<<
- * 
- * # FIXME: This EAPS macro calls private gp_GetVertexParent() rather than
-*/
-  __pyx_r = gp_GetDFSChildFromBicompRoot(__pyx_v_theGraph, __pyx_v_R);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":625
- * 
- * 
- * cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":635
- * 
- * 
- * cdef int gp_IsBicompRoot(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsBicompRoot(theGraph, v)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsBicompRoot(graphP __pyx_v_theGraph, int __pyx_v_v) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":636
- * 
- * cdef int gp_IsBicompRoot(graphP theGraph, int v):
- *     return cgraphLib.gp_IsBicompRoot(theGraph, v)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_IsBicompRoot(__pyx_v_theGraph, __pyx_v_v);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":635
- * 
- * 
- * cdef int gp_IsBicompRoot(graphP theGraph, int v):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsBicompRoot(theGraph, v)
  * 
 */
 
@@ -6898,29 +6796,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsBicompRoot(graphP __pyx_v_the
 /* "planarity/full/graphLib.pyx":639
  * 
  * 
- * cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)
+ * cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_IsSeparatedDFSChild(graphP __pyx_v_theGraph, int __pyx_v_theChild) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetBicompRootFromDFSChild(graphP __pyx_v_theGraph, int __pyx_v_c) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":640
  * 
- * cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):
- *     return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)             # <<<<<<<<<<<<<<
+ * cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):
+ *     return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_IsSeparatedDFSChild(__pyx_v_theGraph, __pyx_v_theChild);
+  __pyx_r = gp_GetBicompRootFromDFSChild(__pyx_v_theGraph, __pyx_v_c);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":639
  * 
  * 
- * cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)
+ * cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetBicompRootFromDFSChild(theGraph, c)
  * 
 */
 
@@ -6932,6 +6830,108 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsSeparatedDFSChild(graphP __py
 /* "planarity/full/graphLib.pyx":643
  * 
  * 
+ * cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetDFSChildFromBicompRoot(graphP __pyx_v_theGraph, int __pyx_v_R) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":644
+ * 
+ * cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):
+ *     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)             # <<<<<<<<<<<<<<
+ * 
+ * # FIXME: This EAPS macro calls private gp_GetVertexParent() rather than
+*/
+  __pyx_r = gp_GetDFSChildFromBicompRoot(__pyx_v_theGraph, __pyx_v_R);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":643
+ * 
+ * 
+ * cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetDFSChildFromBicompRoot(theGraph, R)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":653
+ * 
+ * 
+ * cdef int gp_IsBicompRoot(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsBicompRoot(theGraph, v)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsBicompRoot(graphP __pyx_v_theGraph, int __pyx_v_v) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":654
+ * 
+ * cdef int gp_IsBicompRoot(graphP theGraph, int v):
+ *     return cgraphLib.gp_IsBicompRoot(theGraph, v)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_IsBicompRoot(__pyx_v_theGraph, __pyx_v_v);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":653
+ * 
+ * 
+ * cdef int gp_IsBicompRoot(graphP theGraph, int v):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsBicompRoot(theGraph, v)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":657
+ * 
+ * 
+ * cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_IsSeparatedDFSChild(graphP __pyx_v_theGraph, int __pyx_v_theChild) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":658
+ * 
+ * cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):
+ *     return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_IsSeparatedDFSChild(__pyx_v_theGraph, __pyx_v_theChild);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":657
+ * 
+ * 
+ * cdef int gp_IsSeparatedDFSChild(graphP theGraph, int theChild):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_IsSeparatedDFSChild(theGraph, theChild)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":661
+ * 
+ * 
  * cdef int gp_IsNotSeparatedDFSChild(graphP theGraph, int theChild):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_IsNotSeparatedDFSChild(theGraph, theChild)
  * 
@@ -6940,7 +6940,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsSeparatedDFSChild(graphP __py
 static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotSeparatedDFSChild(graphP __pyx_v_theGraph, int __pyx_v_theChild) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":644
+  /* "planarity/full/graphLib.pyx":662
  * 
  * cdef int gp_IsNotSeparatedDFSChild(graphP theGraph, int theChild):
  *     return cgraphLib.gp_IsNotSeparatedDFSChild(theGraph, theChild)             # <<<<<<<<<<<<<<
@@ -6950,7 +6950,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotSeparatedDFSChild(graphP _
   __pyx_r = gp_IsNotSeparatedDFSChild(__pyx_v_theGraph, __pyx_v_theChild);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":643
+  /* "planarity/full/graphLib.pyx":661
  * 
  * 
  * cdef int gp_IsNotSeparatedDFSChild(graphP theGraph, int theChild):             # <<<<<<<<<<<<<<
@@ -6963,7 +6963,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotSeparatedDFSChild(graphP _
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":648
+/* "planarity/full/graphLib.pyx":666
  * 
  * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphPlanarity.h":
  * cdef int gp_ExtendWith_Planarity(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6974,7 +6974,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_IsNotSeparatedDFSChild(graphP _
 static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":649
+  /* "planarity/full/graphLib.pyx":667
  * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphPlanarity.h":
  * cdef int gp_ExtendWith_Planarity(graphP theGraph):
  *     return cgraphLib.gp_ExtendWith_Planarity(theGraph)             # <<<<<<<<<<<<<<
@@ -6984,7 +6984,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity(graphP __p
   __pyx_r = gp_ExtendWith_Planarity(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":648
+  /* "planarity/full/graphLib.pyx":666
  * 
  * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphPlanarity.h":
  * cdef int gp_ExtendWith_Planarity(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -6997,7 +6997,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity(graphP __p
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":652
+/* "planarity/full/graphLib.pyx":670
  * 
  * 
  * cdef int gp_Detach_Planarity(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -7008,7 +7008,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Planarity(graphP __p
 static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_Planarity(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":653
+  /* "planarity/full/graphLib.pyx":671
  * 
  * cdef int gp_Detach_Planarity(graphP theGraph):
  *     return cgraphLib.gp_Detach_Planarity(theGraph)             # <<<<<<<<<<<<<<
@@ -7018,7 +7018,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_Planarity(graphP __pyx_v
   __pyx_r = gp_Detach_Planarity(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":652
+  /* "planarity/full/graphLib.pyx":670
  * 
  * 
  * cdef int gp_Detach_Planarity(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -7031,7 +7031,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_Planarity(graphP __pyx_v
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":656
+/* "planarity/full/graphLib.pyx":674
  * 
  * 
  * cdef int gp_Embed(graphP theGraph, unsigned int embedFlags):             # <<<<<<<<<<<<<<
@@ -7042,7 +7042,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_Planarity(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_Embed(graphP __pyx_v_theGraph, unsigned int __pyx_v_embedFlags) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":657
+  /* "planarity/full/graphLib.pyx":675
  * 
  * cdef int gp_Embed(graphP theGraph, unsigned int embedFlags):
  *     return cgraphLib.gp_Embed(theGraph, embedFlags)             # <<<<<<<<<<<<<<
@@ -7052,7 +7052,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Embed(graphP __pyx_v_theGraph, 
   __pyx_r = gp_Embed(__pyx_v_theGraph, __pyx_v_embedFlags);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":656
+  /* "planarity/full/graphLib.pyx":674
  * 
  * 
  * cdef int gp_Embed(graphP theGraph, unsigned int embedFlags):             # <<<<<<<<<<<<<<
@@ -7065,203 +7065,33 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Embed(graphP __pyx_v_theGraph, 
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":660
+/* "planarity/full/graphLib.pyx":678
  * 
  * 
- * cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_TestEmbedResultIntegrity(theGraph, origGraph, embedResult)
- * 
+ * cdef int gp_TestEmbedResultIntegrity(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, graphP origGraph, int embedResult
+ * ):
 */
 
 static int __pyx_f_9planarity_4full_8graphLib_gp_TestEmbedResultIntegrity(graphP __pyx_v_theGraph, graphP __pyx_v_origGraph, int __pyx_v_embedResult) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":661
- * 
- * cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult):
- *     return cgraphLib.gp_TestEmbedResultIntegrity(theGraph, origGraph, embedResult)             # <<<<<<<<<<<<<<
- * 
- * 
+  /* "planarity/full/graphLib.pyx":681
+ *     graphP theGraph, graphP origGraph, int embedResult
+ * ):
+ *     return cgraphLib.gp_TestEmbedResultIntegrity(             # <<<<<<<<<<<<<<
+ *         theGraph, origGraph, embedResult
+ *     )
 */
   __pyx_r = gp_TestEmbedResultIntegrity(__pyx_v_theGraph, __pyx_v_origGraph, __pyx_v_embedResult);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":660
- * 
- * 
- * cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_TestEmbedResultIntegrity(theGraph, origGraph, embedResult)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":664
- * 
- * 
- * cdef int gp_GetEmbedFlags(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetEmbedFlags(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_GetEmbedFlags(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":665
- * 
- * cdef int gp_GetEmbedFlags(graphP theGraph):
- *     return cgraphLib.gp_GetEmbedFlags(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_GetEmbedFlags(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":664
- * 
- * 
- * cdef int gp_GetEmbedFlags(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetEmbedFlags(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":668
- * 
- * 
- * cdef unsigned gp_GetObstructionMinorType(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetObstructionMinorType(theGraph)
- * 
-*/
-
-static unsigned int __pyx_f_9planarity_4full_8graphLib_gp_GetObstructionMinorType(graphP __pyx_v_theGraph) {
-  unsigned int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":669
- * 
- * cdef unsigned gp_GetObstructionMinorType(graphP theGraph):
- *     return cgraphLib.gp_GetObstructionMinorType(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_GetObstructionMinorType(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":668
- * 
- * 
- * cdef unsigned gp_GetObstructionMinorType(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_GetObstructionMinorType(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":673
- * 
- * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
- * cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_Outerplanarity(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Outerplanarity(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":674
- * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
- * cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):
- *     return cgraphLib.gp_ExtendWith_Outerplanarity(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_ExtendWith_Outerplanarity(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":673
- * 
- * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
- * cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_Outerplanarity(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":677
- * 
- * 
- * cdef int gp_Detach_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Detach_Outerplanarity(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_Outerplanarity(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
   /* "planarity/full/graphLib.pyx":678
  * 
- * cdef int gp_Detach_Outerplanarity(graphP theGraph):
- *     return cgraphLib.gp_Detach_Outerplanarity(theGraph)             # <<<<<<<<<<<<<<
  * 
- * 
-*/
-  __pyx_r = gp_Detach_Outerplanarity(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":677
- * 
- * 
- * cdef int gp_Detach_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Detach_Outerplanarity(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":682
- * 
- * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
- * cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_DrawPlanar(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DrawPlanar(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":683
- * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
- * cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):
- *     return cgraphLib.gp_ExtendWith_DrawPlanar(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_ExtendWith_DrawPlanar(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":682
- * 
- * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
- * cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_DrawPlanar(theGraph)
- * 
+ * cdef int gp_TestEmbedResultIntegrity(             # <<<<<<<<<<<<<<
+ *     graphP theGraph, graphP origGraph, int embedResult
+ * ):
 */
 
   /* function exit code */
@@ -7272,29 +7102,29 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DrawPlanar(graphP __
 /* "planarity/full/graphLib.pyx":686
  * 
  * 
- * cdef int gp_Detach_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Detach_DrawPlanar(theGraph)
+ * cdef int gp_GetEmbedFlags(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetEmbedFlags(theGraph)
  * 
 */
 
-static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DrawPlanar(graphP __pyx_v_theGraph) {
+static int __pyx_f_9planarity_4full_8graphLib_gp_GetEmbedFlags(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
   /* "planarity/full/graphLib.pyx":687
  * 
- * cdef int gp_Detach_DrawPlanar(graphP theGraph):
- *     return cgraphLib.gp_Detach_DrawPlanar(theGraph)             # <<<<<<<<<<<<<<
+ * cdef int gp_GetEmbedFlags(graphP theGraph):
+ *     return cgraphLib.gp_GetEmbedFlags(theGraph)             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_r = gp_Detach_DrawPlanar(__pyx_v_theGraph);
+  __pyx_r = gp_GetEmbedFlags(__pyx_v_theGraph);
   goto __pyx_L0;
 
   /* "planarity/full/graphLib.pyx":686
  * 
  * 
- * cdef int gp_Detach_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Detach_DrawPlanar(theGraph)
+ * cdef int gp_GetEmbedFlags(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetEmbedFlags(theGraph)
  * 
 */
 
@@ -7306,6 +7136,176 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DrawPlanar(graphP __pyx_
 /* "planarity/full/graphLib.pyx":690
  * 
  * 
+ * cdef unsigned gp_GetObstructionMinorType(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetObstructionMinorType(theGraph)
+ * 
+*/
+
+static unsigned int __pyx_f_9planarity_4full_8graphLib_gp_GetObstructionMinorType(graphP __pyx_v_theGraph) {
+  unsigned int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":691
+ * 
+ * cdef unsigned gp_GetObstructionMinorType(graphP theGraph):
+ *     return cgraphLib.gp_GetObstructionMinorType(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_GetObstructionMinorType(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":690
+ * 
+ * 
+ * cdef unsigned gp_GetObstructionMinorType(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_GetObstructionMinorType(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":695
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
+ * cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_Outerplanarity(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_Outerplanarity(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":696
+ * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
+ * cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):
+ *     return cgraphLib.gp_ExtendWith_Outerplanarity(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_ExtendWith_Outerplanarity(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":695
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphOuterplanarity.h":
+ * cdef int gp_ExtendWith_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_Outerplanarity(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":699
+ * 
+ * 
+ * cdef int gp_Detach_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Detach_Outerplanarity(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_Outerplanarity(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":700
+ * 
+ * cdef int gp_Detach_Outerplanarity(graphP theGraph):
+ *     return cgraphLib.gp_Detach_Outerplanarity(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_Detach_Outerplanarity(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":699
+ * 
+ * 
+ * cdef int gp_Detach_Outerplanarity(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Detach_Outerplanarity(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":704
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
+ * cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_DrawPlanar(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_DrawPlanar(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":705
+ * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
+ * cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):
+ *     return cgraphLib.gp_ExtendWith_DrawPlanar(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_ExtendWith_DrawPlanar(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":704
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/planarityRelated/graphDrawPlanar.h":
+ * cdef int gp_ExtendWith_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_DrawPlanar(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":708
+ * 
+ * 
+ * cdef int gp_Detach_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Detach_DrawPlanar(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DrawPlanar(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":709
+ * 
+ * cdef int gp_Detach_DrawPlanar(graphP theGraph):
+ *     return cgraphLib.gp_Detach_DrawPlanar(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_Detach_DrawPlanar(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":708
+ * 
+ * 
+ * cdef int gp_Detach_DrawPlanar(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Detach_DrawPlanar(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":712
+ * 
+ * 
  * cdef int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_DrawPlanar_RenderToFile(theEmbedding, theFileName)
  * 
@@ -7314,7 +7314,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_DrawPlanar(graphP __pyx_
 static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToFile(graphP __pyx_v_theEmbedding, char *__pyx_v_theFileName) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":691
+  /* "planarity/full/graphLib.pyx":713
  * 
  * cdef int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName):
  *     return cgraphLib.gp_DrawPlanar_RenderToFile(theEmbedding, theFileName)             # <<<<<<<<<<<<<<
@@ -7324,7 +7324,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToFile(graphP 
   __pyx_r = gp_DrawPlanar_RenderToFile(__pyx_v_theEmbedding, __pyx_v_theFileName);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":690
+  /* "planarity/full/graphLib.pyx":712
  * 
  * 
  * cdef int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName):             # <<<<<<<<<<<<<<
@@ -7337,33 +7337,33 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToFile(graphP 
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":694
+/* "planarity/full/graphLib.pyx":716
  * 
  * 
- * cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_RenderToString(theEmbedding, pRenditionString)
- * 
+ * cdef int gp_DrawPlanar_RenderToString(             # <<<<<<<<<<<<<<
+ *     graphP theEmbedding, char **pRenditionString
+ * ):
 */
 
 static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToString(graphP __pyx_v_theEmbedding, char **__pyx_v_pRenditionString) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":695
- * 
- * cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString):
- *     return cgraphLib.gp_DrawPlanar_RenderToString(theEmbedding, pRenditionString)             # <<<<<<<<<<<<<<
- * 
- * 
+  /* "planarity/full/graphLib.pyx":719
+ *     graphP theEmbedding, char **pRenditionString
+ * ):
+ *     return cgraphLib.gp_DrawPlanar_RenderToString(             # <<<<<<<<<<<<<<
+ *         theEmbedding, pRenditionString
+ *     )
 */
   __pyx_r = gp_DrawPlanar_RenderToString(__pyx_v_theEmbedding, __pyx_v_pRenditionString);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":694
+  /* "planarity/full/graphLib.pyx":716
  * 
  * 
- * cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_RenderToString(theEmbedding, pRenditionString)
- * 
+ * cdef int gp_DrawPlanar_RenderToString(             # <<<<<<<<<<<<<<
+ *     graphP theEmbedding, char **pRenditionString
+ * ):
 */
 
   /* function exit code */
@@ -7371,7 +7371,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToString(graph
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":698
+/* "planarity/full/graphLib.pyx":724
  * 
  * 
  * cdef int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v):             # <<<<<<<<<<<<<<
@@ -7382,7 +7382,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_RenderToString(graph
 static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexPosition(graphP __pyx_v_theEmbedding, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":699
+  /* "planarity/full/graphLib.pyx":725
  * 
  * cdef int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v):
  *     return cgraphLib.gp_DrawPlanar_GetVertexPosition(theEmbedding, v)             # <<<<<<<<<<<<<<
@@ -7392,7 +7392,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexPosition(gr
   __pyx_r = gp_DrawPlanar_GetVertexPosition(__pyx_v_theEmbedding, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":698
+  /* "planarity/full/graphLib.pyx":724
  * 
  * 
  * cdef int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v):             # <<<<<<<<<<<<<<
@@ -7405,7 +7405,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexPosition(gr
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":702
+/* "planarity/full/graphLib.pyx":728
  * 
  * 
  * cdef int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v):             # <<<<<<<<<<<<<<
@@ -7416,7 +7416,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexPosition(gr
 static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexStart(graphP __pyx_v_theEmbedding, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":703
+  /* "planarity/full/graphLib.pyx":729
  * 
  * cdef int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v):
  *     return cgraphLib.gp_DrawPlanar_GetVertexStart(theEmbedding, v)             # <<<<<<<<<<<<<<
@@ -7426,7 +7426,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexStart(graph
   __pyx_r = gp_DrawPlanar_GetVertexStart(__pyx_v_theEmbedding, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":702
+  /* "planarity/full/graphLib.pyx":728
  * 
  * 
  * cdef int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v):             # <<<<<<<<<<<<<<
@@ -7439,7 +7439,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexStart(graph
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":706
+/* "planarity/full/graphLib.pyx":732
  * 
  * 
  * cdef int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v):             # <<<<<<<<<<<<<<
@@ -7450,7 +7450,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexStart(graph
 static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexEnd(graphP __pyx_v_theEmbedding, int __pyx_v_v) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":707
+  /* "planarity/full/graphLib.pyx":733
  * 
  * cdef int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v):
  *     return cgraphLib.gp_DrawPlanar_GetVertexEnd(theEmbedding, v)             # <<<<<<<<<<<<<<
@@ -7460,215 +7460,11 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetVertexEnd(graphP 
   __pyx_r = gp_DrawPlanar_GetVertexEnd(__pyx_v_theEmbedding, __pyx_v_v);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":706
+  /* "planarity/full/graphLib.pyx":732
  * 
  * 
  * cdef int gp_DrawPlanar_GetVertexEnd(graphP theEmbedding, int v):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_DrawPlanar_GetVertexEnd(theEmbedding, v)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":710
- * 
- * 
- * cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetEdgePosition(graphP __pyx_v_theEmbedding, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":711
- * 
- * cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):
- *     return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_DrawPlanar_GetEdgePosition(__pyx_v_theEmbedding, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":710
- * 
- * 
- * cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":714
- * 
- * 
- * cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetEdgeStart(graphP __pyx_v_theEmbedding, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":715
- * 
- * cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):
- *     return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_DrawPlanar_GetEdgeStart(__pyx_v_theEmbedding, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":714
- * 
- * 
- * cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":718
- * 
- * 
- * cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetEdgeEnd(graphP __pyx_v_theEmbedding, int __pyx_v_e) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":719
- * 
- * cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):
- *     return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_DrawPlanar_GetEdgeEnd(__pyx_v_theEmbedding, __pyx_v_e);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":718
- * 
- * 
- * cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":723
- * 
- * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
- * cdef int gp_ExtendWith_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_K23Search(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K23Search(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":724
- * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
- * cdef int gp_ExtendWith_K23Search(graphP theGraph):
- *     return cgraphLib.gp_ExtendWith_K23Search(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_ExtendWith_K23Search(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":723
- * 
- * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
- * cdef int gp_ExtendWith_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_K23Search(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":727
- * 
- * 
- * cdef int gp_Detach_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Detach_K23Search(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K23Search(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":728
- * 
- * cdef int gp_Detach_K23Search(graphP theGraph):
- *     return cgraphLib.gp_Detach_K23Search(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_Detach_K23Search(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":727
- * 
- * 
- * cdef int gp_Detach_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_Detach_K23Search(theGraph)
- * 
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "planarity/full/graphLib.pyx":732
- * 
- * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
- * cdef int gp_ExtendWith_K33Search(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_K33Search(theGraph)
- * 
-*/
-
-static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K33Search(graphP __pyx_v_theGraph) {
-  int __pyx_r;
-
-  /* "planarity/full/graphLib.pyx":733
- * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
- * cdef int gp_ExtendWith_K33Search(graphP theGraph):
- *     return cgraphLib.gp_ExtendWith_K33Search(theGraph)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  __pyx_r = gp_ExtendWith_K33Search(__pyx_v_theGraph);
-  goto __pyx_L0;
-
-  /* "planarity/full/graphLib.pyx":732
- * 
- * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
- * cdef int gp_ExtendWith_K33Search(graphP theGraph):             # <<<<<<<<<<<<<<
- *     return cgraphLib.gp_ExtendWith_K33Search(theGraph)
  * 
 */
 
@@ -7680,6 +7476,210 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K33Search(graphP __p
 /* "planarity/full/graphLib.pyx":736
  * 
  * 
+ * cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetEdgePosition(graphP __pyx_v_theEmbedding, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":737
+ * 
+ * cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):
+ *     return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_DrawPlanar_GetEdgePosition(__pyx_v_theEmbedding, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":736
+ * 
+ * 
+ * cdef int gp_DrawPlanar_GetEdgePosition(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_DrawPlanar_GetEdgePosition(theEmbedding, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":740
+ * 
+ * 
+ * cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetEdgeStart(graphP __pyx_v_theEmbedding, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":741
+ * 
+ * cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):
+ *     return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_DrawPlanar_GetEdgeStart(__pyx_v_theEmbedding, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":740
+ * 
+ * 
+ * cdef int gp_DrawPlanar_GetEdgeStart(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_DrawPlanar_GetEdgeStart(theEmbedding, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":744
+ * 
+ * 
+ * cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_DrawPlanar_GetEdgeEnd(graphP __pyx_v_theEmbedding, int __pyx_v_e) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":745
+ * 
+ * cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):
+ *     return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_DrawPlanar_GetEdgeEnd(__pyx_v_theEmbedding, __pyx_v_e);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":744
+ * 
+ * 
+ * cdef int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_DrawPlanar_GetEdgeEnd(theEmbedding, e)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":749
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
+ * cdef int gp_ExtendWith_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_K23Search(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K23Search(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":750
+ * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
+ * cdef int gp_ExtendWith_K23Search(graphP theGraph):
+ *     return cgraphLib.gp_ExtendWith_K23Search(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_ExtendWith_K23Search(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":749
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK23Search.h":
+ * cdef int gp_ExtendWith_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_K23Search(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":753
+ * 
+ * 
+ * cdef int gp_Detach_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Detach_K23Search(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K23Search(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":754
+ * 
+ * cdef int gp_Detach_K23Search(graphP theGraph):
+ *     return cgraphLib.gp_Detach_K23Search(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_Detach_K23Search(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":753
+ * 
+ * 
+ * cdef int gp_Detach_K23Search(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_Detach_K23Search(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":758
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
+ * cdef int gp_ExtendWith_K33Search(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_K33Search(theGraph)
+ * 
+*/
+
+static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K33Search(graphP __pyx_v_theGraph) {
+  int __pyx_r;
+
+  /* "planarity/full/graphLib.pyx":759
+ * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
+ * cdef int gp_ExtendWith_K33Search(graphP theGraph):
+ *     return cgraphLib.gp_ExtendWith_K33Search(theGraph)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = gp_ExtendWith_K33Search(__pyx_v_theGraph);
+  goto __pyx_L0;
+
+  /* "planarity/full/graphLib.pyx":758
+ * 
+ * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK33Search.h":
+ * cdef int gp_ExtendWith_K33Search(graphP theGraph):             # <<<<<<<<<<<<<<
+ *     return cgraphLib.gp_ExtendWith_K33Search(theGraph)
+ * 
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "planarity/full/graphLib.pyx":762
+ * 
+ * 
  * cdef int gp_Detach_K33Search(graphP theGraph):             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_Detach_K33Search(theGraph)
  * 
@@ -7688,7 +7688,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K33Search(graphP __p
 static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K33Search(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":737
+  /* "planarity/full/graphLib.pyx":763
  * 
  * cdef int gp_Detach_K33Search(graphP theGraph):
  *     return cgraphLib.gp_Detach_K33Search(theGraph)             # <<<<<<<<<<<<<<
@@ -7698,7 +7698,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K33Search(graphP __pyx_v
   __pyx_r = gp_Detach_K33Search(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":736
+  /* "planarity/full/graphLib.pyx":762
  * 
  * 
  * cdef int gp_Detach_K33Search(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -7711,7 +7711,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K33Search(graphP __pyx_v
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":741
+/* "planarity/full/graphLib.pyx":767
  * 
  * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK4Search.h":
  * cdef int gp_ExtendWith_K4Search(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -7722,7 +7722,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K33Search(graphP __pyx_v
 static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K4Search(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":742
+  /* "planarity/full/graphLib.pyx":768
  * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK4Search.h":
  * cdef int gp_ExtendWith_K4Search(graphP theGraph):
  *     return cgraphLib.gp_ExtendWith_K4Search(theGraph)             # <<<<<<<<<<<<<<
@@ -7732,7 +7732,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K4Search(graphP __py
   __pyx_r = gp_ExtendWith_K4Search(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":741
+  /* "planarity/full/graphLib.pyx":767
  * 
  * # Wraps functions declared in "planarity/c/graphLib/homeomorphSearch/graphK4Search.h":
  * cdef int gp_ExtendWith_K4Search(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -7745,7 +7745,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K4Search(graphP __py
   return __pyx_r;
 }
 
-/* "planarity/full/graphLib.pyx":745
+/* "planarity/full/graphLib.pyx":771
  * 
  * 
  * cdef int gp_Detach_K4Search(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -7755,7 +7755,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_ExtendWith_K4Search(graphP __py
 static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K4Search(graphP __pyx_v_theGraph) {
   int __pyx_r;
 
-  /* "planarity/full/graphLib.pyx":746
+  /* "planarity/full/graphLib.pyx":772
  * 
  * cdef int gp_Detach_K4Search(graphP theGraph):
  *     return cgraphLib.gp_Detach_K4Search(theGraph)             # <<<<<<<<<<<<<<
@@ -7763,7 +7763,7 @@ static int __pyx_f_9planarity_4full_8graphLib_gp_Detach_K4Search(graphP __pyx_v_
   __pyx_r = gp_Detach_K4Search(__pyx_v_theGraph);
   goto __pyx_L0;
 
-  /* "planarity/full/graphLib.pyx":745
+  /* "planarity/full/graphLib.pyx":771
  * 
  * 
  * cdef int gp_Detach_K4Search(graphP theGraph):             # <<<<<<<<<<<<<<
@@ -8828,152 +8828,152 @@ __Pyx_RefNannySetupContext("PyInit_graphLib", 0);
  * 
  * # Surfaced from planarity/c/graphLib/planarityRelated/graphOuterplanarity.h
  * OUTERPLANARITY_NAME = cgraphLib.OUTERPLANARITY_NAME             # <<<<<<<<<<<<<<
- * GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = cgraphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY
- * 
+ * GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = (
+ *     cgraphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY
 */
   __pyx_t_2 = __Pyx_PyBytes_FromString(OUTERPLANARITY_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_OUTERPLANARITY_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":97
- * # Surfaced from planarity/c/graphLib/planarityRelated/graphOuterplanarity.h
+  /* "planarity/full/graphLib.pyx":98
  * OUTERPLANARITY_NAME = cgraphLib.OUTERPLANARITY_NAME
- * GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = cgraphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY             # <<<<<<<<<<<<<<
+ * GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = (
+ *     cgraphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY             # <<<<<<<<<<<<<<
+ * )
  * 
- * # Surfaced from planarity/c/graphLib/planarityRelated/graphDrawPlanar.h
 */
-  __pyx_t_2 = __Pyx_PyLong_From_int(GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_GRAPHFLAGS_EXTENDEDWITH_OUTERPLA, __pyx_t_2) < (0)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":100
+  /* "planarity/full/graphLib.pyx":102
  * 
  * # Surfaced from planarity/c/graphLib/planarityRelated/graphDrawPlanar.h
  * DRAWPLANAR_NAME = cgraphLib.DRAWPLANAR_NAME             # <<<<<<<<<<<<<<
  * 
  * # Surfaced from planarity/c/graphLib/homeomorphSearch/graphK23Search.h
 */
-  __pyx_t_2 = __Pyx_PyBytes_FromString(DRAWPLANAR_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromString(DRAWPLANAR_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_DRAWPLANAR_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_DRAWPLANAR_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":103
+  /* "planarity/full/graphLib.pyx":105
  * 
  * # Surfaced from planarity/c/graphLib/homeomorphSearch/graphK23Search.h
  * K23SEARCH_NAME = cgraphLib.K23SEARCH_NAME             # <<<<<<<<<<<<<<
  * 
  * # Surfaced from planarity/c/graphLib/homeomorphSearch/graphK33Search.h
 */
-  __pyx_t_2 = __Pyx_PyBytes_FromString(K23SEARCH_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromString(K23SEARCH_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_K23SEARCH_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_K23SEARCH_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":106
+  /* "planarity/full/graphLib.pyx":108
  * 
  * # Surfaced from planarity/c/graphLib/homeomorphSearch/graphK33Search.h
  * K33SEARCH_NAME = cgraphLib.K33SEARCH_NAME             # <<<<<<<<<<<<<<
  * 
  * # Surfaced from planarity/c/graphLib/homeomorphSearch/graphK4Search.h
 */
-  __pyx_t_2 = __Pyx_PyBytes_FromString(K33SEARCH_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromString(K33SEARCH_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_K33SEARCH_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 106, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_K33SEARCH_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":109
+  /* "planarity/full/graphLib.pyx":111
  * 
  * # Surfaced from planarity/c/graphLib/homeomorphSearch/graphK4Search.h
  * K4SEARCH_NAME = cgraphLib.K4SEARCH_NAME             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_t_2 = __Pyx_PyBytes_FromString(K4SEARCH_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromString(K4SEARCH_NAME); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_K4SEARCH_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 109, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_K4SEARCH_NAME, __pyx_t_2) < (0)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":113
+  /* "planarity/full/graphLib.pyx":115
  * 
  * # Functions to be made available when importing package from Python
  * def gp_GetQuietMode() -> int:             # <<<<<<<<<<<<<<
  *     return cgraphLib.gp_GetQuietMode()
  * 
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_int) < (0)) __PYX_ERR(0, 113, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_1gp_GetQuietMode, 0, __pyx_mstate_global->__pyx_n_u_gp_GetQuietMode, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_int) < (0)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_1gp_GetQuietMode, 0, __pyx_mstate_global->__pyx_n_u_gp_GetQuietMode, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_GetQuietMode, __pyx_t_3) < (0)) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_GetQuietMode, __pyx_t_3) < (0)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "planarity/full/graphLib.pyx":117
+  /* "planarity/full/graphLib.pyx":119
  * 
  * 
  * def gp_SetQuietMode(int newQuietMode) -> None:             # <<<<<<<<<<<<<<
  *     cgraphLib.gp_SetQuietMode(newQuietMode)
  * 
 */
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 117, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_3gp_SetQuietMode, 0, __pyx_mstate_global->__pyx_n_u_gp_SetQuietMode, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_3gp_SetQuietMode, 0, __pyx_mstate_global->__pyx_n_u_gp_SetQuietMode, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_SetQuietMode, __pyx_t_2) < (0)) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_SetQuietMode, __pyx_t_2) < (0)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/graphLib.pyx":121
+  /* "planarity/full/graphLib.pyx":123
  * 
  * 
  * def gp_GetProjectVersionFull() -> str:             # <<<<<<<<<<<<<<
  *     cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
  *     return encoded_version.decode('utf-8')
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(0, 121, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_5gp_GetProjectVersionFull, 0, __pyx_mstate_global->__pyx_n_u_gp_GetProjectVersionFull, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_5gp_GetProjectVersionFull, 0, __pyx_mstate_global->__pyx_n_u_gp_GetProjectVersionFull, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_3);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_GetProjectVersionFull, __pyx_t_3) < (0)) __PYX_ERR(0, 121, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_GetProjectVersionFull, __pyx_t_3) < (0)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "planarity/full/graphLib.pyx":126
+  /* "planarity/full/graphLib.pyx":128
  * 
  * 
  * def gp_GetLibPlanarityVersionFull() -> str:             # <<<<<<<<<<<<<<
  *     cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
  *     return encoded_version.decode('utf-8')
 */
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(0, 126, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_7gp_GetLibPlanarityVersionFull, 0, __pyx_mstate_global->__pyx_n_u_gp_GetLibPlanarityVersionFull, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_str) < (0)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_8graphLib_7gp_GetLibPlanarityVersionFull, 0, __pyx_mstate_global->__pyx_n_u_gp_GetLibPlanarityVersionFull, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_graphLib, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[3])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_GetLibPlanarityVersionFull, __pyx_t_2) < (0)) __PYX_ERR(0, 126, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_gp_GetLibPlanarityVersionFull, __pyx_t_2) < (0)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "planarity/full/graphLib.pyx":1
@@ -9141,7 +9141,7 @@ typedef struct {
     unsigned int num_kwonly_args : 1;
     unsigned int nlocals : 1;
     unsigned int flags : 10;
-    unsigned int first_line : 7;
+    unsigned int first_line : 8;
 } __Pyx_PyCode_New_function_description;
 /* NewCodeObj.proto */
 static PyObject* __Pyx_PyCode_New(
@@ -9158,22 +9158,22 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   PyObject* tuple_dedup_map = PyDict_New();
   if (unlikely(!tuple_dedup_map)) return -1;
   {
-    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 0, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 113};
+    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 0, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 115};
     PyObject* const varnames[] = {0};
     __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graphLib_pyx, __pyx_mstate->__pyx_n_u_gp_GetQuietMode, __pyx_mstate->__pyx_kp_b_iso88591_A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 117};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 119};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_newQuietMode};
     __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graphLib_pyx, __pyx_mstate->__pyx_n_u_gp_SetQuietMode, __pyx_mstate->__pyx_kp_b_iso88591_Qa, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 121};
+    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 123};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_encoded_version};
     __pyx_mstate_global->__pyx_codeobj_tab[2] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graphLib_pyx, __pyx_mstate->__pyx_n_u_gp_GetProjectVersionFull, __pyx_mstate->__pyx_kp_b_iso88591_C1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[2])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 126};
+    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 128};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_encoded_version};
     __pyx_mstate_global->__pyx_codeobj_tab[3] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_graphLib_pyx, __pyx_mstate->__pyx_n_u_gp_GetLibPlanarityVersionFull, __pyx_mstate->__pyx_kp_b_iso88591_q_H, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[3])) goto bad;
   }

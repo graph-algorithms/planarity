@@ -164,7 +164,7 @@ cdef class Graph:
 
         Raises:
             MemoryError: if gp_DupGraph() failed to duplicate this Graph's
-            graphP.
+                graphP.
         """
         cdef graphLib.graphP theGraph_dup = graphLib.gp_DupGraph(self._theGraph)
         if theGraph_dup == NULL:
@@ -233,7 +233,7 @@ cdef class Graph:
             v: index of another vertex or virtual vertex in the graph.
 
         Returns:
-            TRUE if u and v are neighbors, FALSE otherwise
+            TRUE if u and v are neighbors, FALSE otherwise.
         """
         return graphLib.gp_IsNeighbor(self._theGraph, u, v)
 
@@ -266,13 +266,13 @@ cdef class Graph:
         """Checks if edge exists in a given direction between two vertices.
 
         Args:
-            u: index of a vertex in graph
-            v: index of another vertex in graph
-            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY
+            u: index of a vertex in graph.
+            v: index of another vertex in graph.
+            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY.
 
         Returns:
             TRUE if u and v are neighbors (the edge is undirected or matches
-            the given direction), FALSE otherwise
+            the given direction), FALSE otherwise.
         """
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
@@ -280,9 +280,9 @@ cdef class Graph:
         """Find directed index of edge between u and v if it exists in graph.
 
         Args:
-            u: index of a vertex in graph
-            v: index of another vertex in graph
-            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY
+            u: index of a vertex in graph.
+            v: index of another vertex in graph.
+            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY.
 
         Returns:
             The index e of the directed edge between u and v, or NIL if an error
@@ -294,7 +294,7 @@ cdef class Graph:
         """Gets in-degree of v, including undirected edges.
 
         Args:
-            v: index of a vertex in graph
+            v: index of a vertex in graph.
 
         Returns:
             The in-degree of the vertex with index v, or 0 if an error was
@@ -306,7 +306,7 @@ cdef class Graph:
         """Gets out-degree of v, including undirected edges.
 
         Args:
-            v: index of a vertex in graph
+            v: index of a vertex in graph.
 
         Returns:
             The out-degree of the vertex with index v, or 0 if an error was
@@ -318,12 +318,12 @@ cdef class Graph:
         """Adds edge between two vertices (if sufficient edge capacity).
 
         Args:
-            u: index of a vertex in graph
+            u: index of a vertex in graph.
             ulink: either 0 or 1; indicates whether the edge record to v in u's
-                list should become adjacent to u by its 0 or 1 link
-            v: index of another vertex in graph
+                list should become adjacent to u by its 0 or 1 link.
+            v: index of another vertex in graph.
             vlink: either 0 or 1; indicates whether the edge record to u in v's
-                list should become adjacent to v by its 0 or 1 link
+                list should become adjacent to v by its 0 or 1 link.
 
         Returns:
             Returns OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge
@@ -332,8 +332,8 @@ cdef class Graph:
 
         Raises:
             ValueError: if ulink or vlink are anything other than 0 or 1
-            RuntimeError if gp_AddEdge() returned anything other than OK or
-                AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK
+            RuntimeError: if gp_AddEdge() returned anything other than OK or
+                AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK.
         """
         if ulink != 0 and ulink != 1:
             raise ValueError(
@@ -358,16 +358,16 @@ cdef class Graph:
         """Adds edge between two vertices, resizing structures if necessessary.
 
         Args:
-            u: index of a vertex in graph
+            u: index of a vertex in graph.
             ulink: either 0 or 1; indicates whether the edge record to v in u's
-                list should become adjacent to u by its 0 or 1 link
-            v: index of another vertex in graph
+                list should become adjacent to u by its 0 or 1 link.
+            v: index of another vertex in graph.
             vlink: either 0 or 1; indicates whether the edge record to u in v's
-                list should become adjacent to v by its 0 or 1 link
+                list should become adjacent to v by its 0 or 1 link.
 
         Raises:
-            ValueError: ulink or vlink are anything other than 0 or 1
-            RuntimeError if C graphlib version of this function failed.
+            ValueError: ulink or vlink are anything other than 0 or 1.
+            RuntimeError: if C graphlib version of this function failed.
         """
         if ulink != 0 and ulink != 1:
             raise ValueError(
@@ -392,14 +392,14 @@ cdef class Graph:
         """Insert edge between u and v in specific positions of adjacency lists.
 
         Args:
-            u: index of a vertex in graph
-            e_u: new edge is added next to this edge in u's adjacency list
+            u: index of a vertex in graph.
+            e_u: new edge is added next to this edge in u's adjacency list.
             e_ulink: 0 or 1; which side of e_u to add new edge (or which side
-                of the adjacency list of u if e_u is NIL)
-            v: index of a vertex in graph
-            e_v: new edge is added next to this edge in v's adjacency list
+                of the adjacency list of u if e_u is NIL).
+            v: index of a vertex in graph.
+            e_v: new edge is added next to this edge in v's adjacency list.
             e_vlink: 0 or 1; which side of e_v to add new edge (or which side
-                of the adjacency list of v if e_v is NIL)
+                of the adjacency list of v if e_v is NIL).
 
         Returns:
             OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge would
@@ -408,7 +408,7 @@ cdef class Graph:
 
         Raises:
             RuntimeError: if gp_InsertEdge() returned anything other than OK or
-                AT_EDGE_CAPACITY_LIMIT
+                AT_EDGE_CAPACITY_LIMIT.
         """
         result = graphLib.gp_InsertEdge(
             self._theGraph, u, e_u, e_ulink, v, e_v, e_vlink
@@ -427,7 +427,7 @@ cdef class Graph:
         """Deletes edge with index e from the graph.
 
         Args:
-            e: index of edge in graph to delete
+            e: index of edge in graph to delete.
 
         Raises:
             RuntimeError: if C graphlib version of this function failed.
@@ -445,7 +445,7 @@ cdef class Graph:
         adjacency lists of its endpoint vertices. See gp_RestoreEdge()
 
         Args:
-            e: index of edge in graph to hide
+            e: index of edge in graph to hide.
         """
         graphLib.gp_HideEdge(self._theGraph, e)
 
@@ -453,7 +453,7 @@ cdef class Graph:
         """Restore edge to adjacency lists from which it was previously hidden.
 
         Args:
-            e: index of edge in graph to restore
+            e: index of edge in graph to restore.
         """
         graphLib.gp_RestoreEdge(self._theGraph, e)
 
@@ -466,7 +466,7 @@ cdef class Graph:
         hidden.
 
         Args:
-            vertex: index of vertex in graph to hide
+            vertex: index of vertex in graph to hide.
 
         Raises:
             RuntimeError: if C graphlib version of this function failed.
@@ -512,11 +512,11 @@ cdef class Graph:
         """Identify vertex v with u by transferring all adjacencies from v to u.
 
         Args:
-            u: index of vertex in graph to which v will be identified
-            v: index of vertex in graph to identify with u
+            u: index of vertex in graph to which v will be identified.
+            v: index of vertex in graph to identify with u.
             eBefore: the index in u's adjacency list before which v's
                 adjacencies should be inserted, or NIL to append the edges to
-                u's list
+                u's list.
 
         Raises:
             RuntimeError: if C graphlib version of this function failed.
@@ -603,7 +603,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if v is not a valid vertex index or theLink is an
-            invalid direction indicator (0 or 1).
+                invalid direction indicator (0 or 1).
         """
         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
@@ -682,7 +682,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if v is not a valid vertex, if theLink is not 0 nor 1,
-            or newEdge is not a valid in-use edge.
+                or newEdge is not a valid in-use edge.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -843,7 +843,7 @@ cdef class Graph:
         A virtual vertex is in use if it has any incident edges.
 
         Args:
-            virtualVertex: candidate virtual vertex to test
+            virtualVertex: candidate virtual vertex to test.
 
         Returns:
             TRUE if virtualVertex is a valid virtual vertex and is in use,
@@ -900,12 +900,12 @@ cdef class Graph:
         """Set the index data member of vertex v to theIndex.
 
         Args:
-            v: the vertex in the graph whose index to set to theIndex
-            theIndex: new value you wish to assign to the vertex's index field
+            v: the vertex in the graph whose index to set to theIndex.
+            theIndex: new value you wish to assign to the vertex's index field.
 
         Raises:
             ValueError: if v or theIndex don't correspond to a non-virtual or
-            virtual vertex.
+                virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -927,7 +927,7 @@ cdef class Graph:
         """Resets (clears) all flags for a given vertex.
 
         Args:
-            v: index of vertex in graph whose flags you wish to clear
+            v: index of vertex in graph whose flags you wish to clear.
 
         Raises:
             ValueError: if v is not a non-virtual nor virtual vertex.
@@ -1002,7 +1002,7 @@ cdef class Graph:
             (truthy).
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex
+            ValueError: if v is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -1119,7 +1119,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge or if theLink is neither
-            0 nor 1.
+                0 nor 1.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1144,7 +1144,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge, or if newNextEdge is
-            neither NIL nor a valid in-use edge.
+                neither NIL nor a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1169,7 +1169,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge, or if newPrevEdge is
-            neither NIL nor a valid in-use edge.
+                neither NIL nor a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1196,8 +1196,8 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge, or if newEdge is
-            neither NIL nor a valid in-use edge, or if theLink is neither 0 nor
-            1.
+                neither NIL nor a valid in-use edge, or if theLink is neither 0
+                nor 1.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1223,7 +1223,7 @@ cdef class Graph:
         """Check if e is an edge location in the graph's edge storage.
 
         Args:
-            e: candidate edge to verify is an edge location in the graph
+            e: candidate edge to verify is an edge location in the graph.
 
         Returns:
             TRUE if e is a valid edge and the value returned by C-layer
@@ -1261,13 +1261,13 @@ cdef class Graph:
         """Get the neighbor vertex indicated by an in-use edge e.
 
         Args:
-            e: an in-use edge in the adjacency list of a vertex v
+            e: an in-use edge in the adjacency list of a vertex v.
 
         Returns:
-            The vertex that e indicates is a neighbor of vertex v
+            The vertex that e indicates is a neighbor of vertex v.
 
         Raises:
-            ValueError: if e is not a valid in-use edge
+            ValueError: if e is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1286,7 +1286,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge, or if v is not a
-            non-virtual nor a virtual vertex.
+                non-virtual nor a virtual vertex.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1481,7 +1481,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge or if type is not a
-            valid edge type.
+                valid edge type.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1512,7 +1512,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if e is not a valid in-use edge or if type is not a
-            valid edge type
+                valid edge type.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1630,13 +1630,13 @@ cdef class Graph:
         """Set the direction flag of an in-use edge e.
 
         Args:
-            e: an in-use edge for which you wish to set the direction
+            e: an in-use edge for which you wish to set the direction.
             direction: either 0 (undirected), EDGEFLAG_DIRECTION_INONLY, or
                 EDGEFLAG_DIRECTION_OUTONLY.
 
         Raises:
             ValueError: if e is not a valid in-use edge, or direction is
-            invalid.
+                invalid.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -2427,10 +2427,10 @@ cdef class Graph:
         """Get the horizontal position of an edge e.
 
         Args:
-            e: an edge for which you wish to get the horizontal position
+            e: an edge for which you wish to get the horizontal position.
 
         Returns:
-            The horizontal position value for e
+            The horizontal position value for e.
 
         Raises:
             RuntimeError: if C graphlib version of this function failed.
@@ -2447,10 +2447,10 @@ cdef class Graph:
         """Get the vertical start position of an edge e.
 
         Args:
-            e: an edge for which you wish to get the vertical start position
+            e: an edge for which you wish to get the vertical start position.
 
         Returns:
-            The vertical start position value for e
+            The vertical start position value for e.
 
         Raises:
             RuntimeError: if C graphlib version of this function failed.
@@ -2467,10 +2467,10 @@ cdef class Graph:
         """Get the vertical end position of an edge e.
 
         Args:
-            e: an edge for which you wish to get the vertical end position
+            e: an edge for which you wish to get the vertical end position.
 
         Returns:
-            The vertical end position value for e
+            The vertical end position value for e.
 
         Raises:
             RuntimeError: if C graphlib version of this function failed.

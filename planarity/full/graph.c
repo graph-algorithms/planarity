@@ -4815,7 +4815,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_20gp_DupGraph, "Graph.gp_DupGraph(self) -> Graph\n\nCreates a Graph wrapping a copy of the current Graph's graphP.\n\nReturns:\n    A new Graph containing a duplicate of the current Graph's graphP.\n\nRaises:\n    MemoryError: if gp_DupGraph() failed to duplicate this Graph's\n    graphP.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_20gp_DupGraph, "Graph.gp_DupGraph(self) -> Graph\n\nCreates a Graph wrapping a copy of the current Graph's graphP.\n\nReturns:\n    A new Graph containing a duplicate of the current Graph's graphP.\n\nRaises:\n    MemoryError: if gp_DupGraph() failed to duplicate this Graph's\n        graphP.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_21gp_DupGraph = {"gp_DupGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_21gp_DupGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_20gp_DupGraph};
 static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pw_9planarity_4full_5graph_5Graph_21gp_DupGraph(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -4866,7 +4866,7 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
   __Pyx_RefNannySetupContext("gp_DupGraph", 0);
 
   /* "planarity/full/graph.pyx":169
- *             graphP.
+ *                 graphP.
  *         """
  *         cdef graphLib.graphP theGraph_dup = graphLib.gp_DupGraph(self._theGraph)             # <<<<<<<<<<<<<<
  *         if theGraph_dup == NULL:
@@ -5555,7 +5555,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_28gp_IsNeighbor, "Graph.gp_IsNeighbor(self, int u, int v) -> int\n\nCheck if u is a neighbor of v, where either vertex may be virtual.\n\nArgs:\n    u: index of a vertex or virtual vertices in the graph.\n    v: index of another vertex or virtual vertex in the graph.\n\nReturns:\n    TRUE if u and v are neighbors, FALSE otherwise");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_28gp_IsNeighbor, "Graph.gp_IsNeighbor(self, int u, int v) -> int\n\nCheck if u is a neighbor of v, where either vertex may be virtual.\n\nArgs:\n    u: index of a vertex or virtual vertices in the graph.\n    v: index of another vertex or virtual vertex in the graph.\n\nReturns:\n    TRUE if u and v are neighbors, FALSE otherwise.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_29gp_IsNeighbor = {"gp_IsNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_29gp_IsNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_28gp_IsNeighbor};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_29gp_IsNeighbor(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -5652,7 +5652,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_28gp_IsNeighbor(struct 
   __Pyx_RefNannySetupContext("gp_IsNeighbor", 0);
 
   /* "planarity/full/graph.pyx":238
- *             TRUE if u and v are neighbors, FALSE otherwise
+ *             TRUE if u and v are neighbors, FALSE otherwise.
  *         """
  *         return graphLib.gp_IsNeighbor(self._theGraph, u, v)             # <<<<<<<<<<<<<<
  * 
@@ -5988,7 +5988,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_34gp_IsNeighborDirected, "Graph.gp_IsNeighborDirected(self, int u, int v, unsigned int direction) -> int\n\nChecks if edge exists in a given direction between two vertices.\n\nArgs:\n    u: index of a vertex in graph\n    v: index of another vertex in graph\n    direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY\n\nReturns:\n    TRUE if u and v are neighbors (the edge is undirected or matches\n    the given direction), FALSE otherwise");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_34gp_IsNeighborDirected, "Graph.gp_IsNeighborDirected(self, int u, int v, unsigned int direction) -> int\n\nChecks if edge exists in a given direction between two vertices.\n\nArgs:\n    u: index of a vertex in graph.\n    v: index of another vertex in graph.\n    direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY.\n\nReturns:\n    TRUE if u and v are neighbors (the edge is undirected or matches\n    the given direction), FALSE otherwise.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_35gp_IsNeighborDirected = {"gp_IsNeighborDirected", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_35gp_IsNeighborDirected, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_34gp_IsNeighborDirected};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_35gp_IsNeighborDirected(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -6093,7 +6093,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_34gp_IsNeighborDirected
   __Pyx_RefNannySetupContext("gp_IsNeighborDirected", 0);
 
   /* "planarity/full/graph.pyx":277
- *             the given direction), FALSE otherwise
+ *             the given direction), FALSE otherwise.
  *         """
  *         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)             # <<<<<<<<<<<<<<
  * 
@@ -6143,7 +6143,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_36gp_FindDirectedEdge, "Graph.gp_FindDirectedEdge(self, int u, int v, unsigned int direction) -> int\n\nFind directed index of edge between u and v if it exists in graph.\n\nArgs:\n    u: index of a vertex in graph\n    v: index of another vertex in graph\n    direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY\n\nReturns:\n    The index e of the directed edge between u and v, or NIL if an error\n    was encountered or the edge doesn't exist.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_36gp_FindDirectedEdge, "Graph.gp_FindDirectedEdge(self, int u, int v, unsigned int direction) -> int\n\nFind directed index of edge between u and v if it exists in graph.\n\nArgs:\n    u: index of a vertex in graph.\n    v: index of another vertex in graph.\n    direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY.\n\nReturns:\n    The index e of the directed edge between u and v, or NIL if an error\n    was encountered or the edge doesn't exist.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_37gp_FindDirectedEdge = {"gp_FindDirectedEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_37gp_FindDirectedEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_36gp_FindDirectedEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_37gp_FindDirectedEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -6298,7 +6298,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_38gp_GetVertexInDegree, "Graph.gp_GetVertexInDegree(self, int v) -> int\n\nGets in-degree of v, including undirected edges.\n\nArgs:\n    v: index of a vertex in graph\n\nReturns:\n    The in-degree of the vertex with index v, or 0 if an error was\n    encountered.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_38gp_GetVertexInDegree, "Graph.gp_GetVertexInDegree(self, int v) -> int\n\nGets in-degree of v, including undirected edges.\n\nArgs:\n    v: index of a vertex in graph.\n\nReturns:\n    The in-degree of the vertex with index v, or 0 if an error was\n    encountered.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_39gp_GetVertexInDegree = {"gp_GetVertexInDegree", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_39gp_GetVertexInDegree, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_38gp_GetVertexInDegree};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_39gp_GetVertexInDegree(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -6437,7 +6437,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetVertexOutDegree, "Graph.gp_GetVertexOutDegree(self, int v) -> int\n\nGets out-degree of v, including undirected edges.\n\nArgs:\n    v: index of a vertex in graph\n\nReturns:\n    The out-degree of the vertex with index v, or 0 if an error was\n    encountered.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetVertexOutDegree, "Graph.gp_GetVertexOutDegree(self, int v) -> int\n\nGets out-degree of v, including undirected edges.\n\nArgs:\n    v: index of a vertex in graph.\n\nReturns:\n    The out-degree of the vertex with index v, or 0 if an error was\n    encountered.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_41gp_GetVertexOutDegree = {"gp_GetVertexOutDegree", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetVertexOutDegree, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_40gp_GetVertexOutDegree};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_41gp_GetVertexOutDegree(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -6576,7 +6576,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_42gp_AddEdge, "Graph.gp_AddEdge(self, int u, int ulink, int v, int vlink) -> int\n\nAdds edge between two vertices (if sufficient edge capacity).\n\nArgs:\n    u: index of a vertex in graph\n    ulink: either 0 or 1; indicates whether the edge record to v in u's\n        list should become adjacent to u by its 0 or 1 link\n    v: index of another vertex in graph\n    vlink: either 0 or 1; indicates whether the edge record to u in v's\n        list should become adjacent to v by its 0 or 1 link\n\nReturns:\n    Returns OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge\n        would exceed the graph's edge capacity (the caller can use\n        gp_DynamicAddEdge()).\n\nRaises:\n    ValueError: if ulink or vlink are anything other than 0 or 1\n    RuntimeError if gp_AddEdge() returned anything other than OK or\n        AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_42gp_AddEdge, "Graph.gp_AddEdge(self, int u, int ulink, int v, int vlink) -> int\n\nAdds edge between two vertices (if sufficient edge capacity).\n\nArgs:\n    u: index of a vertex in graph.\n    ulink: either 0 or 1; indicates whether the edge record to v in u's\n        list should become adjacent to u by its 0 or 1 link.\n    v: index of another vertex in graph.\n    vlink: either 0 or 1; indicates whether the edge record to u in v's\n        list should become adjacent to v by its 0 or 1 link.\n\nReturns:\n    Returns OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge\n        would exceed the graph's edge capacity (the caller can use\n        gp_DynamicAddEdge()).\n\nRaises:\n    ValueError: if ulink or vlink are anything other than 0 or 1\n    RuntimeError: if gp_AddEdge() returned anything other than OK or\n        AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_43gp_AddEdge = {"gp_AddEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_43gp_AddEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_42gp_AddEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_43gp_AddEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -6701,7 +6701,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_42gp_AddEdge(struct __p
   __Pyx_RefNannySetupContext("gp_AddEdge", 0);
 
   /* "planarity/full/graph.pyx":338
- *                 AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK
+ *                 AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK.
  *         """
  *         if ulink != 0 and ulink != 1:             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -6757,7 +6757,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_42gp_AddEdge(struct __p
     __PYX_ERR(0, 339, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":338
- *                 AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK
+ *                 AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK.
  *         """
  *         if ulink != 0 and ulink != 1:             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -7008,7 +7008,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_44gp_DynamicAddEdge, "Graph.gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink) -> None\n\nAdds edge between two vertices, resizing structures if necessessary.\n\nArgs:\n    u: index of a vertex in graph\n    ulink: either 0 or 1; indicates whether the edge record to v in u's\n        list should become adjacent to u by its 0 or 1 link\n    v: index of another vertex in graph\n    vlink: either 0 or 1; indicates whether the edge record to u in v's\n        list should become adjacent to v by its 0 or 1 link\n\nRaises:\n    ValueError: ulink or vlink are anything other than 0 or 1\n    RuntimeError if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_44gp_DynamicAddEdge, "Graph.gp_DynamicAddEdge(self, int u, int ulink, int v, int vlink) -> None\n\nAdds edge between two vertices, resizing structures if necessessary.\n\nArgs:\n    u: index of a vertex in graph.\n    ulink: either 0 or 1; indicates whether the edge record to v in u's\n        list should become adjacent to u by its 0 or 1 link.\n    v: index of another vertex in graph.\n    vlink: either 0 or 1; indicates whether the edge record to u in v's\n        list should become adjacent to v by its 0 or 1 link.\n\nRaises:\n    ValueError: ulink or vlink are anything other than 0 or 1.\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_45gp_DynamicAddEdge = {"gp_DynamicAddEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_45gp_DynamicAddEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_44gp_DynamicAddEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_45gp_DynamicAddEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -7132,7 +7132,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_DynamicAddEdge(str
   __Pyx_RefNannySetupContext("gp_DynamicAddEdge", 0);
 
   /* "planarity/full/graph.pyx":372
- *             RuntimeError if C graphlib version of this function failed.
+ *             RuntimeError: if C graphlib version of this function failed.
  *         """
  *         if ulink != 0 and ulink != 1:             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -7188,7 +7188,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_44gp_DynamicAddEdge(str
     __PYX_ERR(0, 373, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":372
- *             RuntimeError if C graphlib version of this function failed.
+ *             RuntimeError: if C graphlib version of this function failed.
  *         """
  *         if ulink != 0 and ulink != 1:             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -7402,7 +7402,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_46gp_InsertEdge, "Graph.gp_InsertEdge(self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink) -> int\n\nInsert edge between u and v in specific positions of adjacency lists.\n\nArgs:\n    u: index of a vertex in graph\n    e_u: new edge is added next to this edge in u's adjacency list\n    e_ulink: 0 or 1; which side of e_u to add new edge (or which side\n        of the adjacency list of u if e_u is NIL)\n    v: index of a vertex in graph\n    e_v: new edge is added next to this edge in v's adjacency list\n    e_vlink: 0 or 1; which side of e_v to add new edge (or which side\n        of the adjacency list of v if e_v is NIL)\n\nReturns:\n    OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge would\n    exceed the graph's edge capacity (gp_EnsureEdgeCapacity() can be\n    called before this method).\n\nRaises:\n    RuntimeError: if gp_InsertEdge() returned anything other than OK or\n        AT_EDGE_CAPACITY_LIMIT");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_46gp_InsertEdge, "Graph.gp_InsertEdge(self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink) -> int\n\nInsert edge between u and v in specific positions of adjacency lists.\n\nArgs:\n    u: index of a vertex in graph.\n    e_u: new edge is added next to this edge in u's adjacency list.\n    e_ulink: 0 or 1; which side of e_u to add new edge (or which side\n        of the adjacency list of u if e_u is NIL).\n    v: index of a vertex in graph.\n    e_v: new edge is added next to this edge in v's adjacency list.\n    e_vlink: 0 or 1; which side of e_v to add new edge (or which side\n        of the adjacency list of v if e_v is NIL).\n\nReturns:\n    OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge would\n    exceed the graph's edge capacity (gp_EnsureEdgeCapacity() can be\n    called before this method).\n\nRaises:\n    RuntimeError: if gp_InsertEdge() returned anything other than OK or\n        AT_EDGE_CAPACITY_LIMIT.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_47gp_InsertEdge = {"gp_InsertEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_47gp_InsertEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_46gp_InsertEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_47gp_InsertEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -7544,7 +7544,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_46gp_InsertEdge(struct 
   __Pyx_RefNannySetupContext("gp_InsertEdge", 0);
 
   /* "planarity/full/graph.pyx":413
- *                 AT_EDGE_CAPACITY_LIMIT
+ *                 AT_EDGE_CAPACITY_LIMIT.
  *         """
  *         result = graphLib.gp_InsertEdge(             # <<<<<<<<<<<<<<
  *             self._theGraph, u, e_u, e_ulink, v, e_v, e_vlink
@@ -7741,7 +7741,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_48gp_DeleteEdge, "Graph.gp_DeleteEdge(self, int e) -> None\n\nDeletes edge with index e from the graph.\n\nArgs:\n    e: index of edge in graph to delete\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_48gp_DeleteEdge, "Graph.gp_DeleteEdge(self, int e) -> None\n\nDeletes edge with index e from the graph.\n\nArgs:\n    e: index of edge in graph to delete.\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_49gp_DeleteEdge = {"gp_DeleteEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_49gp_DeleteEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_48gp_DeleteEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_49gp_DeleteEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -7946,7 +7946,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_50gp_HideEdge, "Graph.gp_HideEdge(self, int e) -> None\n\nHides edge with index e within the graph.\n\nThe edge still exists in edge storage but has been unhooked from the\nadjacency lists of its endpoint vertices. See gp_RestoreEdge()\n\nArgs:\n    e: index of edge in graph to hide");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_50gp_HideEdge, "Graph.gp_HideEdge(self, int e) -> None\n\nHides edge with index e within the graph.\n\nThe edge still exists in edge storage but has been unhooked from the\nadjacency lists of its endpoint vertices. See gp_RestoreEdge()\n\nArgs:\n    e: index of edge in graph to hide.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_51gp_HideEdge = {"gp_HideEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_51gp_HideEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_50gp_HideEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_51gp_HideEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -8033,7 +8033,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_50gp_HideEdge(struct __
   __Pyx_RefNannySetupContext("gp_HideEdge", 0);
 
   /* "planarity/full/graph.pyx":450
- *             e: index of edge in graph to hide
+ *             e: index of edge in graph to hide.
  *         """
  *         graphLib.gp_HideEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
  * 
@@ -8077,7 +8077,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_52gp_RestoreEdge, "Graph.gp_RestoreEdge(self, int e) -> None\n\nRestore edge to adjacency lists from which it was previously hidden.\n\nArgs:\n    e: index of edge in graph to restore");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_52gp_RestoreEdge, "Graph.gp_RestoreEdge(self, int e) -> None\n\nRestore edge to adjacency lists from which it was previously hidden.\n\nArgs:\n    e: index of edge in graph to restore.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_53gp_RestoreEdge = {"gp_RestoreEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_53gp_RestoreEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_52gp_RestoreEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_53gp_RestoreEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -8164,7 +8164,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_52gp_RestoreEdge(struct
   __Pyx_RefNannySetupContext("gp_RestoreEdge", 0);
 
   /* "planarity/full/graph.pyx":458
- *             e: index of edge in graph to restore
+ *             e: index of edge in graph to restore.
  *         """
  *         graphLib.gp_RestoreEdge(self._theGraph, e)             # <<<<<<<<<<<<<<
  * 
@@ -8208,7 +8208,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_54gp_HideVertex, "Graph.gp_HideVertex(self, int vertex) -> None\n\nHides vertex within the graph.\n\nDoes so by hiding its edges and storing additional internal information\nthat enables the vertex to be restored by gp_RestoreVertex() if and only\nif vertices are restored in the exact opposite order in which they were\nhidden.\n\nArgs:\n    vertex: index of vertex in graph to hide\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_54gp_HideVertex, "Graph.gp_HideVertex(self, int vertex) -> None\n\nHides vertex within the graph.\n\nDoes so by hiding its edges and storing additional internal information\nthat enables the vertex to be restored by gp_RestoreVertex() if and only\nif vertices are restored in the exact opposite order in which they were\nhidden.\n\nArgs:\n    vertex: index of vertex in graph to hide.\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_55gp_HideVertex = {"gp_HideVertex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_55gp_HideVertex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_54gp_HideVertex};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_55gp_HideVertex(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -8769,7 +8769,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_60gp_IdentifyVertices, "Graph.gp_IdentifyVertices(self, int u, int v, int eBefore) -> None\n\nIdentify vertex v with u by transferring all adjacencies from v to u.\n\nArgs:\n    u: index of vertex in graph to which v will be identified\n    v: index of vertex in graph to identify with u\n    eBefore: the index in u's adjacency list before which v's\n        adjacencies should be inserted, or NIL to append the edges to\n        u's list\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_60gp_IdentifyVertices, "Graph.gp_IdentifyVertices(self, int u, int v, int eBefore) -> None\n\nIdentify vertex v with u by transferring all adjacencies from v to u.\n\nArgs:\n    u: index of vertex in graph to which v will be identified.\n    v: index of vertex in graph to identify with u.\n    eBefore: the index in u's adjacency list before which v's\n        adjacencies should be inserted, or NIL to append the edges to\n        u's list.\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_61gp_IdentifyVertices = {"gp_IdentifyVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_61gp_IdentifyVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_60gp_IdentifyVertices};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_61gp_IdentifyVertices(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -9739,7 +9739,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_70gp_GetEdgeByLink, "Graph.gp_GetEdgeByLink(self, int v, int theLink) -> int\n\nGet the first or last edge in the adjacency list of v.\n\nArgs:\n    v: index of a vertex in the graph.\n    theLink: the direction of adjacency for the edge to return, either\n        first (0) or last (1).\n\nReturns:\n    The index of the first or last edge in V's adjacency list.\n\nRaises:\n    ValueError: if v is not a valid vertex index or theLink is an\n    invalid direction indicator (0 or 1).");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_70gp_GetEdgeByLink, "Graph.gp_GetEdgeByLink(self, int v, int theLink) -> int\n\nGet the first or last edge in the adjacency list of v.\n\nArgs:\n    v: index of a vertex in the graph.\n    theLink: the direction of adjacency for the edge to return, either\n        first (0) or last (1).\n\nReturns:\n    The index of the first or last edge in V's adjacency list.\n\nRaises:\n    ValueError: if v is not a valid vertex index or theLink is an\n        invalid direction indicator (0 or 1).");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_71gp_GetEdgeByLink = {"gp_GetEdgeByLink", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_71gp_GetEdgeByLink, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_70gp_GetEdgeByLink};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_71gp_GetEdgeByLink(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -9843,7 +9843,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_70gp_GetEdgeByLink(stru
   __Pyx_RefNannySetupContext("gp_GetEdgeByLink", 0);
 
   /* "planarity/full/graph.pyx":608
- *             invalid direction indicator (0 or 1).
+ *                 invalid direction indicator (0 or 1).
  *         """
  *         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -9925,7 +9925,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_70gp_GetEdgeByLink(stru
     __PYX_ERR(0, 609, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":608
- *             invalid direction indicator (0 or 1).
+ *                 invalid direction indicator (0 or 1).
  *         """
  *         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -10720,7 +10720,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_76gp_SetEdgeByLink, "Graph.gp_SetEdgeByLink(self, int v, int theLink, int newEdge) -> None\n\nSet the first or last edge in v's adjacency list.\n\nArgs:\n    v: index of a vertex in the graph.\n    theLink: the direction of adjacency for which edge to set, either\n        first (0) or last (1).\n    newEdge: the index of an edge to set as the first or last edge\n        in v's adjacency list.\n\nRaises:\n    ValueError: if v is not a valid vertex, if theLink is not 0 nor 1,\n    or newEdge is not a valid in-use edge.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_76gp_SetEdgeByLink, "Graph.gp_SetEdgeByLink(self, int v, int theLink, int newEdge) -> None\n\nSet the first or last edge in v's adjacency list.\n\nArgs:\n    v: index of a vertex in the graph.\n    theLink: the direction of adjacency for which edge to set, either\n        first (0) or last (1).\n    newEdge: the index of an edge to set as the first or last edge\n        in v's adjacency list.\n\nRaises:\n    ValueError: if v is not a valid vertex, if theLink is not 0 nor 1,\n        or newEdge is not a valid in-use edge.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_77gp_SetEdgeByLink = {"gp_SetEdgeByLink", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_77gp_SetEdgeByLink, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_76gp_SetEdgeByLink};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_77gp_SetEdgeByLink(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -10831,7 +10831,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_76gp_SetEdgeByLink(stru
   __Pyx_RefNannySetupContext("gp_SetEdgeByLink", 0);
 
   /* "planarity/full/graph.pyx":687
- *             or newEdge is not a valid in-use edge.
+ *                 or newEdge is not a valid in-use edge.
  *         """
  *         if not self.gp_IsVertex(v):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -10890,7 +10890,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_76gp_SetEdgeByLink(stru
     __PYX_ERR(0, 688, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":687
- *             or newEdge is not a valid in-use edge.
+ *                 or newEdge is not a valid in-use edge.
  *         """
  *         if not self.gp_IsVertex(v):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -12685,7 +12685,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_98gp_VirtualVertexInUse, "Graph.gp_VirtualVertexInUse(self, int virtualVertex) -> int\n\nDetermines if virtualVertex corresponds to a virtual vertex in use.\n\nA virtual vertex is in use if it has any incident edges.\n\nArgs:\n    virtualVertex: candidate virtual vertex to test\n\nReturns:\n    TRUE if virtualVertex is a valid virtual vertex and is in use,\n    otherwise FALSE.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_98gp_VirtualVertexInUse, "Graph.gp_VirtualVertexInUse(self, int virtualVertex) -> int\n\nDetermines if virtualVertex corresponds to a virtual vertex in use.\n\nA virtual vertex is in use if it has any incident edges.\n\nArgs:\n    virtualVertex: candidate virtual vertex to test.\n\nReturns:\n    TRUE if virtualVertex is a valid virtual vertex and is in use,\n    otherwise FALSE.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_99gp_VirtualVertexInUse = {"gp_VirtualVertexInUse", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_99gp_VirtualVertexInUse, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_98gp_VirtualVertexInUse};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_99gp_VirtualVertexInUse(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -13359,7 +13359,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_104gp_SetIndex, "Graph.gp_SetIndex(self, int v, int theIndex) -> None\n\nSet the index data member of vertex v to theIndex.\n\nArgs:\n    v: the vertex in the graph whose index to set to theIndex\n    theIndex: new value you wish to assign to the vertex's index field\n\nRaises:\n    ValueError: if v or theIndex don't correspond to a non-virtual or\n    virtual vertex.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_104gp_SetIndex, "Graph.gp_SetIndex(self, int v, int theIndex) -> None\n\nSet the index data member of vertex v to theIndex.\n\nArgs:\n    v: the vertex in the graph whose index to set to theIndex.\n    theIndex: new value you wish to assign to the vertex's index field.\n\nRaises:\n    ValueError: if v or theIndex don't correspond to a non-virtual or\n        virtual vertex.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_105gp_SetIndex = {"gp_SetIndex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_105gp_SetIndex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_104gp_SetIndex};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_105gp_SetIndex(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -13462,7 +13462,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_104gp_SetIndex(struct _
   __Pyx_RefNannySetupContext("gp_SetIndex", 0);
 
   /* "planarity/full/graph.pyx":910
- *             virtual vertex.
+ *                 virtual vertex.
  *         """
  *         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -13543,7 +13543,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_104gp_SetIndex(struct _
     __PYX_ERR(0, 911, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":910
- *             virtual vertex.
+ *                 virtual vertex.
  *         """
  *         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -13710,7 +13710,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_106gp_InitFlags, "Graph.gp_InitFlags(self, int v) -> None\n\nResets (clears) all flags for a given vertex.\n\nArgs:\n    v: index of vertex in graph whose flags you wish to clear\n\nRaises:\n    ValueError: if v is not a non-virtual nor virtual vertex.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_106gp_InitFlags, "Graph.gp_InitFlags(self, int v) -> None\n\nResets (clears) all flags for a given vertex.\n\nArgs:\n    v: index of vertex in graph whose flags you wish to clear.\n\nRaises:\n    ValueError: if v is not a non-virtual nor virtual vertex.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_107gp_InitFlags = {"gp_InitFlags", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_107gp_InitFlags, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_106gp_InitFlags};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_107gp_InitFlags(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -14644,7 +14644,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_114gp_GetMarked, "Graph.gp_GetMarked(self, int v) -> int\n\nGets the marked flag of vertex v.\n\nArgs:\n    v: vertex whose marked flag you wish to get.\n\nReturns:\n    The marked flag for v, i.e., 0 (falsy) or VERTEX_MARKED_MASK\n    (truthy).\n\nRaises:\n    ValueError: if v is neither a non-virtual nor a virtual vertex");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_114gp_GetMarked, "Graph.gp_GetMarked(self, int v) -> int\n\nGets the marked flag of vertex v.\n\nArgs:\n    v: vertex whose marked flag you wish to get.\n\nReturns:\n    The marked flag for v, i.e., 0 (falsy) or VERTEX_MARKED_MASK\n    (truthy).\n\nRaises:\n    ValueError: if v is neither a non-virtual nor a virtual vertex.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_115gp_GetMarked = {"gp_GetMarked", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_115gp_GetMarked, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_114gp_GetMarked};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_115gp_GetMarked(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -14739,7 +14739,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_114gp_GetMarked(struct 
   __Pyx_RefNannySetupContext("gp_GetMarked", 0);
 
   /* "planarity/full/graph.pyx":1007
- *             ValueError: if v is neither a non-virtual nor a virtual vertex
+ *             ValueError: if v is neither a non-virtual nor a virtual vertex.
  *         """
  *         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -14820,7 +14820,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_114gp_GetMarked(struct 
     __PYX_ERR(0, 1008, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1007
- *             ValueError: if v is neither a non-virtual nor a virtual vertex
+ *             ValueError: if v is neither a non-virtual nor a virtual vertex.
  *         """
  *         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16009,7 +16009,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_126gp_GetAdjacentEdge, "Graph.gp_GetAdjacentEdge(self, int e, int theLink) -> int\n\nGet the edge adjacent to e in direction indicated by theLink.\n\nArgs:\n    e: edge for which you wish to get edge adjacent in direction\n        theLink.\n    theLink: either 0 for next edge or 1 for previous edge.\n\nReturns:\n    The edge adjacent to e in direction theLink, or NIL if e is\n    the last in the direction given by theLink.\n\nRaises:\n    ValueError: if e is not a valid in-use edge or if theLink is neither\n    0 nor 1.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_126gp_GetAdjacentEdge, "Graph.gp_GetAdjacentEdge(self, int e, int theLink) -> int\n\nGet the edge adjacent to e in direction indicated by theLink.\n\nArgs:\n    e: edge for which you wish to get edge adjacent in direction\n        theLink.\n    theLink: either 0 for next edge or 1 for previous edge.\n\nReturns:\n    The edge adjacent to e in direction theLink, or NIL if e is\n    the last in the direction given by theLink.\n\nRaises:\n    ValueError: if e is not a valid in-use edge or if theLink is neither\n        0 nor 1.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_127gp_GetAdjacentEdge = {"gp_GetAdjacentEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_127gp_GetAdjacentEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_126gp_GetAdjacentEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_127gp_GetAdjacentEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -16113,7 +16113,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_126gp_GetAdjacentEdge(s
   __Pyx_RefNannySetupContext("gp_GetAdjacentEdge", 0);
 
   /* "planarity/full/graph.pyx":1124
- *             0 nor 1.
+ *                 0 nor 1.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16176,7 +16176,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_126gp_GetAdjacentEdge(s
     __PYX_ERR(0, 1125, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1124
- *             0 nor 1.
+ *                 0 nor 1.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16307,7 +16307,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_128gp_SetNextEdge, "Graph.gp_SetNextEdge(self, int e, int newNextEdge) -> None\n\nSet the next edge after e to newNextEdge.\n\nArgs:\n    e: edge for which you wish to set the next edge.\n    newNextEdge: the next edge for e, or NIL.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if newNextEdge is\n    neither NIL nor a valid in-use edge.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_128gp_SetNextEdge, "Graph.gp_SetNextEdge(self, int e, int newNextEdge) -> None\n\nSet the next edge after e to newNextEdge.\n\nArgs:\n    e: edge for which you wish to set the next edge.\n    newNextEdge: the next edge for e, or NIL.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if newNextEdge is\n        neither NIL nor a valid in-use edge.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_129gp_SetNextEdge = {"gp_SetNextEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_129gp_SetNextEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_128gp_SetNextEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_129gp_SetNextEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -16411,7 +16411,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_128gp_SetNextEdge(struc
   __Pyx_RefNannySetupContext("gp_SetNextEdge", 0);
 
   /* "planarity/full/graph.pyx":1149
- *             neither NIL nor a valid in-use edge.
+ *                 neither NIL nor a valid in-use edge.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16474,7 +16474,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_128gp_SetNextEdge(struc
     __PYX_ERR(0, 1150, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1149
- *             neither NIL nor a valid in-use edge.
+ *                 neither NIL nor a valid in-use edge.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16623,7 +16623,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_130gp_SetPrevEdge, "Graph.gp_SetPrevEdge(self, int e, int newPrevEdge) -> None\n\nSet the previous edge before e to newPrevEdge.\n\nArgs:\n    e: edge for which you wish to set previous edge.\n    newPrevEdge: the previous edge for e, or NIL.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if newPrevEdge is\n    neither NIL nor a valid in-use edge.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_130gp_SetPrevEdge, "Graph.gp_SetPrevEdge(self, int e, int newPrevEdge) -> None\n\nSet the previous edge before e to newPrevEdge.\n\nArgs:\n    e: edge for which you wish to set previous edge.\n    newPrevEdge: the previous edge for e, or NIL.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if newPrevEdge is\n        neither NIL nor a valid in-use edge.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_131gp_SetPrevEdge = {"gp_SetPrevEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_131gp_SetPrevEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_130gp_SetPrevEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_131gp_SetPrevEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -16727,7 +16727,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_130gp_SetPrevEdge(struc
   __Pyx_RefNannySetupContext("gp_SetPrevEdge", 0);
 
   /* "planarity/full/graph.pyx":1174
- *             neither NIL nor a valid in-use edge.
+ *                 neither NIL nor a valid in-use edge.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16790,7 +16790,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_130gp_SetPrevEdge(struc
     __PYX_ERR(0, 1175, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1174
- *             neither NIL nor a valid in-use edge.
+ *                 neither NIL nor a valid in-use edge.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -16939,7 +16939,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_132gp_SetAdjacentEdge, "Graph.gp_SetAdjacentEdge(self, int e, int theLink, int newEdge) -> None\n\nSet the edge adjacent to e in direction indicated by theLink.\n\nArgs:\n    e: edge for which you wish to set edge adjacent in direction\n        theLink.\n    theLink: either 0 for the next edge or 1 for the previous edge.\n    newEdge: the next or previous edge for e, or NIL.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if newEdge is\n    neither NIL nor a valid in-use edge, or if theLink is neither 0 nor\n    1.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_132gp_SetAdjacentEdge, "Graph.gp_SetAdjacentEdge(self, int e, int theLink, int newEdge) -> None\n\nSet the edge adjacent to e in direction indicated by theLink.\n\nArgs:\n    e: edge for which you wish to set edge adjacent in direction\n        theLink.\n    theLink: either 0 for the next edge or 1 for the previous edge.\n    newEdge: the next or previous edge for e, or NIL.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if newEdge is\n        neither NIL nor a valid in-use edge, or if theLink is neither 0\n        nor 1.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_133gp_SetAdjacentEdge = {"gp_SetAdjacentEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_133gp_SetAdjacentEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_132gp_SetAdjacentEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_133gp_SetAdjacentEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -17051,7 +17051,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_132gp_SetAdjacentEdge(s
   __Pyx_RefNannySetupContext("gp_SetAdjacentEdge", 0);
 
   /* "planarity/full/graph.pyx":1202
- *             1.
+ *                 nor 1.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -17114,7 +17114,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_132gp_SetAdjacentEdge(s
     __PYX_ERR(0, 1203, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1202
- *             1.
+ *                 nor 1.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -17332,7 +17332,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_134gp_IsEdge, "Graph.gp_IsEdge(self, int e) -> int\n\nCheck if e is an edge location in the graph's edge storage.\n\nArgs:\n    e: candidate edge to verify is an edge location in the graph\n\nReturns:\n    TRUE if e is a valid edge and the value returned by C-layer\n    gp_IsEdge() is truthy, FALSE otherwise.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_134gp_IsEdge, "Graph.gp_IsEdge(self, int e) -> int\n\nCheck if e is an edge location in the graph's edge storage.\n\nArgs:\n    e: candidate edge to verify is an edge location in the graph.\n\nReturns:\n    TRUE if e is a valid edge and the value returned by C-layer\n    gp_IsEdge() is truthy, FALSE otherwise.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_135gp_IsEdge = {"gp_IsEdge", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_135gp_IsEdge, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_134gp_IsEdge};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_135gp_IsEdge(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -17832,7 +17832,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_138gp_GetNeighbor, "Graph.gp_GetNeighbor(self, int e) -> int\n\nGet the neighbor vertex indicated by an in-use edge e.\n\nArgs:\n    e: an in-use edge in the adjacency list of a vertex v\n\nReturns:\n    The vertex that e indicates is a neighbor of vertex v\n\nRaises:\n    ValueError: if e is not a valid in-use edge");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_138gp_GetNeighbor, "Graph.gp_GetNeighbor(self, int e) -> int\n\nGet the neighbor vertex indicated by an in-use edge e.\n\nArgs:\n    e: an in-use edge in the adjacency list of a vertex v.\n\nReturns:\n    The vertex that e indicates is a neighbor of vertex v.\n\nRaises:\n    ValueError: if e is not a valid in-use edge.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_139gp_GetNeighbor = {"gp_GetNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_139gp_GetNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_138gp_GetNeighbor};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_139gp_GetNeighbor(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -17928,7 +17928,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_138gp_GetNeighbor(struc
   __Pyx_RefNannySetupContext("gp_GetNeighbor", 0);
 
   /* "planarity/full/graph.pyx":1272
- *             ValueError: if e is not a valid in-use edge
+ *             ValueError: if e is not a valid in-use edge.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -17991,7 +17991,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_138gp_GetNeighbor(struc
     __PYX_ERR(0, 1273, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1272
- *             ValueError: if e is not a valid in-use edge
+ *             ValueError: if e is not a valid in-use edge.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -18053,7 +18053,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_140gp_SetNeighbor, "Graph.gp_SetNeighbor(self, int e, int v) -> None\n\nSet the neighbor vertex of an in-use edge e to v.\n\nArgs:\n    e: an in-use edge whose neighbor vertex you wish to set.\n    v: the vertex you wish to set as the neighbor of edge e.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if v is not a\n    non-virtual nor a virtual vertex.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_140gp_SetNeighbor, "Graph.gp_SetNeighbor(self, int e, int v) -> None\n\nSet the neighbor vertex of an in-use edge e to v.\n\nArgs:\n    e: an in-use edge whose neighbor vertex you wish to set.\n    v: the vertex you wish to set as the neighbor of edge e.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or if v is not a\n        non-virtual nor a virtual vertex.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_141gp_SetNeighbor = {"gp_SetNeighbor", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_141gp_SetNeighbor, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_140gp_SetNeighbor};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_141gp_SetNeighbor(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -18156,7 +18156,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_140gp_SetNeighbor(struc
   __Pyx_RefNannySetupContext("gp_SetNeighbor", 0);
 
   /* "planarity/full/graph.pyx":1291
- *             non-virtual nor a virtual vertex.
+ *                 non-virtual nor a virtual vertex.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -18219,7 +18219,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_140gp_SetNeighbor(struc
     __PYX_ERR(0, 1292, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1291
- *             non-virtual nor a virtual vertex.
+ *                 non-virtual nor a virtual vertex.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -20319,7 +20319,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_160gp_SetEdgeType, "Graph.gp_SetEdgeType(self, int e, int type) -> None\n\nSets the edge type of an in-use edge e to type for the first time.\n\nNOTE: To change the type after setting the first time, use\ngp_ClearEdgeType() first, or use gp_ResetEdgeType().\n\nArgs:\n    e: an in-use edge whose edge type you wish to set for the first time\n        to the given type.\n    type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,\n        EDGE_TYPE_BACK, or EDGE_TYPE_TREE.\n\nRaises:\n    ValueError: if e is not a valid in-use edge or if type is not a\n    valid edge type.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_160gp_SetEdgeType, "Graph.gp_SetEdgeType(self, int e, int type) -> None\n\nSets the edge type of an in-use edge e to type for the first time.\n\nNOTE: To change the type after setting the first time, use\ngp_ClearEdgeType() first, or use gp_ResetEdgeType().\n\nArgs:\n    e: an in-use edge whose edge type you wish to set for the first time\n        to the given type.\n    type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,\n        EDGE_TYPE_BACK, or EDGE_TYPE_TREE.\n\nRaises:\n    ValueError: if e is not a valid in-use edge or if type is not a\n        valid edge type.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_161gp_SetEdgeType = {"gp_SetEdgeType", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_161gp_SetEdgeType, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_160gp_SetEdgeType};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_161gp_SetEdgeType(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -20423,7 +20423,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_160gp_SetEdgeType(struc
   __Pyx_RefNannySetupContext("gp_SetEdgeType", 0);
 
   /* "planarity/full/graph.pyx":1486
- *             valid edge type.
+ *                 valid edge type.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -20486,7 +20486,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_160gp_SetEdgeType(struc
     __PYX_ERR(0, 1487, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1486
- *             valid edge type.
+ *                 valid edge type.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -20752,7 +20752,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_162gp_ResetEdgeType, "Graph.gp_ResetEdgeType(self, int e, int type) -> None\n\nClear the previous type of in-use edge e and then set its type.\n\nArgs:\n    e: an in-use edge whose edge type you wish to reset to type.\n    type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,\n        EDGE_TYPE_BACK, or EDGE_TYPE_TREE.\n\nRaises:\n    ValueError: if e is not a valid in-use edge or if type is not a\n    valid edge type");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_162gp_ResetEdgeType, "Graph.gp_ResetEdgeType(self, int e, int type) -> None\n\nClear the previous type of in-use edge e and then set its type.\n\nArgs:\n    e: an in-use edge whose edge type you wish to reset to type.\n    type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,\n        EDGE_TYPE_BACK, or EDGE_TYPE_TREE.\n\nRaises:\n    ValueError: if e is not a valid in-use edge or if type is not a\n        valid edge type.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_163gp_ResetEdgeType = {"gp_ResetEdgeType", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_163gp_ResetEdgeType, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_162gp_ResetEdgeType};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_163gp_ResetEdgeType(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -20856,7 +20856,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_162gp_ResetEdgeType(str
   __Pyx_RefNannySetupContext("gp_ResetEdgeType", 0);
 
   /* "planarity/full/graph.pyx":1517
- *             valid edge type
+ *                 valid edge type.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -20919,7 +20919,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_162gp_ResetEdgeType(str
     __PYX_ERR(0, 1518, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1517
- *             valid edge type
+ *                 valid edge type.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -22272,7 +22272,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_174gp_SetDirection, "Graph.gp_SetDirection(self, int e, int direction) -> None\n\nSet the direction flag of an in-use edge e.\n\nArgs:\n    e: an in-use edge for which you wish to set the direction\n    direction: either 0 (undirected), EDGEFLAG_DIRECTION_INONLY, or\n        EDGEFLAG_DIRECTION_OUTONLY.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or direction is\n    invalid.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_174gp_SetDirection, "Graph.gp_SetDirection(self, int e, int direction) -> None\n\nSet the direction flag of an in-use edge e.\n\nArgs:\n    e: an in-use edge for which you wish to set the direction.\n    direction: either 0 (undirected), EDGEFLAG_DIRECTION_INONLY, or\n        EDGEFLAG_DIRECTION_OUTONLY.\n\nRaises:\n    ValueError: if e is not a valid in-use edge, or direction is\n        invalid.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_175gp_SetDirection = {"gp_SetDirection", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_175gp_SetDirection, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_174gp_SetDirection};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_175gp_SetDirection(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -22376,7 +22376,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_174gp_SetDirection(stru
   __Pyx_RefNannySetupContext("gp_SetDirection", 0);
 
   /* "planarity/full/graph.pyx":1641
- *             invalid.
+ *                 invalid.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -22439,7 +22439,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_174gp_SetDirection(stru
     __PYX_ERR(0, 1642, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":1641
- *             invalid.
+ *                 invalid.
  *         """
  *         if not self.gp_EdgeInUse(e):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -30385,7 +30385,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_248gp_DrawPlanar_GetEdgePosition, "Graph.gp_DrawPlanar_GetEdgePosition(self, int e) -> int\n\nGet the horizontal position of an edge e.\n\nArgs:\n    e: an edge for which you wish to get the horizontal position\n\nReturns:\n    The horizontal position value for e\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_248gp_DrawPlanar_GetEdgePosition, "Graph.gp_DrawPlanar_GetEdgePosition(self, int e) -> int\n\nGet the horizontal position of an edge e.\n\nArgs:\n    e: an edge for which you wish to get the horizontal position.\n\nReturns:\n    The horizontal position value for e.\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_249gp_DrawPlanar_GetEdgePosition = {"gp_DrawPlanar_GetEdgePosition", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_249gp_DrawPlanar_GetEdgePosition, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_248gp_DrawPlanar_GetEdgePosition};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_249gp_DrawPlanar_GetEdgePosition(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -30577,7 +30577,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_250gp_DrawPlanar_GetEdgeStart, "Graph.gp_DrawPlanar_GetEdgeStart(self, int e) -> int\n\nGet the vertical start position of an edge e.\n\nArgs:\n    e: an edge for which you wish to get the vertical start position\n\nReturns:\n    The vertical start position value for e\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_250gp_DrawPlanar_GetEdgeStart, "Graph.gp_DrawPlanar_GetEdgeStart(self, int e) -> int\n\nGet the vertical start position of an edge e.\n\nArgs:\n    e: an edge for which you wish to get the vertical start position.\n\nReturns:\n    The vertical start position value for e.\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_251gp_DrawPlanar_GetEdgeStart = {"gp_DrawPlanar_GetEdgeStart", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_251gp_DrawPlanar_GetEdgeStart, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_250gp_DrawPlanar_GetEdgeStart};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_251gp_DrawPlanar_GetEdgeStart(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -30769,7 +30769,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_252gp_DrawPlanar_GetEdgeEnd, "Graph.gp_DrawPlanar_GetEdgeEnd(self, int e) -> int\n\nGet the vertical end position of an edge e.\n\nArgs:\n    e: an edge for which you wish to get the vertical end position\n\nReturns:\n    The vertical end position value for e\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_252gp_DrawPlanar_GetEdgeEnd, "Graph.gp_DrawPlanar_GetEdgeEnd(self, int e) -> int\n\nGet the vertical end position of an edge e.\n\nArgs:\n    e: an edge for which you wish to get the vertical end position.\n\nReturns:\n    The vertical end position value for e.\n\nRaises:\n    RuntimeError: if C graphlib version of this function failed.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_253gp_DrawPlanar_GetEdgeEnd = {"gp_DrawPlanar_GetEdgeEnd", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_253gp_DrawPlanar_GetEdgeEnd, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_252gp_DrawPlanar_GetEdgeEnd};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_253gp_DrawPlanar_GetEdgeEnd(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
