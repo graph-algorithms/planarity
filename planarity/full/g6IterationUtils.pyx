@@ -22,7 +22,7 @@ cdef class G6ReadIterator:
 
         Args:
             curr_graph: An allocated graph data structure that will be
-            iteratively populated with graphs from an input source.
+                iteratively populated with graphs from an input source.
 
         Raises:
             MemoryError: if C-layer graphLib version of gp_NewReader() failed.
