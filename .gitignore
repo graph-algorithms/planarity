@@ -21,3 +21,7 @@ planarity.egg-info/
 
 # Pylint support
 .pylintrc
+
+# Sphinx documentation files
+doc/build/**
+doc/source/api/**

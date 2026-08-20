@@ -6,5 +6,6 @@ twine
 pytest
 cython-lint
 codespell
+sphinx
 networkx
 matplotlib
