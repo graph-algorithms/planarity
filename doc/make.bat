@@ -41,8 +41,6 @@ if errorlevel 9009 (
 
 if "%1" == "" goto help
 
-REM FIXME: This is untested on Windows
-%SPHINXAPIDOC% -o %SOURCEDIR% "..\planarity"
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 

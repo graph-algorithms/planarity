@@ -10,11 +10,10 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # Problems with imports? Could try `export PYTHONPATH=$PYTHONPATH:`pwd`` from root project dir...
 
+import os
 import sys
-import pathlib
 
-sys.path.append(str(pathlib.Path(__file__).absolute().parent.parent.parent)) # Source code dir relative to this file
-
+sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -28,6 +27,7 @@ release = '1.0.0'
 
 # Add any Sphinx extension module names here, as strings
 extensions = [
+    'sphinx.ext.apidoc',
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
@@ -38,9 +38,24 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = []
 
+apidoc_modules = [
+    {
+        'path': '../../planarity',
+        'destination': 'api',
+        'separate_modules': True,
+    },
+]
+
+autodoc_default_options = {
+    'members': True,
+    'member_order': 'bysource',
+    'undoc-members': True,
+    'special-members': '__cinit__, __dealloc__',
+    'exclude-members': '__weakref__, __reduce_cython__, __setstate_cython__',
+}
+
 autosummary_generate = True # Allows autosummary to generate stub files
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-autodoc_member_order = 'bysource'
 html_show_sourcelink = False  # Remove 'view source code' from top of page (for html, not python)
 autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints

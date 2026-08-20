@@ -4,8 +4,6 @@
    contain the root `toctree` directive.
 
    To generate these docs, when at the root of the planarity project, run:
-      sphinx-apidoc -o doc/source planarity 
-   Then:
       sphinx-build -M html doc/source doc/build
    OR from the doc directory, run
       make html
@@ -17,4 +15,4 @@ Planarity API documentation
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   api/modules
