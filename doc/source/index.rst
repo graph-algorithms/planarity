@@ -1,44 +1,20 @@
-.. planarity documentation master file, created by
-   sphinx-quickstart on Thu Jun 30 15:49:39 2011.
+.. Planarity documentation master file, created by
+   sphinx-quickstart on Thu Aug 20 10:01:32 2026.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Planarity
-=========
+   To generate these docs, when at the root of the planarity project, run:
+      sphinx-apidoc -o doc/source planarity 
+   Then:
+      sphinx-build -M html doc/source doc/build
+   OR from the doc directory, run
+      make html
 
-A Python interface to graph planarity algorithms.
+Planarity API documentation
+===========================
 
-This provides a wrapper for Boyer's (C) planarity algorithms:
-http://code.google.com/p/planarity/
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-:Release: |version|
-:Date: |today|
-
-
-Functions
----------
-
-.. automodule:: planarity.planarity_functions
-   :members:
-
-NetworkX Interface
-------------------
-.. automodule::  planarity.planarity_networkx
-   :members:
-
-
-Wrapper Class
--------------
-
-.. autoclass::  planarity.PGraph
-
-.. automethod:: ascii
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   modules
