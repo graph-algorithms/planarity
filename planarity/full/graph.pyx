@@ -3,8 +3,8 @@
 """
 Cython wrapper for the Edge Addition Planarity Suite Graph Library.
 
-Wraps a graphP struct using a Cython class and wraps functions and macros that
-operate over graphP structs.
+Wraps a ``graphP`` struct using a Cython class and wraps functions and macros
+that operate over ``graphP`` structs.
 """
 from libc.stdlib cimport free
 
@@ -47,12 +47,13 @@ EMBEDFLAGS_SEARCHFORK4 = graphLib.EMBEDFLAGS_SEARCHFORK4
 
 
 cdef class Graph:
-    def __cinit__(self):
-        """Allocates the underlying graph structure with gp_New().
+    """Wraps C-layer ``graphP``.
 
-        Raises:
-            MemoryError: if C graphlib version of gp_New() failed.
-        """
+    Raises:
+        MemoryError: if C-layer ``graphlib`` version of ``gp_New()`` failed.
+    """
+    def __cinit__(self):
+        """Allocates the underlying graph structure with gp_New()."""
         global global_id_count
         self._theGraph = graphLib.gp_New()
         if self._theGraph == NULL:
@@ -66,17 +67,18 @@ cdef class Graph:
     def gp_EnsureVertexCapacity(self, int N) -> None:
         """Allocate memory for graph data, especially vertices and edges.
 
-        Allocates memory needed for storage of graph data, especially N
-        vertices, N virtual vertices, and space for either 3N edges or the
-        amount set by gp_EnsureEdgeCapacity(). This method does not currently
-        support being called more than once to increase vertex capacity beyond
-        the initial setting for N.
+        Allocates memory needed for storage of graph data, especially ``N``
+        vertices, ``N`` virtual vertices, and space for either :math:`3N` edges
+        or the amount set by ``gp_EnsureEdgeCapacity()``. This method does not
+        currently support being called more than once to increase vertex
+        capacity beyond the initial setting for ``N``.
 
         Args:
             N: The number of vertices.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_EnsureVertexCapacity(self._theGraph, N)
         if result != OK:
@@ -85,17 +87,19 @@ cdef class Graph:
             )
 
     def gp_EnsureEdgeCapacity(self, int requiredEdgeCapacity) -> None:
-        """Ensure graph may hold at least requiredEdgeCapacity edges.
+        """Ensure graph may hold at least ``requiredEdgeCapacity`` edges.
 
         This method can be called multiple times to increase edge capacity as
-        needed. If the graph already has at least requiredEdgeCapacity edges,
-        then this method simply returns (edge capacity is never reduced).
+        needed. If the graph already has at least ``requiredEdgeCapacity``
+        edges, then this method simply returns (i.e., the edge capacity is never
+        reduced).
 
         Args:
             requiredEdgeCapacity: The required edge capacity.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_EnsureEdgeCapacity(
             self._theGraph, requiredEdgeCapacity
@@ -111,7 +115,7 @@ cdef class Graph:
         graphLib.gp_ResetGraphStorage(self._theGraph)
 
     def gp_GetN(self) -> int:
-        """Getter for the number of vertices in the graph, N.
+        """Getter for the number of vertices in the graph, ``N``.
 
         Returns:
             The number of vertices in the graph.
@@ -127,7 +131,7 @@ cdef class Graph:
         return graphLib.gp_GetNV(self._theGraph)
 
     def gp_GetM(self) -> int:
-        """Getter for number of edges in the graph, M.
+        """Getter for number of edges in the graph, ``M``.
 
         Returns:
             The number of edges in the graph.
@@ -143,28 +147,30 @@ cdef class Graph:
         return graphLib.gp_GetEdgeCapacity(self._theGraph)
 
     def gp_CopyGraph(self, Graph srcGraph) -> None:
-        """Copies src_graph into the destination Graph referred to by self.
+        """Copies src_graph into the destination ``Graph`` referred to by self.
 
         Args:
-            srcGraph: the Graph wrapping the graphP you wish to to copy into
-                the current Graph's graphP.
+            srcGraph: the ``Graph`` wrapping the ``graphP`` you wish to to copy
+                into the current ``Graph``'s ``graphP``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_CopyGraph(self._theGraph, srcGraph._theGraph)
         if result != OK:
             raise RuntimeError("gp_CopyGraph() failed.")
 
     def gp_DupGraph(self) -> Graph:
-        """Creates a Graph wrapping a copy of the current Graph's graphP.
+        """Creates a ``Graph`` wrapping a copy of the current ``Graph``'s ``graphP``.
 
         Returns:
-            A new Graph containing a duplicate of the current Graph's graphP.
+            A new ``Graph`` containing a duplicate of the current ``Graph``'s
+            ``graphP``.
 
         Raises:
-            MemoryError: if gp_DupGraph() failed to duplicate this Graph's
-                graphP.
+            MemoryError: if gp_DupGraph() failed to duplicate this ``Graph``'s
+                ``graphP``.
         """
         cdef graphLib.graphP theGraph_dup = graphLib.gp_DupGraph(self._theGraph)
         if theGraph_dup == NULL:
@@ -177,14 +183,15 @@ cdef class Graph:
         return new_graph
 
     def gp_CopyAdjacencyLists(self, Graph srcGraph) -> None:
-        """Copies adjacency lists of src_graph into current Graph's graphP.
+        """Copies adjacency lists of src_graph into current ``Graph``'s ``graphP``.
 
         Args:
-            srcGraph: a Graph that wraps the graphP whose adjacency lists you
-                wish to copy into the self's graphP.
+            srcGraph: a ``Graph`` that wraps the ``graphP`` whose adjacency
+                lists you wish to copy into the self's ``graphP``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_CopyAdjacencyLists(
             self._theGraph, srcGraph._theGraph
@@ -201,23 +208,25 @@ cdef class Graph:
         capacity.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_CreateRandomGraph(self._theGraph)
         if result != OK:
             raise RuntimeError("Unable to create random graph.")
 
     def gp_CreateRandomGraphEx(self, int numEdges) -> None:
-        """Creates a simple connected graph with numEdges edges.
+        """Creates a simple connected graph with ``numEdges`` edges.
 
-        If numEdges does not exceed 3*N - 6, then the generated graph will be
-        planar.
+        If ``numEdges`` does not exceed :math:`3N - 6`, then the generated
+        graph will be planar.
 
         Args:
             numEdges: the desired number of edges for the generated graph.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_CreateRandomGraphEx(self._theGraph, numEdges)
         if result != OK:
@@ -226,39 +235,39 @@ cdef class Graph:
             )
 
     def gp_IsNeighbor(self, int u, int v) -> int:
-        """Check if u is a neighbor of v, where either vertex may be virtual.
+        """Check if ``u`` is a neighbor of ``v``, where either vertex may be virtual.
 
         Args:
             u: index of a vertex or virtual vertices in the graph.
             v: index of another vertex or virtual vertex in the graph.
 
         Returns:
-            TRUE if u and v are neighbors, FALSE otherwise.
+            ``TRUE`` if ``u`` and ``v`` are neighbors, ``FALSE`` otherwise.
         """
         return graphLib.gp_IsNeighbor(self._theGraph, u, v)
 
     def gp_FindEdge(self, int u, int v) -> int:
-        """Find index of edge between u and v if it exists in graph.
+        """Find index of edge between ``u`` and ``v`` if it exists in graph.
 
         Args:
             u: index of a vertex in graph.
             v: index of another vertex in graph.
 
         Returns:
-            The index e of the edge between u and v if it exists, or NIL if an
-            error occurs or if the edge does not exist.
+            The index ``e`` of the edge between ``u`` and ``v`` if it exists, or
+            ``NIL`` if an error occurs or if the edge does not exist.
         """
         return graphLib.gp_FindEdge(self._theGraph, u, v)
 
     def gp_GetVertexDegree(self, int v) -> int:
-        """Gets the number of incident edges of the vertex with given index.
+        """Gets the number of incident edges of the vertex with index ``v``.
 
         Args:
             v: index of a vertex in the graph
 
         Returns:
-            The degree of vertex v in the graph, or 0 if a validation error
-            occurred.
+            The degree of vertex ``v`` in the graph, or ``0`` if a validation
+            error occurred.
         """
         return graphLib.gp_GetVertexDegree(self._theGraph, v)
 
@@ -268,49 +277,51 @@ cdef class Graph:
         Args:
             u: index of a vertex in graph.
             v: index of another vertex in graph.
-            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY.
+            direction: ``EDGEFLAG_DIRECTION_INONLY`` or
+                ``EDGEFLAG_DIRECTION_OUTONLY``.
 
         Returns:
-            TRUE if u and v are neighbors (the edge is undirected or matches
-            the given direction), FALSE otherwise.
+            ``TRUE`` if ``u`` and ``v`` are neighbors (the edge is undirected or
+            matches the given direction), ``FALSE`` otherwise.
         """
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
     def gp_FindDirectedEdge(self, int u, int v, unsigned direction) -> int:
-        """Find directed index of edge between u and v if it exists in graph.
+        """Find directed index of edge between ``u`` and ``v`` cif it exists in graph.
 
         Args:
             u: index of a vertex in graph.
             v: index of another vertex in graph.
-            direction: EDGEFLAG_DIRECTION_INONLY or EDGEFLAG_DIRECTION_OUTONLY.
+            direction: ``EDGEFLAG_DIRECTION_INONLY`` or
+                ``EDGEFLAG_DIRECTION_OUTONLY``.
 
         Returns:
-            The index e of the directed edge between u and v, or NIL if an error
-            was encountered or the edge doesn't exist.
+            The index ``e`` of the directed edge between ``u`` and ``v``, or
+                ``NIL`` if an error was encountered or the edge doesn't exist.
         """
         return graphLib.gp_FindDirectedEdge(self._theGraph, u, v, direction)
 
     def gp_GetVertexInDegree(self, int v) -> int:
-        """Gets in-degree of v, including undirected edges.
+        """Gets in-degree of ``v``, including undirected edges.
 
         Args:
             v: index of a vertex in graph.
 
         Returns:
-            The in-degree of the vertex with index v, or 0 if an error was
-            encountered.
+            The in-degree of the vertex with index ``v``, or ``0`` if an error
+            was encountered.
         """
         return graphLib.gp_GetVertexInDegree(self._theGraph, v)
 
     def gp_GetVertexOutDegree(self, int v) -> int:
-        """Gets out-degree of v, including undirected edges.
+        """Gets out-degree of ``v``, including undirected edges.
 
         Args:
             v: index of a vertex in graph.
 
         Returns:
-            The out-degree of the vertex with index v, or 0 if an error was
-            encountered.
+            The out-degree of the vertex with index ``v``, or ``0`` if an error
+            was encountered.
         """
         return graphLib.gp_GetVertexOutDegree(self._theGraph, v)
 
@@ -319,21 +330,24 @@ cdef class Graph:
 
         Args:
             u: index of a vertex in graph.
-            ulink: either 0 or 1; indicates whether the edge record to v in u's
-                list should become adjacent to u by its 0 or 1 link.
+            ulink: either ``0`` or ``1``; indicates whether the edge record to
+                ``v`` in ``u``'s list should become adjacent to ``u`` by its
+                ``0`` or ``1`` link.
             v: index of another vertex in graph.
-            vlink: either 0 or 1; indicates whether the edge record to u in v's
-                list should become adjacent to v by its 0 or 1 link.
+            vlink: either ``0`` or ``1``; indicates whether the edge record to
+                ``u`` in ``v``'s list should become adjacent to ``v`` by its
+                ``0`` or ``1`` link.
 
         Returns:
-            Returns OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge
-                would exceed the graph's edge capacity (the caller can use
-                gp_DynamicAddEdge()).
+            Returns ``OK`` on success, or ``AT_EDGE_CAPACITY_LIMIT`` if adding
+                the edge would exceed the graph's edge capacity (the caller can
+                use ``gp_DynamicAddEdge()``).
 
         Raises:
-            ValueError: if ulink or vlink are anything other than 0 or 1
-            RuntimeError: if gp_AddEdge() returned anything other than OK or
-                AT_EDGE_CAPACITY_LIMIT, i.e., returned NOTOK.
+            ValueError: if ``ulink`` or ``vlink`` are anything other than ``0``
+                or ``1``.
+            RuntimeError: if ``gp_AddEdge()`` returned anything other than
+                ``OK`` or ``AT_EDGE_CAPACITY_LIMIT``, i.e., returned ``NOTOK``.
         """
         if ulink != 0 and ulink != 1:
             raise ValueError(
@@ -359,15 +373,19 @@ cdef class Graph:
 
         Args:
             u: index of a vertex in graph.
-            ulink: either 0 or 1; indicates whether the edge record to v in u's
-                list should become adjacent to u by its 0 or 1 link.
+            ulink: either ``0`` or ``1``; indicates whether the edge record to
+                ``v`` in ``u``'s list should become adjacent to ``u`` by its
+                ``0`` or ``1`` link.
             v: index of another vertex in graph.
-            vlink: either 0 or 1; indicates whether the edge record to u in v's
-                list should become adjacent to v by its 0 or 1 link.
+            vlink: either ``0`` or ``1``; indicates whether the edge record to
+                ``u`` in ``v``'s list should become adjacent to ``v`` by its
+                ``0`` or ``1`` link.
 
         Raises:
-            ValueError: ulink or vlink are anything other than 0 or 1.
-            RuntimeError: if C graphlib version of this function failed.
+            ValueError: ``ulink`` or ``vlink`` are anything other than ``0`` or
+                ``1``.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if ulink != 0 and ulink != 1:
             raise ValueError(
@@ -389,26 +407,28 @@ cdef class Graph:
     def gp_InsertEdge(
         self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink
     ) -> int:
-        """Insert edge between u and v in specific positions of adjacency lists.
+        """Insert edge between ``u`` and ``v`` in specific positions of adjacency lists.
 
         Args:
             u: index of a vertex in graph.
-            e_u: new edge is added next to this edge in u's adjacency list.
-            e_ulink: 0 or 1; which side of e_u to add new edge (or which side
-                of the adjacency list of u if e_u is NIL).
+            e_u: new edge is added next to this edge in ``u``'s adjacency list.
+            e_ulink: ``0`` or ``1``; to which side of ``e_u`` to add new edge
+                (or which side of the adjacency list of ``u`` if ``e_u`` is
+                ``NIL``).
             v: index of a vertex in graph.
-            e_v: new edge is added next to this edge in v's adjacency list.
-            e_vlink: 0 or 1; which side of e_v to add new edge (or which side
-                of the adjacency list of v if e_v is NIL).
+            e_v: new edge is added next to this edge in ``v``'s adjacency list.
+            e_vlink: ``0`` or ``1``; to which side of ``e_v`` to add new edge
+                (or which side of the adjacency list of ``v`` if ``e_v`` is
+                ``NIL``).
 
         Returns:
-            OK on success, or AT_EDGE_CAPACITY_LIMIT if adding the edge would
-            exceed the graph's edge capacity (gp_EnsureEdgeCapacity() can be
-            called before this method).
+            ``OK`` on success, or ``AT_EDGE_CAPACITY_LIMIT`` if adding the edge
+            would exceed the graph's edge capacity (``gp_EnsureEdgeCapacity()``
+            can be called before this method).
 
         Raises:
-            RuntimeError: if gp_InsertEdge() returned anything other than OK or
-                AT_EDGE_CAPACITY_LIMIT.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                returned anything other than OK or ``AT_EDGE_CAPACITY_LIMIT``.
         """
         result = graphLib.gp_InsertEdge(
             self._theGraph, u, e_u, e_ulink, v, e_v, e_vlink
@@ -418,19 +438,20 @@ cdef class Graph:
                 "gp_InsertEdge() failed: unable to insert edge (u, v) = "
                 f"({u}, {v}) adjacent to e_u = {e_u} by e_ulink = {e_ulink} in "
                 f"u's adjacency list and adjacent to e_v = {e_v} by e_vlink = "
-                f"{e_vlink} in v's adjacency list."
+                f"{e_vlink} in ``v``'s adjacency list."
             )
 
         return result
 
     def gp_DeleteEdge(self, int e) -> None:
-        """Deletes edge with index e from the graph.
+        """Deletes edge with index ``e`` from the graph.
 
         Args:
             e: index of edge in graph to delete.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DeleteEdge(self._theGraph, e)
         if result != OK:
@@ -439,10 +460,10 @@ cdef class Graph:
             )
 
     def gp_HideEdge(self, int e) -> None:
-        """Hides edge with index e within the graph.
+        """Hides edge with index ``e`` within the graph.
 
         The edge still exists in edge storage but has been unhooked from the
-        adjacency lists of its endpoint vertices. See gp_RestoreEdge()
+        adjacency lists of its endpoint vertices. See ``gp_RestoreEdge()``.
 
         Args:
             e: index of edge in graph to hide.
@@ -461,15 +482,16 @@ cdef class Graph:
         """Hides vertex within the graph.
 
         Does so by hiding its edges and storing additional internal information
-        that enables the vertex to be restored by gp_RestoreVertex() if and only
-        if vertices are restored in the exact opposite order in which they were
-        hidden.
+        that enables the vertex to be restored by ``gp_RestoreVertex()`` if and
+        only if vertices are restored in the exact opposite order in which they
+        were hidden.
 
         Args:
             vertex: index of vertex in graph to hide.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_HideVertex(self._theGraph, vertex)
         if result != OK:
@@ -478,14 +500,15 @@ cdef class Graph:
             )
 
     def gp_RestoreVertex(self) -> None:
-        """Restore the last vertex hidden by gp_HideVertex().
+        """Restore the last vertex hidden by ``gp_HideVertex()``.
 
         If the vertex was hidden as part of an edge contraction or vertex
         identification, then its adjacency list is extricated from the vertex
         with which it was merged.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_RestoreVertex(self._theGraph)
         if result != OK:
@@ -494,13 +517,14 @@ cdef class Graph:
             )
 
     def gp_ContractEdge(self, int e) -> None:
-        """Contracts the edge e = (u, v) by hiding e and identifying v with u.
+        """Contracts the edge `e` :math:`= \(u, v\)` by hiding ``e`` and identifying ``v`` with ``u``.
 
         Args:
             e: index of edge in graph to contract.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ContractEdge(self._theGraph, e)
         if result != OK:
@@ -509,17 +533,18 @@ cdef class Graph:
             )
 
     def gp_IdentifyVertices(self, int u, int v, int eBefore) -> None:
-        """Identify vertex v with u by transferring all adjacencies from v to u.
+        """Identify vertex ``v`` with ``u`` by transferring all adjacencies from ``v`` to ``u``.
 
         Args:
-            u: index of vertex in graph to which v will be identified.
-            v: index of vertex in graph to identify with u.
-            eBefore: the index in u's adjacency list before which v's
-                adjacencies should be inserted, or NIL to append the edges to
-                u's list.
+            u: index of vertex in graph to which ``v`` will be identified.
+            v: index of vertex in graph to identify with ``u``.
+            eBefore: the index in ``u``'s adjacency list before which ``v``'s
+                adjacencies should be inserted, or ``NIL`` to append the edges
+                to ``u``'s list.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_IdentifyVertices(self._theGraph, u, v, eBefore)
         if result != OK:
@@ -531,11 +556,13 @@ cdef class Graph:
     def gp_RestoreVertices(self) -> None:
         """Restores all hidden vertices.
 
-        Note that this includes all vertices hidden during a series of hide
-        vertex, edge contraction, or vertex identification operations.
+        .. Note::
+            This includes all vertices hidden during a series of hide vertex,
+            edge contraction, or vertex identification operations.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_RestoreVertices(self._theGraph)
         if result != OK:
@@ -545,24 +572,24 @@ cdef class Graph:
             )
 
     def gp_GetGraphFlags(self) -> int:
-        """Returns flags set on the Graph's graphP.
+        """Returns flags set on the ``Graph``'s ``graphP``.
 
         Returns:
-            An integer representing the flags set on the graphP.
+            An integer representing the flags set on the ``graphP``.
         """
         return graphLib.gp_GetGraphFlags(self._theGraph)
 
     def gp_GetFirstEdge(self, int v) -> int:
-        """Get index of first edge incident to vertex v.
+        """Get index of first edge incident to vertex ``v``.
 
         Args:
             v: index of a vertex in the graph.
 
         Returns:
-            The index of the first edge in v's adjacency list.
+            The index of the first edge in ``v``'s adjacency list.
 
         Raises:
-            ValueError: if v is not a valid vertex index.
+            ValueError: if ``v`` is not a valid vertex index.
         """
         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
@@ -572,16 +599,16 @@ cdef class Graph:
         return graphLib.gp_GetFirstEdge(self._theGraph, v)
 
     def gp_GetLastEdge(self, int v) -> int:
-        """Get index of last edge incident to vertex v.
+        """Get index of last edge incident to vertex ``v``.
 
         Args:
             v: index of a vertex in the graph.
 
         Returns:
-            The index of the last edge in v's adjacency list.
+            The index of the last edge in ``v``'s adjacency list.
 
         Raises:
-            ValueError: if v is not a valid vertex index.
+            ValueError: if ``v`` is not a valid vertex index.
         """
         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
@@ -591,19 +618,19 @@ cdef class Graph:
         return graphLib.gp_GetLastEdge(self._theGraph, v)
 
     def gp_GetEdgeByLink(self, int v, int theLink) -> int:
-        """Get the first or last edge in the adjacency list of v.
+        """Get the first or last edge in the adjacency list of ``v``.
 
         Args:
             v: index of a vertex in the graph.
             theLink: the direction of adjacency for the edge to return, either
-                first (0) or last (1).
+                first (``0``) or last (``1``).
 
         Returns:
-            The index of the first or last edge in V's adjacency list.
+            The index of the first or last edge in ``v``'s adjacency list.
 
         Raises:
-            ValueError: if v is not a valid vertex index or theLink is an
-                invalid direction indicator (0 or 1).
+            ValueError: if ``v`` is not a valid vertex index or ``theLink`` is
+                an invalid direction indicator (i.e., neither ``0`` nor ``1``).
         """
         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
@@ -619,15 +646,15 @@ cdef class Graph:
         return graphLib.gp_GetEdgeByLink(self._theGraph, v, theLink)
 
     def gp_SetFirstEdge(self, int v, int newFirstEdge) -> None:
-        """Sets the first edge in v's adjacency list to newFirstEdge.
+        """Sets the first edge in ``v``'s adjacency list to ``newFirstEdge``.
 
         Args:
             v: index of a vertex in the graph.
-            newFirstEdge: the index of an edge to set as the first edge in v's
-                adjacency list.
+            newFirstEdge: the index of an edge to set as the first edge in
+                ``v``'s adjacency list.
 
         Raises:
-            ValueError: for invalid vertex v or edge newFirstEdge.
+            ValueError: for invalid vertex ``v`` or edge ``newFirstEdge``.
         """
         if not self.gp_IsVertex(v) and not self.gp_IsVirtualVertex(v):
             raise ValueError(
@@ -646,16 +673,16 @@ cdef class Graph:
         graphLib.gp_SetFirstEdge(self._theGraph, v, newFirstEdge)
 
     def gp_SetLastEdge(self, int v, int newLastEdge) -> None:
-        """Sets the last edge in v's adjacency list to newLastEdge.
+        """Sets the last edge in ``v``'s adjacency list to ``newLastEdge``.
 
         Args:
             v: index of vertex in graph for which you wish to set the last edge
                 in its adjacency list.
             newLastEdge: the index of an edge in the edge array that you wish
-                to set as the last edge in v's adjacency list.
+                to set as the last edge in ``v``'s adjacency list.
 
         Raises:
-            ValueError: for invalid vertex v or edge newLastEdge.
+            ValueError: for invalid vertex ``v`` or edge ``newLastEdge``.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -671,18 +698,18 @@ cdef class Graph:
         graphLib.gp_SetLastEdge(self._theGraph, v, newLastEdge)
 
     def gp_SetEdgeByLink(self, int v, int theLink, int newEdge) -> None:
-        """Set the first or last edge in v's adjacency list.
+        """Set the first or last edge in ``v``'s adjacency list.
 
         Args:
             v: index of a vertex in the graph.
             theLink: the direction of adjacency for which edge to set, either
-                first (0) or last (1).
+                first (``0``) or last (``1``).
             newEdge: the index of an edge to set as the first or last edge
-                in v's adjacency list.
+                in ``v``'s adjacency list.
 
         Raises:
-            ValueError: if v is not a valid vertex, if theLink is not 0 nor 1,
-                or newEdge is not a valid in-use edge.
+            ValueError: if ``v`` is not a valid vertex, if ``theLink`` is not
+                ``0`` nor ``1``, or ``newEdge`` is not a valid in-use edge.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -738,7 +765,9 @@ cdef class Graph:
     def gp_LowerBoundVertexStorage(self) -> int:
         """Get lower bound of graph's non-virtual and virtual vertex storage.
 
-        NOTE: Use gp_LowerBoundVertices() unless you know why you're using this.
+        .. Note::
+            Use ``gp_LowerBoundVertices()`` unless you know why you're using
+            this.
 
         Returns:
             The lower bound for all non-virtual and virtual vertices, to be used
@@ -749,7 +778,9 @@ cdef class Graph:
     def gp_UpperBoundVertexStorage(self) -> int:
         """Get upper bound of graph's non-virtual and virtual vertex storage.
 
-        NOTE: Use gp_UpperBoundVertices() unless you know why you're using this.
+        .. Note::
+            Use ``gp_UpperBoundVertices()`` unless you know why you're using
+            this.
 
         Returns:
             The upper bound for all non-virtual and virtual vertices, to be used
@@ -758,15 +789,15 @@ cdef class Graph:
         return graphLib.gp_UpperBoundVertexStorage(self._theGraph)
 
     def gp_IsVertex(self, int v) -> int:
-        """Determine if index v corresponds to a non-virtual vertex.
+        """Determine if index ``v`` corresponds to a non-virtual vertex.
 
         Args:
             v: candidate index of a non-virtual vertex in the graph.
 
         Returns:
-            TRUE if v is within the allowed bounds for vertices and if the value
-            returned by the C-layer call to gp_IsVertex() is truthy, otherwise
-            FALSE.
+            ``TRUE`` if ``v`` is within the allowed bounds for vertices and if
+            the value returned by the C-layer call to ``gp_IsVertex()`` is
+            truthy, otherwise ``FALSE``.
         """
         if (
             (v >= self.gp_LowerBoundVertices()) and
@@ -778,15 +809,15 @@ cdef class Graph:
         return FALSE
 
     def gp_IsVirtualVertex(self, int v) -> int:
-        """Determine if index v corresponds to a virtual vertex.
+        """Determine if index ``v`` corresponds to a virtual vertex.
 
         Args:
             v: candidate index of a virtual vertex in the graph.
 
         Returns:
-            TRUE if v is within the allowed bounds for virtual vertices and if
-            the value returned by the C-layer call to gp_IsVirtualVertex() is
-            truthy, otherwise FALSE.
+            ``TRUE`` if ``v`` is within the allowed bounds for virtual vertices
+            and if the value returned by the C-layer call to
+            ``gp_IsVirtualVertex()`` is truthy, otherwise ``FALSE``.
         """
         if (
             (v >= self.gp_LowerBoundVirtualVertices()) and
@@ -798,15 +829,15 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotVertex(self, int v) -> int:
-        """Determine if index v does not correspond to a non-virtual vertex.
+        """Determine if index ``v`` does not correspond to a non-virtual vertex.
 
         Args:
             v: candidate index of a non-virtual vertex in the graph.
 
         Returns:
-            TRUE if v is not within the allowed bounds for non-virtual vertices,
-            or if the value returned by the C-layer call to gp_IsNotVertex() is
-            truthy, otherwise FALSE.
+            ``TRUE`` if ``v`` is not within the allowed bounds for non-virtual
+            vertices, or if the value returned by the C-layer call to
+            ``gp_IsNotVertex()`` is truthy, otherwise ``FALSE``.
         """
         if (
             (v < self.gp_LowerBoundVertices()) or
@@ -818,15 +849,15 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotVirtualVertex(self, int v) -> int:
-        """Determine if index v does not correspond to a virtual vertex.
+        """Determine if index ``v`` does not correspond to a virtual vertex.
 
         Args:
             v: candidate index of a virtual vertex in the graph.
 
         Returns:
-            TRUE if v is not within the allowed bounds for virtual vertices or
-            if the value returned by the C-layer call to gp_IsNotVirtualVertex()
-            is truthy, otherwise FALSE.
+            ``TRUE`` if ``v`` is not within the allowed bounds for virtual
+            vertices or if the value returned by the C-layer call to 
+            ``gp_IsNotVirtualVertex()`` is truthy, otherwise ``FALSE``.
         """
         if (
             (v < self.gp_LowerBoundVirtualVertices()) or
@@ -846,8 +877,8 @@ cdef class Graph:
             virtualVertex: candidate virtual vertex to test.
 
         Returns:
-            TRUE if virtualVertex is a valid virtual vertex and is in use,
-            otherwise FALSE.
+            ``TRUE`` if ``virtualVertex`` is a valid virtual vertex and is in
+             use, otherwise ``FALSE``.
         """
         if (
             self.gp_IsVirtualVertex(virtualVertex) and
@@ -864,9 +895,9 @@ cdef class Graph:
             virtualVertex: candidate virtual vertex to test.
 
         Returns:
-            TRUE if virtualVertex is a valid virtual vertex and is not in use,
-            FALSE if virtualVertex is not a valid virtual vertex or if it is
-            a virtual vertex but is in use.
+            ``TRUE`` if virtualVertex is a valid virtual vertex and is not in,
+            use, ``FALSE`` if ``virtualVertex`` is not a valid virtual vertex or
+            if it is a virtual vertex but is in use.
         """
         if (
             self.gp_IsVirtualVertex(virtualVertex) and
@@ -877,16 +908,16 @@ cdef class Graph:
         return FALSE
 
     def gp_GetIndex(self, int v) -> int:
-        """Get the index data member value of vertex v.
+        """Get the index data member value of vertex ``v``.
 
         Args:
             v: the vertex in the graph whose index field to get.
 
         Returns:
-            The value of the index field of the vertex record for v.
+            The value of the index field of the vertex record for ``v``.
 
         Raises:
-            ValueError: if v doesn't correspond to a non-virtual or virtual
+            ValueError: if ``v`` doesn't correspond to a non-virtual or virtual
             vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
@@ -897,15 +928,15 @@ cdef class Graph:
         return graphLib.gp_GetIndex(self._theGraph, v)
 
     def gp_SetIndex(self, int v, int theIndex) -> None:
-        """Set the index data member of vertex v to theIndex.
+        """Set the index data member of vertex ``v`` to theIndex.
 
         Args:
-            v: the vertex in the graph whose index to set to theIndex.
+            v: the vertex in the graph whose index to set to ``theIndex``.
             theIndex: new value you wish to assign to the vertex's index field.
 
         Raises:
-            ValueError: if v or theIndex don't correspond to a non-virtual or
-                virtual vertex.
+            ValueError: if ``v`` or theIndex don't correspond to a non-virtual
+               or virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -930,7 +961,7 @@ cdef class Graph:
             v: index of vertex in graph whose flags you wish to clear.
 
         Raises:
-            ValueError: if v is not a non-virtual nor virtual vertex.
+            ValueError: if ``v`` is not a non-virtual nor virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -940,17 +971,17 @@ cdef class Graph:
         graphLib.gp_InitFlags(self._theGraph, v)
 
     def gp_GetVisited(self, int v) -> int:
-        """Gets the visited flag of vertex v.
+        """Gets the visited flag of vertex ``v``.
 
         Args:
             v: index of vertex in graph whose visited flag you wish to get.
 
         Returns:
-            The visited flag for v, i.e., 0 (falsy) or VERTEX_VISITED_MASK
-            (truthy).
+            The visited flag for ``v``, i.e., ``0`` (falsy) or
+            ``VERTEX_VISITED_MASK`` (truthy).
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex.
+            ValueError: if ``v`` is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -960,13 +991,13 @@ cdef class Graph:
         return graphLib.gp_GetVisited(self._theGraph, v)
 
     def gp_ClearVisited(self, int v) -> None:
-        """Clears the visited flag of vertex v.
+        """Clears the visited flag of vertex ``v``.
 
         Args:
             v: index of vertex in graph whose visited flag you wish to clear.
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex.
+            ValueError: if ``v`` is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -976,13 +1007,13 @@ cdef class Graph:
         graphLib.gp_ClearVisited(self._theGraph, v)
 
     def gp_SetVisited(self, int v) -> None:
-        """Sets the visited flag of vertex v.
+        """Sets the visited flag of vertex ``v``.
 
         Args:
             v: index of vertex in graph whose visited flag you wish to set.
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex.
+            ValueError: if ``v`` is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -992,17 +1023,17 @@ cdef class Graph:
         graphLib.gp_SetVisited(self._theGraph, v)
 
     def gp_GetMarked(self, int v) -> int:
-        """Gets the marked flag of vertex v.
+        """Gets the marked flag of vertex ``v``.
 
         Args:
             v: vertex whose marked flag you wish to get.
 
         Returns:
-            The marked flag for v, i.e., 0 (falsy) or VERTEX_MARKED_MASK
-            (truthy).
+            The marked flag for ``v``, i.e., ``0`` (falsy) or
+            ``VERTEX_MARKED_MASK`` (truthy).
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex.
+            ValueError: if ``v`` is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -1012,13 +1043,13 @@ cdef class Graph:
         return graphLib.gp_GetMarked(self._theGraph, v)
 
     def gp_ClearMarked(self, int v) -> None:
-        """Clears the marked flag of vertex v.
+        """Clears the marked flag of vertex ``v``.
 
         Args:
             v: vertex whose marked flag you wish to clear.
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex.
+            ValueError: if ``v`` is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -1028,13 +1059,13 @@ cdef class Graph:
         graphLib.gp_ClearMarked(self._theGraph, v)
 
     def gp_SetMarked(self, int v) -> None:
-        """Sets the marked flag of vertex v.
+        """Sets the marked flag of vertex ``v``.
 
         Args:
             v: vertex whose marked flag you wish to set.
 
         Raises:
-            ValueError: if v is neither a non-virtual nor a virtual vertex.
+            ValueError: if ``v`` is neither a non-virtual nor a virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -1044,7 +1075,7 @@ cdef class Graph:
         graphLib.gp_SetMarked(self._theGraph, v)
 
     def gp_GetTwin(self, int e) -> int:
-        """Get the twin edge record of the edge record indicated by e.
+        """Get the twin edge record of the edge record indicated by ``e``.
 
         Enables constant-time navigation between the two halves of the data
         structure representing an edge.
@@ -1053,10 +1084,10 @@ cdef class Graph:
             e: edge whose twin edge record you wish to get.
 
         Returns:
-            The index of the twin edge record of e.
+            The index of the twin edge record of ``e``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1066,16 +1097,17 @@ cdef class Graph:
         return graphLib.gp_GetTwin(self._theGraph, e)
 
     def gp_GetNextEdge(self, int e) -> int:
-        """Get the next edge after e in the adjacency list containing e.
+        """Get the next edge after ``e`` in the adjacency list containing ``e``.
 
         Args:
             e: edge for which you wish to get next edge.
 
         Returns:
-            The next edge after e, or NIL if e is the last in the list.
+            The next edge after ``e``, or ``NIL`` if ``e`` is the last in the
+            list.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1086,16 +1118,16 @@ cdef class Graph:
         return graphLib.gp_GetNextEdge(self._theGraph, e)
 
     def gp_GetPrevEdge(self, int e) -> int:
-        """Get the previous edge before e in the adjacency list containing e.
+        """Get the previous edge before ``e`` in the adjacency list containing ``e``.
 
         Args:
             e: edge for which you wish to get previous edge.
 
         Returns:
-            The previous edge before e, or NIL if e is the first.
+            The previous edge before ``e``, or ``NIL`` if ``e`` is the first.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1106,20 +1138,20 @@ cdef class Graph:
         return graphLib.gp_GetPrevEdge(self._theGraph, e)
 
     def gp_GetAdjacentEdge(self, int e, int theLink) -> int:
-        """Get the edge adjacent to e in direction indicated by theLink.
+        """Get the edge adjacent to ``e`` in direction indicated by ``theLink``.
 
         Args:
             e: edge for which you wish to get edge adjacent in direction
-                theLink.
-            theLink: either 0 for next edge or 1 for previous edge.
+                ``theLink``.
+            theLink: either ``0`` for next edge or ``1`` for previous edge.
 
         Returns:
-            The edge adjacent to e in direction theLink, or NIL if e is
-            the last in the direction given by theLink.
+            The edge adjacent to ``e`` in direction ``theLink``, or ``NIL`` if
+            ``e`` is the last in the direction given by ``theLink``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge or if theLink is neither
-                0 nor 1.
+            ValueError: if ``e`` is not a valid in-use edge or if ``theLink`` is
+                neither ``0`` nor ``1``.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1136,15 +1168,15 @@ cdef class Graph:
         return graphLib.gp_GetAdjacentEdge(self._theGraph, e, theLink)
 
     def gp_SetNextEdge(self, int e, int newNextEdge) -> None:
-        """Set the next edge after e to newNextEdge.
+        """Set the next edge after ``e`` to newNextEdge.
 
         Args:
             e: edge for which you wish to set the next edge.
-            newNextEdge: the next edge for e, or NIL.
+            newNextEdge: the next edge for ``e``, or ``NIL``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge, or if newNextEdge is
-                neither NIL nor a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge, or if
+                ``newNextEdge`` is neither ``NIL`` nor a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1161,15 +1193,15 @@ cdef class Graph:
         graphLib.gp_SetNextEdge(self._theGraph, e, newNextEdge)
 
     def gp_SetPrevEdge(self, int e, int newPrevEdge) -> None:
-        """Set the previous edge before e to newPrevEdge.
+        """Set the previous edge before ``e`` to newPrevEdge.
 
         Args:
             e: edge for which you wish to set previous edge.
-            newPrevEdge: the previous edge for e, or NIL.
+            newPrevEdge: the previous edge for ``e``, or ``NIL``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge, or if newPrevEdge is
-                neither NIL nor a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge, or if
+                ``newPrevEdge`` is neither ``NIL`` nor a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1186,18 +1218,19 @@ cdef class Graph:
         graphLib.gp_SetPrevEdge(self._theGraph, e, newPrevEdge)
 
     def gp_SetAdjacentEdge(self, int e, int theLink, int newEdge) -> None:
-        """Set the edge adjacent to e in direction indicated by theLink.
+        """Set the edge adjacent to ``e`` in direction indicated by ``theLink``.
 
         Args:
             e: edge for which you wish to set edge adjacent in direction
-                theLink.
-            theLink: either 0 for the next edge or 1 for the previous edge.
-            newEdge: the next or previous edge for e, or NIL.
+                ``theLink``.
+            theLink: either ``0`` for the next edge or ``1`` for the previous
+                edge.
+            newEdge: the next or previous edge for ``e``, or ``NIL``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge, or if newEdge is
-                neither NIL nor a valid in-use edge, or if theLink is neither 0
-                nor 1.
+            ValueError: if ``e`` is not a valid in-use edge, or if newEdge is
+                neither ``NIL`` nor a valid in-use edge, or if ``theLink`` is
+                neither ``0`` nor ``1``.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1220,14 +1253,14 @@ cdef class Graph:
         graphLib.gp_SetAdjacentEdge(self._theGraph, e, theLink, newEdge)
 
     def gp_IsEdge(self, int e) -> int:
-        """Check if e is an edge location in the graph's edge storage.
+        """Check if ``e`` is an edge location in the graph's edge storage.
 
         Args:
             e: candidate edge to verify is an edge location in the graph.
 
         Returns:
-            TRUE if e is a valid edge and the value returned by C-layer
-            gp_IsEdge() is truthy, FALSE otherwise.
+            ``TRUE`` if ``e`` is a valid edge and the value returned by C-layer
+            ``gp_IsEdge()`` is truthy, ``FALSE`` otherwise.
         """
         if (
                 (e >= self.gp_LowerBoundEdgeStorage()) and
@@ -1239,14 +1272,14 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotEdge(self, int e) -> int:
-        """Check if e is not an edge location in the graph's edge storage.
+        """Check if ``e`` is not an edge location in the graph's edge storage.
 
         Args:
             e: candidate edge to verify is not an edge location in the graph
 
         Returns:
-            TRUE if e is not a valid edge or the value returned by C-layer
-            gp_IsNotEdge() is truthy, FALSE otherwise.
+            ``TRUE`` if ``e`` is not a valid edge or the value returned by
+            C-layer ``gp_IsNotEdge()`` is truthy, ``FALSE`` otherwise.
         """
         if (
                 (e < self.gp_LowerBoundEdgeStorage()) or
@@ -1258,16 +1291,16 @@ cdef class Graph:
         return FALSE
 
     def gp_GetNeighbor(self, int e) -> int:
-        """Get the neighbor vertex indicated by an in-use edge e.
+        """Get the neighbor vertex indicated by an in-use edge ``e``.
 
         Args:
-            e: an in-use edge in the adjacency list of a vertex v.
+            e: an in-use edge in the adjacency list of a vertex ``v``.
 
         Returns:
-            The vertex that e indicates is a neighbor of vertex v.
+            The vertex that ``e`` indicates is a neighbor of vertex ``v``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1278,15 +1311,15 @@ cdef class Graph:
         return graphLib.gp_GetNeighbor(self._theGraph, e)
 
     def gp_SetNeighbor(self, int e, int v) -> None:
-        """Set the neighbor vertex of an in-use edge e to v.
+        """Set the neighbor vertex of an in-use edge ``e`` to ``v``.
 
         Args:
             e: an in-use edge whose neighbor vertex you wish to set.
-            v: the vertex you wish to set as the neighbor of edge e.
+            v: the vertex you wish to set as the neighbor of edge ``e``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge, or if v is not a
-                non-virtual nor a virtual vertex.
+            ValueError: if ``e`` is not a valid in-use edge, or if ``v`` is not
+                a non-virtual nor a virtual vertex.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1302,13 +1335,13 @@ cdef class Graph:
         graphLib.gp_SetNeighbor(self._theGraph, e, v)
 
     def gp_InitEdgeFlags(self, int e) -> None:
-        """Initialize the edge flags of an in-use edge e.
+        """Initialize the edge flags of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge flags you wish to initialize.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1319,17 +1352,17 @@ cdef class Graph:
         graphLib.gp_InitEdgeFlags(self._theGraph, e)
 
     def gp_GetEdgeVisited(self, int e) -> int:
-        """Get the edge visited flag of an in-use edge e.
+        """Get the edge visited flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge visited flag you wish to get.
 
         Returns:
-            The edge visited flag for e, i.e., 0 (falsy) or EDGE_VISITED_MASK
-            (truthy).
+            The edge visited flag for ``e``, i.e., ``0`` (falsy) or
+            ``EDGE_VISITED_MASK`` (truthy).
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1340,13 +1373,13 @@ cdef class Graph:
         return graphLib.gp_GetEdgeVisited(self._theGraph, e)
 
     def gp_ClearEdgeVisited(self, int e) -> None:
-        """Clears the edge visited flag of an in-use edge e.
+        """Clears the edge visited flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge visited flag you wish to clear.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1357,13 +1390,13 @@ cdef class Graph:
         graphLib.gp_ClearEdgeVisited(self._theGraph, e)
 
     def gp_SetEdgeVisited(self, int e) -> None:
-        """Set the edge visited flag of an in-use edge e.
+        """Set the edge visited flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge visited flag you wish to set.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1374,17 +1407,17 @@ cdef class Graph:
         graphLib.gp_SetEdgeVisited(self._theGraph, e)
 
     def gp_GetEdgeMarked(self, int e) -> int:
-        """Get the edge marked flag of an in-use edge e.
+        """Get the edge marked flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge marked flag you wish to get.
 
         Returns:
-            The edge visited flag for e, i.e., 0 (falsy) or EDGE_MARKED_MASK
-            (truthy).
+            The edge visited flag for ``e``, i.e., ``0`` (falsy) or
+            ``EDGE_MARKED_MASK`` (truthy).
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1395,13 +1428,13 @@ cdef class Graph:
         return graphLib.gp_GetEdgeMarked(self._theGraph, e)
 
     def gp_ClearEdgeMarked(self, int e) -> None:
-        """Clears the edge marked flag of an in-use edge e.
+        """Clears the edge marked flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge marked flag you wish to clear.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1412,13 +1445,13 @@ cdef class Graph:
         graphLib.gp_ClearEdgeMarked(self._theGraph, e)
 
     def gp_SetEdgeMarked(self, int e) -> None:
-        """Set the edge marked flag of an in-use edge e.
+        """Set the edge marked flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge marked flag you wish to set.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1429,18 +1462,18 @@ cdef class Graph:
         graphLib.gp_SetEdgeMarked(self._theGraph, e)
 
     def gp_GetEdgeType(self, int e) -> int:
-        """Get the edge type of an in-use edge e.
+        """Get the edge type of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge type you wish to get.
 
         Returns:
-            The edge type of e if set, i.e., EDGE_TYPE_NOTDEFINED,
-            EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-            EDGE_TYPE_BACK, or EDGE_TYPE_TREE.
+            The edge type of ``e`` if set, i.e., ``EDGE_TYPE_NOTDEFINED``,
+            ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``, ``EDGE_TYPE_PARENT``,
+            ``EDGE_TYPE_BACK``, or ``EDGE_TYPE_TREE``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1451,13 +1484,13 @@ cdef class Graph:
         return graphLib.gp_GetEdgeType(self._theGraph, e)
 
     def gp_ClearEdgeType(self, int e) -> None:
-        """Clears the edge type of an in-use edge e.
+        """Clears the edge type of an in-use edge ``e``.
 
         Args:
             e: an in-use edge whose edge type you wish to clear.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1468,20 +1501,21 @@ cdef class Graph:
         graphLib.gp_ClearEdgeType(self._theGraph, e)
 
     def gp_SetEdgeType(self, int e, int type) -> None:
-        """Sets the edge type of an in-use edge e to type for the first time.
+        """Sets the edge type of an in-use edge ``e`` to ``type`` for the first time.
 
-        NOTE: To change the type after setting the first time, use
-        gp_ClearEdgeType() first, or use gp_ResetEdgeType().
+        .. Note::
+            To change the type after setting the first time, use
+            ``gp_ClearEdgeType()`` first, or use ``gp_ResetEdgeType()``.
 
         Args:
             e: an in-use edge whose edge type you wish to set for the first time
-                to the given type.
-            type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-                EDGE_TYPE_BACK, or EDGE_TYPE_TREE.
+                to the given ``type``.
+            type: one of ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``,
+                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, or ``EDGE_TYPE_TREE``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge or if type is not a
-                valid edge type.
+            ValueError: if ``e`` is not a valid in-use edge or if ``type`` is
+                not a valid edge type.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1503,16 +1537,16 @@ cdef class Graph:
         graphLib.gp_SetEdgeType(self._theGraph, e, type)
 
     def gp_ResetEdgeType(self, int e, int type) -> None:
-        """Clear the previous type of in-use edge e and then set its type.
+        """Clear the previous type of in-use edge ``e`` and then set its ``type``.
 
         Args:
-            e: an in-use edge whose edge type you wish to reset to type.
-            type: one of EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-                EDGE_TYPE_BACK, or EDGE_TYPE_TREE.
+            e: an in-use edge whose edge type you wish to reset to ``type``.
+            type: one of ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``,
+                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, or ``EDGE_TYPE_TREE``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge or if type is not a
-                valid edge type.
+            ValueError: if ``e`` is not a valid in-use edge or if ``type`` is
+                not a valid edge type.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1534,16 +1568,16 @@ cdef class Graph:
         graphLib.gp_ResetEdgeType(self._theGraph, e, type)
 
     def gp_GetEdgeFlagInverted(self, int e) -> int:
-        """Get the edge inverted flag of an in-use edge e.
+        """Get the edge inverted flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge for which you wish to get the edge inverted flag.
 
         Returns:
-            The edge inverted flag of e.
+            The edge inverted flag of ``e``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1554,13 +1588,13 @@ cdef class Graph:
         return graphLib.gp_GetEdgeFlagInverted(self._theGraph, e)
 
     def gp_SetEdgeFlagInverted(self, int e) -> None:
-        """Set the edge inverted flag of an in-use edge e.
+        """Set the edge inverted flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge for which you wish to set the edge inverted flag.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1571,14 +1605,14 @@ cdef class Graph:
         graphLib.gp_SetEdgeFlagInverted(self._theGraph, e)
 
     def gp_ClearEdgeFlagInverted(self, int e) -> None:
-        """Clear the edge inverted flag of an in-use edge e.
+        """Clear the edge inverted flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge for which you wish to clear the edge inverted
                 flag.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1589,14 +1623,14 @@ cdef class Graph:
         graphLib.gp_ClearEdgeFlagInverted(self._theGraph, e)
 
     def gp_XorEdgeFlagInverted(self, int e) -> None:
-        """Toggle the edge inverted flag of an in-use edge e.
+        """Toggle the edge inverted flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge for which you wish to toggle the edge inverted
                 flag.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1607,16 +1641,16 @@ cdef class Graph:
         graphLib.gp_XorEdgeFlagInverted(self._theGraph, e)
 
     def gp_GetDirection(self, int e) -> int:
-        """Get the direction flag of an in-use edge e.
+        """Get the direction flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge for which you wish to determine the direction.
 
         Returns:
-            The direction of the edge e.
+            The direction of the edge ``e``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge.
+            ValueError: if ``e`` is not a valid in-use edge.
         """
         if not self.gp_EdgeInUse(e):
             raise ValueError(
@@ -1627,15 +1661,15 @@ cdef class Graph:
         return graphLib.gp_GetDirection(self._theGraph, e)
 
     def gp_SetDirection(self, int e, int direction) -> None:
-        """Set the direction flag of an in-use edge e.
+        """Set the direction flag of an in-use edge ``e``.
 
         Args:
             e: an in-use edge for which you wish to set the direction.
-            direction: either 0 (undirected), EDGEFLAG_DIRECTION_INONLY, or
-                EDGEFLAG_DIRECTION_OUTONLY.
+            direction: either ``0`` (undirected), ``EDGEFLAG_DIRECTION_INONLY``,
+                or ``EDGEFLAG_DIRECTION_OUTONLY``.
 
         Raises:
-            ValueError: if e is not a valid in-use edge, or direction is
+            ValueError: if ``e`` is not a valid in-use edge, or direction is
                 invalid.
         """
         if not self.gp_EdgeInUse(e):
@@ -1657,7 +1691,7 @@ cdef class Graph:
         graphLib.gp_SetDirection(self._theGraph, e, direction)
 
     def gp_LowerBoundEdges(self) -> int:
-        """Get the lower bound for edges.
+        """Get lower bound for edges.
 
         Returns:
             The lower bound for edges.
@@ -1665,7 +1699,7 @@ cdef class Graph:
         return graphLib.gp_LowerBoundEdges(self._theGraph)
 
     def gp_UpperBoundEdges(self) -> int:
-        """Get the upper bound for edges (the lower bound + M + numEdgeHoles).
+        """Get upper bound for edges, i.e., lower bound ``+ M + numEdgeHoles``.
 
         Returns:
             The upper bound for edges.
@@ -1679,7 +1713,7 @@ cdef class Graph:
             e: candidate edge to test.
 
         Returns:
-            TRUE if the edge is valid and in-use, FALSE otherwise.
+            ``TRUE`` if the edge is valid and in-use, ``FALSE`` otherwise.
         """
         if self.gp_IsEdge(e) and graphLib.gp_EdgeInUse(self._theGraph, e):
             return TRUE
@@ -1693,8 +1727,8 @@ cdef class Graph:
             e: candidate edge to test.
 
         Returns:
-            TRUE if edge is either invalid or valid but not in-use, FALSE
-            otherwise.
+            ``TRUE`` if edge is either invalid or valid but not in-use,
+            ``FALSE`` otherwise.
         """
         if self.gp_EdgeInUse(e):
             return FALSE
@@ -1720,8 +1754,9 @@ cdef class Graph:
     def gp_UpperBoundEdgeStorage(self) -> int:
         """Get the upper bound for edge storage to iterate over edge storage.
 
-        Note that this value depends on the edge capacity, and possibly extends
-        past the current number of in-use edges.
+        .. Note::
+            This value depends on the edge capacity, and possibly extends past
+            the current number of in-use edges.
 
         Returns:
             The upper bound for edge storage.
@@ -1732,10 +1767,12 @@ cdef class Graph:
         """Reads the graph from the file named fileName.
 
         Args:
-            fileName: a string containing the name of the file to read from.
+            fileName: a string containing the name of the file from which to
+                read.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = fileName.encode('utf-8')
@@ -1754,7 +1791,8 @@ cdef class Graph:
             inputStr: a string containing the graph to read.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         cdef bytes encoded = inputStr.encode('utf-8')
         cdef const char *encodedInputString = encoded
@@ -1765,18 +1803,19 @@ cdef class Graph:
             )
 
     def gp_Write(self, str fileName, int writeMode) -> None:
-        """Writes the graph to the file named fileName in the writeMode format.
+        """Write graph to file named ``fileName`` in the ``writeMode`` format.
 
         Args:
             fileName: a string containing the name of the file to which to
                 write.
-            writeMode: the desired output format, i.e., WRITE_ADJLIST,
-                WRITE_ADJMATRIX, or WRITE_G6.
+            writeMode: the desired output format, i.e., ``WRITE_ADJLIST``,
+                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
 
         Raises:
-            ValueError: if writeMode is not WRITE_ADJLIST, WRITE_ADJMATRIX,
-                or WRITE_G6.
-            RuntimeError: if C graphlib version of this function failed.
+            ValueError: if ``writeMode`` is not ``WRITE_ADJLIST``,
+                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
             raise ValueError(
@@ -1794,22 +1833,22 @@ cdef class Graph:
                 )
 
     def gp_WriteToString(self, int writeMode) -> str:
-        """Writes the graph to a string in the writeMode format.
+        """Write graph to a string in the ``writeMode`` format.
 
         Args:
-            writeMode: the desired output format, i.e., WRITE_ADJLIST,
-                WRITE_ADJMATRIX, or WRITE_G6.
+            writeMode: the desired output format, i.e., ``WRITE_ADJLIST``,
+                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
 
         Returns:
             A Python string containing the graph serialized into the chosen
             format.
 
         Raises:
-            ValueError: if writeMode is not WRITE_ADJLIST, WRITE_ADJMATRIX,
-                or WRITE_G6.
-            RuntimeError: if C graphlib version of this function failed, if the
-                outputString is NULL, or if decoding the bytes to produce the
-                Python string failed.
+            ValueError: if writeMode is not ``WRITE_ADJLIST``,
+                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed, if the ``outputString`` is ``NULL``, or if decoding the
+                bytes to produce the Python string failed.
         """
         if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
             raise ValueError(
@@ -1846,13 +1885,14 @@ cdef class Graph:
             ) from string_conversion_error
 
     def gp_ExtendWith_DFSUtils(self) -> None:
-        """Dynamically subclasses the graph with the DFSUtils extension.
+        """Dynamically subclasses the graph with the ``DFSUtils`` extension.
 
         Adds the data structures and methods necessary to perform DFS-related
         operations.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if graphLib.gp_ExtendWith_DFSUtils(self._theGraph) != OK:
             raise RuntimeError(
@@ -1864,14 +1904,15 @@ cdef class Graph:
         """Performs a depth-first search (DFS) on the graph.
 
         Gives vertices a value for their depth first indices (DFIs) and DFS
-        parents, and gives edges a value for their type. See gp_GetParent(),
-        gp_GetIndex(), and gp_GetEdgeType().
+        parents, and gives edges a value for their type. See ``gp_GetParent()``,
+        ``gp_GetIndex()``, and ``gp_GetEdgeType()``.
 
-        This method also sets GRAPHFLAGS_DFSNUMBERED. This method performs
-        gp_ExtendWith_DFSUtils() if not already done.
+        This method also sets ``GRAPHFLAGS_DFSNUMBERED``. This method performs
+        ``gp_ExtendWith_DFSUtils()`` if not already done.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if graphLib.gp_DepthFirstSearch(self._theGraph) != OK:
             raise RuntimeError(
@@ -1881,15 +1922,16 @@ cdef class Graph:
     def gp_SortVertices(self) -> None:
         """Sort vertices in ascending order according to their DFIs.
 
-        This method invokes gp_DepthFirstSearch(), if it has not already been
-        done. This method sets GRAPHFLAGS_SORTEDBYDFI. A second invocation of
-        this method restores vertices to their original order and clears
-        GRAPHFLAGS_SORTEDBYDFI. When GRAPHFLAGS_SORTEDBYDFI is set, the index
-        values of all vertices are changed from their DFIs to their original
-        index positions in vertex storage.
+        This method invokes ``gp_DepthFirstSearch()``, if it has not already
+        been done. This method sets ``GRAPHFLAGS_SORTEDBYDFI``. A second
+        invocation of this method restores vertices to their original order and
+        clears ``GRAPHFLAGS_SORTEDBYDFI``. When ``GRAPHFLAGS_SORTEDBYDFI`` is
+        set, the index values of all vertices are changed from their DFIs to
+        their original index positions in vertex storage.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if graphLib.gp_SortVertices(self._theGraph) != OK:
             raise RuntimeError(
@@ -1899,11 +1941,12 @@ cdef class Graph:
     def gp_ComputeLowpoints(self) -> None:
         """Computes lowpoints and least ancestors for all vertices.
 
-        This method first performs gp_DepthFirstSearch() and gp_SortVertices()
-        if they have not already been done.
+        This method first performs ``gp_DepthFirstSearch()`` and
+        ``gp_SortVertices()`` if they have not already been done.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if graphLib.gp_ComputeLowpoints(self._theGraph) != OK:
             raise RuntimeError(
@@ -1913,11 +1956,12 @@ cdef class Graph:
     def gp_ComputeLeastAncestors(self) -> None:
         """Computes least ancestor values for all vertices.
 
-        This method first performs gp_DepthFirstSearch() and gp_SortVertices()
-        if they have not already been done.
+        This method first performs ``gp_DepthFirstSearch()`` and
+        ``gp_SortVertices()`` if they have not already been done.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         if graphLib.gp_ComputeLeastAncestors(self._theGraph) != OK:
             raise RuntimeError(
@@ -1925,17 +1969,18 @@ cdef class Graph:
             )
 
     def gp_GetParent(self, int v) -> int:
-        """Get DFS parent of vertex v if gp_DepthFirstSearch() has been called.
+        """Get DFS parent of vertex ``v`` if ``gp_DepthFirstSearch()`` has been called.
 
         Args:
             v: a vertex in the graph whose DFS parent you wish to obtain.
 
         Returns:
-            The DFS parent of v in the graph, or NIL if v is the root of the
-            DFS tree (or if gp_DepthFirstSearch() has not been called).
+            The DFS parent of ``v`` in the graph, or ``NIL`` if ``v`` is the
+            root of the DFS tree (or if ``gp_DepthFirstSearch()`` has not been
+            called).
 
         Raises:
-            ValueError: if v is not a valid vertex.
+            ValueError: if ``v`` is not a valid vertex.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -1945,17 +1990,17 @@ cdef class Graph:
         return graphLib.gp_GetParent(self._theGraph, v)
 
     def gp_GetLeastAncestor(self, int v) -> int:
-        """Get least ancestor of vertex v, after least ancestors are computed.
+        """Get least ancestor of vertex ``v``, after least ancestors are computed.
 
         Args:
             v: a vertex in the graph whose least ancestor you wish to obtain.
 
         Returns:
-            The least ancestor of v, or NIL if least ancestor values have not
-            yet been computed.
+            The least ancestor of ``v``, or ``NIL`` if least ancestor values
+            have not yet been computed.
 
         Raises:
-            ValueError: if v is not a valid vertex.
+            ValueError: if ``v`` is not a valid vertex.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -1965,16 +2010,17 @@ cdef class Graph:
         return graphLib.gp_GetLeastAncestor(self._theGraph, v)
 
     def gp_GetLowpoint(self, int v) -> int:
-        """Get lowpoint value of vertex v, after lowpoint values are computed.
+        """Get lowpoint value of vertex ``v``, after lowpoint values are computed.
 
         Args:
             v: a vertex in the graph whose lowpoint value you wish to obtain.
 
         Returns:
-            The lowpoint of v, or NIL if lowpoints have not yet been computed.
+            The lowpoint of ``v``, or ``NIL`` if lowpoints have not yet been
+            computed.
 
         Raises:
-            ValueError: if v is not a valid vertex.
+            ValueError: if ``v`` is not a valid vertex.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -1984,18 +2030,19 @@ cdef class Graph:
         return graphLib.gp_GetLowpoint(self._theGraph, v)
 
     def gp_IsDFSTreeRoot(self, int v) -> int:
-        """Determine if vertex v is the DFS tree root (DFS parent is NIL).
+        """Determine if vertex ``v`` is the DFS tree root (DFS parent is ``NIL``).
 
-        NOTE: This method assumes that gp_DepthFirstSearch() has been called.
+        .. Note::
+            This method assumes that ``gp_DepthFirstSearch()`` has been called.
 
         Args:
             v: a vertex in the graph you wish to determine is the DFS tree root.
 
         Returns:
-            TRUE if v is the DFS tree root, FALSE otherwise.
+            ``TRUE`` if ``v`` is the DFS tree root, ``FALSE`` otherwise.
 
         Raises:
-            ValueError: if v is not a valid vertex.
+            ValueError: if ``v`` is not a valid vertex.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -2016,19 +2063,20 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotDFSTreeRoot(self, int v) -> int:
-        """Determine if vertex v is not the DFS root (DFS parent is not NIL).
+        """Determine if vertex ``v`` is not the DFS root (DFS parent is not ``NIL``).
 
-        NOTE: This method assumes that gp_DepthFirstSearch() has been called.
+        .. Note::
+            This method assumes that ``gp_DepthFirstSearch()`` has been called.
 
         Args:
             v: a vertex in the graph you wish to determine is not the DFS tree
                 root.
 
         Returns:
-            TRUE if v is not the DFS tree root, FALSE otherwise.
+            ``TRUE`` if ``v`` is not the DFS tree root, ``FALSE`` otherwise.
 
         Raises:
-            ValueError: if v is not a valid vertex.
+            ValueError: if ``v`` is not a valid vertex.
         """
         if not self.gp_IsVertex(v):
             raise ValueError(
@@ -2049,21 +2097,21 @@ cdef class Graph:
         return FALSE
 
     def gp_GetBicompRootFromDFSChild(self, int c) -> int:
-        """Get bicomp root R (a virtual vertex) of v from its DFS child c.
+        """Get bicomp root ``R`` of ``v`` from its DFS child ``c``.
 
-        Given a DFS child c of a vertex v, this method returns the biconneced
-        component (bicomp) root of v associated with c. The bicomp root is a
-        virtual vertex.
+        Given a DFS child ``c`` of a vertex ``v``, this method returns the
+        biconneced component (bicomp) root of ``v`` associated with ``c``. The
+        bicomp root ``R`` is a virtual vertex.
 
         Args:
             c: DFS child for which you wish to determine the root of the bicomp
-                containing c.
+                containing ``c``.
 
         Returns:
-            The root of the bicomp containing c.
+            The root of the bicomp containing ``c``.
 
         Raises:
-            ValueError: if c is not a valid vertex.
+            ValueError: if ``c`` is not a valid vertex.
         """
         if not self.gp_IsVertex(c):
             raise ValueError(
@@ -2073,17 +2121,17 @@ cdef class Graph:
         return graphLib.gp_GetBicompRootFromDFSChild(self._theGraph, c)
 
     def gp_GetDFSChildFromBicompRoot(self, int R) -> int:
-        """Get DFS child c of vertex v that bicomp root R represents.
+        """Get DFS child ``c`` of vertex ``v`` represented by bicomp root ``R``.
 
         Args:
             R: a virtual vertex that is the root of a bicomp for which you wish
                 to determine the DFS child.
 
         Returns:
-            The DFS child of v that is within the bicomp rooted by R.
+            The DFS child of ``v`` that is within the bicomp rooted by ``R``.
 
         Raises:
-            ValueError: if R is not a virtual vertex.
+            ValueError: if ``R`` is not a virtual vertex.
         """
         if not self.gp_IsVirtualVertex(R):
             raise ValueError(
@@ -2094,16 +2142,17 @@ cdef class Graph:
         return graphLib.gp_GetDFSChildFromBicompRoot(self._theGraph, R)
 
     def gp_GetVertexFromBicompRoot(self, int R) -> int:
-        """Get the vertex v that bicomp root R represents.
+        """Get the vertex ``v`` that bicomp root ``R`` represents.
 
         Args:
-            R: a virtual vertex representing the root of a child bicomp of v.
+            R: a virtual vertex representing the root of a child bicomp of
+                ``v``.
 
         Returns:
-            The vertex v corresponding to the root R of a child bicomp.
+            The vertex ``v`` corresponding to the root ``R`` of a child bicomp.
 
         Raises:
-            ValueError: if R is not a valid virtual vertex.
+            ValueError: if ``R`` is not a valid virtual vertex.
         """
         if not self.gp_IsVirtualVertex(R):
             raise ValueError(
@@ -2135,19 +2184,19 @@ cdef class Graph:
     def gp_IsBicompRoot(self, int v) -> int:
         """Determines whether a non-virtual or virtual vertex is a bicomp root.
 
-        This method essentially just returns whether v is a virtual vertex; it
-        may not be in use in a separate biconnected component. To test if a
-        bicomp root is in use, please see gp_VirtualVertexInUse().
+        This method essentially just returns whether ``v`` is a virtual vertex;
+        it may not be in use in a separate biconnected component. To test if a
+        bicomp root is in use, please see ``gp_VirtualVertexInUse()``.
 
         Args:
             v: a vertex in the graph which you wish to determine is the root
                 of a bicomp.
 
         Returns:
-            TRUE if v is a bicomp root, FALSE otherwise.
+            ``TRUE`` if ``v`` is a bicomp root, ``FALSE`` otherwise.
 
         Raises:
-            ValueError: if v is not a valid non-virtual nor virtual vertex.
+            ValueError: if ``v`` is not a valid non-virtual nor virtual vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(
@@ -2161,17 +2210,17 @@ cdef class Graph:
         return FALSE
 
     def gp_IsSeparatedDFSChild(self, int theChild) -> int:
-        """Determines if theChild is in a separate bicomp from its DFS parent.
+        """Determines if ``theChild`` is in a separate bicomp from its DFS parent.
 
         Args:
             theChild: a vertex in the graph.
 
         Returns:
-            TRUE if theChild is in a separate bicomp from its DFS parent, v;
-            FALSE otherwise.
+            ``TRUE`` if ``theChild`` is in a separate bicomp from its DFS
+            parent, ``v``; ``FALSE`` otherwise.
 
         Raises:
-            ValueError: if theChild is not a valid vertex.
+            ValueError: if ``theChild`` is not a valid vertex.
         """
         if not self.gp_IsVertex(theChild):
             raise ValueError(
@@ -2185,17 +2234,17 @@ cdef class Graph:
         return FALSE
 
     def gp_IsNotSeparatedDFSChild(self, int theChild) -> int:
-        """Determines if theChild is not in a separate bicomp from its DFS parent.
+        """Determines if ``theChild`` is not in a separate bicomp from its DFS parent.
 
         Args:
             theChild: a vertex in the graph.
 
         Returns:
-            FALSE if theChild is in a separate bicomp from its DFS parent, v;
-            TRUE otherwise.
+            ``FALSE`` if ``theChild`` is in a separate bicomp from its DFS
+            parent, ``v``; ``TRUE`` otherwise.
 
         Raises:
-            ValueError: if theChild is not a valid vertex.
+            ValueError: if ``theChild`` is not a valid vertex.
         """
         if not self.gp_IsVertex(theChild):
             raise ValueError(
@@ -2209,13 +2258,14 @@ cdef class Graph:
         return FALSE
 
     def gp_ExtendWith_Planarity(self) -> None:
-        """Dynamically subclasses the graph with the Planarity extension.
+        """Dynamically subclasses the graph with the ``Planarity`` extension.
 
         Adds the data structures and methods necessary for planar graph
         embedding minimal planarity-obstructing subgraph isolation.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ExtendWith_Planarity(self._theGraph)
         if result != OK:
@@ -2228,22 +2278,24 @@ cdef class Graph:
 
         Modifies the graph to be either an embedding of the original graph or a
         minimal subgraph obstructing embedding. The type of embedding or
-        obstruction depends on the setting of embedFlags. With when the flag
-        EMBEDFLAGS_PLANAR is set, the graph is modified to either contain a
+        obstruction depends on the setting of ``embedFlags``. With when the flag
+        ``EMBEDFLAGS_PLANAR`` is set, the graph is modified to either contain a
         planar embedding (an adjacency list rotation scheme) of the graph or a
-        subgraph homeomorphic to K_{3,3} or K_5.
+        subgraph homeomorphic to :math:`K_{3,3}` or :math:`K_5`.
 
         Args:
-            embedFlags: graphlib.EMBEDFLAGS_* value indicating the embedding
+            embedFlags: ``graphlib.EMBEDFLAGS_*`` value indicating the embedding
                 algorithm to run.
 
         Returns:
-            OK if an embedding was created (if a desired homeomorphic subgraph
-            was not found), or NONEMBEDDABLE if a minimal obstructing subgraph
-            (or the desired homeomorphic subgraph) was found.
+            ``OK`` if an embedding was created (if a desired homeomorphic
+            subgraph was not found), or ``NONEMBEDDABLE`` if a minimal
+            obstructing subgraph (or the desired homeomorphic subgraph) was
+            found.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         embed_result = graphLib.gp_Embed(self._theGraph, embedFlags)
         if embed_result != OK and embed_result != NONEMBEDDABLE:
@@ -2257,18 +2309,19 @@ cdef class Graph:
         """Ensures validity of embedding operation.
 
         Tests whether the graph has valid content based on the embedding
-        algorithm performed by gp_Embed(), a copy of the original graph input to
-        it, and the result it returned.
+        algorithm performed by ``gp_Embed()``, a copy of the original graph
+        input to it, and the result it returned.
 
         Args:
-            origGraph: a copy of the graph before gp_Embed().
-            embedResult: the result returned by gp_Embed().
+            origGraph: a copy of the graph before ``gp_Embed()``.
+            embedResult: the result returned by ``gp_Embed()``.
 
         Returns:
-            OK or NONEMBEDDABLE on success (matching embedResult).
+            ``OK`` or ``NONEMBEDDABLE`` on success (matching ``embedResult``).
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         check_result = graphLib.gp_TestEmbedResultIntegrity(
                 self._theGraph, origGraph._theGraph, embedResult
@@ -2279,13 +2332,14 @@ cdef class Graph:
         return check_result
 
     def gp_ExtendWith_Outerplanarity(self) -> None:
-        """Dynamically subclasses the graph with the Outerplanarity extension.
+        """Dynamically subclasses the graph with the ``Outerplanarity`` extension.
 
         Adds the data structures and methods necessary for outerplanar graph
         embedding minimal outerplanarity-obstructing subgraph isolation.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ExtendWith_Outerplanarity(self._theGraph)
         if result != OK:
@@ -2294,14 +2348,15 @@ cdef class Graph:
             )
 
     def gp_ExtendWith_DrawPlanar(self) -> None:
-        """Dynamically subclasses the graph with the DrawPlanar extension.
+        """Dynamically subclasses the graph with the ``DrawPlanar`` extension.
 
         Adds the data structures and methods necessary for embedding and then
         drawing an ASCII rendition of a planar graph and for generating a
         visibility representation of the planar graph embedding.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ExtendWith_DrawPlanar(self._theGraph)
         if result != OK:
@@ -2312,15 +2367,17 @@ cdef class Graph:
     def gp_DrawPlanar_RenderToFile(self, str theFileName) -> None:
         """Writes an ASCII rendition of a planar graph embedding to file.
 
-        NOTE: Assumes graph was extended with DrawPlanar extension, that the
-        embed operation was successful, and that the graph is planar.
+        .. Note::
+            Assumes graph was extended with ``DrawPlanar`` extension, that the
+            embed operation was successful, and that the graph is planar.
 
         Args:
             theFileName: the name of the file in which to place the ASCII
                 rendition of the planar graph embedding.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
         cdef bytes encoded = theFileName.encode('utf-8')
@@ -2337,14 +2394,16 @@ cdef class Graph:
     def gp_DrawPlanar_RenderToString(self) -> str:
         """Writes an ASCII rendition of a planar graph embedding to string.
 
-        NOTE: Assumes graph was extended with DrawPlanar extension, that the
-        embed operation was successful, and that the graph is planar.
+        .. Note::
+            Assumes graph was extended with ``DrawPlanar`` extension, that the
+            embed operation was successful, and that the graph is planar.
 
         Returns:
             The string containing the ASCII rendition.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         cdef char* renditionString = NULL
 
@@ -2364,16 +2423,17 @@ cdef class Graph:
             ) from string_conversion_error
 
     def gp_DrawPlanar_GetVertexPosition(self, int v) -> int:
-        """Get the vertical position of a vertex v.
+        """Get the vertical position of a vertex ``v``.
 
         Args:
             v: a vertex for which you wish to get the vertical position.
 
         Returns:
-            The vertical position value for v.
+            The vertical position value for ``v``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DrawPlanar_GetVertexPosition(self._theGraph, v)
         if result < 0:
@@ -2384,16 +2444,17 @@ cdef class Graph:
         return result
 
     def gp_DrawPlanar_GetVertexStart(self, int v) -> int:
-        """Get the horizontal start position of a vertex v.
+        """Get the horizontal start position of a vertex ``v``.
 
         Args:
             v: a vertex for which you wish to get the horizontal start position.
 
         Returns:
-            The horizontal start position value for v.
+            The horizontal start position value for ``v``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DrawPlanar_GetVertexStart(self._theGraph, v)
         if result < 0:
@@ -2404,16 +2465,17 @@ cdef class Graph:
         return result
 
     def gp_DrawPlanar_GetVertexEnd(self, int v) -> int:
-        """Get the horizontal end position of a vertex v.
+        """Get the horizontal end position of a vertex ``v``.
 
         Args:
             v: a vertex for which you wish to get the horizontal end position.
 
         Returns:
-            The horizontal end position value for v.
+            The horizontal end position value for ``v``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DrawPlanar_GetVertexEnd(self._theGraph, v)
         if result < 0:
@@ -2424,16 +2486,17 @@ cdef class Graph:
         return result
 
     def gp_DrawPlanar_GetEdgePosition(self, int e) -> int:
-        """Get the horizontal position of an edge e.
+        """Get the horizontal position of an edge ``e``.
 
         Args:
             e: an edge for which you wish to get the horizontal position.
 
         Returns:
-            The horizontal position value for e.
+            The horizontal position value for ``e``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DrawPlanar_GetEdgePosition(self._theGraph, e)
         if result < 0:
@@ -2444,16 +2507,17 @@ cdef class Graph:
         return result
 
     def gp_DrawPlanar_GetEdgeStart(self, int e) -> int:
-        """Get the vertical start position of an edge e.
+        """Get the vertical start position of an edge ``e``.
 
         Args:
             e: an edge for which you wish to get the vertical start position.
 
         Returns:
-            The vertical start position value for e.
+            The vertical start position value for ``e``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DrawPlanar_GetEdgeStart(self._theGraph, e)
         if result < 0:
@@ -2464,16 +2528,17 @@ cdef class Graph:
         return result
 
     def gp_DrawPlanar_GetEdgeEnd(self, int e) -> int:
-        """Get the vertical end position of an edge e.
+        """Get the vertical end position of an edge ``e``.
 
         Args:
             e: an edge for which you wish to get the vertical end position.
 
         Returns:
-            The vertical end position value for e.
+            The vertical end position value for ``e``.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_DrawPlanar_GetEdgeEnd(self._theGraph, e)
         if result < 0:
@@ -2484,13 +2549,14 @@ cdef class Graph:
         return result
 
     def gp_ExtendWith_K23Search(self) -> None:
-        """Dynamically subclasses the graph with the K23Search extension.
+        """Dynamically subclasses the graph with the ``K23Search`` extension.
 
         Adds the data structures and methods necessary to search for a subgraph
-        homeomorphic to K_{2, 3}.
+        homeomorphic to :math:`K_{2, 3}`.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ExtendWith_K23Search(self._theGraph)
         if result != OK:
@@ -2499,13 +2565,14 @@ cdef class Graph:
             )
 
     def gp_ExtendWith_K33Search(self) -> None:
-        """Dynamically subclasses the graph with the K33Search extension.
+        """Dynamically subclasses the graph with the ``K33Search`` extension.
 
         Adds the data structures and methods necessary to search for a subgraph
-        homeomorphic to K_{3, 3}.
+        homeomorphic to :math:`K_{3, 3}`.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ExtendWith_K33Search(self._theGraph)
         if result != OK:
@@ -2514,13 +2581,14 @@ cdef class Graph:
             )
 
     def gp_ExtendWith_K4Search(self) -> None:
-        """Dynamically subclasses the graph with the K4Search extension.
+        """Dynamically subclasses the graph with the ``K4Search`` extension.
 
         Adds the data structures and methods necessary to search for a subgraph
-        homeomorphic to K_4.
+        homeomorphic to :math:`K_4`.
 
         Raises:
-            RuntimeError: if C graphlib version of this function failed.
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
         """
         result = graphLib.gp_ExtendWith_K4Search(self._theGraph)
         if result != OK:
