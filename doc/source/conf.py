@@ -42,6 +42,8 @@ apidoc_modules = [
     {
         'path': '../../planarity',
         'destination': 'api',
+        # This produces the Python docs for the full API from Python
+        'exclude_patterns': ['**/classic*'],
         'separate_modules': True,
     },
 ]

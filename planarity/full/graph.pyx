@@ -517,7 +517,7 @@ cdef class Graph:
             )
 
     def gp_ContractEdge(self, int e) -> None:
-        """Contracts the edge `e` :math:`= \(u, v\)` by hiding ``e`` and identifying ``v`` with ``u``.
+        """Contracts the edge `e` :math:`= (u, v)` by hiding ``e`` and identifying ``v`` with ``u``.
 
         Args:
             e: index of edge in graph to contract.
