@@ -12,8 +12,7 @@
 
 import os
 import sys
-
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -28,10 +27,7 @@ release = '1.0.0'
 # Add any Sphinx extension module names here, as strings
 extensions = [
     'sphinx.ext.apidoc',
-    'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
 ]
 
@@ -40,33 +36,25 @@ exclude_patterns = []
 
 apidoc_modules = [
     {
-        'path': '../../planarity',
+        'path': '../../planarity/',
+        # Must be set so that any .rst files at the root of the source directory
+        # don't get wiped out
         'destination': 'api',
-        # This produces the Python docs for the full API from Python
-        'exclude_patterns': ['**/classic*'],
+        # This restricts the planarity documentation to the full API subpackage
+        'exclude_patterns': ['**/classic*',],
         'separate_modules': True,
     },
 ]
 
-autodoc_default_options = {
-    'members': True,
-    'undoc-members': True,
-    'special-members': '__cinit__, __dealloc__',
-    'exclude-members': '__weakref__, __reduce_cython__, __setstate_cython__',
-}
-
-autosummary_generate = True # Allows autosummary to generate stub files
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 html_show_sourcelink = False  # Remove 'view source code' from top of page (for html, not python)
-autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 nbsphinx_allow_errors = True  # Continue through Jupyter errors
-#autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
 add_module_names = False # Remove namespaces from class/method signatures
 
 # Napoleon settings
 napoleon_google_docstring = True
-napoleon_numpy_docstring = True
+napoleon_numpy_docstring = False
 napoleon_include_init_with_doc = True
 napoleon_include_private_with_doc = True
 napoleon_include_special_with_doc = True

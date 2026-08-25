@@ -12,7 +12,7 @@ Planarity API documentation
 ===========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 7
    :caption: Contents:
 
    api/modules
