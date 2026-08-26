@@ -16,3 +16,5 @@ planarity.egg-info/
 #Spyder project file
 .spyderproject
 
+# Ignore Python virtual environments, e.g., .venv, .testenv, .buildenv
+.*env
