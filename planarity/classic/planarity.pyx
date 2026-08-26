@@ -13,7 +13,8 @@ cdef class PGraph:
     cdef cplanarity.graphP theGraph
     cdef dict nodemap
     cdef dict reverse_nodemap
-    cdef int embedding 
+    cdef int embedding
+
     def __init__(self,graph):
         # guess input type
         if hasattr(graph,'nodes'):
@@ -60,10 +61,8 @@ cdef class PGraph:
                 warnings.warn('ignoring parallel edge %s-%s'%(str(u),str(v)))
         self.embedding=cplanarity.NOTOK
 
-
     def __dealloc__(self):
         cplanarity.gp_Free(&self.theGraph)
-
 
     def embed_planar(self):
         if self.embedding != 0:
@@ -76,7 +75,6 @@ cdef class PGraph:
                                             cplanarity.EMBEDFLAGS_PLANAR)
         cplanarity.gp_SortVertices(self.theGraph)                  
 
-
     def embed_drawplanar(self):
         status = cplanarity.gp_ExtendWith_DrawPlanar(self.theGraph)
         if status != cplanarity.OK:
@@ -85,8 +83,7 @@ cdef class PGraph:
                                              cplanarity.EMBEDFLAGS_DRAWPLANAR)
         if status == cplanarity.NONEMBEDDABLE:
             raise RuntimeError("planarity: graph not planar.")
-        cplanarity.gp_SortVertices(self.theGraph)                  
-
+        cplanarity.gp_SortVertices(self.theGraph)
 
     def is_planar(self):
         """Return True if graph is planar."""
@@ -95,7 +92,6 @@ cdef class PGraph:
             return False
         return True
 
-
     def kuratowski_edges(self):
         if self.is_planar():
             return []
@@ -103,7 +99,6 @@ cdef class PGraph:
             return self.edges(include_drawplanar_edge_info=False)
         else:
             raise RuntimeError("planarity: Unknown error.")
-
 
     def nodes(self, include_drawplanar_vertex_info=False):
         first=cplanarity.gp_LowerBoundVertices(self.theGraph)
@@ -130,7 +125,6 @@ cdef class PGraph:
             else:
                 nodes.append((r[v]))
         return nodes
-
 
     def edges(self, include_drawplanar_edge_info=False):
         edges=[]
@@ -167,7 +161,6 @@ cdef class PGraph:
 
         return edges
 
-
     def ascii(self):
         cdef char* s = NULL
         self.embed_drawplanar()
@@ -176,11 +169,95 @@ cdef class PGraph:
         free(s)
         return py_bytes.decode('ascii')
 
+    def draw(self, str outfileName, labels=True) -> None:
+        """Draw planar graph with Matplotlib.
+
+        Args:
+            outfileName: File to which to output Matplotlib rendering of planar
+                drawing.
+            labels: If True, render labels of vertices in final drawing.
+
+        Raises:
+            ImportError: if dependencies Matplotlib or NetworkX aren't installed
+                in the current environment.
+            RuntimeError: if the graph is nonplanar.
+        """
+        try:
+            import matplotlib.pyplot as plt
+            from matplotlib.patches import Circle
+            from matplotlib.collections import PatchCollection
+        except ImportError as matplotlib_import_error:
+            raise ImportError(
+                "draw() failed: missing dependency Matplotlib."
+            ) from matplotlib_import_error
+
+        try:
+            import networkx as nx
+        except ImportError as networkx_import_error:
+            raise ImportError(
+                "draw() failed: missing dependency NetworkX."
+            ) from networkx_import_error
+
+        try:
+            self.embed_drawplanar()
+        except RuntimeError:
+            raise RuntimeError(
+                "Graph cannot be drawn, as it is not planar."
+            )
+
+        hgraph = nx.Graph()
+        hgraph.add_nodes_from(self.nodes(include_drawplanar_vertex_info=True))
+        hgraph.add_edges_from(self.edges(include_drawplanar_edge_info=True))
+
+        patches = []
+        node_labels = {}
+        xs = []
+        ys = []
+        for node, drawplanar_vertex_info in hgraph.nodes(data=True):
+            y = drawplanar_vertex_info['vertex_position']
+            xb = drawplanar_vertex_info['vertex_start']
+            xe = drawplanar_vertex_info['vertex_end']
+            x = int((xe+xb)/2)
+            node_labels[node] = (x, y)
+            patches += [Circle((x, y), 0.25)]#,0.5,fc='w')]
+            xs.extend([xb, xe])
+            ys.append(y)
+            plt.hlines([y], [xb], [xe])
+
+        for (_, _, drawplanar_edge_info) in hgraph.edges(data=True):
+            x = drawplanar_edge_info['edge_position']
+            yb = drawplanar_edge_info['edge_start']
+            ye = drawplanar_edge_info['edge_end']
+            ys.extend([yb, ye])
+            xs.append(x)
+            plt.vlines([x], [yb], [ye])
+
+        # Apply labels to nodes if specified
+        if labels:
+            for n, (x, y) in node_labels.items():
+                plt.text(x, y, n,
+                        horizontalalignment='center',
+                        verticalalignment='center',
+                        bbox = dict(boxstyle='round',
+                                    ec=(0.0, 0.0, 0.0),
+                                    fc=(1.0, 1.0, 1.0),
+                                    )
+                        )
+
+        p = PatchCollection(patches)
+        ax = plt.gca()
+        ax.add_collection(p)
+        plt.axis('equal')
+        plt.xlim(min(xs)-1, max(xs)+1)
+        plt.ylim(min(ys)-1, max(ys)+1)
+
+        plt.axis('off')
+        plt.savefig(outfileName)
 
     def write(self,path):
         bpath=path.encode()
         status=cplanarity.gp_Write(self.theGraph, bpath, 
-                                   cplanarity.WRITE_ADJLIST)    
-        
+                                   cplanarity.WRITE_ADJLIST)
+
     def mapping(self):
         return self.reverse_nodemap

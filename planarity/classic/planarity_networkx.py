@@ -33,54 +33,25 @@ def pgraph_graph(graph):
     """Return pgraph graph built from NetworkX graph."""
     return planarity.PGraph(graph)
 
-def draw(graph, labels=True):
-    """Draw planar graph with Matplotlib."""
-    try:
-        import matplotlib.pyplot as plt
-        from matplotlib.patches import Circle
-        from matplotlib.collections import PatchCollection
-    except ImportError:
-        raise ImportError("Matplotlib is required for draw()")
+def draw(graph, outfileName, labels=True):
+    """Draw graph with Matplotlib if it is planar.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a PGraph.
+        outfileName: File to which to output Matplotlib rendering of planar
+            drawing.
+        labels: If True, render labels of vertices in final drawing.
+
+    Raises:
+        ImportError: if dependencies Matplotlib or NetworkX aren't installed in
+            the current environment.
+    """
     pgraph = planarity.PGraph(graph)
-    pgraph.embed_drawplanar()
-    hgraph = networkx_graph(pgraph)
-    patches = []
-    node_labels = {}
-    xs = []
-    ys = []
-    for node, drawplanar_vertex_info in hgraph.nodes(data=True):
-        y = drawplanar_vertex_info['vertex_position']
-        xb = drawplanar_vertex_info['vertex_start']
-        xe = drawplanar_vertex_info['vertex_end']
-        x = int((xe+xb)/2)
-        node_labels[node] = (x, y)
-        patches += [Circle((x, y), 0.25)]#,0.5,fc='w')]
-        xs.extend([xb, xe])
-        ys.append(y)
-        plt.hlines([y], [xb], [xe])
 
-    for (_, _, drawplanar_edge_info) in hgraph.edges(data=True):
-        x = drawplanar_edge_info['edge_position']
-        yb = drawplanar_edge_info['edge_start']
-        ye = drawplanar_edge_info['edge_end']
-        ys.extend([yb, ye])
-        xs.append(x)
-        plt.vlines([x], [yb], [ye])
-
-    # labels
-    if labels:
-        for n, (x, y) in node_labels.items():
-            plt.text(x, y, n,
-                     horizontalalignment='center',
-                     verticalalignment='center',
-                     bbox = dict(boxstyle='round',
-                                 ec=(0.0, 0.0, 0.0),
-                                 fc=(1.0, 1.0, 1.0),
-                                 )
-                     )
-    p = PatchCollection(patches)
-    ax = plt.gca()
-    ax.add_collection(p)
-    plt.axis('equal')
-    plt.xlim(min(xs)-1, max(xs)+1)
-    plt.ylim(min(ys)-1, max(ys)+1)
+    try:
+        pgraph.draw(outfileName, labels)
+    except ImportError as import_error:
+        raise ImportError(
+            "Please install missing dependencies in your current environment "
+            "and retry."
+        ) from import_error
