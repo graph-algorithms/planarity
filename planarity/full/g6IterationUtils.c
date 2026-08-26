@@ -1708,7 +1708,7 @@ struct __pyx_obj_9planarity_4full_5graph_Graph {
  * 
  * 
  * cdef class G6ReadIterator:             # <<<<<<<<<<<<<<
- *     """Wraps C-layer ``G6ReadIterator``.
+ *     """Wraps the C-layer read iterator for Graph6 (G6) files.
  * 
 */
 struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator {
@@ -1721,7 +1721,7 @@ struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6ReadIterator {
  * 
  * 
  * cdef class G6WriteIterator:             # <<<<<<<<<<<<<<
- *     """Wraps C-layer ``G6WriteIterator`` and output string, if applicable.
+ *     """Wraps the C-layer write iterator for Graph6 (G6) files.
  * 
 */
 struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator {
@@ -3085,7 +3085,7 @@ return 0;
  *     cdef graphLib.G6ReadIteratorP _g6ReadIterator
  * 
  *     def __cinit__(self, curr_graph: graph.Graph):             # <<<<<<<<<<<<<<
- *         """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator."""
+ *         """Allocates and wraps a C-layer G6ReadIterator."""
  *         try:
 */
 
@@ -3213,7 +3213,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
 
   /* "planarity/full/g6IterationUtils.pyx":35
  *     def __cinit__(self, curr_graph: graph.Graph):
- *         """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator."""
+ *         """Allocates and wraps a C-layer G6ReadIterator."""
  *         try:             # <<<<<<<<<<<<<<
  *             curr_graph.gp_GetN()
  *         except RuntimeError as invalid_graph_error:
@@ -3228,7 +3228,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
     /*try:*/ {
 
       /* "planarity/full/g6IterationUtils.pyx":36
- *         """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator."""
+ *         """Allocates and wraps a C-layer G6ReadIterator."""
  *         try:
  *             curr_graph.gp_GetN()             # <<<<<<<<<<<<<<
  *         except RuntimeError as invalid_graph_error:
@@ -3248,7 +3248,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
 
       /* "planarity/full/g6IterationUtils.pyx":35
  *     def __cinit__(self, curr_graph: graph.Graph):
- *         """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator."""
+ *         """Allocates and wraps a C-layer G6ReadIterator."""
  *         try:             # <<<<<<<<<<<<<<
  *             curr_graph.gp_GetN()
  *         except RuntimeError as invalid_graph_error:
@@ -3354,7 +3354,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
 
     /* "planarity/full/g6IterationUtils.pyx":35
  *     def __cinit__(self, curr_graph: graph.Graph):
- *         """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator."""
+ *         """Allocates and wraps a C-layer G6ReadIterator."""
  *         try:             # <<<<<<<<<<<<<<
  *             curr_graph.gp_GetN()
  *         except RuntimeError as invalid_graph_error:
@@ -3448,7 +3448,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
  *     cdef graphLib.G6ReadIteratorP _g6ReadIterator
  * 
  *     def __cinit__(self, curr_graph: graph.Graph):             # <<<<<<<<<<<<<<
- *         """Allocate C-layer G6ReadIterator to wrap with Cython G6ReadIterator."""
+ *         """Allocates and wraps a C-layer G6ReadIterator."""
  *         try:
 */
 
@@ -3474,7 +3474,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator___cinit
  *             )
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         """Free the C-layer G6ReadIterator."""
+ *         """Frees the C-layer G6ReadIterator."""
  *         if self._g6ReadIterator != NULL:
 */
 
@@ -3499,7 +3499,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
 
   /* "planarity/full/g6IterationUtils.pyx":56
  *     def __dealloc__(self):
- *         """Free the C-layer G6ReadIterator."""
+ *         """Frees the C-layer G6ReadIterator."""
  *         if self._g6ReadIterator != NULL:             # <<<<<<<<<<<<<<
  *             # NOTE: g6_FreeReader() NULLs out the pointer to currGraph on
  *             # the C layer, so that Python will be free to clean up the
@@ -3520,7 +3520,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
 
     /* "planarity/full/g6IterationUtils.pyx":56
  *     def __dealloc__(self):
- *         """Free the C-layer G6ReadIterator."""
+ *         """Frees the C-layer G6ReadIterator."""
  *         if self._g6ReadIterator != NULL:             # <<<<<<<<<<<<<<
  *             # NOTE: g6_FreeReader() NULLs out the pointer to currGraph on
  *             # the C layer, so that Python will be free to clean up the
@@ -3531,7 +3531,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
  *             )
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         """Free the C-layer G6ReadIterator."""
+ *         """Frees the C-layer G6ReadIterator."""
  *         if self._g6ReadIterator != NULL:
 */
 
@@ -3559,7 +3559,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4g6_InitReaderWithString, "G6ReadIterator.g6_InitReaderWithString(self, str inputString) -> None\n\nInitializes the ``G6ReadIterator`` with a string.\n\nThe string is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    inputString: the string to use as the input source.\n\nRaises:\n    RuntimeError: if C-layer ``graphLib`` version of this function\n        failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4g6_InitReaderWithString, "G6ReadIterator.g6_InitReaderWithString(self, str inputString) -> None\n\nInitializes the ``G6ReadIterator`` with a string.\n\nThe string is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    inputString: the string to use as the input source.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5g6_InitReaderWithString = {"g6_InitReaderWithString", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5g6_InitReaderWithString, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4g6_InitReaderWithString};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5g6_InitReaderWithString(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -3666,7 +3666,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4
   __Pyx_RefNannySetupContext("g6_InitReaderWithString", 0);
 
   /* "planarity/full/g6IterationUtils.pyx":76
- *                 failed.
+ *                 fails.
  *         """
  *         cdef bytes encoded = inputString.encode('utf-8')             # <<<<<<<<<<<<<<
  *         cdef const char *encodedInputString = encoded
@@ -3792,7 +3792,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6g6_InitReaderWithFileName, "G6ReadIterator.g6_InitReaderWithFileName(self, str infileName) -> None\n\nInitializes the ``G6ReadIterator`` with an input file name.\n\nThe file is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    infileName: a string containing the name of the input file.\n\nRaises:\n    RuntimeError: if C-layer ``graphLib`` version of this function\n        failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6g6_InitReaderWithFileName, "G6ReadIterator.g6_InitReaderWithFileName(self, str infileName) -> None\n\nInitializes the ``G6ReadIterator`` with an input file name.\n\nThe file is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    infileName: a string containing the name of the input file.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7g6_InitReaderWithFileName = {"g6_InitReaderWithFileName", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7g6_InitReaderWithFileName, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6g6_InitReaderWithFileName};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7g6_InitReaderWithFileName(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -3899,7 +3899,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6
   __Pyx_RefNannySetupContext("g6_InitReaderWithFileName", 0);
 
   /* "planarity/full/g6IterationUtils.pyx":100
- *                 failed.
+ *                 fails.
  *         """
  *         cdef bytes encoded = infileName.encode('utf-8')             # <<<<<<<<<<<<<<
  *         cdef const char *encodedInfileName = encoded
@@ -4025,7 +4025,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_8g6_ReadGraph, "G6ReadIterator.g6_ReadGraph(self) -> None\n\nReads a ``G6``-encoded graph from the input source.\n\nRaises:\n    RuntimeError: if C-layer ``graphLib`` version of this function\n        failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_8g6_ReadGraph, "G6ReadIterator.g6_ReadGraph(self) -> None\n\nReads a ``G6``-encoded graph from the input source.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_9g6_ReadGraph = {"g6_ReadGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_9g6_ReadGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_8g6_ReadGraph};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_9g6_ReadGraph(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -4076,7 +4076,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_8
   __Pyx_RefNannySetupContext("g6_ReadGraph", 0);
 
   /* "planarity/full/g6IterationUtils.pyx":119
- *                 failed.
+ *                 fails.
  *         """
  *         result = graphLib.g6_ReadGraph(self._g6ReadIterator)             # <<<<<<<<<<<<<<
  *         if result != graphLib.OK:
@@ -4265,7 +4265,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
  *         return graphLib.g6_EndReached(self._g6ReadIterator)
  * 
  *     def g6_FreeReader(self) -> None:             # <<<<<<<<<<<<<<
- *         """Free the C-layer ``G6ReadIterator``.
+ *         """Frees the C-layer ``G6ReadIterator``.
  * 
 */
 
@@ -4277,7 +4277,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_12g6_FreeReader, "G6ReadIterator.g6_FreeReader(self) -> None\n\nFree the C-layer ``G6ReadIterator``.\n\nAlthough ``__dealloc__()`` will do so if the API user does not, it is\ncleanest to directly call this method for consistency with how the\nwriter must be used. The ``__dealloc__()`` avoids double freeing the\nreader, and calls the same underlying method from the ``graphLib``\nCython extension.\n\nRaises:\n    RuntimeError: if the ``self._g6ReadIterator`` has already been freed\n        and set to ``NULL``.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_12g6_FreeReader, "G6ReadIterator.g6_FreeReader(self) -> None\n\nFrees the C-layer ``G6ReadIterator``.\n\nAlthough ``__dealloc__()`` will do so if the API user does not, it is\ncleanest to directly call this method for consistency with how the\nwriter must be used. The ``__dealloc__()`` avoids double freeing the\nreader, and calls the same underlying method from the ``graphLib``\nCython extension.\n\nRaises:\n    RuntimeError: if the ``self._g6ReadIterator`` has already been freed\n        and set to ``NULL``.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_13g6_FreeReader = {"g6_FreeReader", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_13g6_FreeReader, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_12g6_FreeReader};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_13g6_FreeReader(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -4378,7 +4378,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
  *         return graphLib.g6_EndReached(self._g6ReadIterator)
  * 
  *     def g6_FreeReader(self) -> None:             # <<<<<<<<<<<<<<
- *         """Free the C-layer ``G6ReadIterator``.
+ *         """Frees the C-layer ``G6ReadIterator``.
  * 
 */
 
@@ -4606,7 +4606,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
  *     cdef char *_outputString
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):             # <<<<<<<<<<<<<<
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:
 */
 
@@ -4734,7 +4734,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 
   /* "planarity/full/g6IterationUtils.pyx":187
  *     def __cinit__(self, graph.Graph graph_to_write):
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:             # <<<<<<<<<<<<<<
  *             if graph_to_write.gp_GetN() == 0:
  *                 raise ValueError(
@@ -4749,7 +4749,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     /*try:*/ {
 
       /* "planarity/full/g6IterationUtils.pyx":188
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:
  *             if graph_to_write.gp_GetN() == 0:             # <<<<<<<<<<<<<<
  *                 raise ValueError(
@@ -4791,7 +4791,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
         __PYX_ERR(0, 189, __pyx_L3_error)
 
         /* "planarity/full/g6IterationUtils.pyx":188
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:
  *             if graph_to_write.gp_GetN() == 0:             # <<<<<<<<<<<<<<
  *                 raise ValueError(
@@ -4801,7 +4801,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 
       /* "planarity/full/g6IterationUtils.pyx":187
  *     def __cinit__(self, graph.Graph graph_to_write):
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:             # <<<<<<<<<<<<<<
  *             if graph_to_write.gp_GetN() == 0:
  *                 raise ValueError(
@@ -4907,7 +4907,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 
     /* "planarity/full/g6IterationUtils.pyx":187
  *     def __cinit__(self, graph.Graph graph_to_write):
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:             # <<<<<<<<<<<<<<
  *             if graph_to_write.gp_GetN() == 0:
  *                 raise ValueError(
@@ -5010,7 +5010,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
  *     cdef char *_outputString
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):             # <<<<<<<<<<<<<<
- *         """Allocate C-layer G6WriteIterator to wrap with Cython G6WriteIterator."""
+ *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:
 */
 
@@ -5036,7 +5036,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
  *         self._outputString = NULL
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         """Free the C-layer G6WriteIterator and output string if non-NULL."""
+ *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:
 */
 
@@ -5066,7 +5066,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 
   /* "planarity/full/g6IterationUtils.pyx":212
  *     def __dealloc__(self):
- *         """Free the C-layer G6WriteIterator and output string if non-NULL."""
+ *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:             # <<<<<<<<<<<<<<
  *             graphLib.g6_FreeWriter(&self._g6WriteIterator)
  * 
@@ -5077,7 +5077,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 
 
     /* "planarity/full/g6IterationUtils.pyx":213
- *         """Free the C-layer G6WriteIterator and output string if non-NULL."""
+ *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:
  *             graphLib.g6_FreeWriter(&self._g6WriteIterator)             # <<<<<<<<<<<<<<
  * 
@@ -5087,7 +5087,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 
     /* "planarity/full/g6IterationUtils.pyx":212
  *     def __dealloc__(self):
- *         """Free the C-layer G6WriteIterator and output string if non-NULL."""
+ *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:             # <<<<<<<<<<<<<<
  *             graphLib.g6_FreeWriter(&self._g6WriteIterator)
  * 
@@ -5157,7 +5157,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
  *         self._outputString = NULL
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         """Free the C-layer G6WriteIterator and output string if non-NULL."""
+ *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:
 */
 
@@ -5188,7 +5188,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4g6_InitWriterWithString, "G6WriteIterator.g6_InitWriterWithString(self) -> None\n\nInitializes the ``G6WriteIterator`` with an output string.\n\nThe string is a member of the ``G6WriteIterator`` Cython wrapper class,\nand is used as the output source that receives ``G6``-encoded graphs. In\norder to retrieve this output string after writing has concluded, one\nmust call ``self.g6_FreeWriter()`` to convert the ``self._outputString``\nto a Python string.\n\nRaises:\n    RuntimeError: if C-layer ``graphLib`` version of this function\n        failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4g6_InitWriterWithString, "G6WriteIterator.g6_InitWriterWithString(self) -> None\n\nInitializes the ``G6WriteIterator`` with an output string.\n\nThe string is a member of the ``G6WriteIterator`` Cython wrapper class,\nand is used as the output source that receives ``G6``-encoded graphs. In\norder to retrieve this output string after writing has concluded, one\nmust call ``self.g6_FreeWriter()`` to convert the ``self._outputString``\nto a Python string.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString = {"g6_InitWriterWithString", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4g6_InitWriterWithString};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5239,7 +5239,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   __Pyx_RefNannySetupContext("g6_InitWriterWithString", 0);
 
   /* "planarity/full/g6IterationUtils.pyx":237
- *                 failed.
+ *                 fails.
  *         """
  *         result = graphLib.g6_InitWriterWithString(             # <<<<<<<<<<<<<<
  *             self._g6WriteIterator, &(self._outputString)
@@ -5337,7 +5337,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName, "G6WriteIterator.g6_InitWriterWithFileName(self, str outfileName) -> None\n\nInitializes the ``G6WriteIterator`` with an output file name.\n\nThe file is used as the output source that receives ``G6``-encoded\ngraphs.\n\nArgs:\n    outfileName: a string containing the name of the output file.\n\nRaises:\n    RuntimeError: if C-layer ``graphLib`` version of this function\n        failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName, "G6WriteIterator.g6_InitWriterWithFileName(self, str outfileName) -> None\n\nInitializes the ``G6WriteIterator`` with an output file name.\n\nThe file is used as the output source that receives ``G6``-encoded\ngraphs.\n\nArgs:\n    outfileName: a string containing the name of the output file.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName = {"g6_InitWriterWithFileName", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5444,7 +5444,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   __Pyx_RefNannySetupContext("g6_InitWriterWithFileName", 0);
 
   /* "planarity/full/g6IterationUtils.pyx":259
- *                 failed.
+ *                 fails.
  *         """
  *         cdef bytes encoded = outfileName.encode('utf-8')             # <<<<<<<<<<<<<<
  *         cdef const char *encodedOutputFileName = encoded
@@ -5570,7 +5570,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_8g6_WriteGraph, "G6WriteIterator.g6_WriteGraph(self) -> None\n\nWrites a ``G6``-encoded graph to the output source.\n\nRaises:\n    RuntimeError: if C-layer ``graphLib`` version of this function\n        failed.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_8g6_WriteGraph, "G6WriteIterator.g6_WriteGraph(self) -> None\n\nWrites a ``G6``-encoded graph to the output source.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9g6_WriteGraph = {"g6_WriteGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9g6_WriteGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_8g6_WriteGraph};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9g6_WriteGraph(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5621,7 +5621,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   __Pyx_RefNannySetupContext("g6_WriteGraph", 0);
 
   /* "planarity/full/g6IterationUtils.pyx":278
- *                 failed.
+ *                 fails.
  *         """
  *         result = graphLib.g6_WriteGraph(self._g6WriteIterator)             # <<<<<<<<<<<<<<
  *         if result != graphLib.OK:
@@ -5707,7 +5707,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
  *             )
  * 
  *     def g6_FreeWriter(self) -> str | None:             # <<<<<<<<<<<<<<
- *         """Free the C-layer ``G6WriteIterator``.
+ *         """Frees the C-layer ``G6WriteIterator``.
  * 
 */
 
@@ -5719,7 +5719,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10g6_FreeWriter, "G6WriteIterator.g6_FreeWriter(self) -> str | None\n\nFree the C-layer ``G6WriteIterator``.\n\n.. Caution::\n    This method *must* be called if the writer was initialized to output\n    to a string, so that the API user can receive the string output.\n    Otherwise, for the sake of consistency, it is still best to directly\n    call this method even if the writer was initialized to output to a\n    file.\n\nThe ``__dealloc__()`` calls the same underlying method from the\n``graphLib`` extension if the ``self._g6WriteIterator`` has not yet been\nfreed and set to ``NULL``.\n\nReturns:\n    A Python string containing the ``G6``-encoded output if the writer\n    was initialized to output to string, or ``None`` if it was\n    initialized to output to file.\n\nRaises:\n    RuntimeError: if the ``G6WriteIterator`` was initialized to output\n        to a string and the string cannot be decoded to a Python string.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10g6_FreeWriter, "G6WriteIterator.g6_FreeWriter(self) -> str | None\n\nFrees the C-layer ``G6WriteIterator``.\n\n.. Caution::\n    This method *must* be called if the writer was initialized to output\n    to a string, so that the API user can receive the string output.\n    Otherwise, for the sake of consistency, it is still best to directly\n    call this method even if the writer was initialized to output to a\n    file.\n\nThe ``__dealloc__()`` calls the same underlying method from the\n``graphLib`` extension if the ``self._g6WriteIterator`` has not yet been\nfreed and set to ``NULL``.\n\nReturns:\n    A Python string containing the ``G6``-encoded output if the writer\n    was initialized to output to string, or ``None`` if it was\n    initialized to output to file.\n\nRaises:\n    RuntimeError: if the ``G6WriteIterator`` was initialized to output\n        to a string and the string cannot be decoded to a Python string.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter = {"g6_FreeWriter", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10g6_FreeWriter};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -6045,7 +6045,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
  *             )
  * 
  *     def g6_FreeWriter(self) -> str | None:             # <<<<<<<<<<<<<<
- *         """Free the C-layer ``G6WriteIterator``.
+ *         """Frees the C-layer ``G6WriteIterator``.
  * 
 */
 
@@ -6377,7 +6377,7 @@ static PyMethodDef __pyx_methods_9planarity_4full_16g6IterationUtils_G6ReadItera
 #if CYTHON_USE_TYPE_SPECS
 static PyType_Slot __pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterator_slots[] = {
   {Py_tp_dealloc, (void *)__pyx_tp_dealloc_9planarity_4full_16g6IterationUtils_G6ReadIterator},
-  {Py_tp_doc, (void *)PyDoc_STR("Wraps C-layer ``G6ReadIterator``.\n\n    Args:\n        curr_graph: An allocated graph data structure that will be\n            iteratively populated with graphs from an input source.\n\n    Raises:\n        MemoryError: during initialization, if C-layer ``graphLib`` version of\n            ``gp_NewReader()`` failed.\n        ValueError: during initialization, if ``curr_graph`` does not contain an\n            allocated graph.\n    ")},
+  {Py_tp_doc, (void *)PyDoc_STR("Wraps the C-layer read iterator for Graph6 (G6) files.\n\n    Args:\n        curr_graph: An allocated graph data structure that will be\n            iteratively populated with graphs from an input source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version of\n            ``gp_NewReader()`` fails.\n        ValueError: during initialization, if ``curr_graph`` does not contain an\n            allocated graph.\n    ")},
   {Py_tp_methods, (void *)__pyx_methods_9planarity_4full_16g6IterationUtils_G6ReadIterator},
   {Py_tp_new, (void *)__pyx_tp_new_9planarity_4full_16g6IterationUtils_G6ReadIterator},
   #if (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800) && (!CYTHON_COMPILING_IN_LIMITED_API || __PYX_LIMITED_VERSION_HEX >= 0x030E0000)
@@ -6417,7 +6417,7 @@ static PyTypeObject __pyx_type_9planarity_4full_16g6IterationUtils_G6ReadIterato
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_BASETYPE, /*tp_flags*/
-  PyDoc_STR("Wraps C-layer ``G6ReadIterator``.\n\n    Args:\n        curr_graph: An allocated graph data structure that will be\n            iteratively populated with graphs from an input source.\n\n    Raises:\n        MemoryError: during initialization, if C-layer ``graphLib`` version of\n            ``gp_NewReader()`` failed.\n        ValueError: during initialization, if ``curr_graph`` does not contain an\n            allocated graph.\n    "), /*tp_doc*/
+  PyDoc_STR("Wraps the C-layer read iterator for Graph6 (G6) files.\n\n    Args:\n        curr_graph: An allocated graph data structure that will be\n            iteratively populated with graphs from an input source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version of\n            ``gp_NewReader()`` fails.\n        ValueError: during initialization, if ``curr_graph`` does not contain an\n            allocated graph.\n    "), /*tp_doc*/
   0, /*tp_traverse*/
   0, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -6574,7 +6574,7 @@ static PyMethodDef __pyx_methods_9planarity_4full_16g6IterationUtils_G6WriteIter
 #if CYTHON_USE_TYPE_SPECS
 static PyType_Slot __pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator_slots[] = {
   {Py_tp_dealloc, (void *)__pyx_tp_dealloc_9planarity_4full_16g6IterationUtils_G6WriteIterator},
-  {Py_tp_doc, (void *)PyDoc_STR("Wraps C-layer ``G6WriteIterator`` and output string, if applicable.\n\n    .. Caution::\n        If the output source is a string (i.e. ``gp_InitWithString()``)\n        and the API user did not directly call ``g6_FreeWriter()``, then they\n        did not receive the output string, so the output string is freed and a \n        ``RuntimeError`` is raised. If the output source is a file, then it is\n        not an error but good practice to call ``g6_FreeWriter()`` before the\n        writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``\n            that can be iteratively populated with graphs to write to an\n            output source.\n\n    Raises:\n        MemoryError: during initialization, if C-layer ``graphLib`` version of\n            ``gp_NewWriter()`` failed.\n        ValueError: during initialization, if ``graph_to_write`` does not \n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see ``gp_EnsureVertexCapacity()``).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called ``g6_FreeWriter()``.\n    ")},
+  {Py_tp_doc, (void *)PyDoc_STR("Wraps the C-layer write iterator for Graph6 (G6) files.\n\n    .. Caution::\n        If the output source is a string (i.e. ``gp_InitWithString()``)\n        and the API user did not directly call ``g6_FreeWriter()``, then they\n        did not receive the output string, so the output string is freed and a \n        ``RuntimeError`` is raised. If the output source is a file, then it is\n        not an error but good practice to call ``g6_FreeWriter()`` before the\n        writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``\n            that can be iteratively populated with graphs to write to an\n            output source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version of\n            ``gp_NewWriter()`` fails.\n        ValueError: during initialization, if ``graph_to_write`` does not \n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see ``gp_EnsureVertexCapacity()``).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called ``g6_FreeWriter()``.\n    ")},
   {Py_tp_methods, (void *)__pyx_methods_9planarity_4full_16g6IterationUtils_G6WriteIterator},
   {Py_tp_new, (void *)__pyx_tp_new_9planarity_4full_16g6IterationUtils_G6WriteIterator},
   #if (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800) && (!CYTHON_COMPILING_IN_LIMITED_API || __PYX_LIMITED_VERSION_HEX >= 0x030E0000)
@@ -6614,7 +6614,7 @@ static PyTypeObject __pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterat
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_BASETYPE, /*tp_flags*/
-  PyDoc_STR("Wraps C-layer ``G6WriteIterator`` and output string, if applicable.\n\n    .. Caution::\n        If the output source is a string (i.e. ``gp_InitWithString()``)\n        and the API user did not directly call ``g6_FreeWriter()``, then they\n        did not receive the output string, so the output string is freed and a \n        ``RuntimeError`` is raised. If the output source is a file, then it is\n        not an error but good practice to call ``g6_FreeWriter()`` before the\n        writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``\n            that can be iteratively populated with graphs to write to an\n            output source.\n\n    Raises:\n        MemoryError: during initialization, if C-layer ``graphLib`` version of\n            ``gp_NewWriter()`` failed.\n        ValueError: during initialization, if ``graph_to_write`` does not \n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see ``gp_EnsureVertexCapacity()``).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called ``g6_FreeWriter()``.\n    "), /*tp_doc*/
+  PyDoc_STR("Wraps the C-layer write iterator for Graph6 (G6) files.\n\n    .. Caution::\n        If the output source is a string (i.e. ``gp_InitWithString()``)\n        and the API user did not directly call ``g6_FreeWriter()``, then they\n        did not receive the output string, so the output string is freed and a \n        ``RuntimeError`` is raised. If the output source is a file, then it is\n        not an error but good practice to call ``g6_FreeWriter()`` before the\n        writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``\n            that can be iteratively populated with graphs to write to an\n            output source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version of\n            ``gp_NewWriter()`` fails.\n        ValueError: during initialization, if ``graph_to_write`` does not \n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see ``gp_EnsureVertexCapacity()``).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called ``g6_FreeWriter()``.\n    "), /*tp_doc*/
   0, /*tp_traverse*/
   0, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -7246,7 +7246,7 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
  *         return graphLib.g6_EndReached(self._g6ReadIterator)
  * 
  *     def g6_FreeReader(self) -> None:             # <<<<<<<<<<<<<<
- *         """Free the C-layer ``G6ReadIterator``.
+ *         """Frees the C-layer ``G6ReadIterator``.
  * 
 */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
@@ -7353,7 +7353,7 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
  *             )
  * 
  *     def g6_FreeWriter(self) -> str | None:             # <<<<<<<<<<<<<<
- *         """Free the C-layer ``G6WriteIterator``.
+ *         """Frees the C-layer ``G6WriteIterator``.
  * 
 */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)

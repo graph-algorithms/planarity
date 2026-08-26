@@ -31,7 +31,7 @@ cdef class G6ReadIterator:
     cdef graphLib.G6ReadIteratorP _g6ReadIterator
 
     def __cinit__(self, curr_graph: graph.Graph):
-        """Allocates and wraps a C-layer ``G6ReadIterator``."""
+        """Allocates and wraps a C-layer G6ReadIterator."""
         try:
             curr_graph.gp_GetN()
         except RuntimeError as invalid_graph_error:
@@ -52,7 +52,7 @@ cdef class G6ReadIterator:
             )
 
     def __dealloc__(self):
-        """Frees the C-layer ``G6ReadIterator``."""
+        """Frees the C-layer G6ReadIterator."""
         if self._g6ReadIterator != NULL:
             # NOTE: g6_FreeReader() NULLs out the pointer to currGraph on
             # the C layer, so that Python will be free to clean up the
@@ -183,7 +183,7 @@ cdef class G6WriteIterator:
     cdef char *_outputString
 
     def __cinit__(self, graph.Graph graph_to_write):
-        """Allocates and wraps a C-layer ``G6WriteIterator``."""
+        """Allocates and wraps a C-layer G6WriteIterator."""
         try:
             if graph_to_write.gp_GetN() == 0:
                 raise ValueError(
@@ -208,7 +208,7 @@ cdef class G6WriteIterator:
         self._outputString = NULL
 
     def __dealloc__(self):
-        """Frees the C-layer ``G6WriteIterator`` and the output string, if non-NULL."""
+        """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
         if self._g6WriteIterator != NULL:
             graphLib.g6_FreeWriter(&self._g6WriteIterator)
 

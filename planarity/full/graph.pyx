@@ -60,7 +60,7 @@ cdef class Graph:
             raise MemoryError("gp_New() failed.")
 
     def __dealloc__(self):
-        """Frees the underlying graph structure with ``gp_Free()``."""
+        """Frees the underlying graph structure with gp_Free()."""
         if self._theGraph != NULL:
             graphLib.gp_Free(&self._theGraph)
 
