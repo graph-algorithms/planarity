@@ -7,7 +7,7 @@ machinery.
 
 cdef extern from "../c/graphLib/lowLevelUtils/apiutils.h":
     int QUIETMODE_NONE, QUIETMODE_ERRORS, QUIETMODE_MESSAGES, QUIETMODE_ALL
-    
+
     int gp_GetQuietMode()
     void gp_SetQuietMode(int newQuietMode)
 
@@ -235,7 +235,7 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
     int gp_GetLeastAncestor(graphP theGraph, int v)
     int gp_GetLowpoint(graphP theGraph, int v)
 
-    # FIXME: We fail to link due to issue where these macros call private 
+    # FIXME: We fail to link due to issue where these macros call private
     # gp_GetVertexParent() rather than public gp_GetParent()
     # int gp_IsDFSTreeRoot(graphP theGraph, int v)
     # int  gp_IsNotDFSTreeRoot(graphP theGraph, int v)

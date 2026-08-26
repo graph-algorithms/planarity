@@ -16,3 +16,15 @@ planarity.egg-info/
 #Spyder project file
 .spyderproject
 
+# VSCode configuration
+.vscode/*
+
+# Pylint support
+.pylintrc
+
+# Sphinx documentation files
+doc/build/**
+doc/source/api/**
+
+# Ignore Python virtual environments prepended with . and ending with "env"
+**/.*env

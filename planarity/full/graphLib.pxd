@@ -1,6 +1,6 @@
-"""Definition file for functions that wrap calls to the C-layer EAPS graphLib
+"""Definition file for functions that wrap calls to the C-layer EAPS graphLib.
 
-This definition file corresponds to the graphLib.pyx implementation file, and 
+This definition file corresponds to the graphLib.pyx implementation file, and
 allows other Cython modules access to bare wrappers of the C graphLib API.
 https://cython.readthedocs.io/en/latest/src/userguide/sharing_declarations.html#sharing-extension-types
 """
@@ -194,7 +194,7 @@ cdef int gp_GetLowpoint(graphP theGraph, int v)
 cdef int gp_GetBicompRootFromDFSChild(graphP theGraph, int c)
 cdef int gp_GetDFSChildFromBicompRoot(graphP theGraph, int R)
 
-# FIXME: We fail to link due to issue where this macro calls private 
+# FIXME: We fail to link due to issue where this macro calls private
 # gp_GetVertexParent() rather than public gp_GetParent(). This can
 # added in once EAPS is fixed.
 # cdef int gp_GetVertexFromBicompRoot(graphP theGraph, int R)

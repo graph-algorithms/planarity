@@ -4,5 +4,8 @@ cython
 build
 twine
 pytest
+cython-lint
+codespell
+sphinx
 networkx
 matplotlib

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # cython: embedsignature=True
 """
-Cython wrapper for the Edge Addition Planarity Suite Graph Library
+Cython wrapper for the Edge Addition Planarity Suite Graph Library.
 
-Wraps functions and macros that operate over graphP structs and to exposes the 
+Wraps functions and macros that operate over graphP structs and to exposes the
 G6 read and write iterator machinery.
 
 NOTE: No bounds/error checking is done here, and is rather the responsibility
@@ -94,7 +94,9 @@ MINORTYPE_E7 = cgraphLib.MINORTYPE_E7
 
 # Surfaced from planarity/c/graphLib/planarityRelated/graphOuterplanarity.h
 OUTERPLANARITY_NAME = cgraphLib.OUTERPLANARITY_NAME
-GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = cgraphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY
+GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = (
+    cgraphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY
+)
 
 # Surfaced from planarity/c/graphLib/planarityRelated/graphDrawPlanar.h
 DRAWPLANAR_NAME = cgraphLib.DRAWPLANAR_NAME
@@ -111,19 +113,65 @@ K4SEARCH_NAME = cgraphLib.K4SEARCH_NAME
 
 # Functions to be made available when importing package from Python
 def gp_GetQuietMode() -> int:
+    """Gets the error and message quiet mode setting.
+
+    The default of ``QUIETMODE_ALL`` ensures that no errors or 
+    informational messages are emitted by the graph library.
+    This method can be used to store the current setting, so that
+    the setting can be restored after changing it if errors or
+    messages are required in a particular block of graph
+    processing code.
+
+    Returns:
+        One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, 
+            ``QUIETMODE_MESSAGES``, or ``QUIETMODE_ALL``
+    """
     return cgraphLib.gp_GetQuietMode()
 
 
 def gp_SetQuietMode(int newQuietMode) -> None:
+    """Sets the error and message quiet mode setting.
+
+    This method can be used to change back to or from the default
+    of ``QUIETMODE_ALL``, which suppresses the emission of errors
+    and warnings by the graph library. The usual alternative is
+    ``QUIETMODE_NONE``, which allows the graph library to emit 
+    both errors and warnings.
+
+    Args:
+        newQuietMode: One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, 
+            ``QUIETMODE_MESSAGES``, or ``QUIETMODE_ALL``
+    """
     cgraphLib.gp_SetQuietMode(newQuietMode)
 
 
 def gp_GetProjectVersionFull() -> str:
+    """Returns the Edge Addition Planarity Suite's project release version.
+
+    The Planarity package includes the graph library from the
+    Edge Addition Planarity Suite (EAPS). This method returns the release
+    version that has been included. It may be used by graph application
+    code to test whether the installed version of the Planarity
+    package contains desired EAPS functionality.
+
+    Returns:
+        The "N.N.N.N" project release version.
+    """
     cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
     return encoded_version.decode('utf-8')
 
 
 def gp_GetLibPlanarityVersionFull() -> str:
+    """Returns the Edge Addition Planarity Suite's graph library version.
+
+    This method returns the ``libtool`` version for the graph library in the
+    Edge Addition Planarity Suite (EAPS). The ``libPlanarity`` component 
+    of Linux EAPS packages has this version. For the project versions
+    of Linux EAPS packages, see ``gp_GetProjectVersionFull()``.
+
+    Returns:
+        The "N:N:N" graph library version.
+    """
     cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
     return encoded_version.decode('utf-8')
 
@@ -199,11 +247,15 @@ cdef int gp_GetVertexDegree(graphP theGraph, int v):
     return cgraphLib.gp_GetVertexDegree(theGraph, v)
 
 
-cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned direction):
+cdef int gp_IsNeighborDirected(
+    graphP theGraph, int u, int v, unsigned direction
+):
     return cgraphLib.gp_IsNeighborDirected(theGraph, u, v, direction)
 
 
-cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned direction):
+cdef int gp_FindDirectedEdge(
+    graphP theGraph, int u, int v, unsigned direction
+):
     return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)
 
 
@@ -223,7 +275,9 @@ cdef int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink):
     return cgraphLib.gp_DynamicAddEdge(theGraph, u, ulink, v, vlink)
 
 
-cdef int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink):
+cdef int gp_InsertEdge(
+    graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink
+):
     return cgraphLib.gp_InsertEdge(theGraph, u, e_u, e_ulink, v, e_v, e_vlink)
 
 
@@ -529,11 +583,15 @@ cdef int g6_NewReader(G6ReadIteratorP *pG6ReadIterator, graphP theGraph):
     return cgraphLib.g6_NewReader(pG6ReadIterator, theGraph)
 
 
-cdef int g6_InitReaderWithString(G6ReadIteratorP theG6ReadIterator, char *inputString):
+cdef int g6_InitReaderWithString(
+    G6ReadIteratorP theG6ReadIterator, char *inputString
+):
     return cgraphLib.g6_InitReaderWithString(theG6ReadIterator, inputString)
 
 
-cdef int g6_InitReaderWithFileName(G6ReadIteratorP theG6ReadIterator, char *infileName):
+cdef int g6_InitReaderWithFileName(
+    G6ReadIteratorP theG6ReadIterator, char *infileName
+):
     return cgraphLib.g6_InitReaderWithFileName(theG6ReadIterator, infileName)
 
 
@@ -554,12 +612,18 @@ cdef int g6_NewWriter(G6WriteIteratorP *pG6WriteIterator, graphP theGraph):
     return cgraphLib.g6_NewWriter(pG6WriteIterator, theGraph)
 
 
-cdef int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString):
+cdef int g6_InitWriterWithString(
+    G6WriteIteratorP theG6WriteIterator, char **pOutputString
+):
     return cgraphLib.g6_InitWriterWithString(theG6WriteIterator, pOutputString)
 
 
-cdef int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName):
-    return cgraphLib.g6_InitWriterWithFileName(theG6WriteIterator, outputFileName)
+cdef int g6_InitWriterWithFileName(
+    G6WriteIteratorP theG6WriteIterator, char *outputFileName
+):
+    return cgraphLib.g6_InitWriterWithFileName(
+        theG6WriteIterator, outputFileName
+    )
 
 
 cdef int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator):
@@ -657,8 +721,12 @@ cdef int gp_Embed(graphP theGraph, unsigned int embedFlags):
     return cgraphLib.gp_Embed(theGraph, embedFlags)
 
 
-cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult):
-    return cgraphLib.gp_TestEmbedResultIntegrity(theGraph, origGraph, embedResult)
+cdef int gp_TestEmbedResultIntegrity(
+    graphP theGraph, graphP origGraph, int embedResult
+):
+    return cgraphLib.gp_TestEmbedResultIntegrity(
+        theGraph, origGraph, embedResult
+    )
 
 
 cdef int gp_GetEmbedFlags(graphP theGraph):
@@ -691,8 +759,12 @@ cdef int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName):
     return cgraphLib.gp_DrawPlanar_RenderToFile(theEmbedding, theFileName)
 
 
-cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString):
-    return cgraphLib.gp_DrawPlanar_RenderToString(theEmbedding, pRenditionString)
+cdef int gp_DrawPlanar_RenderToString(
+    graphP theEmbedding, char **pRenditionString
+):
+    return cgraphLib.gp_DrawPlanar_RenderToString(
+        theEmbedding, pRenditionString
+    )
 
 
 cdef int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v):
