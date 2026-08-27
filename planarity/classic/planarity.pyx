@@ -178,8 +178,7 @@ cdef class PGraph:
             labels: If True, render labels of vertices in final drawing.
 
         Raises:
-            ImportError: if dependencies Matplotlib or NetworkX aren't installed
-                in the current environment.
+            ImportError: if Matplotlib isn't installed in the environment.
             RuntimeError: if the graph is nonplanar.
         """
         try:
@@ -192,28 +191,18 @@ cdef class PGraph:
             ) from matplotlib_import_error
 
         try:
-            import networkx as nx
-        except ImportError as networkx_import_error:
-            raise ImportError(
-                "draw() failed: missing dependency NetworkX."
-            ) from networkx_import_error
-
-        try:
             self.embed_drawplanar()
         except RuntimeError:
             raise RuntimeError(
                 "Graph cannot be drawn, as it is not planar."
             )
 
-        hgraph = nx.Graph()
-        hgraph.add_nodes_from(self.nodes(include_drawplanar_vertex_info=True))
-        hgraph.add_edges_from(self.edges(include_drawplanar_edge_info=True))
-
         patches = []
         node_labels = {}
         xs = []
         ys = []
-        for node, drawplanar_vertex_info in hgraph.nodes(data=True):
+        # Use tuple unpacking for the list of tuples representing nodes
+        for node, drawplanar_vertex_info in self.nodes(include_drawplanar_vertex_info=True):
             y = drawplanar_vertex_info['vertex_position']
             xb = drawplanar_vertex_info['vertex_start']
             xe = drawplanar_vertex_info['vertex_end']
@@ -224,7 +213,8 @@ cdef class PGraph:
             ys.append(y)
             plt.hlines([y], [xb], [xe])
 
-        for (_, _, drawplanar_edge_info) in hgraph.edges(data=True):
+        # Use tuple unpacking for the list of tuples representing edges
+        for (_, _, drawplanar_edge_info) in self.edges(include_drawplanar_edge_info=True):
             x = drawplanar_edge_info['edge_position']
             yb = drawplanar_edge_info['edge_start']
             ye = drawplanar_edge_info['edge_end']
