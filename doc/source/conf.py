@@ -28,6 +28,7 @@ release = '1.0.0'
 extensions = [
     'sphinx.ext.apidoc',
     'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
 ]
 
@@ -40,8 +41,6 @@ apidoc_modules = [
         # Must be set so that any .rst files at the root of the source directory
         # don't get wiped out
         'destination': 'api',
-        # This restricts the planarity documentation to the full API subpackage
-        'exclude_patterns': ['**/classic*',],
         'separate_modules': True,
     },
 ]
@@ -51,6 +50,13 @@ html_show_sourcelink = False  # Remove 'view source code' from top of page (for 
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 nbsphinx_allow_errors = True  # Continue through Jupyter errors
 add_module_names = False # Remove namespaces from class/method signatures
+
+# Links to external official documentation; always verify objects.inv is
+# available with the chosen stem.
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'networkx': ('https://networkx.org/documentation/stable/', None),
+}
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -64,8 +70,13 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
-napoleon_preprocess_types = False
-napoleon_type_aliases = None
+napoleon_preprocess_types = False # If set to True, then type hyperlinks break
+napoleon_type_aliases = {
+    "networkx.Graph": "networkx.Graph",
+    # FIXME: For some reason, these Python standard library type aliases don't work.
+    "Any": "typing.Any",
+    "Iterable": "collections.abc.Iterable",
+}
 napoleon_attr_annotations = True
 
 # -- Options for HTML output -------------------------------------------------

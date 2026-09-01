@@ -1,9 +1,10 @@
 #!python
 # cython: embedsignature=True
-"""
-Wrapper for Boyer's (c) planarity algorithms.
-"""
+
+"""Wrapper for Boyer's (c) planarity algorithms."""
 from libc.stdlib cimport free
+
+from typing import Any
 import warnings
 
 from planarity.classic cimport cplanarity
@@ -27,6 +28,12 @@ cdef class PGraph:
     cdef int embedding
 
     def __init__(self, graph):
+        """Wraps a C-layer ``graphP`` and original node label data.
+
+        Args:
+            graph (networkx.Graph | dict[Any, Iterable[Any]] | list[list[Any, Any] | tuple[Any, Any]]):
+                Input graph to use to populate ``graphP``.
+        """ 
         # guess input type
         if hasattr(graph, 'nodes'):
             # NetworkX graph
@@ -93,9 +100,25 @@ cdef class PGraph:
         self.embedding = EMBED_NOT_YET_CALLED
 
     def __dealloc__(self):
-        cplanarity.gp_Free(&self.theGraph)
+        if self.theGraph != NULL:
+            cplanarity.gp_Free(&self.theGraph)
 
-    def embed_planar(self):
+    def embed_planar(self) -> None:
+        """Performs ``Planarity`` embed operation if not yet performed.
+            
+            If any embed operation has been invoked on the graph, immediately
+            returns.
+    
+            Has the side-effect of updating the ``self.embedding`` attribute to
+            track the result of embedding operations, including setting to ``NOTOK``
+            in case of error.
+    
+            Raises:
+                RuntimeError: if the graph could not be extended with the necessary
+                    structures, if an error was encountered during the embedding
+                    operation, or if we were unable to restore the vertex
+                    indices by invoking C-layer ``gp_SortVertices()``.
+            """
         if self.embedding != EMBED_NOT_YET_CALLED:
             return
 
@@ -124,7 +147,23 @@ cdef class PGraph:
                 "using gp_SortVertices()."
             )
 
-    def embed_drawplanar(self):
+    def embed_drawplanar(self) -> None:
+        """Performs ``DrawPlanar`` embed operation if not yet performed.
+        
+        If any embed operation has been invoked on the graph, immediately
+        returns.
+
+        Has the side-effect of updating the ``self.embedding`` attribute to
+        track the result of embedding operations, including setting to ``NOTOK``
+        in case of error.
+
+        Raises:
+            RuntimeError: if the graph could not be extended with the necessary
+                structures, if the graph was nonplanar, if an error was
+                encountered during the embedding operation, or if we were unable
+                to restore the vertex indices by invoking C-layer
+                ``gp_SortVertices()``.
+        """
         if self.embedding != EMBED_NOT_YET_CALLED:
             return
 
@@ -159,8 +198,20 @@ cdef class PGraph:
                 "using gp_SortVertices()."
             )
 
-    def is_planar(self):
-        """Return True if graph is planar."""
+    def is_planar(self) -> bool:
+        """Return ``True`` if graph is planar.
+        
+        If ``self.embed_planar()`` has already been called, then the value of
+        ``self.embedding`` will be the same as from the previous run.
+
+        Returns:
+            ``True`` if the graphP wrapped by `self` was determined to be
+            planar, ``False`` if the graph is nonembeddable.
+
+        Raises:
+            RuntimeError: if the ``self.embedding`` status is neither ``OK`` nor
+                ``NONEMBEDDABLE``.
+        """
         self.embed_planar()
         if self.embedding == cplanarity.OK:
             return True
@@ -173,7 +224,17 @@ cdef class PGraph:
             f"{embedding_code_string(self.embedding)}."
         )
 
-    def kuratowski_edges(self):
+    def kuratowski_edges(self) -> list[tuple[Any, Any]] | list[tuple[Any, Any,  dict[str, int]]]:
+        """Returns list of Kuratowski edges if graph is nonplanar.
+        
+        Returns:
+            Empty list if graph is planar, or a list containing the Kuratowski
+            edges if the graph is nonplanar.
+
+        Raises:
+            RuntimeError: if ``self.embedding`` status is neither ``OK`` nor
+                ``NONEMBEDDABLE``.
+        """
         if self.is_planar():
             return []
         elif self.embedding == cplanarity.NONEMBEDDABLE:
@@ -184,7 +245,23 @@ cdef class PGraph:
                 f"was {embedding_code_string(self.embedding)}."
             )
 
-    def nodes(self, include_drawplanar_vertex_info=False):
+    def nodes(
+        self, include_drawplanar_vertex_info=False
+    ) -> list[Any] | list[tuple[Any, dict[str, int]]]:
+        """Get graph nodes (with original labels) and optional ``DrawPlanar`` positional data.
+
+        Args:
+            include_drawplanar_vertex_info (bool): indicates whether or not to
+                include the ``DrawPlanar`` vertex positional info. Defaults to
+                ``False``.
+        
+        Returns:
+            Either a list of the graph's nodes with their original labels, or a
+            list of tuples where the first element is the original label and the
+            second element is a dictionary providing the values for
+            ``vertex_position``, ``vertex_start``, and ``vertex_end`` from the
+            ``DrawPlanar`` context.
+        """
         vertex_lower_bound = cplanarity.gp_LowerBoundVertices(self.theGraph)
         vertex_upper_bound = cplanarity.gp_UpperBoundVertices(self.theGraph)
         r = self.reverse_nodemap
@@ -211,10 +288,14 @@ cdef class PGraph:
                     )
                 )
 
+                # NOTE: The DrawPlanar context data gives geometric positioning;
+                # a value of -1 indicates an error state, and therefore the
+                # drawplanar_vertex_info should not be included (i.e., the
+                # final tuple member will be an empty dict)
                 if (
-                    vertex_position > -1 and  # != cplanarity.NIL and
-                    vertex_start > -1 and  # != cplanarity.NIL and
-                    vertex_end > -1  # != cplanarity.NIL
+                    vertex_position > -1 and
+                    vertex_start > -1 and
+                    vertex_end > -1
                 ):
                     drawplanar_vertex_info.update(
                         vertex_position=vertex_position,
@@ -228,7 +309,24 @@ cdef class PGraph:
 
         return nodes
 
-    def edges(self, include_drawplanar_edge_info=False):
+    def edges(
+        self, include_drawplanar_edge_info=False
+    ) -> list[tuple[Any, Any]] | list[tuple[Any, Any,  dict[str, int]]]:
+        """Get graph edges (with original node labels) and optional ``DrawPlanar`` positional data.
+
+        Args:
+            include_drawplanar_edge_info (bool): indicates whether or not to
+                include the ``DrawPlanar`` edge positional info. Defaults to
+                ``False``.
+        
+        Returns:
+            Either a list of tuples representing the graph's edges with their
+            original node labels, or a list of tuples with the first element
+            being the initial vertex, the second element being its neighbor, and
+            the final element being a dictionary providing the values for
+            ``edge_position``, ``edge_start``, and ``edge_end`` from the
+            ``DrawPlanar`` context.
+        """
         edges = []
         r = self.reverse_nodemap
         vertex_lower_bound = cplanarity.gp_LowerBoundVertices(self.theGraph)
@@ -263,10 +361,14 @@ cdef class PGraph:
                             )
                         )
 
+                        # NOTE: The DrawPlanar context data gives geometric positioning;
+                        # a value of -1 indicates an error state, and therefore the
+                        # drawplanar_edge_info should not be included (i.e., the
+                        # final tuple member will be an empty dict)
                         if (
-                            edge_position > -1 and  # != cplanarity.NIL and
-                            edge_start > -1 and  # != cplanarity.NIL and
-                            edge_end > -1  # != cplanarity.NIL
+                            edge_position > -1 and
+                            edge_start > -1 and
+                            edge_end > -1
                         ):
                             drawplanar_edge_info.update(
                                 edge_position=edge_position,
@@ -283,7 +385,15 @@ cdef class PGraph:
 
         return edges
 
-    def ascii(self):
+    def ascii(self) -> None:
+        """Produce ASCII string rendition of planar graph.
+
+        Raises:
+            RuntimeError: if the graph is nonplanar (i.e., ``self.embedding``
+                status is ``NONEMBEDDABLE``), if the status is anything other
+                than ``OK``, or if the call to the C-layer
+                ``gp_DrawPlanar_RenderToString()`` failed.
+        """
         cdef int status
         cdef char* s = NULL
 
@@ -316,9 +426,9 @@ cdef class PGraph:
         """Draw planar graph with Matplotlib.
 
         Args:
-            outfileName: File to which to output Matplotlib rendering of planar
-                drawing.
-            labels: If True, render labels of vertices in final drawing.
+            outfileName (:obj:`str`): File to which to output Matplotlib
+                rendering of planar drawing.
+            labels (bool): If True, render labels of vertices in final drawing.
 
         Raises:
             ImportError: if Matplotlib isn't installed in the environment.
@@ -401,7 +511,12 @@ cdef class PGraph:
         plt.axis('off')
         plt.savefig(outfileName)
 
-    def write(self, path):
+    def write(self, path) -> None:
+        """Write the graph as adjacency list to ``path``.
+
+        Raises:
+            RuntimeError: if the C-layer ``gp_Write()`` failed.
+        """
         cdef int status
 
         bpath=path.encode()
@@ -414,5 +529,6 @@ cdef class PGraph:
                 f"adjacency list to '{path}'."
             )
 
-    def mapping(self):
+    def mapping(self) -> dict[int, Any]:
+        """Returns the map of internal vertex labels to their original labels."""
         return self.reverse_nodemap
