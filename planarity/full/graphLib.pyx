@@ -123,8 +123,8 @@ def gp_GetQuietMode() -> int:
     processing code.
 
     Returns:
-        One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, 
-            ``QUIETMODE_MESSAGES``, or ``QUIETMODE_ALL``
+        One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, ``QUIETMODE_MESSAGES``,
+        or ``QUIETMODE_ALL``.
     """
     return cgraphLib.gp_GetQuietMode()
 
@@ -155,7 +155,7 @@ def gp_GetProjectVersionFull() -> str:
     package contains desired EAPS functionality.
 
     Returns:
-        The "N.N.N.N" project release version.
+        The ``N.N.N.N`` project release version.
     """
     cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()
     return encoded_version.decode('utf-8')
@@ -170,7 +170,7 @@ def gp_GetLibPlanarityVersionFull() -> str:
     of Linux EAPS packages, see ``gp_GetProjectVersionFull()``.
 
     Returns:
-        The "N:N:N" graph library version.
+        The ``N:N:N`` graph library version.
     """
     cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()
     return encoded_version.decode('utf-8')

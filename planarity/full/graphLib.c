@@ -2769,7 +2769,7 @@ return 0;
 
 /* Python wrapper */
 static PyObject *__pyx_pw_9planarity_4full_8graphLib_1gp_GetQuietMode(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_8graphLib_gp_GetQuietMode, "gp_GetQuietMode() -> int\n\nGets the error and message quiet mode setting.\n\nThe default of ``QUIETMODE_ALL`` ensures that no errors or \ninformational messages are emitted by the graph library.\nThis method can be used to store the current setting, so that\nthe setting can be restored after changing it if errors or\nmessages are required in a particular block of graph\nprocessing code.\n\nReturns:\n    One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, \n        ``QUIETMODE_MESSAGES``, or ``QUIETMODE_ALL``");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_8graphLib_gp_GetQuietMode, "gp_GetQuietMode() -> int\n\nGets the error and message quiet mode setting.\n\nThe default of ``QUIETMODE_ALL`` ensures that no errors or \ninformational messages are emitted by the graph library.\nThis method can be used to store the current setting, so that\nthe setting can be restored after changing it if errors or\nmessages are required in a particular block of graph\nprocessing code.\n\nReturns:\n    One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, ``QUIETMODE_MESSAGES``,\n    or ``QUIETMODE_ALL``.");
 static PyMethodDef __pyx_mdef_9planarity_4full_8graphLib_1gp_GetQuietMode = {"gp_GetQuietMode", (PyCFunction)__pyx_pw_9planarity_4full_8graphLib_1gp_GetQuietMode, METH_NOARGS, __pyx_doc_9planarity_4full_8graphLib_gp_GetQuietMode};
 static PyObject *__pyx_pw_9planarity_4full_8graphLib_1gp_GetQuietMode(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
@@ -2794,7 +2794,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_gp_GetQuietMode(CYTHON_UNUS
   __Pyx_RefNannySetupContext("gp_GetQuietMode", 0);
 
   /* "planarity/full/graphLib.pyx":129
- *             ``QUIETMODE_MESSAGES``, or ``QUIETMODE_ALL``
+ *         or ``QUIETMODE_ALL``.
  *     """
  *     return cgraphLib.gp_GetQuietMode()             # <<<<<<<<<<<<<<
  * 
@@ -2967,7 +2967,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_2gp_SetQuietMode(CYTHON_UNU
 
 /* Python wrapper */
 static PyObject *__pyx_pw_9planarity_4full_8graphLib_5gp_GetProjectVersionFull(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_8graphLib_4gp_GetProjectVersionFull, "gp_GetProjectVersionFull() -> str\n\nReturns the Edge Addition Planarity Suite\047s project release version.\n\nThe Planarity package includes the graph library from the\nEdge Addition Planarity Suite (EAPS). This method returns the release\nversion that has been included. It may be used by graph application\ncode to test whether the installed version of the Planarity\npackage contains desired EAPS functionality.\n\nReturns:\n    The \"N.N.N.N\" project release version.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_8graphLib_4gp_GetProjectVersionFull, "gp_GetProjectVersionFull() -> str\n\nReturns the Edge Addition Planarity Suite\047s project release version.\n\nThe Planarity package includes the graph library from the\nEdge Addition Planarity Suite (EAPS). This method returns the release\nversion that has been included. It may be used by graph application\ncode to test whether the installed version of the Planarity\npackage contains desired EAPS functionality.\n\nReturns:\n    The ``N.N.N.N`` project release version.");
 static PyMethodDef __pyx_mdef_9planarity_4full_8graphLib_5gp_GetProjectVersionFull = {"gp_GetProjectVersionFull", (PyCFunction)__pyx_pw_9planarity_4full_8graphLib_5gp_GetProjectVersionFull, METH_NOARGS, __pyx_doc_9planarity_4full_8graphLib_4gp_GetProjectVersionFull};
 static PyObject *__pyx_pw_9planarity_4full_8graphLib_5gp_GetProjectVersionFull(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
@@ -2993,7 +2993,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_4gp_GetProjectVersionFull(C
   __Pyx_RefNannySetupContext("gp_GetProjectVersionFull", 0);
 
   /* "planarity/full/graphLib.pyx":160
- *         The "N.N.N.N" project release version.
+ *         The ``N.N.N.N`` project release version.
  *     """
  *     cdef bytes encoded_version = cgraphLib.gp_GetProjectVersionFull()             # <<<<<<<<<<<<<<
  *     return encoded_version.decode('utf-8')
@@ -3054,7 +3054,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_4gp_GetProjectVersionFull(C
 
 /* Python wrapper */
 static PyObject *__pyx_pw_9planarity_4full_8graphLib_7gp_GetLibPlanarityVersionFull(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionFull, "gp_GetLibPlanarityVersionFull() -> str\n\nReturns the Edge Addition Planarity Suite\047s graph library version.\n\nThis method returns the ``libtool`` version for the graph library in the\nEdge Addition Planarity Suite (EAPS). The ``libPlanarity`` component \nof Linux EAPS packages has this version. For the project versions\nof Linux EAPS packages, see ``gp_GetProjectVersionFull()``.\n\nReturns:\n    The \"N:N:N\" graph library version.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionFull, "gp_GetLibPlanarityVersionFull() -> str\n\nReturns the Edge Addition Planarity Suite\047s graph library version.\n\nThis method returns the ``libtool`` version for the graph library in the\nEdge Addition Planarity Suite (EAPS). The ``libPlanarity`` component \nof Linux EAPS packages has this version. For the project versions\nof Linux EAPS packages, see ``gp_GetProjectVersionFull()``.\n\nReturns:\n    The ``N:N:N`` graph library version.");
 static PyMethodDef __pyx_mdef_9planarity_4full_8graphLib_7gp_GetLibPlanarityVersionFull = {"gp_GetLibPlanarityVersionFull", (PyCFunction)__pyx_pw_9planarity_4full_8graphLib_7gp_GetLibPlanarityVersionFull, METH_NOARGS, __pyx_doc_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionFull};
 static PyObject *__pyx_pw_9planarity_4full_8graphLib_7gp_GetLibPlanarityVersionFull(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
@@ -3080,7 +3080,7 @@ static PyObject *__pyx_pf_9planarity_4full_8graphLib_6gp_GetLibPlanarityVersionF
   __Pyx_RefNannySetupContext("gp_GetLibPlanarityVersionFull", 0);
 
   /* "planarity/full/graphLib.pyx":175
- *         The "N:N:N" graph library version.
+ *         The ``N:N:N`` graph library version.
  *     """
  *     cdef bytes encoded_version = cgraphLib.gp_GetLibPlanarityVersionFull()             # <<<<<<<<<<<<<<
  *     return encoded_version.decode('utf-8')

@@ -4,7 +4,7 @@
 """Wrapper for Boyer's (c) planarity algorithms."""
 from libc.stdlib cimport free
 
-from typing import Any
+import typing
 import warnings
 
 from planarity.classic cimport cplanarity
@@ -31,7 +31,7 @@ cdef class PGraph:
         """Wraps a C-layer ``graphP`` and original node label data.
 
         Args:
-            graph (networkx.Graph | dict[Any, Iterable[Any]] | list[list[Any, Any] | tuple[Any, Any]]):
+            graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
                 Input graph to use to populate ``graphP``.
         """ 
         # guess input type
@@ -224,7 +224,7 @@ cdef class PGraph:
             f"{embedding_code_string(self.embedding)}."
         )
 
-    def kuratowski_edges(self) -> list[tuple[Any, Any]] | list[tuple[Any, Any,  dict[str, int]]]:
+    def kuratowski_edges(self) -> list[tuple[typing.Any, typing.Any]] | list[tuple[typing.Any, typing.Any,  dict[str, int]]]:
         """Returns list of Kuratowski edges if graph is nonplanar.
         
         Returns:
@@ -247,7 +247,7 @@ cdef class PGraph:
 
     def nodes(
         self, include_drawplanar_vertex_info=False
-    ) -> list[Any] | list[tuple[Any, dict[str, int]]]:
+    ) -> list[typing.Any] | list[tuple[typing.Any, dict[str, int]]]:
         """Get graph nodes (with original labels) and optional ``DrawPlanar`` positional data.
 
         Args:
@@ -311,7 +311,7 @@ cdef class PGraph:
 
     def edges(
         self, include_drawplanar_edge_info=False
-    ) -> list[tuple[Any, Any]] | list[tuple[Any, Any,  dict[str, int]]]:
+    ) -> list[tuple[typing.Any, typing.Any]] | list[tuple[typing.Any, typing.Any,  dict[str, int]]]:
         """Get graph edges (with original node labels) and optional ``DrawPlanar`` positional data.
 
         Args:
@@ -529,6 +529,6 @@ cdef class PGraph:
                 f"adjacency list to '{path}'."
             )
 
-    def mapping(self) -> dict[int, Any]:
+    def mapping(self) -> dict[int, typing.Any]:
         """Returns the map of internal vertex labels to their original labels."""
         return self.reverse_nodemap

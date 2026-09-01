@@ -927,7 +927,7 @@ cdef class Graph:
 
         Raises:
             ValueError: if ``v`` doesn't correspond to a non-virtual or virtual
-            vertex.
+                vertex.
         """
         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):
             raise ValueError(

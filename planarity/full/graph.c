@@ -13934,7 +13934,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_102gp_GetIndex, "Graph.gp_GetIndex(self, int v) -> int\n\nGets the index data member value of vertex ``v``.\n\nArgs:\n    v: the vertex in the graph whose index field to get.\n\nReturns:\n    The value of the index field of the vertex record for ``v``.\n\nRaises:\n    ValueError: if ``v`` doesn\047t correspond to a non-virtual or virtual\n    vertex.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_102gp_GetIndex, "Graph.gp_GetIndex(self, int v) -> int\n\nGets the index data member value of vertex ``v``.\n\nArgs:\n    v: the vertex in the graph whose index field to get.\n\nReturns:\n    The value of the index field of the vertex record for ``v``.\n\nRaises:\n    ValueError: if ``v`` doesn\047t correspond to a non-virtual or virtual\n        vertex.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_103gp_GetIndex = {"gp_GetIndex", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_103gp_GetIndex, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_102gp_GetIndex};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_103gp_GetIndex(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -14030,7 +14030,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_102gp_GetIndex(struct _
   __Pyx_RefNannySetupContext("gp_GetIndex", 0);
 
   /* "planarity/full/graph.pyx":932
- *             vertex.
+ *                 vertex.
  *         """
  *         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):             # <<<<<<<<<<<<<<
  *             raise ValueError(
@@ -14119,7 +14119,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_102gp_GetIndex(struct _
     __PYX_ERR(0, 933, __pyx_L1_error)
 
     /* "planarity/full/graph.pyx":932
- *             vertex.
+ *                 vertex.
  *         """
  *         if not (self.gp_IsVertex(v) or self.gp_IsVirtualVertex(v)):             # <<<<<<<<<<<<<<
  *             raise ValueError(

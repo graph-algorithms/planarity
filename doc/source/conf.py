@@ -70,14 +70,12 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
-napoleon_preprocess_types = False # If set to True, then type hyperlinks break
-napoleon_type_aliases = {
-    "networkx.Graph": "networkx.Graph",
-    # FIXME: For some reason, these Python standard library type aliases don't work.
-    "Any": "typing.Any",
-    "Iterable": "collections.abc.Iterable",
-}
+napoleon_preprocess_types = False
+napoleon_type_aliases = None
 napoleon_attr_annotations = True
+
+# Warn about all missing references
+nitpicky=True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
