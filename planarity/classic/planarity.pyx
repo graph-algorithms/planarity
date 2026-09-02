@@ -22,13 +22,31 @@ def embedding_code_string(embedding_code: int) -> str:
 
 
 cdef class PGraph:
+    """Wraps a C-layer ``graphP`` and original node label data.
+
+    Attributes:
+        theGraph (``cplanarity.graphP``): The C-layer ``graphP`` wrapped by the
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        nodemap (dict[typing.Any, int]): the mapping of original labels to the
+            internal vertex indices.
+        reverse_nodemap (dict[int, typing.Any]): The mapping of internal vertex
+            indices to their original labels.
+        embedding (int): Indicates whether or not the embedding operation has
+            been performed on the graph, and if so, the status of the operation.
+            It is initialized to ``EMBED_NOT_YET_CALLED``, but after
+            :py:meth:`~planarity.classic.planarity.PGraph.embed_planar` or
+            :py:meth:`~planarity.classic.planarity.PGraph.embed_drawplanar`, may
+            take on the values ``cplanarity.OK``, ``cplanarity.NONEMBEDDABLE``,
+            or ``cplanarity.NOTOK``.
+
+    """
     cdef cplanarity.graphP theGraph
     cdef dict nodemap
     cdef dict reverse_nodemap
     cdef int embedding
 
     def __init__(self, graph):
-        """Wraps a C-layer ``graphP`` and original node label data.
+        """Initialize :py:class:`~planarity.classic.planarity.PGraph` from an input graph.
 
         Args:
             graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
@@ -105,20 +123,21 @@ cdef class PGraph:
 
     def embed_planar(self) -> None:
         """Performs ``Planarity`` embed operation if not yet performed.
-            
-            If any embed operation has been invoked on the graph, immediately
-            returns.
-    
-            Has the side-effect of updating the ``self.embedding`` attribute to
-            track the result of embedding operations, including setting to ``NOTOK``
-            in case of error.
-    
-            Raises:
-                RuntimeError: if the graph could not be extended with the necessary
-                    structures, if an error was encountered during the embedding
-                    operation, or if we were unable to restore the vertex
-                    indices by invoking C-layer ``gp_SortVertices()``.
-            """
+
+        If any embed operation has been invoked on the graph, immediately
+        returns.
+
+        Has the side-effect of updating the
+        :py:attr:`~planarity.classic.planarity.PGraph.embedding` attribute to
+        track the result of embedding operations, including setting to ``NOTOK``
+        in case of error.
+
+        Raises:
+            RuntimeError: if the graph could not be extended with the necessary
+                structures, if an error was encountered during the embedding
+                operation, or if we were unable to restore the vertex
+                indices by invoking C-layer ``gp_SortVertices()``.
+        """
         if self.embedding != EMBED_NOT_YET_CALLED:
             return
 
@@ -153,7 +172,8 @@ cdef class PGraph:
         If any embed operation has been invoked on the graph, immediately
         returns.
 
-        Has the side-effect of updating the ``self.embedding`` attribute to
+        Has the side-effect of updating the
+        :py:attr:`~planarity.classic.planarity.PGraph.embedding` attribute to
         track the result of embedding operations, including setting to ``NOTOK``
         in case of error.
 
@@ -201,16 +221,19 @@ cdef class PGraph:
     def is_planar(self) -> bool:
         """Return ``True`` if graph is planar.
         
-        If ``self.embed_planar()`` has already been called, then the value of
-        ``self.embedding`` will be the same as from the previous run.
+        If :py:meth:`~planarity.classic.planarity.PGraph.embed_planar` has
+        already been called, then the value of the
+        :py:attr:`~planarity.classic.planarity.PGraph.embedding` attribute will
+        be the same as from the previous run.
 
         Returns:
             ``True`` if the graphP wrapped by `self` was determined to be
             planar, ``False`` if the graph is nonembeddable.
 
         Raises:
-            RuntimeError: if the ``self.embedding`` status is neither ``OK`` nor
-                ``NONEMBEDDABLE``.
+            RuntimeError: if the
+                :py:attr:`~planarity.classic.planarity.PGraph.embedding` status
+                is neither ``OK`` nor ``NONEMBEDDABLE``.
         """
         self.embed_planar()
         if self.embedding == cplanarity.OK:
@@ -232,8 +255,9 @@ cdef class PGraph:
             edges if the graph is nonplanar.
 
         Raises:
-            RuntimeError: if ``self.embedding`` status is neither ``OK`` nor
-                ``NONEMBEDDABLE``.
+            RuntimeError: if
+                :py:attr:`~planarity.classic.planarity.PGraph.embedding` status
+                is neither ``OK`` nor ``NONEMBEDDABLE``.
         """
         if self.is_planar():
             return []
@@ -335,13 +359,12 @@ cdef class PGraph:
         # NOTE: This range() intentionally excludes the vertex_upper_bound
         for v in range(vertex_lower_bound, vertex_upper_bound):
             e = cplanarity.gp_GetFirstEdge(self.theGraph, v)
-            is_edge = cplanarity.gp_IsEdge(self.theGraph, e)
-            while is_edge > 0:  # > cplanarity.NIL:
+            while cplanarity.gp_IsEdge(self.theGraph, e):
                 nbr = cplanarity.gp_GetNeighbor(self.theGraph, e)
-                # As a side-effect, if nbr is not NIL, then e must be in-use;
-                # but the actual intent of this check is to ensure we are not
-                # doubling-up and including information from each half-edge.
-                if nbr > v:
+                # If nbr is not NIL, then e must be in-use; we also test nbr > v
+                # to ensure we are not doubling-up and including information
+                # from each half-edge.
+                if nbr != cplanarity.NIL and nbr > v:
                     if include_drawplanar_edge_info:
                         drawplanar_edge_info = {}
 
@@ -381,7 +404,6 @@ cdef class PGraph:
                         edges.append((r[v], r[nbr]))
 
                 e = cplanarity.gp_GetNextEdge(self.theGraph, e)
-                is_edge = cplanarity.gp_IsEdge(self.theGraph, e)
 
         return edges
 
@@ -389,9 +411,10 @@ cdef class PGraph:
         """Produce ASCII string rendition of planar graph.
 
         Raises:
-            RuntimeError: if the graph is nonplanar (i.e., ``self.embedding``
-                status is ``NONEMBEDDABLE``), if the status is anything other
-                than ``OK``, or if the call to the C-layer
+            RuntimeError: if the graph is nonplanar (i.e.,
+                :py:attr:`~planarity.classic.planarity.PGraph.embedding` status
+                is ``NONEMBEDDABLE``), if the status is anything other than
+                ``OK``, or if the call to the C-layer
                 ``gp_DrawPlanar_RenderToString()`` failed.
         """
         cdef int status
@@ -422,13 +445,16 @@ cdef class PGraph:
 
         return py_bytes.decode('ascii')
 
-    def draw(self, str outfileName, labels=True) -> None:
+    def draw(self, bool labels=True, str outfileName=None) -> None:
         """Draw planar graph with Matplotlib.
 
         Args:
-            outfileName (:obj:`str`): File to which to output Matplotlib
-                rendering of planar drawing.
             labels (bool): If True, render labels of vertices in final drawing.
+                Otherwise, vertices are rendered as unlabelled circles.
+            outfileName (:obj:`str`): File to which to output Matplotlib
+                rendering of planar drawing. If not given, then the caller must
+                call
+                :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
 
         Raises:
             ImportError: if Matplotlib isn't installed in the environment.
@@ -507,9 +533,10 @@ cdef class PGraph:
         plt.axis('equal')
         plt.xlim(min(xs)-1, max(xs)+1)
         plt.ylim(min(ys)-1, max(ys)+1)
-
         plt.axis('off')
-        plt.savefig(outfileName)
+
+        if outfileName:
+            plt.savefig(outfileName)
 
     def write(self, path) -> None:
         """Write the graph as adjacency list to ``path``.

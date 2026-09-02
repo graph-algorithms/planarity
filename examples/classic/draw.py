@@ -23,4 +23,4 @@ planar_rendition = P.ascii()
 print(planar_rendition)
 
 # Output Matplotlib rendering
-P.draw('K5-minus-edge.png')
+P.draw(outfileName='K5-minus-edge.png')

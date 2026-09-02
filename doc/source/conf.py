@@ -56,6 +56,7 @@ add_module_names = False # Remove namespaces from class/method signatures
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'networkx': ('https://networkx.org/documentation/stable/', None),
+    'matplotlib': ('https://matplotlib.org/', None),
 }
 
 # Napoleon settings
