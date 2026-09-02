@@ -36,8 +36,8 @@ def draw(graph, outfileName, labels=True):
         labels: If True, render labels of vertices in final drawing.
 
     Raises:
-        ImportError: if dependencies Matplotlib or NetworkX aren't installed in
-            the current environment.
+        ImportError: if there are dependencies missing from the current
+            environment.
     """
     pgraph = planarity.PGraph(graph)
 
