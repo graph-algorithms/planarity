@@ -115,12 +115,11 @@ K4SEARCH_NAME = cgraphLib.K4SEARCH_NAME
 def gp_GetQuietMode() -> int:
     """Gets the error and message quiet mode setting.
 
-    The default of ``QUIETMODE_ALL`` ensures that no errors or 
-    informational messages are emitted by the graph library.
-    This method can be used to store the current setting, so that
-    the setting can be restored after changing it if errors or
-    messages are required in a particular block of graph
-    processing code.
+    The default of ``QUIETMODE_ALL`` ensures that no errors or informational
+    messages are emitted by the graph library. This method can be used to store
+    the current setting, so that the setting can be restored after changing it
+    if errors or messages are required in a particular block of graph processing
+    code.
 
     Returns:
         One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, ``QUIETMODE_MESSAGES``,
@@ -132,14 +131,13 @@ def gp_GetQuietMode() -> int:
 def gp_SetQuietMode(int newQuietMode) -> None:
     """Sets the error and message quiet mode setting.
 
-    This method can be used to change back to or from the default
-    of ``QUIETMODE_ALL``, which suppresses the emission of errors
-    and warnings by the graph library. The usual alternative is
-    ``QUIETMODE_NONE``, which allows the graph library to emit 
-    both errors and warnings.
+    This method can be used to change back to or from the default of
+    ``QUIETMODE_ALL``, which suppresses the emission of errors and warnings by
+    the graph library. The usual alternative is ``QUIETMODE_NONE``, which allows
+    the graph library to emit both errors and warnings.
 
     Args:
-        newQuietMode: One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``, 
+        newQuietMode: One of ``QUIETMODE_NONE``, ``QUIETMODE_ERRORS``,
             ``QUIETMODE_MESSAGES``, or ``QUIETMODE_ALL``
     """
     cgraphLib.gp_SetQuietMode(newQuietMode)
@@ -148,11 +146,11 @@ def gp_SetQuietMode(int newQuietMode) -> None:
 def gp_GetProjectVersionFull() -> str:
     """Returns the Edge Addition Planarity Suite's project release version.
 
-    The Planarity package includes the graph library from the
-    Edge Addition Planarity Suite (EAPS). This method returns the release
-    version that has been included. It may be used by graph application
-    code to test whether the installed version of the Planarity
-    package contains desired EAPS functionality.
+    The Planarity package includes the graph library from the Edge Addition
+    Planarity Suite (EAPS). This method returns the release version that has
+    been included. It may be used by graph application code to test whether the
+    installed version of the Planarity package contains desired EAPS
+    functionality.
 
     Returns:
         The ``N.N.N.N`` project release version.
@@ -165,9 +163,9 @@ def gp_GetLibPlanarityVersionFull() -> str:
     """Returns the Edge Addition Planarity Suite's graph library version.
 
     This method returns the ``libtool`` version for the graph library in the
-    Edge Addition Planarity Suite (EAPS). The ``libPlanarity`` component 
-    of Linux EAPS packages has this version. For the project versions
-    of Linux EAPS packages, see ``gp_GetProjectVersionFull()``.
+    Edge Addition Planarity Suite (EAPS). The ``libPlanarity`` component of
+    Linux EAPS packages has this version. For the project versions of Linux EAPS
+    packages, see :py:func:`~planarity.full.graphLib.gp_GetProjectVersionFull`.
 
     Returns:
         The ``N:N:N`` graph library version.

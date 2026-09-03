@@ -51,7 +51,7 @@ cdef class PGraph:
         Args:
             graph (PGraph | networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
                 Input graph to use to populate ``graphP``.
-        """ 
+        """
         # Guess input type
         if hasattr(graph, 'nodes'):
             # Either PGraph or NetworkX graph
@@ -168,7 +168,7 @@ cdef class PGraph:
 
     def embed_drawplanar(self) -> None:
         """Performs ``DrawPlanar`` embed operation if not yet performed.
-        
+
         If any embed operation has been invoked on the graph, immediately
         returns.
 
@@ -220,7 +220,7 @@ cdef class PGraph:
 
     def is_planar(self) -> bool:
         """Return ``True`` if graph is planar.
-        
+
         If :py:meth:`~planarity.classic.planarity.PGraph.embed_planar` has
         already been called, then the value of the
         :py:attr:`~planarity.classic.planarity.PGraph.embedding` attribute will
@@ -249,7 +249,7 @@ cdef class PGraph:
 
     def kuratowski_edges(self) -> list[tuple[typing.Any, typing.Any]] | list[tuple[typing.Any, typing.Any,  dict[str, int]]]:
         """Returns list of Kuratowski edges if graph is nonplanar.
-        
+
         Returns:
             Empty list if graph is planar, or a list containing the Kuratowski
             edges if the graph is nonplanar.
@@ -278,7 +278,7 @@ cdef class PGraph:
             include_drawplanar_vertex_info (bool): indicates whether or not to
                 include the ``DrawPlanar`` vertex positional info. Defaults to
                 ``False``.
-        
+
         Returns:
             Either a list of the graph's nodes with their original labels, or a
             list of tuples where the first element is the original label and the
@@ -342,7 +342,7 @@ cdef class PGraph:
             include_drawplanar_edge_info (bool): indicates whether or not to
                 include the ``DrawPlanar`` edge positional info. Defaults to
                 ``False``.
-        
+
         Returns:
             Either a list of tuples representing the graph's edges with their
             original node labels, or a list of tuples with the first element

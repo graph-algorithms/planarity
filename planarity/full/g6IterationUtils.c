@@ -3004,7 +3004,7 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_kp_b_iso88591_q_Qd __pyx_string_tab[98]
 #define __pyx_kp_b_iso88591_q_q_A_7_XQ_a __pyx_string_tab[99]
 #define __pyx_kp_b_iso88591_q_4_1_a_aq_A __pyx_string_tab[100]
-#define __pyx_kp_b_iso88591_q_4_A_a_aq_A_4_c_4_Q_Q_7_1_l __pyx_string_tab[101]
+#define __pyx_kp_b_iso88591_q2_4_A_a_aq_A_4_c_4_Q_Q_7_1_l __pyx_string_tab[101]
 #define __pyx_kp_b_iso88591_1_2T_7_XQ_a __pyx_string_tab[102]
 #define __pyx_kp_b_iso88591_q_a_1_7_XQ_a __pyx_string_tab[103]
 #define __pyx_kp_b_iso88591_1_Zwaq_Q_31_7_XQ_a __pyx_string_tab[104]
@@ -3547,7 +3547,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_2__dea
  *             graphLib.g6_FreeReader(&self._g6ReadIterator)
  * 
  *     def g6_InitReaderWithString(self, str inputString) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6ReadIterator`` with a string.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with a string.
  * 
 */
 
@@ -3559,7 +3559,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4g6_InitReaderWithString, "G6ReadIterator.g6_InitReaderWithString(self, str inputString) -> None\n\nInitializes the ``G6ReadIterator`` with a string.\n\nThe string is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    inputString: the string to use as the input source.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4g6_InitReaderWithString, "G6ReadIterator.g6_InitReaderWithString(self, str inputString) -> None\n\nInitializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with a string.\n\nThe string is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    inputString: the string to use as the input source.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5g6_InitReaderWithString = {"g6_InitReaderWithString", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5g6_InitReaderWithString, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4g6_InitReaderWithString};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_5g6_InitReaderWithString(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -3754,7 +3754,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4
  *             graphLib.g6_FreeReader(&self._g6ReadIterator)
  * 
  *     def g6_InitReaderWithString(self, str inputString) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6ReadIterator`` with a string.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with a string.
  * 
 */
 
@@ -3780,7 +3780,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_4
  *             )
  * 
  *     def g6_InitReaderWithFileName(self, str infileName) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6ReadIterator`` with an input file name.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with an input file name.
  * 
 */
 
@@ -3792,7 +3792,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6g6_InitReaderWithFileName, "G6ReadIterator.g6_InitReaderWithFileName(self, str infileName) -> None\n\nInitializes the ``G6ReadIterator`` with an input file name.\n\nThe file is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    infileName: a string containing the name of the input file.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6g6_InitReaderWithFileName, "G6ReadIterator.g6_InitReaderWithFileName(self, str infileName) -> None\n\nInitializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with an input file name.\n\nThe file is used as the input source of ``G6``-encoded graphs.\n\nArgs:\n    infileName: a string containing the name of the input file.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7g6_InitReaderWithFileName = {"g6_InitReaderWithFileName", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7g6_InitReaderWithFileName, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6g6_InitReaderWithFileName};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_14G6ReadIterator_7g6_InitReaderWithFileName(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -3987,7 +3987,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_6
  *             )
  * 
  *     def g6_InitReaderWithFileName(self, str infileName) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6ReadIterator`` with an input file name.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with an input file name.
  * 
 */
 
@@ -4602,7 +4602,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_14G6ReadIterator_1
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":185
+/* "planarity/full/g6IterationUtils.pyx":190
  *     cdef char *_outputString
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):             # <<<<<<<<<<<<<<
@@ -4648,32 +4648,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_graph_to_write,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL_TPNEW(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 185, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 190, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL_TPNEW(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 185, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 190, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__cinit__", 0) < (0)) __PYX_ERR(0, 185, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "__cinit__", 0) < (0)) __PYX_ERR(0, 190, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, i); __PYX_ERR(0, 185, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, i); __PYX_ERR(0, 190, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL_TPNEW(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 185, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 190, __pyx_L3_error)
     }
     __pyx_v_graph_to_write = ((struct __pyx_obj_9planarity_4full_5graph_Graph *)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 185, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 190, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4684,7 +4684,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph_to_write), __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, 1, "graph_to_write", 0))) __PYX_ERR(0, 185, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph_to_write), __pyx_mstate_global->__pyx_ptype_9planarity_4full_5graph_Graph, 1, "graph_to_write", 0))) __PYX_ERR(0, 190, __pyx_L1_error)
   __pyx_r = __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cinit__(((struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator *)__pyx_v_self), __pyx_v_graph_to_write);
 
   /* function exit code */
@@ -4732,7 +4732,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":187
+  /* "planarity/full/g6IterationUtils.pyx":192
  *     def __cinit__(self, graph.Graph graph_to_write):
  *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:             # <<<<<<<<<<<<<<
@@ -4748,7 +4748,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "planarity/full/g6IterationUtils.pyx":188
+      /* "planarity/full/g6IterationUtils.pyx":193
  *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:
  *             if graph_to_write.gp_GetN() == 0:             # <<<<<<<<<<<<<<
@@ -4762,15 +4762,15 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
         PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
         __pyx_t_4 = __Pyx_PyObject_FastCallMethod((PyObject*)__pyx_mstate_global->__pyx_n_u_gp_GetN, __pyx_callargs+__pyx_t_6, (1-__pyx_t_6) | (1*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L3_error)
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_4);
       }
-      __pyx_t_7 = (__Pyx_PyLong_BoolEqObjC(__pyx_t_4, __pyx_mstate_global->__pyx_int_0, 0, 0)); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 188, __pyx_L3_error)
+      __pyx_t_7 = (__Pyx_PyLong_BoolEqObjC(__pyx_t_4, __pyx_mstate_global->__pyx_int_0, 0, 0)); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 193, __pyx_L3_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (unlikely(__pyx_t_7)) {
 
 
-        /* "planarity/full/g6IterationUtils.pyx":189
+        /* "planarity/full/g6IterationUtils.pyx":194
  *         try:
  *             if graph_to_write.gp_GetN() == 0:
  *                 raise ValueError(             # <<<<<<<<<<<<<<
@@ -4783,14 +4783,14 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
           PyObject *__pyx_callargs[2] = {__pyx_t_5, __pyx_mstate_global->__pyx_kp_u_Graph_to_write_is_not_initialize};
           __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-          if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L3_error)
+          if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
         }
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __PYX_ERR(0, 189, __pyx_L3_error)
+        __PYX_ERR(0, 194, __pyx_L3_error)
 
-        /* "planarity/full/g6IterationUtils.pyx":188
+        /* "planarity/full/g6IterationUtils.pyx":193
  *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:
  *             if graph_to_write.gp_GetN() == 0:             # <<<<<<<<<<<<<<
@@ -4799,7 +4799,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
       }
 
-      /* "planarity/full/g6IterationUtils.pyx":187
+      /* "planarity/full/g6IterationUtils.pyx":192
  *     def __cinit__(self, graph.Graph graph_to_write):
  *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:             # <<<<<<<<<<<<<<
@@ -4815,7 +4815,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "planarity/full/g6IterationUtils.pyx":192
+    /* "planarity/full/g6IterationUtils.pyx":197
  *                     "Graph to write is not initialized."
  *                 )
  *         except RuntimeError as invalid_graph_error:             # <<<<<<<<<<<<<<
@@ -4825,7 +4825,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     __pyx_t_8 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(((PyTypeObject*)PyExc_RuntimeError))));
     if (__pyx_t_8) {
       __Pyx_AddTraceback("planarity.full.g6IterationUtils.G6WriteIterator.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_9) < 0) __PYX_ERR(0, 192, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_9) < 0) __PYX_ERR(0, 197, __pyx_L5_except_error)
       __Pyx_XGOTREF(__pyx_t_4);
       __Pyx_XGOTREF(__pyx_t_5);
       __Pyx_XGOTREF(__pyx_t_9);
@@ -4833,7 +4833,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
       __pyx_v_invalid_graph_error = __pyx_t_5;
       /*try:*/ {
 
-        /* "planarity/full/g6IterationUtils.pyx":193
+        /* "planarity/full/g6IterationUtils.pyx":198
  *                 )
  *         except RuntimeError as invalid_graph_error:
  *             raise ValueError(             # <<<<<<<<<<<<<<
@@ -4846,11 +4846,11 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
           PyObject *__pyx_callargs[2] = {__pyx_t_11, __pyx_mstate_global->__pyx_kp_u_Graph_to_write_is_not_allocated};
           __pyx_t_10 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
           __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-          if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 193, __pyx_L15_error)
+          if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 198, __pyx_L15_error)
           __Pyx_GOTREF(__pyx_t_10);
         }
 
-        /* "planarity/full/g6IterationUtils.pyx":195
+        /* "planarity/full/g6IterationUtils.pyx":200
  *             raise ValueError(
  *                 "Graph to write is not allocated."
  *             ) from invalid_graph_error             # <<<<<<<<<<<<<<
@@ -4859,10 +4859,10 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
         __Pyx_Raise(__pyx_t_10, 0, 0, __pyx_v_invalid_graph_error);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __PYX_ERR(0, 193, __pyx_L15_error)
+        __PYX_ERR(0, 198, __pyx_L15_error)
       }
 
-      /* "planarity/full/g6IterationUtils.pyx":192
+      /* "planarity/full/g6IterationUtils.pyx":197
  *                     "Graph to write is not initialized."
  *                 )
  *         except RuntimeError as invalid_graph_error:             # <<<<<<<<<<<<<<
@@ -4905,7 +4905,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     }
     goto __pyx_L5_except_error;
 
-    /* "planarity/full/g6IterationUtils.pyx":187
+    /* "planarity/full/g6IterationUtils.pyx":192
  *     def __cinit__(self, graph.Graph graph_to_write):
  *         """Allocates and wraps a C-layer G6WriteIterator."""
  *         try:             # <<<<<<<<<<<<<<
@@ -4921,7 +4921,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
     __pyx_L8_try_end:;
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":197
+  /* "planarity/full/g6IterationUtils.pyx":202
  *             ) from invalid_graph_error
  * 
  *         self._g6WriteIterator = NULL             # <<<<<<<<<<<<<<
@@ -4930,35 +4930,35 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
   __pyx_v_self->_g6WriteIterator = NULL;
 
-  /* "planarity/full/g6IterationUtils.pyx":199
+  /* "planarity/full/g6IterationUtils.pyx":204
  *         self._g6WriteIterator = NULL
  *         if (
  *             graphLib.g6_NewWriter(             # <<<<<<<<<<<<<<
  *                 &self._g6WriteIterator, graph_to_write._theGraph
  *             ) != graphLib.OK
 */
-  __pyx_t_12 = __pyx_f_9planarity_4full_8graphLib_g6_NewWriter((&__pyx_v_self->_g6WriteIterator), __pyx_v_graph_to_write->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
-  __pyx_t_9 = __Pyx_PyLong_From_int(__pyx_t_12); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_12 = __pyx_f_9planarity_4full_8graphLib_g6_NewWriter((&__pyx_v_self->_g6WriteIterator), __pyx_v_graph_to_write->_theGraph); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyLong_From_int(__pyx_t_12); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 204, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
 
 
-  /* "planarity/full/g6IterationUtils.pyx":201
+  /* "planarity/full/g6IterationUtils.pyx":206
  *             graphLib.g6_NewWriter(
  *                 &self._g6WriteIterator, graph_to_write._theGraph
  *             ) != graphLib.OK             # <<<<<<<<<<<<<<
  *         ):
  *             raise MemoryError(
 */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_7 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_9, __pyx_t_4, Py_NE); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_9, __pyx_t_4, Py_NE); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":198
+  /* "planarity/full/g6IterationUtils.pyx":203
  * 
  *         self._g6WriteIterator = NULL
  *         if (             # <<<<<<<<<<<<<<
@@ -4968,7 +4968,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   if (unlikely(__pyx_t_7)) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":203
+    /* "planarity/full/g6IterationUtils.pyx":208
  *             ) != graphLib.OK
  *         ):
  *             raise MemoryError(             # <<<<<<<<<<<<<<
@@ -4981,14 +4981,14 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
       PyObject *__pyx_callargs[2] = {__pyx_t_9, __pyx_mstate_global->__pyx_kp_u_Unable_to_initialize_G6WriteIter};
       __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_MemoryError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 208, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 203, __pyx_L1_error)
+    __PYX_ERR(0, 208, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":198
+    /* "planarity/full/g6IterationUtils.pyx":203
  * 
  *         self._g6WriteIterator = NULL
  *         if (             # <<<<<<<<<<<<<<
@@ -4997,7 +4997,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":208
+  /* "planarity/full/g6IterationUtils.pyx":213
  *             )
  * 
  *         self._outputString = NULL             # <<<<<<<<<<<<<<
@@ -5006,7 +5006,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
 */
   __pyx_v_self->_outputString = NULL;
 
-  /* "planarity/full/g6IterationUtils.pyx":185
+  /* "planarity/full/g6IterationUtils.pyx":190
  *     cdef char *_outputString
  * 
  *     def __cinit__(self, graph.Graph graph_to_write):             # <<<<<<<<<<<<<<
@@ -5032,7 +5032,7 @@ static int __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator___cini
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":210
+/* "planarity/full/g6IterationUtils.pyx":215
  *         self._outputString = NULL
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -5064,7 +5064,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":212
+  /* "planarity/full/g6IterationUtils.pyx":217
  *     def __dealloc__(self):
  *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:             # <<<<<<<<<<<<<<
@@ -5076,16 +5076,16 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   if (__pyx_t_1) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":213
+    /* "planarity/full/g6IterationUtils.pyx":218
  *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:
  *             graphLib.g6_FreeWriter(&self._g6WriteIterator)             # <<<<<<<<<<<<<<
  * 
  *         if self._outputString != NULL:
 */
-    __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter((&__pyx_v_self->_g6WriteIterator)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L1_error)
+    __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter((&__pyx_v_self->_g6WriteIterator)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":212
+    /* "planarity/full/g6IterationUtils.pyx":217
  *     def __dealloc__(self):
  *         """Frees the C-layer G6WriteIterator and the output string, if non-NULL."""
  *         if self._g6WriteIterator != NULL:             # <<<<<<<<<<<<<<
@@ -5094,7 +5094,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":215
+  /* "planarity/full/g6IterationUtils.pyx":220
  *             graphLib.g6_FreeWriter(&self._g6WriteIterator)
  * 
  *         if self._outputString != NULL:             # <<<<<<<<<<<<<<
@@ -5106,7 +5106,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   if (unlikely(__pyx_t_1)) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":216
+    /* "planarity/full/g6IterationUtils.pyx":221
  * 
  *         if self._outputString != NULL:
  *             free(self._outputString)             # <<<<<<<<<<<<<<
@@ -5115,7 +5115,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
     free(__pyx_v_self->_outputString);
 
-    /* "planarity/full/g6IterationUtils.pyx":217
+    /* "planarity/full/g6IterationUtils.pyx":222
  *         if self._outputString != NULL:
  *             free(self._outputString)
  *             self._outputString = NULL             # <<<<<<<<<<<<<<
@@ -5124,7 +5124,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
     __pyx_v_self->_outputString = NULL;
 
-    /* "planarity/full/g6IterationUtils.pyx":218
+    /* "planarity/full/g6IterationUtils.pyx":223
  *             free(self._outputString)
  *             self._outputString = NULL
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -5137,14 +5137,14 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_G6WriteIterator_was_initialized};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 223, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 218, __pyx_L1_error)
+    __PYX_ERR(0, 223, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":215
+    /* "planarity/full/g6IterationUtils.pyx":220
  *             graphLib.g6_FreeWriter(&self._g6WriteIterator)
  * 
  *         if self._outputString != NULL:             # <<<<<<<<<<<<<<
@@ -5153,7 +5153,7 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":210
+  /* "planarity/full/g6IterationUtils.pyx":215
  *         self._outputString = NULL
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -5172,11 +5172,11 @@ static void __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_2__de
   __Pyx_RefNannyFinishContext();
 }
 
-/* "planarity/full/g6IterationUtils.pyx":224
+/* "planarity/full/g6IterationUtils.pyx":229
  *             )
  * 
  *     def g6_InitWriterWithString(self) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6WriteIterator`` with an output string.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output string.
  * 
 */
 
@@ -5188,7 +5188,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4g6_InitWriterWithString, "G6WriteIterator.g6_InitWriterWithString(self) -> None\n\nInitializes the ``G6WriteIterator`` with an output string.\n\nThe string is a member of the ``G6WriteIterator`` Cython wrapper class,\nand is used as the output source that receives ``G6``-encoded graphs. In\norder to retrieve this output string after writing has concluded, one\nmust call ``self.g6_FreeWriter()`` to convert the ``self._outputString``\nto a Python string.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4g6_InitWriterWithString, "G6WriteIterator.g6_InitWriterWithString(self) -> None\n\nInitializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output string.\n\nThe string is a member of the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` Cython wrapper class,\nand is used as the output source that receives ``G6``-encoded graphs. In\norder to retrieve this output string after writing has concluded, one\nmust call\n:py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`\nto convert the ``self._outputString`` to a Python string.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString = {"g6_InitWriterWithString", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_4g6_InitWriterWithString};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5238,37 +5238,37 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("g6_InitWriterWithString", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":237
+  /* "planarity/full/g6IterationUtils.pyx":243
  *                 fails.
  *         """
  *         result = graphLib.g6_InitWriterWithString(             # <<<<<<<<<<<<<<
  *             self._g6WriteIterator, &(self._outputString)
  *         )
 */
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithString(__pyx_v_self->_g6WriteIterator, (&__pyx_v_self->_outputString)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithString(__pyx_v_self->_g6WriteIterator, (&__pyx_v_self->_outputString)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L1_error)
   __pyx_v_result = __pyx_t_1;
 
-  /* "planarity/full/g6IterationUtils.pyx":240
+  /* "planarity/full/g6IterationUtils.pyx":246
  *             self._g6WriteIterator, &(self._outputString)
  *         )
  *         if result != graphLib.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError(
  *                 "Unable to initialize writer with string, as "
 */
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_result); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_result); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_5 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_2, __pyx_t_4, Py_NE); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_2, __pyx_t_4, Py_NE); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (unlikely(__pyx_t_5)) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":241
+    /* "planarity/full/g6IterationUtils.pyx":247
  *         )
  *         if result != graphLib.OK:
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -5281,14 +5281,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_mstate_global->__pyx_kp_u_Unable_to_initialize_writer_with};
       __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 247, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 241, __pyx_L1_error)
+    __PYX_ERR(0, 247, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":240
+    /* "planarity/full/g6IterationUtils.pyx":246
  *             self._g6WriteIterator, &(self._outputString)
  *         )
  *         if result != graphLib.OK:             # <<<<<<<<<<<<<<
@@ -5297,11 +5297,11 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":224
+  /* "planarity/full/g6IterationUtils.pyx":229
  *             )
  * 
  *     def g6_InitWriterWithString(self) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6WriteIterator`` with an output string.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output string.
  * 
 */
 
@@ -5321,11 +5321,11 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":246
+/* "planarity/full/g6IterationUtils.pyx":252
  *             )
  * 
  *     def g6_InitWriterWithFileName(self, str outfileName) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6WriteIterator`` with an output file name.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output file name.
  * 
 */
 
@@ -5337,7 +5337,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName, "G6WriteIterator.g6_InitWriterWithFileName(self, str outfileName) -> None\n\nInitializes the ``G6WriteIterator`` with an output file name.\n\nThe file is used as the output source that receives ``G6``-encoded\ngraphs.\n\nArgs:\n    outfileName: a string containing the name of the output file.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName, "G6WriteIterator.g6_InitWriterWithFileName(self, str outfileName) -> None\n\nInitializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output file name.\n\nThe file is used as the output source that receives ``G6``-encoded\ngraphs.\n\nArgs:\n    outfileName: a string containing the name of the output file.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName = {"g6_InitWriterWithFileName", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5369,32 +5369,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_outfileName,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 246, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len < 0)) __PYX_ERR(0, 252, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 246, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 252, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "g6_InitWriterWithFileName", 0) < (0)) __PYX_ERR(0, 246, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "g6_InitWriterWithFileName", 0) < (0)) __PYX_ERR(0, 252, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("g6_InitWriterWithFileName", 1, 1, 1, i); __PYX_ERR(0, 246, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("g6_InitWriterWithFileName", 1, 1, 1, i); __PYX_ERR(0, 252, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 246, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 252, __pyx_L3_error)
     }
     __pyx_v_outfileName = ((PyObject*)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("g6_InitWriterWithFileName", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 246, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("g6_InitWriterWithFileName", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 252, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5405,7 +5405,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outfileName), (&PyUnicode_Type), 1, "outfileName", 1))) __PYX_ERR(0, 246, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outfileName), (&PyUnicode_Type), 1, "outfileName", 1))) __PYX_ERR(0, 252, __pyx_L1_error)
   __pyx_r = __pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_6g6_InitWriterWithFileName(((struct __pyx_obj_9planarity_4full_16g6IterationUtils_G6WriteIterator *)__pyx_v_self), __pyx_v_outfileName);
 
   /* function exit code */
@@ -5443,7 +5443,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("g6_InitWriterWithFileName", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":259
+  /* "planarity/full/g6IterationUtils.pyx":265
  *                 fails.
  *         """
  *         cdef bytes encoded = outfileName.encode('utf-8')             # <<<<<<<<<<<<<<
@@ -5452,54 +5452,54 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   if (unlikely(__pyx_v_outfileName == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "\047NoneType\047 object has no attribute \047%.30s\047", "encode");
-    __PYX_ERR(0, 259, __pyx_L1_error)
+    __PYX_ERR(0, 265, __pyx_L1_error)
   }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_outfileName); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_outfileName); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 265, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_encoded = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":260
+  /* "planarity/full/g6IterationUtils.pyx":266
  *         """
  *         cdef bytes encoded = outfileName.encode('utf-8')
  *         cdef const char *encodedOutputFileName = encoded             # <<<<<<<<<<<<<<
  * 
  *         result = graphLib.g6_InitWriterWithFileName(
 */
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_encoded); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_v_encoded); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L1_error)
   __pyx_v_encodedOutputFileName = __pyx_t_2;
 
-  /* "planarity/full/g6IterationUtils.pyx":262
+  /* "planarity/full/g6IterationUtils.pyx":268
  *         cdef const char *encodedOutputFileName = encoded
  * 
  *         result = graphLib.g6_InitWriterWithFileName(             # <<<<<<<<<<<<<<
  *             self._g6WriteIterator, encodedOutputFileName
  *         )
 */
-  __pyx_t_3 = __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithFileName(__pyx_v_self->_g6WriteIterator, __pyx_v_encodedOutputFileName); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_9planarity_4full_8graphLib_g6_InitWriterWithFileName(__pyx_v_self->_g6WriteIterator, __pyx_v_encodedOutputFileName); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L1_error)
   __pyx_v_result = __pyx_t_3;
 
-  /* "planarity/full/g6IterationUtils.pyx":265
+  /* "planarity/full/g6IterationUtils.pyx":271
  *             self._g6WriteIterator, encodedOutputFileName
  *         )
  *         if result != graphLib.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError(
  *                 "Unable to initialize writer with filename, as "
 */
-  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_v_result); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_v_result); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_6 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_1, __pyx_t_5, Py_NE); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_1, __pyx_t_5, Py_NE); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (unlikely(__pyx_t_6)) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":266
+    /* "planarity/full/g6IterationUtils.pyx":272
  *         )
  *         if result != graphLib.OK:
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -5512,14 +5512,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_1, __pyx_mstate_global->__pyx_kp_u_Unable_to_initialize_writer_with_2};
       __pyx_t_5 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_7, (2-__pyx_t_7) | (__pyx_t_7*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 266, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
     }
     __Pyx_Raise(__pyx_t_5, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __PYX_ERR(0, 266, __pyx_L1_error)
+    __PYX_ERR(0, 272, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":265
+    /* "planarity/full/g6IterationUtils.pyx":271
  *             self._g6WriteIterator, encodedOutputFileName
  *         )
  *         if result != graphLib.OK:             # <<<<<<<<<<<<<<
@@ -5528,11 +5528,11 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":246
+  /* "planarity/full/g6IterationUtils.pyx":252
  *             )
  * 
  *     def g6_InitWriterWithFileName(self, str outfileName) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6WriteIterator`` with an output file name.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output file name.
  * 
 */
 
@@ -5554,7 +5554,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":271
+/* "planarity/full/g6IterationUtils.pyx":277
  *             )
  * 
  *     def g6_WriteGraph(self) -> None:             # <<<<<<<<<<<<<<
@@ -5620,37 +5620,37 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("g6_WriteGraph", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":278
+  /* "planarity/full/g6IterationUtils.pyx":284
  *                 fails.
  *         """
  *         result = graphLib.g6_WriteGraph(self._g6WriteIterator)             # <<<<<<<<<<<<<<
  *         if result != graphLib.OK:
  *             raise RuntimeError(
 */
-  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_g6_WriteGraph(__pyx_v_self->_g6WriteIterator); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9planarity_4full_8graphLib_g6_WriteGraph(__pyx_v_self->_g6WriteIterator); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 284, __pyx_L1_error)
   __pyx_v_result = __pyx_t_1;
 
-  /* "planarity/full/g6IterationUtils.pyx":279
+  /* "planarity/full/g6IterationUtils.pyx":285
  *         """
  *         result = graphLib.g6_WriteGraph(self._g6WriteIterator)
  *         if result != graphLib.OK:             # <<<<<<<<<<<<<<
  *             raise RuntimeError(
  *                 "Unable to write graph, as g6_WriteGraph() in EAPS graphLib "
 */
-  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_result); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyLong_From_int(__pyx_v_result); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_graphLib); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_OK); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_5 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_2, __pyx_t_4, Py_NE); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_CompareBoolNe_int_object(__pyx_t_2, __pyx_t_4, Py_NE); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (unlikely(__pyx_t_5)) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":280
+    /* "planarity/full/g6IterationUtils.pyx":286
  *         result = graphLib.g6_WriteGraph(self._g6WriteIterator)
  *         if result != graphLib.OK:
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -5663,14 +5663,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_mstate_global->__pyx_kp_u_Unable_to_write_graph_as_g6_Writ};
       __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 280, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     }
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 280, __pyx_L1_error)
+    __PYX_ERR(0, 286, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":279
+    /* "planarity/full/g6IterationUtils.pyx":285
  *         """
  *         result = graphLib.g6_WriteGraph(self._g6WriteIterator)
  *         if result != graphLib.OK:             # <<<<<<<<<<<<<<
@@ -5679,7 +5679,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":271
+  /* "planarity/full/g6IterationUtils.pyx":277
  *             )
  * 
  *     def g6_WriteGraph(self) -> None:             # <<<<<<<<<<<<<<
@@ -5703,7 +5703,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   return __pyx_r;
 }
 
-/* "planarity/full/g6IterationUtils.pyx":285
+/* "planarity/full/g6IterationUtils.pyx":291
  *             )
  * 
  *     def g6_FreeWriter(self) -> str | None:             # <<<<<<<<<<<<<<
@@ -5719,7 +5719,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10g6_FreeWriter, "G6WriteIterator.g6_FreeWriter(self) -> str | None\n\nFrees the C-layer ``G6WriteIterator``.\n\n.. Caution::\n    This method *must* be called if the writer was initialized to output\n    to a string, so that the API user can receive the string output.\n    Otherwise, for the sake of consistency, it is still best to directly\n    call this method even if the writer was initialized to output to a\n    file.\n\nThe ``__dealloc__()`` calls the same underlying method from the\n``graphLib`` extension if the ``self._g6WriteIterator`` has not yet been\nfreed and set to ``NULL``.\n\nReturns:\n    A Python string containing the ``G6``-encoded output if the writer\n    was initialized to output to string, or ``None`` if it was\n    initialized to output to file.\n\nRaises:\n    RuntimeError: if the ``G6WriteIterator`` was initialized to output\n        to a string and the string cannot be decoded to a Python string.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10g6_FreeWriter, "G6WriteIterator.g6_FreeWriter(self) -> str | None\n\nFrees the C-layer ``G6WriteIterator``.\n\n.. Caution::\n    This method *must* be called if the writer was initialized to output\n    to a string, so that the API user can receive the string output.\n    Otherwise, for the sake of consistency, it is still best to directly\n    call this method even if the writer was initialized to output to a\n    file.\n\nThe ``__dealloc__()`` calls the same underlying method from the\n``graphLib`` extension if the ``self._g6WriteIterator`` has not yet been\nfreed and set to ``NULL``.\n\nReturns:\n    A Python string containing the ``G6``-encoded output if the writer\n    was initialized to output to string, or ``None`` if it was\n    initialized to output to file.\n\nRaises:\n    RuntimeError: if the\n        :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` was\n        initialized to output to a string and the string cannot be\n        decoded to a Python string.");
 static PyMethodDef __pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter = {"g6_FreeWriter", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_16g6IterationUtils_15G6WriteIterator_10g6_FreeWriter};
 static PyObject *__pyx_pw_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5783,8 +5783,8 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("g6_FreeWriter", 0);
 
-  /* "planarity/full/g6IterationUtils.pyx":308
- *                 to a string and the string cannot be decoded to a Python string.
+  /* "planarity/full/g6IterationUtils.pyx":316
+ *                 decoded to a Python string.
  *         """
  *         if self._g6WriteIterator == NULL:             # <<<<<<<<<<<<<<
  *             raise RuntimeError(
@@ -5795,7 +5795,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   if (unlikely(__pyx_t_1)) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":309
+    /* "planarity/full/g6IterationUtils.pyx":317
  *         """
  *         if self._g6WriteIterator == NULL:
  *             raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -5808,15 +5808,15 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_mstate_global->__pyx_kp_u_G6WriteIterator_s_underlying_g6W};
       __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 309, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     }
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 309, __pyx_L1_error)
+    __PYX_ERR(0, 317, __pyx_L1_error)
 
-    /* "planarity/full/g6IterationUtils.pyx":308
- *                 to a string and the string cannot be decoded to a Python string.
+    /* "planarity/full/g6IterationUtils.pyx":316
+ *                 decoded to a Python string.
  *         """
  *         if self._g6WriteIterator == NULL:             # <<<<<<<<<<<<<<
  *             raise RuntimeError(
@@ -5824,16 +5824,16 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":319
+  /* "planarity/full/g6IterationUtils.pyx":327
  *         # container's theStrBuf and assign the string to the address pointed to
  *         # by pOutputStr (i.e. the G6WriteIterator's self._outputString)
  *         graphLib.g6_FreeWriter(&self._g6WriteIterator)             # <<<<<<<<<<<<<<
  * 
  *         if self._outputString != NULL:
 */
-  __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter((&__pyx_v_self->_g6WriteIterator)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 319, __pyx_L1_error)
+  __pyx_f_9planarity_4full_8graphLib_g6_FreeWriter((&__pyx_v_self->_g6WriteIterator)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 327, __pyx_L1_error)
 
-  /* "planarity/full/g6IterationUtils.pyx":321
+  /* "planarity/full/g6IterationUtils.pyx":329
  *         graphLib.g6_FreeWriter(&self._g6WriteIterator)
  * 
  *         if self._outputString != NULL:             # <<<<<<<<<<<<<<
@@ -5845,19 +5845,19 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
   if (__pyx_t_1) {
 
 
-    /* "planarity/full/g6IterationUtils.pyx":322
+    /* "planarity/full/g6IterationUtils.pyx":330
  * 
  *         if self._outputString != NULL:
  *             output_bytes = self._outputString[:]             # <<<<<<<<<<<<<<
  *             free(self._outputString)
  *             self._outputString = NULL
 */
-    __pyx_t_2 = __Pyx_PyBytes_FromString(__pyx_v_self->_outputString + 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 322, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBytes_FromString(__pyx_v_self->_outputString + 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 330, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_output_bytes = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "planarity/full/g6IterationUtils.pyx":323
+    /* "planarity/full/g6IterationUtils.pyx":331
  *         if self._outputString != NULL:
  *             output_bytes = self._outputString[:]
  *             free(self._outputString)             # <<<<<<<<<<<<<<
@@ -5866,7 +5866,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
     free(__pyx_v_self->_outputString);
 
-    /* "planarity/full/g6IterationUtils.pyx":324
+    /* "planarity/full/g6IterationUtils.pyx":332
  *             output_bytes = self._outputString[:]
  *             free(self._outputString)
  *             self._outputString = NULL             # <<<<<<<<<<<<<<
@@ -5875,7 +5875,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
     __pyx_v_self->_outputString = NULL;
 
-    /* "planarity/full/g6IterationUtils.pyx":325
+    /* "planarity/full/g6IterationUtils.pyx":333
  *             free(self._outputString)
  *             self._outputString = NULL
  *             try:             # <<<<<<<<<<<<<<
@@ -5891,14 +5891,14 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       __Pyx_XGOTREF(__pyx_t_7);
       /*try:*/ {
 
-        /* "planarity/full/g6IterationUtils.pyx":326
+        /* "planarity/full/g6IterationUtils.pyx":334
  *             self._outputString = NULL
  *             try:
  *                 return output_bytes.decode('UTF-8')             # <<<<<<<<<<<<<<
  *             except Exception as string_conversion_error:
  *                 raise RuntimeError(
 */
-        __pyx_t_2 = __Pyx_decode_bytes(__pyx_v_output_bytes, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 326, __pyx_L5_error)
+        __pyx_t_2 = __Pyx_decode_bytes(__pyx_v_output_bytes, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 334, __pyx_L5_error)
         __Pyx_GOTREF(__pyx_t_2);
         {
           PyObject *__pyx_temp;
@@ -5911,7 +5911,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
         __pyx_t_2 = 0;
         goto __pyx_L9_try_return;
 
-        /* "planarity/full/g6IterationUtils.pyx":325
+        /* "planarity/full/g6IterationUtils.pyx":333
  *             free(self._outputString)
  *             self._outputString = NULL
  *             try:             # <<<<<<<<<<<<<<
@@ -5923,7 +5923,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "planarity/full/g6IterationUtils.pyx":327
+      /* "planarity/full/g6IterationUtils.pyx":335
  *             try:
  *                 return output_bytes.decode('UTF-8')
  *             except Exception as string_conversion_error:             # <<<<<<<<<<<<<<
@@ -5933,7 +5933,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       __pyx_t_8 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(((PyTypeObject*)PyExc_Exception))));
       if (__pyx_t_8) {
         __Pyx_AddTraceback("planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_3, &__pyx_t_9) < 0) __PYX_ERR(0, 327, __pyx_L7_except_error)
+        if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_3, &__pyx_t_9) < 0) __PYX_ERR(0, 335, __pyx_L7_except_error)
         __Pyx_XGOTREF(__pyx_t_2);
         __Pyx_XGOTREF(__pyx_t_3);
         __Pyx_XGOTREF(__pyx_t_9);
@@ -5941,7 +5941,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
         __pyx_v_string_conversion_error = __pyx_t_3;
         /*try:*/ {
 
-          /* "planarity/full/g6IterationUtils.pyx":328
+          /* "planarity/full/g6IterationUtils.pyx":336
  *                 return output_bytes.decode('UTF-8')
  *             except Exception as string_conversion_error:
  *                 raise RuntimeError(             # <<<<<<<<<<<<<<
@@ -5954,21 +5954,21 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
             PyObject *__pyx_callargs[2] = {__pyx_t_11, __pyx_mstate_global->__pyx_kp_u_Failed_to_convert_C_string_to_Py};
             __pyx_t_10 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_RuntimeError)), __pyx_callargs+__pyx_t_4, (2-__pyx_t_4) | (__pyx_t_4*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
             __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-            if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 328, __pyx_L16_error)
+            if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 336, __pyx_L16_error)
             __Pyx_GOTREF(__pyx_t_10);
           }
 
-          /* "planarity/full/g6IterationUtils.pyx":330
+          /* "planarity/full/g6IterationUtils.pyx":338
  *                 raise RuntimeError(
  *                     "Failed to convert C string to Python string."
  *                     ) from string_conversion_error             # <<<<<<<<<<<<<<
 */
           __Pyx_Raise(__pyx_t_10, 0, 0, __pyx_v_string_conversion_error);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-          __PYX_ERR(0, 328, __pyx_L16_error)
+          __PYX_ERR(0, 336, __pyx_L16_error)
         }
 
-        /* "planarity/full/g6IterationUtils.pyx":327
+        /* "planarity/full/g6IterationUtils.pyx":335
  *             try:
  *                 return output_bytes.decode('UTF-8')
  *             except Exception as string_conversion_error:             # <<<<<<<<<<<<<<
@@ -6011,7 +6011,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       }
       goto __pyx_L7_except_error;
 
-      /* "planarity/full/g6IterationUtils.pyx":325
+      /* "planarity/full/g6IterationUtils.pyx":333
  *             free(self._outputString)
  *             self._outputString = NULL
  *             try:             # <<<<<<<<<<<<<<
@@ -6032,7 +6032,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
       goto __pyx_L0;
     }
 
-    /* "planarity/full/g6IterationUtils.pyx":321
+    /* "planarity/full/g6IterationUtils.pyx":329
  *         graphLib.g6_FreeWriter(&self._g6WriteIterator)
  * 
  *         if self._outputString != NULL:             # <<<<<<<<<<<<<<
@@ -6041,7 +6041,7 @@ static PyObject *__pyx_pf_9planarity_4full_16g6IterationUtils_15G6WriteIterator_
 */
   }
 
-  /* "planarity/full/g6IterationUtils.pyx":285
+  /* "planarity/full/g6IterationUtils.pyx":291
  *             )
  * 
  *     def g6_FreeWriter(self) -> str | None:             # <<<<<<<<<<<<<<
@@ -6574,7 +6574,7 @@ static PyMethodDef __pyx_methods_9planarity_4full_16g6IterationUtils_G6WriteIter
 #if CYTHON_USE_TYPE_SPECS
 static PyType_Slot __pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterator_slots[] = {
   {Py_tp_dealloc, (void *)__pyx_tp_dealloc_9planarity_4full_16g6IterationUtils_G6WriteIterator},
-  {Py_tp_doc, (void *)PyDoc_STR("Wraps the C-layer write iterator for Graph6 (G6) files.\n\n    .. Caution::\n        If the output source is a string (i.e. ``gp_InitWithString()``)\n        and the API user did not directly call ``g6_FreeWriter()``, then they\n        did not receive the output string, so the output string is freed and a \n        ``RuntimeError`` is raised. If the output source is a file, then it is\n        not an error but good practice to call ``g6_FreeWriter()`` before the\n        writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``\n            that can be iteratively populated with graphs to write to an\n            output source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version of\n            ``gp_NewWriter()`` fails.\n        ValueError: during initialization, if ``graph_to_write`` does not \n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see ``gp_EnsureVertexCapacity()``).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called ``g6_FreeWriter()``.\n    ")},
+  {Py_tp_doc, (void *)PyDoc_STR("Wraps the C-layer write iterator for Graph6 (G6) files.\n\n    .. Caution::\n        If the output source is a string (i.e.\n        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_InitWriterWithString`)\n        and the API user did not directly call\n        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`,\n        then they did not receive the output string, so the output string is\n        freed and a ``RuntimeError`` is raised. If the output source is a file,\n        then it is not an error but good practice to call\n        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`\n        before the writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper :py:class:`~planarity.full.graph.Graph`\n            of a C-layer ``graphP`` that can be iteratively populated with\n            graphs to write to an output source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version\n            of ``gp_NewWriter()`` fails.\n        ValueError: during initialization, if ``graph_to_write`` does not\n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see\n            :py:meth:`~planarity.full.graph.Graph.gp_EnsureVertexCapacity`).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called\n            :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`.\n    ")},
   {Py_tp_methods, (void *)__pyx_methods_9planarity_4full_16g6IterationUtils_G6WriteIterator},
   {Py_tp_new, (void *)__pyx_tp_new_9planarity_4full_16g6IterationUtils_G6WriteIterator},
   #if (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800) && (!CYTHON_COMPILING_IN_LIMITED_API || __PYX_LIMITED_VERSION_HEX >= 0x030E0000)
@@ -6614,7 +6614,7 @@ static PyTypeObject __pyx_type_9planarity_4full_16g6IterationUtils_G6WriteIterat
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_BASETYPE, /*tp_flags*/
-  PyDoc_STR("Wraps the C-layer write iterator for Graph6 (G6) files.\n\n    .. Caution::\n        If the output source is a string (i.e. ``gp_InitWithString()``)\n        and the API user did not directly call ``g6_FreeWriter()``, then they\n        did not receive the output string, so the output string is freed and a \n        ``RuntimeError`` is raised. If the output source is a file, then it is\n        not an error but good practice to call ``g6_FreeWriter()`` before the\n        writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``\n            that can be iteratively populated with graphs to write to an\n            output source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version of\n            ``gp_NewWriter()`` fails.\n        ValueError: during initialization, if ``graph_to_write`` does not \n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see ``gp_EnsureVertexCapacity()``).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called ``g6_FreeWriter()``.\n    "), /*tp_doc*/
+  PyDoc_STR("Wraps the C-layer write iterator for Graph6 (G6) files.\n\n    .. Caution::\n        If the output source is a string (i.e.\n        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_InitWriterWithString`)\n        and the API user did not directly call\n        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`,\n        then they did not receive the output string, so the output string is\n        freed and a ``RuntimeError`` is raised. If the output source is a file,\n        then it is not an error but good practice to call\n        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`\n        before the writer goes out of scope.\n\n    Args:\n        graph_to_write: A Cython wrapper :py:class:`~planarity.full.graph.Graph`\n            of a C-layer ``graphP`` that can be iteratively populated with\n            graphs to write to an output source.\n\n    Raises:\n        MemoryError: during initialization, if the C-layer ``graphLib`` version\n            of ``gp_NewWriter()`` fails.\n        ValueError: during initialization, if ``graph_to_write`` does not\n            contain an allocated graph having a greater-than-zero number of\n            vertices allocated (see\n            :py:meth:`~planarity.full.graph.Graph.gp_EnsureVertexCapacity`).\n        RuntimeError: during teardown, if the output source is a string and the\n            API user has not previously called\n            :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`.\n    "), /*tp_doc*/
   0, /*tp_traverse*/
   0, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -7166,7 +7166,7 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
  *             graphLib.g6_FreeReader(&self._g6ReadIterator)
  * 
  *     def g6_InitReaderWithString(self, str inputString) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6ReadIterator`` with a string.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with a string.
  * 
 */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
@@ -7186,7 +7186,7 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
  *             )
  * 
  *     def g6_InitReaderWithFileName(self, str infileName) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6ReadIterator`` with an input file name.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with an input file name.
  * 
 */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
@@ -7289,84 +7289,84 @@ __Pyx_RefNannySetupContext("PyInit_g6IterationUtils", 0);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_4) < (0)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":224
+  /* "planarity/full/g6IterationUtils.pyx":229
  *             )
  * 
  *     def g6_InitWriterWithString(self) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6WriteIterator`` with an output string.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output string.
  * 
 */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 224, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_InitWriterWit, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[7])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_5g6_InitWriterWithString, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_InitWriterWit, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[7])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_4);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_InitWriterWithString, __pyx_t_2) < (0)) __PYX_ERR(0, 224, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_InitWriterWithString, __pyx_t_2) < (0)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":246
+  /* "planarity/full/g6IterationUtils.pyx":252
  *             )
  * 
  *     def g6_InitWriterWithFileName(self, str outfileName) -> None:             # <<<<<<<<<<<<<<
- *         """Initializes the ``G6WriteIterator`` with an output file name.
+ *         """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output file name.
  * 
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 246, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 246, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_InitWriterWit_2, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[8])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 246, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_7g6_InitWriterWithFileName, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_InitWriterWit_2, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[8])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_InitWriterWithFileName, __pyx_t_4) < (0)) __PYX_ERR(0, 246, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_InitWriterWithFileName, __pyx_t_4) < (0)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":271
+  /* "planarity/full/g6IterationUtils.pyx":277
  *             )
  * 
  *     def g6_WriteGraph(self) -> None:             # <<<<<<<<<<<<<<
  *         """Writes a ``G6``-encoded graph to the output source.
  * 
 */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 271, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9g6_WriteGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_WriteGraph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[9])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_n_u_None) < (0)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_9g6_WriteGraph, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_WriteGraph, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[9])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_2);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_4);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_WriteGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_WriteGraph, __pyx_t_2) < (0)) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "planarity/full/g6IterationUtils.pyx":285
+  /* "planarity/full/g6IterationUtils.pyx":291
  *             )
  * 
  *     def g6_FreeWriter(self) -> str | None:             # <<<<<<<<<<<<<<
  *         """Frees the C-layer ``G6WriteIterator``.
  * 
 */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 291, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_kp_u_str_None) < (0)) __PYX_ERR(0, 285, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_FreeWriter, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[10])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_return, __pyx_mstate_global->__pyx_kp_u_str_None) < (0)) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_9planarity_4full_16g6IterationUtils_15G6WriteIterator_11g6_FreeWriter, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_G6WriteIterator_g6_FreeWriter, NULL, __pyx_mstate_global->__pyx_n_u_planarity_full_g6IterationUtils, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[10])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 291, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_FreeWriter, __pyx_t_4) < (0)) __PYX_ERR(0, 285, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_9planarity_4full_16g6IterationUtils_G6WriteIterator, __pyx_mstate_global->__pyx_n_u_g6_FreeWriter, __pyx_t_4) < (0)) __PYX_ERR(0, 291, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "(tree fragment)":1
@@ -7476,7 +7476,7 @@ static int __Pyx_InitConstants(__pyx_mstatetype *__pyx_mstate) {
       #define CYTHON_COMPRESS_STRINGS 90
     #endif
     #if (CYTHON_COMPRESS_STRINGS) == 1 /* compression: zlib (1282 bytes) */
-static const char cstring[] = "x\332\245V\315o\033E\024\337\210H$\020 i\013\364\003\332q{hS\234\255\014Q\212\370\020\212\240\251\"P\352P\252\"8\214\306\273\317\366\300f\326\231\231\215cT\025\2169\372\350\343\036\367\230c\376\214\034}\314\237\220?\2017\263\376\330\265\275M\253FJ6\363\336o\336\347\357\275\335{Z\002\220\272d\215=\020z\325\375a\213\361\000|\242C\342\205\342\000\244&?\022\245%\027\r#\253vt3\024\003\201\373x\343W`\376\266\006\311t(\357*\022\t\037d\3201\340FNG\232L\021\026H\024uH\r@\240K\000\037-<\227\\\303\010\326F\030\027\\s\026\360\1770\2146\327\315\201\2672\251E\232t\302\210\370\334\047\"\324\304cA\200~\350\026\232\262f\344\275\3252Q\241\0055\331\001X\224\004\017\370\201I\251\t\231L\332M\3565\255\314ml\220\206d\255\246\"m\220@\332hJ\203\230\214m2\275|\340E\371\031\273\306]+lE\001\323@\270\262Qa\350\241\207\347\014\304\370}m}\246H\356N\210r\335d\330\252\264=\210\361!\3405\023\033\004\035\233\265\207\221\032\220 \325G\325\265\365\257\327\t\023>\026\347/\360\264\"*\252y\001S\n\024\t\353Xh\036h.\210\356\264@\271d\273n+* \345E\013q\331\013XCd\004h[\314\273L`xL\363PP\274\216\245\272\213\375\302\036h\354\201\271\275\305\002\005\3563\301j\201=\217\023!y:\225\t\226\324\266\030Q\330\345\035h\033\265i2^\"\2176\253O\323\266\375\302k\244nY[d6\327*k7\2657$\315\233\331\2236\212\224\232\\\324\021\270\303\366`hv\033\201i\234\317\021\2605\320\276\235\217V\244\237\016f`\226\223T\367\246.,\235\006.L\022b\"\211\2648o\223D\326\203\232\212\177l\377\r\3427uI\325CS\246\014vD^\353~:C9\0036\216\213,0\337\247\310k\360\2712\246\300\032lx\\\245\377\371\"\304\211\253\263(\320\204R\t~\344\001\245\304\217\254S\021\2125L\361\000\313\202Z\317T\210\322V\300\004C\327\235\007\365(\010\03646R~\342\334<\323<Pn\253s\2105#/\310N( ?\031\371\223;r\350\331\351\247tJ\217\303\251p&\013\021X\205G\302G\221\327\004\177Zg\366k\312\266i\335l\272_\204K;>\215\0325sbf\047\216\263R\236\004\314\3109\017\311\2758f(g\317\300\205\300ajS\2601\317LG\237\374Li\265s\210\277?\341j\306et\210\345\251S:X\237\310\036J\353\221\360\314\2631L\005\177""\366\030\027\366\031\372Q`%fn\315\023\tC\007\260\375\210\005C\361\220\214S%\033\t\340\320\034\260^#S*\343p\252\216\224jPH`\312\025\365B\031F\370\246\000\246:\302\343\241;\022(/\300\277\024\203\325\222yPc\336\337^$%\265\203\005\302\013}\360\007\217\355\321\016\035\tF\013o y\022i\024\r{\220\243k\216\237\271\236\026\262\263\200\216\205=/\350q\226\257\271\3766Z\3641\350\235\341\016\261O\252Cj\227\317\370\215\221\331\353\\hT\355)\254\335P\033\332\224i\255\203\325\036\355\n\327\354\212\374\311\235\334\034\370\245!A\341&\222\240#)\024\004u\354\341`;\245k\230\246\237v\312\274\244A\312P\036\260 \002\205Q\220{\371\241\254\222\373\345t\031VW\235Y\372Ug\246\270L\274&\223\344\376X\235\233\207Yf\363\200\002\361\330\356+\325\250?\010\361+q:\233\261b2\240U\047\373\221\341\344H\346d{\355\024\022\313)`\226\223\375\334pr\\q\nY\347\024\320\316\3111\336\311Q\376\277\271\376\374{G_twO\347o\366\330\371\207\316\342\365\336\3471\213uR\351/\274\177\364\260{\247\373{o\267\277t\251[\356\261\376\362\312\351\374\255\336\376\371\222\263x\265\3732\336\215\375\244\224J\354\305\233\361~2\237l\276\342\342ugq\351h\375\364#\022\277\023W\306\312\363\005g\345V\217\365\366\343\371x3E\272\003d)\276\034of\220\2272\3103t\264~\364o\317\213W\372K7z\353\275\227\tz\\\356\316u\257t\315?\247\313%\243\371\240\277\374i\367E\3740)aRK\227\273\337\307s\375\345O\272A\\\352_\371\270\177\343\263\323\371\325d\305\204v\375\364Z\345x\305^\274\023\177\031\377\226\254\234\315N\345\233\223\322\371Ug\361f\357\317\344\335d\377x\256\277\340&\354l\341\332\370\376\355\270Tp\367\333\223Jz\367\217\270\235\260d\277\277\260\226\354\332\273_\035W.\270\373\335\311\246\2113\343\027\375\345\356\336\211+3\357\376\017Y\250\017B";
+static const char cstring[] = "x\332\245V\315O\033G\024_T\244BK[H\3226_%\343p\000Rp\344\024\221\252\037\252P\013\021jEL\323(U{\030\215w\237\355i\227Y33\213q\025\245=r\364\321\307=\356\221#\177\006G\037\371\023\370\023\372f\326\037\273\2667$\n\022,\363\336o\336\347\357\275\335\025-\001HU\262\332\001\010\275Z\374a\207q\037<\242\003\342\006\342\010\244&?\022\245%\0275#+\267t=\020=A\361\311\346\257\300\274]\r\222\351@.+\022\n\017\244\3372\340ZFG\352L\021\346K\024\265H\005@\240K\000\017-\274\220\\\303\000\326D\030\027\\s\346\363\1770\214&\327\365\236\2675R\t5i\005!\361\270GD\240\211\313|\037\375\320\0354e\315\310\225\3255\242\002\013\252\263#\260(\t.\360#\223R\035R\2314\353\334\255[Y\261\266Ij\2225\352\2124A\002i\242)\rb4\266\321\364\262\201\347\345g\354\032w\215\240\021\372L\003\341\312F\205\241\007.\236S\020\343\367\215\365\251\"\025\367\002\224\353:\303V%\355A\214\007>\257\230\330\300o\331\254]\214\324\200\004)o\227\3277\276\336 LxX\234\277\300\325\212\250\260\342\372L)P$\250b\241\271\257\271 \272\325\000U$\273U[Q\001\t/\032\210K_\300\032\"#@\333b.3\201\3411\315\003A\361:\226j\031\373\205=\320\330\003s{\207\371\n\212\317\005\253\370\366<L\204d\351\264F\260\244\266\305\210\302.\357A\323\250M\223\361\022\331\336*?K\332\366\013\257\220\252em\236\331L\253\254\335\304^\2374ogO\332(\022jrQE\340\036;\200\276\331]\004&q\276@\300NO\373n>\032\241~\326\233\201IN\022\335\333\272\260t\352\2710I\210\221$\222\342\274K\022i\017j,\376\241\375\267\210\337\324%Q\367M\2312\330\021y\243\373\311\014e\014\3308\256\262\300<\217\"\257\301\343\312\230\002k\260\346r\225\374\347\211\000\047\256\312B_\023J%x\241\013\224\022/\264NE \3261\305#,\013j]S!J\033>\023\014]\267\036VC\337\177X\333L\370\211s\363\\s_\025\033\255c\254\031yI\366\002\001\331\311\310\236\212\003\207\256\235~J\307\3648\234\ng2\027\201U\330\026\036\212\334:x\343:\263_\023\266\215\353&\323\375*\\\322\361q\324\240\231#3;r\234\224\362(`B\316YH\346\3051A9y\006\256\004\366S\033\203\ryf:\372\364gJ\313\255c\374\375\tW3.\243c,O\225\322\336\372D\366PZ\r\205k\236\265~*""\370s\300\270\260\317\300\013}+1sk\236H\030\332\203\035\206\314\357\213\373d\034+\331@\000\307\346\200\365\032\230R)\207cu\244T\203B\002S\256\250\033\310 \3047\0050\325\022.\017\212\003\201r}\374K1X-\231\013\025\346\376\355\206RR;X \334\300\003\257\367\330\035\354\320\201`\260\360z\222\247\241FQ\277\007\031\272f\370\231\351i.;s\350\230\333\363\234\036\247\371\232\351o\255A\237\200\336\353\357\020\373\244:\240v\371\014\337\030\251\275\316\205F\325\201\302\332\365\265\201M\231VZX\355\301\256(\232]\221=\025G7\007~iHP\270\211$\350P\n\005~\025{\330\333N\311\032\246\311\247\2352/i\2202\220G\314\017Aa\024d%;\224e\362`-Y\206\345Ug\222~\325\231(^#n\235I\362`\250\316\314\303$\263Y@\216xh\367\265j\324\037\005\370\2258\236\315P1\032\320\252\223\376\310p2$s\322\275vr\211\345\3440\313I\177n8\031\2568\271\254srh\347d\030\357d(\377\337Tw\372\203\223/\333\373\347\323\213\035v\371\2613{\273\363E\304\"\035\227\2723\037\236<n/\265\177\357\354w\347\256\265\327:\254;\277p>}\257sx9\347\314\336l\277\212\366#/.$\022{q1:\214\247\343\255\327\\\274\355\314\316\235l\234\177B\242\367\242\322Py9\343,\334\353\260\316a4\035m%\310G=d!\272\036m\245\220\327R\310\013t\264q\362o\307\215\026\272sw:\033\235W1z\234oO\265o\264\315?\347\363\005\243\371\250;\377y\373e\3648.`Rs\327\333\337GS\335\371\317\332~T\350\336\370\264{\347\356\371\364j\274py\02738\277U:]\260\027\227\242G\321o\361\302\305\344T\2769+\\\336tf\027;\177\306\357\307\207\247S\335\231b\314.fn\r\357\337\217\n9w\277=+%w\377\210\2321\213\017\2733\353\361\276\275\373\325i\351\212\273\337\235m\231\022\246\374\242\277\314\335\245\2504\361\356\377`\240\017H";
     PyObject *data = __Pyx_DecompressString(cstring, 1282, 1);
     #define __Pyx_DecompressString_LZSS_UNUSED
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -7485,7 +7485,7 @@ static const char cstring[] = "x\332\245V\315o\033E\024\337\210H$\020 i\013\364\
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
     #elif (CYTHON_COMPRESS_STRINGS) > 0 && (CYTHON_COMPRESS_STRINGS) <= 90 /* compression: lzss (1656 bytes) */
-static const char cstring[] = "\377(tree fr\377agment).\377?Failed \377to conve\377rt C str\367ing\020\001Pyth\373on\n\004.G6Re\377adIterat\377or\047s und\257erly)\001g\017\n \177has alr,\000\277y beenp\000e\373ed?\000Write\366;\005 w$\000init\337ializ\204\000wi\373thx\004, but\377 you did\377 not cal?l g6_F\300\000B\002\177r(), so \002\357have!\002rec\267eiv\317\001he\277\010w\277hich t\021\000.\377g6 graph\377s were w\016\217\000ten\214\r\317\r\253\013\310\025\374T\001\311!popula\237te is\267\002\270\000o\001c\r\000\200 \033\005t\001\000\0357\006\232(w.NoU\000tha\250@|\231Ca\000delib\224A\227ely\273Bc\243@\354\000a\377n PEP-48\3774 and re\377jects su\377bclasses\367 of\346 ilti\377n types.\267 If\362\"ne\222cp\260%\000%\t\301 \217`et\310\"\047\373an\230@ationI_<\000\264`\047\255@\201@t\201@\376\322aFalse.U\237nable\342a\344G f\301k, \260`\336Bto\342AWNew\352ae\342@ \231\000\357EAPS\261CLib\003 f\261\204\002?\025\327jS\002\263`M\000\270\255e\"+\301\204\001er \226\204\002i\377nfileNam\275eO\005Init\242\003WoithF\027\004()(9\017putS\376\205\002O\023\026\0033-\010\352b\300\004\301\001n\266\014\314\205\003\211\2009V\t\001s\257\016V\007\225\200(\275\207\001\247\206\003\277E\376\207\001\001G\272\206\001\276\201\"\336\205\003\351\206\002\200e\374\207\002\"\035\377add_note\327dis\265\204\001e\272\204\002gc\373is\004\003dno d\377efault _\377_reduce_\357_ du\336\204\002non\377-trivial\372\033\000c\334\210\001__pla\377narity/f\277ull/g6\301\211\003i\377onUtils.\377pyxstr |\237 None\333\211\013\351\211\013.\332h\006c\230\212\002__\017\016se\177tstate_\013\024\377g6_EndRe\037achedO\014\331\211\004\365\205\003\300\n\017\331\204\023\010\035\310\204\003X\017\304FG6\000\213\213\n\000\014\337\021\273\213\n\221 \341\020\025\013\254\213\n\016Q\rg6_\305\206\001\362\204\017\010\036\323\005\370\\\016\336g\316AOK__P\373yx\001\000Dict_\377NextRef_\371_\270\211\004\273`__fun?c____g\267E\n\000\357main\020\001modCul!\002\264\206\001\"\001\256`_\340C\037_qual\017\005\205\204\005\225n\246\237\204\006exa\001\241`_C\005s\374f""\010\253n__test\376\225\000is_coro\377utineasy\337ncio.\010\006sc\365l\024\000_\252\000trac\377ebackcur\373r_\344\215\002encod\013ed\000\004I\273\211\006\010\006\350\210\006#\004?Output\305\211\005\242\204\n\000\223\204\n\200\217\n\275D\373\211\017\010\016\327\211\003\333V\374N\334\047\006\364\207\006g6_\276\207\007gp\337_GetN\317\217\002Li=b\327\217\002_to_\334\216\002\250\213\007\373in\317\212\006intit\247ems\312 \310\213\005o\356\002_\223by\353 \243\207\006.\250\207\001\000\013.\376\252\207\rpopresu\377ltreturn\177selfset\227\210\004\352\304\222\003_\325\222\003s\241\216\001err\377orvalues\366\203\000 (\306\222\013P *,n\227\221\003P)\000\014\021)\000\002\022\377, char *\000\025\007\333\222\nC\021\023\013e\006*\013N\007\246\004\274\t\023u\000void\273\020)\231\000\021\005\201\r)\000\217\217\003\337\217\003\000\250\207\211\n\027\001\340\213\006\000\300v\000\303t\000\252\343\217\t\000\237j\000\321\207\026\000\340t\000\372\205\212\n\000\363\224\n\200\001\330\004\n\377\210+\220Q\320\004\036\230\377a\360\016\000\t\032\230\035\377\240a\240t\2501\330\010\377\013\2107\220#\220X\230\377Q\330\014\022\220,\230a\377\330\020\021\320\004\037\230q\377\360\014\000\t\030\220~\240\237Q\240d\250!\014\0034\002\036\277\240q\250\004\250A\036\030\032\377\000\t\014\2104\320\017 \357\240\003\2401L\007\360\010\000\377\021\037\230a\230q\240\004\353\240A]\003.#\004!\240\023\253\240A\037\010\022\037\010\340\237\0004\377\210\177\230c\240\021\330\014\277\033\2304\230~\250\250\000\020\337\220\001\220\024\220\005\001\320\020\375!\026\001\r\330\020\027\220|\357\2407\250!\322\000\014\023\220\377=\240\001\330\020\026\220l\377\240!\330\024\025\330\033\034\277\320\004)\250\021\360\230\000\032\357\320\0311\260H\000\020\320\020\377#\2402\240T\250\021\340\376\356\023:\270!\360\030\000\t\377\036\230[\250\007\250q\260\377\001\330\010.\250a\340\010\335\0316\007\"\240!%\024;\270\37516\003Z\240w\250a\250\277q\330\010-\250Q7\0023q\260\220 y\000\"\027<\270A\244\0018m\010\255\000/\n#\2401\237\022";
+static const char cstring[] = "\377(tree fr\377agment).\377?Failed \377to conve\377rt C str\367ing\020\001Pyth\373on\n\004.G6Re\377adIterat\377or\047s und\257erly)\001g\017\n \177has alr,\000\277y beenp\000e\373ed?\000Write\366;\005 w$\000init\337ializ\204\000wi\373thx\004, but\377 you did\377 not cal?l g6_F\300\000B\002\177r(), so \002\357have!\002rec\267eiv\317\001he\277\010w\277hich t\021\000.\377g6 graph\377s were w\016\217\000ten\214\r\317\r\253\013\310\025\374T\001\311!popula\237te is\267\002\270\000o\001c\r\000\200 \033\005t\001\000\0357\006\232(w.NoU\000tha\250@|\231Ca\000delib\224A\227ely\273Bc\243@\354\000a\377n PEP-48\3774 and re\377jects su\377bclasses\367 of\346 ilti\377n types.\267 If\362\"ne\222cp\260%\000%\t\301 \217`et\310\"\047\373an\230@ationI_<\000\264`\047\255@\201@t\201@\376\322aFalse.U\237nable\342a\344G f\301k, \260`\336Bto\342AWNew\352ae\342@ \231\000\357EAPS\261CLib\003 f\261\204\002?\025\327jS\002\263`M\000\270\255e\"+\301\204\001er \226\204\002i\377nfileNam\275eO\005Init\242\003WoithF\027\004()(9\017putS\376\205\002O\023\026\0033-\010\352b\300\004\301\001n\266\014\314\205\003\211\2009V\t\001s\257\016V\007\225\200(\275\207\001\247\206\003\277E\376\207\001\001G\272\206\001\276\201\"\336\205\003\351\206\002\200e\374\207\002\"\035\377add_note\327dis\265\204\001e\272\204\002gc\373is\004\003dno d\377efault _\377_reduce_\357_ du\336\204\002non\377-trivial\372\033\000c\334\210\001__pla\377narity/f\277ull/g6\301\211\003i\377onUtils.\377pyxstr |\237 None\333\211\013\351\211\013.\332h\006c\230\212\002__\017\016se\177tstate_\013\024\377g6_EndRe\037achedO\014\331\211\004\365\205\003\300\n\017\331\204\023\010\035\310\204\003X\017\304FG6\000\213\213\n\000\014\337\021\273\213\n\221 \341\020\025\013\254\213\n\016Q\rg6_\305\206\001\362\204\017\010\036\323\005\370\\\016\336g\316AOK__P\373yx\001\000Dict_\377NextRef_\371_\270\211\004\273`__fun?c____g\267E\n\000\357main\020\001modCul!\002\264\206\001\"\001\256`_\340C\037_qual\017\005\205\204\005\225n\246\237\204\006exa\001\241`_C\005s\374f""\010\253n__test\376\225\000is_coro\377utineasy\337ncio.\010\006sc\365l\024\000_\252\000trac\377ebackcur\373r_\344\215\002encod\013ed\000\004I\273\211\006\010\006\350\210\006#\004?Output\305\211\005\242\204\n\000\223\204\n\200\217\n\275D\373\211\017\010\016\327\211\003\333V\374N\334\047\006\364\207\006g6_\276\207\007gp\337_GetN\317\217\002Li=b\327\217\002_to_\334\216\002\250\213\007\373in\317\212\006intit\247ems\312 \310\213\005o\356\002_\223by\353 \243\207\006.\250\207\001\000\013.\376\252\207\rpopresu\377ltreturn\177selfset\227\210\004\352\304\222\003_\325\222\003s\241\216\001err\377orvalues\366\203\000 (\306\222\013P *,n\227\221\003P)\000\014\021)\000\002\022\377, char *\000\025\007\333\222\nC\021\023\013e\006*\013N\007\246\004\274\t\023u\000void\273\020)\231\000\021\005\201\r)\000\217\217\003\337\217\003\000\250\207\211\n\027\001\340\213\006\000\300v\000\303t\000\252\343\217\t\000\237j\000\321\207\026\000\340t\000\372\205\212\n\000\363\224\n\200\001\330\004\n\377\210+\220Q\320\004\036\230\377a\360\016\000\t\032\230\035\377\240a\240t\2501\330\010\377\013\2107\220#\220X\230\377Q\330\014\022\220,\230a\377\330\020\021\320\004\037\230q\377\360\014\000\t\030\220~\240\237Q\240d\250!\014\0034\002\036\277\240q\250\004\250A\036\030\032\377\000\t\014\2104\320\017 \357\240\003\2401L\007\360\010\000\377\021\037\230a\230q\240\004\353\240A]\0032#\004!\240\023\253\240A\037\010\022\037\010\340\237\0004\377\210\177\230c\240\021\330\014\277\033\2304\230~\250\250\000\020\337\220\001\220\024\220\005\001\320\020\375!\026\001\r\330\020\027\220|\357\2407\250!\322\000\014\023\220\377=\240\001\330\020\026\220l\377\240!\330\024\025\330\033\034\177\320\004)\250\021\360\034\370\000\357\320\0311\260H\000\020\320\020\377#\2402\240T\250\021\340\376\356\023:\270!\360\030\000\t\377\036\230[\250\007\250q\260\377\001\330\010.\250a\340\010\335\0316\007\"\240!%\024;\270\37516\003Z\240w\250a\250\277q\330\010-\250Q7\0023\361\260\220 y\000\"\027<\270A\360q\032k\n\255\000/\n#\2401\237\022";
     PyObject *data = __Pyx_DecompressString_LZSS(cstring, 1656, 3510);
     #define __Pyx_DecompressString_UNUSED
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -7494,7 +7494,7 @@ static const char cstring[] = "\377(tree fr\377agment).\377?Failed \377to conve\
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
     #else /* compression: none (3510 bytes) */
-static const char bytes[] = "(tree fragment).?Failed to convert C string to Python string.G6ReadIterator\047s underlying g6ReadIterator has already been freed.G6WriteIterator was initialized with string, but you did not call g6_FreeWriter(), so you have not received the string to which the .g6 graphs were written.G6WriteIterator\047s underlying g6WriteIterator has already been freed.Graph to populate is not allocated.Graph to write is not allocated.Graph to write is not initialized.Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the \047annotation_typing\047 directive to False.Unable to initialize G6ReadIterator, as call to g6_NewReader() in EAPS graphLib failed.Unable to initialize G6WriteIterator, as g6_NewWriter() in EAPS graphLib failed.Unable to initialize reader with infileName, as g6_InitReaderWithFileName() in EAPS graphLib failed.Unable to initialize reader with inputString, as g6_InitReaderWithString() in EAPS graphLib failed.Unable to initialize writer with filename, as g6_InitWriterWithFileName() in EAPS graphLib failed.Unable to initialize writer with string, as g6_InitWriterWithString() in EAPS graphLib failed.Unable to read graph, as g6_ReadGraph() in EAPS graphLib failed.Unable to write graph, as g6_WriteGraph() in EAPS graphLib failed.add_notedisableenablegcisenabledno default __reduce__ due to non-trivial __cinit__planarity/full/g6IterationUtils.pyxstr | NoneG6ReadIteratorG6ReadIterator.__reduce_cython__G6ReadIterator.__setstate_cython__G6ReadIterator.g6_EndReachedG6ReadIterator.g6_FreeReaderG6ReadIterator.g6_InitReaderWithFileNameG6ReadIterator.g6_InitReaderWithStringG6ReadIterator.g6_ReadGraphG6WriteIteratorG6WriteIterator.__reduce_cython__G6WriteIterator.__setstate_cython__G6WriteIterator.g6_FreeWriterG6WriteIterator.g6_InitWriterWithFileNameG6WriteIterator.g6_InitWriterWithStringG6WriteIterator.g6_WriteGraphNoneOK__Pyx_PyDict_NextRef__annotate____func____getstate____main____module____na""me____pyx_state__qualname____reduce____reduce_cython____reduce_ex____set_name____setstate____setstate_cython____test___is_coroutineasyncio.coroutinescline_in_tracebackcurr_graphencodedencodedInfileNameencodedInputStringencodedOutputFileNameg6_EndReachedg6_FreeReaderg6_FreeWriterg6_InitReaderWithFileNameg6_InitReaderWithStringg6_InitWriterWithFileNameg6_InitWriterWithStringg6_ReadGraphg6_WriteGraphgp_GetNgraphLibgraph_to_writeinfileNameinputStringintitemsoutfileNameoutput_bytesplanarity.fullplanarity.full.g6IterationUtilspopresultreturnselfsetdefaultstring_conversion_errorvaluesint (G6ReadIteratorP *, graphP)\000int (G6ReadIteratorP)\000\000int (G6ReadIteratorP, char *)\000\000int (G6WriteIteratorP *, graphP)\000int (G6WriteIteratorP)\000int (G6WriteIteratorP, char *)\000int (G6WriteIteratorP, char **)\000void (G6ReadIteratorP *)\000void (G6WriteIteratorP *)\000g6_NewReader\000g6_EndReached\000g6_ReadGraph\000g6_InitReaderWithFileName\000g6_InitReaderWithString\000g6_NewWriter\000g6_WriteGraph\000g6_InitWriterWithFileName\000g6_InitWriterWithString\000g6_FreeReader\000g6_FreeWriter\200\001\330\004\n\210+\220Q\320\004\036\230a\360\016\000\t\032\230\035\240a\240t\2501\330\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004\037\230q\360\014\000\t\030\220~\240Q\240d\250!\320\004\037\230q\360\016\000\t\032\230\036\240q\250\004\250A\330\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004\037\230q\360\032\000\t\014\2104\320\017 \240\003\2401\330\014\022\220,\230a\330\020\021\360\010\000\021\037\230a\230q\240\004\240A\320\004\037\230q\360.\000\t\014\2104\320\017!\240\023\240A\330\014\022\220,\230a\330\020\021\360\022\000\021\037\230a\230q\240\004\240A\340\010\013\2104\210\177\230c\240\021\330\014\033\2304\230~\250Q\330\014\020\220\001\220\024\220Q\330\014\020\320\020!\240\021\330\014\r\330\020\027\220|\2407\250!\2501\330\014\023\220=\240\001\330\020\026\220l\240!\330\024\025\330\033\034\320\004)\250\021\360\032\000\t\032\320\0311\260\021""\330\014\020\320\020#\2402\240T\250\021\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004:\270!\360\030\000\t\036\230[\250\007\250q\260\001\330\010.\250a\340\010\031\320\0311\260\021\330\014\020\320\020\"\240!\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004;\2701\360\030\000\t\036\230Z\240w\250a\250q\330\010-\250Q\340\010\031\320\0313\2601\330\014\020\320\020\"\240!\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004<\270A\360\032\000\t\036\230[\250\007\250q\260\001\330\0101\260\021\340\010\031\320\0313\2601\330\014\020\320\020#\2401\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021";
+static const char bytes[] = "(tree fragment).?Failed to convert C string to Python string.G6ReadIterator\047s underlying g6ReadIterator has already been freed.G6WriteIterator was initialized with string, but you did not call g6_FreeWriter(), so you have not received the string to which the .g6 graphs were written.G6WriteIterator\047s underlying g6WriteIterator has already been freed.Graph to populate is not allocated.Graph to write is not allocated.Graph to write is not initialized.Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the \047annotation_typing\047 directive to False.Unable to initialize G6ReadIterator, as call to g6_NewReader() in EAPS graphLib failed.Unable to initialize G6WriteIterator, as g6_NewWriter() in EAPS graphLib failed.Unable to initialize reader with infileName, as g6_InitReaderWithFileName() in EAPS graphLib failed.Unable to initialize reader with inputString, as g6_InitReaderWithString() in EAPS graphLib failed.Unable to initialize writer with filename, as g6_InitWriterWithFileName() in EAPS graphLib failed.Unable to initialize writer with string, as g6_InitWriterWithString() in EAPS graphLib failed.Unable to read graph, as g6_ReadGraph() in EAPS graphLib failed.Unable to write graph, as g6_WriteGraph() in EAPS graphLib failed.add_notedisableenablegcisenabledno default __reduce__ due to non-trivial __cinit__planarity/full/g6IterationUtils.pyxstr | NoneG6ReadIteratorG6ReadIterator.__reduce_cython__G6ReadIterator.__setstate_cython__G6ReadIterator.g6_EndReachedG6ReadIterator.g6_FreeReaderG6ReadIterator.g6_InitReaderWithFileNameG6ReadIterator.g6_InitReaderWithStringG6ReadIterator.g6_ReadGraphG6WriteIteratorG6WriteIterator.__reduce_cython__G6WriteIterator.__setstate_cython__G6WriteIterator.g6_FreeWriterG6WriteIterator.g6_InitWriterWithFileNameG6WriteIterator.g6_InitWriterWithStringG6WriteIterator.g6_WriteGraphNoneOK__Pyx_PyDict_NextRef__annotate____func____getstate____main____module____na""me____pyx_state__qualname____reduce____reduce_cython____reduce_ex____set_name____setstate____setstate_cython____test___is_coroutineasyncio.coroutinescline_in_tracebackcurr_graphencodedencodedInfileNameencodedInputStringencodedOutputFileNameg6_EndReachedg6_FreeReaderg6_FreeWriterg6_InitReaderWithFileNameg6_InitReaderWithStringg6_InitWriterWithFileNameg6_InitWriterWithStringg6_ReadGraphg6_WriteGraphgp_GetNgraphLibgraph_to_writeinfileNameinputStringintitemsoutfileNameoutput_bytesplanarity.fullplanarity.full.g6IterationUtilspopresultreturnselfsetdefaultstring_conversion_errorvaluesint (G6ReadIteratorP *, graphP)\000int (G6ReadIteratorP)\000\000int (G6ReadIteratorP, char *)\000\000int (G6WriteIteratorP *, graphP)\000int (G6WriteIteratorP)\000int (G6WriteIteratorP, char *)\000int (G6WriteIteratorP, char **)\000void (G6ReadIteratorP *)\000void (G6WriteIteratorP *)\000g6_NewReader\000g6_EndReached\000g6_ReadGraph\000g6_InitReaderWithFileName\000g6_InitReaderWithString\000g6_NewWriter\000g6_WriteGraph\000g6_InitWriterWithFileName\000g6_InitWriterWithString\000g6_FreeReader\000g6_FreeWriter\200\001\330\004\n\210+\220Q\320\004\036\230a\360\016\000\t\032\230\035\240a\240t\2501\330\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004\037\230q\360\014\000\t\030\220~\240Q\240d\250!\320\004\037\230q\360\016\000\t\032\230\036\240q\250\004\250A\330\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004\037\230q\360\032\000\t\014\2104\320\017 \240\003\2401\330\014\022\220,\230a\330\020\021\360\010\000\021\037\230a\230q\240\004\240A\320\004\037\230q\3602\000\t\014\2104\320\017!\240\023\240A\330\014\022\220,\230a\330\020\021\360\022\000\021\037\230a\230q\240\004\240A\340\010\013\2104\210\177\230c\240\021\330\014\033\2304\230~\250Q\330\014\020\220\001\220\024\220Q\330\014\020\320\020!\240\021\330\014\r\330\020\027\220|\2407\250!\2501\330\014\023\220=\240\001\330\020\026\220l\240!\330\024\025\330\033\034\320\004)\250\021\360\034\000\t\032\320\0311\260\021""\330\014\020\320\020#\2402\240T\250\021\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004:\270!\360\030\000\t\036\230[\250\007\250q\260\001\330\010.\250a\340\010\031\320\0311\260\021\330\014\020\320\020\"\240!\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004;\2701\360\030\000\t\036\230Z\240w\250a\250q\330\010-\250Q\340\010\031\320\0313\2601\330\014\020\320\020\"\240!\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021\320\004<\270A\360\032\000\t\036\230[\250\007\250q\260\001\330\0101\260\021\340\010\031\320\0313\2601\330\014\020\320\020#\2401\340\010\013\2107\220#\220X\230Q\330\014\022\220,\230a\330\020\021";
     PyObject *data = NULL;
     #define __Pyx_DecompressString_UNUSED
     #define __Pyx_DecompressString_LZSS_UNUSED
@@ -7652,24 +7652,24 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate_global->__pyx_codeobj_tab[6] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_tree_fragment, __pyx_mstate->__pyx_n_u_setstate_cython, __pyx_mstate->__pyx_kp_b_iso88591_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[6])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 224};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 229};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_result};
     __pyx_mstate_global->__pyx_codeobj_tab[7] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_g6_InitWriterWithString, __pyx_mstate->__pyx_kp_b_iso88591_1_2T_7_XQ_a, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[7])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 5, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 246};
+    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 5, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 252};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_outfileName, __pyx_mstate->__pyx_n_u_encoded, __pyx_mstate->__pyx_n_u_encodedOutputFileName, __pyx_mstate->__pyx_n_u_result};
     __pyx_mstate_global->__pyx_codeobj_tab[8] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_g6_InitWriterWithFileName, __pyx_mstate->__pyx_kp_b_iso88591_A_q_1_31_1_7_XQ_a, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[8])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 271};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 277};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_result};
     __pyx_mstate_global->__pyx_codeobj_tab[9] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_g6_WriteGraph, __pyx_mstate->__pyx_kp_b_iso88591_q_q_A_7_XQ_a, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[9])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 285};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 291};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_output_bytes, __pyx_mstate->__pyx_n_u_string_conversion_error};
-    __pyx_mstate_global->__pyx_codeobj_tab[10] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_g6_FreeWriter, __pyx_mstate->__pyx_kp_b_iso88591_q_4_A_a_aq_A_4_c_4_Q_Q_7_1_l, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[10])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[10] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_planarity_full_g6IterationUtils_2, __pyx_mstate->__pyx_n_u_g6_FreeWriter, __pyx_mstate->__pyx_kp_b_iso88591_q2_4_A_a_aq_A_4_c_4_Q_Q_7_1_l, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[10])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 1};

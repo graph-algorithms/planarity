@@ -62,7 +62,7 @@ cdef class G6ReadIterator:
             graphLib.g6_FreeReader(&self._g6ReadIterator)
 
     def g6_InitReaderWithString(self, str inputString) -> None:
-        """Initializes the ``G6ReadIterator`` with a string.
+        """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with a string.
 
         The string is used as the input source of ``G6``-encoded graphs.
 
@@ -86,7 +86,7 @@ cdef class G6ReadIterator:
             )
 
     def g6_InitReaderWithFileName(self, str infileName) -> None:
-        """Initializes the ``G6ReadIterator`` with an input file name.
+        """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6ReadIterator` with an input file name.
 
         The file is used as the input source of ``G6``-encoded graphs.
 
@@ -157,26 +157,31 @@ cdef class G6WriteIterator:
     """Wraps the C-layer write iterator for Graph6 (G6) files.
 
     .. Caution::
-        If the output source is a string (i.e. ``gp_InitWithString()``)
-        and the API user did not directly call ``g6_FreeWriter()``, then they
-        did not receive the output string, so the output string is freed and a 
-        ``RuntimeError`` is raised. If the output source is a file, then it is
-        not an error but good practice to call ``g6_FreeWriter()`` before the
-        writer goes out of scope.
+        If the output source is a string (i.e.
+        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_InitWriterWithString`)
+        and the API user did not directly call
+        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`,
+        then they did not receive the output string, so the output string is
+        freed and a ``RuntimeError`` is raised. If the output source is a file,
+        then it is not an error but good practice to call
+        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`
+        before the writer goes out of scope.
 
     Args:
-        graph_to_write: A Cython wrapper ``graph.Graph`` of a C-layer ``graphP``
-            that can be iteratively populated with graphs to write to an
-            output source.
+        graph_to_write: A Cython wrapper :py:class:`~planarity.full.graph.Graph`
+            of a C-layer ``graphP`` that can be iteratively populated with
+            graphs to write to an output source.
 
     Raises:
-        MemoryError: during initialization, if the C-layer ``graphLib`` version of
-            ``gp_NewWriter()`` fails.
-        ValueError: during initialization, if ``graph_to_write`` does not 
+        MemoryError: during initialization, if the C-layer ``graphLib`` version
+            of ``gp_NewWriter()`` fails.
+        ValueError: during initialization, if ``graph_to_write`` does not
             contain an allocated graph having a greater-than-zero number of
-            vertices allocated (see ``gp_EnsureVertexCapacity()``).
+            vertices allocated (see
+            :py:meth:`~planarity.full.graph.Graph.gp_EnsureVertexCapacity`).
         RuntimeError: during teardown, if the output source is a string and the
-            API user has not previously called ``g6_FreeWriter()``.
+            API user has not previously called
+            :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`.
     """
 
     cdef graphLib.G6WriteIteratorP _g6WriteIterator
@@ -222,13 +227,14 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithString(self) -> None:
-        """Initializes the ``G6WriteIterator`` with an output string.
+        """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output string.
 
-        The string is a member of the ``G6WriteIterator`` Cython wrapper class,
+        The string is a member of the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` Cython wrapper class,
         and is used as the output source that receives ``G6``-encoded graphs. In
         order to retrieve this output string after writing has concluded, one
-        must call ``self.g6_FreeWriter()`` to convert the ``self._outputString``
-        to a Python string.
+        must call
+        :py:meth:`~planarity.full.g6IterationUtils.G6WriteIterator.g6_FreeWriter`
+        to convert the ``self._outputString`` to a Python string.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -244,7 +250,7 @@ cdef class G6WriteIterator:
             )
 
     def g6_InitWriterWithFileName(self, str outfileName) -> None:
-        """Initializes the ``G6WriteIterator`` with an output file name.
+        """Initializes the :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` with an output file name.
 
         The file is used as the output source that receives ``G6``-encoded
         graphs.
@@ -302,8 +308,10 @@ cdef class G6WriteIterator:
             initialized to output to file.
 
         Raises:
-            RuntimeError: if the ``G6WriteIterator`` was initialized to output
-                to a string and the string cannot be decoded to a Python string.
+            RuntimeError: if the
+                :py:class:`~planarity.full.g6IterationUtils.G6WriteIterator` was
+                initialized to output to a string and the string cannot be
+                decoded to a Python string.
         """
         if self._g6WriteIterator == NULL:
             raise RuntimeError(

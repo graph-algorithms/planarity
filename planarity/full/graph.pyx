@@ -112,9 +112,9 @@ cdef class Graph:
 
     def gp_ResetGraphStorage(self) -> None:
         """Resets graph storage (including 'subclass' extension data).
-        
-        This method enables reuse of the graph data structure to store a 
-        new graph.
+
+        This method enables reuse of the graph data structure to store a new
+        graph.
         """
         graphLib.gp_ResetGraphStorage(self._theGraph)
 
@@ -154,8 +154,9 @@ cdef class Graph:
         """Copies ``src_graph`` into the ``self`` destination graph.
 
         Args:
-            srcGraph: the ``Graph`` wrapping the graph data structure
-                to be copied into this ``Graph``'s graph data structure.
+            srcGraph: the :py:class:`~planarity.full.graph.Graph` wrapping the
+                graph data structure to be copied into this
+                :py:class:`~planarity.full.graph.Graph`'s graph data structure.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -166,15 +167,17 @@ cdef class Graph:
             raise RuntimeError("gp_CopyGraph() failed.")
 
     def gp_DupGraph(self) -> Graph:
-        """Creates a ``Graph`` wrapping a copy of the current ``Graph``'s ``graphP``.
+        """Creates a :py:class:`~planarity.full.graph.Graph` wrapping a copy of the current :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
 
         Returns:
-            A new ``Graph`` containing a duplicate of the current ``Graph``'s
-            graph data structure.
+            A new :py:class:`~planarity.full.graph.Graph` containing a duplicate
+            of the current :py:class:`~planarity.full.graph.Graph`'s graph data
+            structure.
 
         Raises:
-            MemoryError: if ``gp_DupGraph()`` failed to duplicate this 
-                ``Graph``'s graph data structure.
+            MemoryError: if :py:class:`~planarity.full.graph.Graph.gp_DupGraph`
+                failed to duplicate this
+                :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
         """
         cdef graphLib.graphP theGraph_dup = graphLib.gp_DupGraph(self._theGraph)
         if theGraph_dup == NULL:
@@ -190,8 +193,9 @@ cdef class Graph:
         """Copies the adjacency lists of ``src_graph`` into this graph.
 
         Args:
-            srcGraph: a ``Graph`` whose adjacency lists you wish to copy 
-                into this ``Graph``.
+            srcGraph: a :py:class:`~planarity.full.graph.Graph` whose adjacency
+                lists you wish to copy into this
+                :py:class:`~planarity.full.graph.Graph`.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -208,8 +212,9 @@ cdef class Graph:
     def gp_CreateRandomGraph(self) -> None:
         """Creates a simple connected graph with a random number of edges.
 
-        The size of the generated graph is constrained by the graph's 
-        present edge capacity. Use ``gp_EnsureEdgeCapacity()`` to increase
+        The size of the generated graph is constrained by the graph's
+        present edge capacity. Use
+        :py:meth:`~planarity.full.graph.Graph.gp_EnsureEdgeCapacity` to increase
         the edge capacity, if necessary, before calling this method.
 
         Raises:
@@ -226,7 +231,8 @@ cdef class Graph:
         If ``numEdges`` does not exceed :math:`3N - 6`, then the generated
         graph will be planar. If ``numEdges`` exceeds the graph's edge
         capacity, then the size of the generated graph is limited to the
-        present edge capacity. Use ``gp_EnsureEdgeCapacity()`` to increase
+        present edge capacity. Use
+        :py:meth:`~planarity.full.graph.Graph.gp_EnsureEdgeCapacity` to increase
         the edge capacity, if necessary, before calling this method.
 
         Args:
@@ -354,9 +360,9 @@ cdef class Graph:
         Raises:
             ValueError: if ``ulink`` or ``vlink`` are anything other than ``0``
                 or ``1``.
-            RuntimeError: if the C-layer ``graphLib`` version of ``gp_AddEdge()`` 
-                returns anything other than ``OK`` or ``AT_EDGE_CAPACITY_LIMIT``, 
-                i.e., if it returns ``NOTOK``.
+            RuntimeError: if the C-layer ``graphLib`` version of
+                ``gp_AddEdge()`` returns anything other than ``OK`` or
+                ``AT_EDGE_CAPACITY_LIMIT``, i.e., if it returns ``NOTOK``.
         """
         if ulink != 0 and ulink != 1:
             raise ValueError(
@@ -865,7 +871,7 @@ cdef class Graph:
 
         Returns:
             ``TRUE`` if ``v`` is not within the allowed bounds for virtual
-            vertices or if the value returned by the C-layer call to 
+            vertices or if the value returned by the C-layer call to
             ``gp_IsNotVirtualVertex()`` is truthy, otherwise ``FALSE``.
         """
         if (
@@ -1721,7 +1727,7 @@ cdef class Graph:
 
     def gp_EdgeInUse(self, int e) -> int:
         """Determines if an edge is in-use in the graph.
-        
+
         This is tested based on whether the ``neighbor`` field is set
         because the ``neighbor`` of an edge being deleted is set to ``NIL``.
 
@@ -1988,16 +1994,18 @@ cdef class Graph:
         """Gets the DFS parent of vertex ``v``, after depth-first search.
 
         .. Note::
-            This method assumes that a depth-first search method 
-            (or ``gp_Embed()``) has been called.
+            This method assumes that a depth-first search method
+            (or :py:meth:`~planarity.full.graph.Graph.gp_Embed`) has been
+            called.
 
         Args:
             v: a vertex in the graph whose DFS parent you wish to obtain.
 
         Returns:
             The DFS parent of ``v`` in the graph, or ``NIL`` if ``v`` is the
-            root of the DFS tree (or if ``gp_DepthFirstSearch()`` has not been
-            called).
+            root of the DFS tree (or if
+            :py:meth:`~planarity.full.graph.Graph.gp_DepthFirstSearch` has not
+            been called).
 
         Raises:
             ValueError: if ``v`` is not a valid vertex.
@@ -2013,8 +2021,10 @@ cdef class Graph:
         """Gets the least ancestor of vertex ``v``, after least ancestors are computed.
 
         .. Note::
-            This method assumes that ``gp_ComputeLeastAncestors()``, 
-            ``gp_ComputeLowpoints()``, or ``gp_Embed()`` has been called.
+            This method assumes that
+            :py:meth:`~planarity.full.graph.Graph.gp_ComputeLeastAncestors`,
+            :py:meth:`~planarity.full.graph.Graph.gp_ComputeLowpoints()`, or
+            :py:meth:`~planarity.full.graph.Graph.gp_Embed()` has been called.
 
         Args:
             v: a vertex in the graph whose least ancestor you wish to obtain.
@@ -2037,8 +2047,9 @@ cdef class Graph:
         """Gets the lowpoint of vertex ``v``, after lowpoint values are computed.
 
         .. Note::
-            This method assumes that ``gp_ComputeLowpoints()`` or ``gp_Embed()`` 
-            has been called.
+            This method assumes that
+            :py:meth:`~planarity.full.graph.Graph.gp_ComputeLowpoints()` or
+            :py:meth:`~planarity.full.graph.Graph.gp_Embed()` has been called.
 
         Args:
             v: a vertex in the graph whose lowpoint value you wish to obtain.
@@ -2061,8 +2072,9 @@ cdef class Graph:
         """Determines if vertex ``v`` is a DFS tree root (DFS parent is ``NIL``).
 
         .. Note::
-            This method assumes that a depth-first search method 
-            (or ``gp_Embed()``) has been called.
+            This method assumes that a depth-first search method
+            (or :py:meth:`~planarity.full.graph.Graph.gp_Embed`) has been
+            called.
 
         Args:
             v: a vertex in the graph you wish to determine is the DFS tree root.
@@ -2095,8 +2107,9 @@ cdef class Graph:
         """Determines if vertex ``v`` is not a DFS root (DFS parent is not ``NIL``).
 
         .. Note::
-            This method assumes that a depth-first search method 
-            (or ``gp_Embed()``) has been called.
+            This method assumes that a depth-first search method
+            (or :py:meth:`~planarity.full.graph.Graph.gp_Embed`) has been
+            called.
 
         Args:
             v: a vertex in the graph you wish to determine is not the DFS tree
@@ -2483,7 +2496,7 @@ cdef class Graph:
         .. Note::
             Assumes graph was extended with ``DrawPlanar`` extension, that the
             embed operation was successful, and that the graph is planar.
-            
+
         Args:
             v: a vertex for which you wish to get the horizontal start position.
 
@@ -2508,7 +2521,7 @@ cdef class Graph:
         .. Note::
             Assumes graph was extended with ``DrawPlanar`` extension, that the
             embed operation was successful, and that the graph is planar.
-            
+
         Args:
             v: a vertex for which you wish to get the horizontal end position.
 
@@ -2533,7 +2546,7 @@ cdef class Graph:
         .. Note::
             Assumes graph was extended with ``DrawPlanar`` extension, that the
             embed operation was successful, and that the graph is planar.
-            
+
         Args:
             e: an edge for which you wish to get the horizontal position.
 
@@ -2558,7 +2571,7 @@ cdef class Graph:
         .. Note::
             Assumes graph was extended with ``DrawPlanar`` extension, that the
             embed operation was successful, and that the graph is planar.
-            
+
         Args:
             e: an edge for which you wish to get the vertical start position.
 
@@ -2583,7 +2596,7 @@ cdef class Graph:
         .. Note::
             Assumes graph was extended with ``DrawPlanar`` extension, that the
             embed operation was successful, and that the graph is planar.
-            
+
         Args:
             e: an edge for which you wish to get the vertical end position.
 
