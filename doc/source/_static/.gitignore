@@ -1,0 +1,5 @@
+# Created so that when one clones the planarity repository, the
+# doc/source/_static directory will exist so that no error will be emitted upon
+# building the documentation. All other files in this directory will be ignored.
+**
+!.gitignore

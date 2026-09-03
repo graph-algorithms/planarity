@@ -28,6 +28,7 @@ release = '1.0.0'
 extensions = [
     'sphinx.ext.apidoc',
     'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
 ]
 
@@ -40,8 +41,6 @@ apidoc_modules = [
         # Must be set so that any .rst files at the root of the source directory
         # don't get wiped out
         'destination': 'api',
-        # This restricts the planarity documentation to the full API subpackage
-        'exclude_patterns': ['**/classic*',],
         'separate_modules': True,
     },
 ]
@@ -51,6 +50,14 @@ html_show_sourcelink = False  # Remove 'view source code' from top of page (for 
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 nbsphinx_allow_errors = True  # Continue through Jupyter errors
 add_module_names = False # Remove namespaces from class/method signatures
+
+# Links to external official documentation; always verify objects.inv is
+# available with the chosen stem.
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'networkx': ('https://networkx.org/documentation/stable/', None),
+    'matplotlib': ('https://matplotlib.org/', None),
+}
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -65,8 +72,13 @@ napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 napoleon_preprocess_types = False
-napoleon_type_aliases = None
+napoleon_type_aliases = {
+    "PGraph": ":py:class:`~planarity.classic.planarity.PGraph`",
+}
 napoleon_attr_annotations = True
+
+# Warn about all missing references
+nitpicky=True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

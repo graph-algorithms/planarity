@@ -28,11 +28,13 @@ extensions = [
         name="planarity.classic.planarity",
         sources=classic_sourcefiles,
         include_dirs=['planarity/c/graphLib'],
+        # extra_compile_args=["-DDEBUG"], # Uncomment if you want to see debugNOTOK() statements
     ),
     Extension(
         name="planarity.full.graphLib",
         sources=graphLib_sourcefiles,
         include_dirs=["planarity/c/graphLib"],
+        # extra_compile_args=["-DDEBUG"], # Uncomment if you want to see debugNOTOK() statements
     ),
     Extension(
         name="planarity.full.g6IterationUtils",
