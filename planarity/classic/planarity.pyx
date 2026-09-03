@@ -49,16 +49,16 @@ cdef class PGraph:
         """Initialize :py:class:`~planarity.classic.planarity.PGraph` from an input graph.
 
         Args:
-            graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
+            graph (PGraph | networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
                 Input graph to use to populate ``graphP``.
         """ 
-        # guess input type
+        # Guess input type
         if hasattr(graph, 'nodes'):
-            # NetworkX graph
+            # Either PGraph or NetworkX graph
             nodes = list(graph.nodes())
             edges = list(graph.edges())
         elif hasattr(graph, 'keys'):
-            # adjacency dict of dicts|sets|lists
+            # Adjacency dict of dicts|sets|lists
             nodes = graph.keys()
             edges = []
             seen = set()
@@ -68,7 +68,7 @@ cdef class PGraph:
                 edges.extend(zip([node] * num_nbrs, nbrs))
                 seen.add(node)
         else:
-            # edge list (list of lists|tuples)
+            # Edge list (list of lists|tuples)
             try:
                 nodes = {node for sublist in graph for node in sublist}
             except: # no-cython-lint ; need to fix E722 do not use bare 'except'
@@ -448,6 +448,15 @@ cdef class PGraph:
     def draw(self, bool labels=True, str outfileName=None) -> None:
         """Draw planar graph with Matplotlib.
 
+        Note that if this method has been invoked on this or any other
+        :py:class:`~planarity.classic.planarity.PGraph`, or if the
+        :external+matplotlib:py:mod:`matplotlib.pyplot` image stack has been
+        updated at any other point during execution, the
+        :external+matplotlib:py:mod:`matplotlib.pyplot` figure stack will be
+        nonempty. Therefore, we use
+        :external+matplotlib:py:func:`matplotlib.pyplot.clf` to clear the figure
+        stack so that we are guaranteed a fresh plot.
+
         Args:
             labels (bool): If True, render labels of vertices in final drawing.
                 Otherwise, vertices are rendered as unlabelled circles.
@@ -470,6 +479,8 @@ cdef class PGraph:
                 "planarity: draw() method failed, as dependency Matplotlib is "
                 "not installed."
             ) from matplotlib_import_error
+
+        plt.clf()
 
         self.embed_drawplanar()
 
