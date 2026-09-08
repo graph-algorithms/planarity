@@ -49,9 +49,12 @@ cdef class PGraph:
         """Initialize :py:class:`~planarity.classic.planarity.PGraph` from an input graph.
 
         Args:
-            graph (PGraph | networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
+            graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
                 Input graph to use to populate ``graphP``.
         """
+        if isinstance(graph, PGraph):
+            raise ValueError("A PGraph cannot be used to initialize a PGraph.")
+
         # Guess input type
         if hasattr(graph, 'nodes'):
             # Either PGraph or NetworkX graph
