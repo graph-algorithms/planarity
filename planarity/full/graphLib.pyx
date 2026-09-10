@@ -3,8 +3,8 @@
 """
 Cython wrapper for the Edge Addition Planarity Suite Graph Library.
 
-Wraps functions and macros that operate over graphP structs and to exposes the
-G6 read and write iterator machinery.
+Wraps functions and macros that operate over C-level graph data structures and
+to expose the G6 read and write iterator machinery.
 
 NOTE: No bounds/error checking is done here, and is rather the responsibility
 of the caller to make sure these functions are being called legitimately.

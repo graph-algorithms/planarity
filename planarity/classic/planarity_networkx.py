@@ -9,7 +9,26 @@ __all__ = [
 
 
 def kuratowski_subgraph(graph):
-    """Returns a minimal non-planar subgraph of the given graph."""
+    """Returns a :external+networkx:py:class:`networkx.Graph` containing a minimal non-planar subgraph of a non-planar graph.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its
+    :py:meth:`~planarity.classic.planarity.PGraph.kuratowski_edges` method, then
+    converts the edge-list to a :external+networkx:py:class:`networkx.Graph`.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Returns:
+        A :external+networkx:py:class:`networkx.Graph` containing a minimal
+        non-planar subgraph of a non-planar graph.
+
+    Raises:
+        ImportError: If ``NetworkX`` is not available in the current
+            environment.
+    """
     try:
         import networkx as nx
     except ImportError:
@@ -21,7 +40,20 @@ def kuratowski_subgraph(graph):
 
 
 def networkx_graph(pgraph):
-    """Returns a :external+networkx:py:class:`networkx.Graph` built from a :py:class:`~planarity.classic.planarity.PGraph`."""
+    """Returns a :external+networkx:py:class:`networkx.Graph` built from a :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Args:
+        pgraph: A :py:class:`~planarity.classic.planarity.PGraph` to convert to
+            a A :external+networkx:py:class:`networkx.Graph`.
+
+    Returns:
+        A :external+networkx:py:class:`networkx.Graph` built from a
+        :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Raises:
+        ImportError: If ``NetworkX`` is not available in the current
+            environment.
+    """
     try:
         import networkx as nx
     except ImportError:
@@ -33,5 +65,16 @@ def networkx_graph(pgraph):
 
 
 def pgraph_graph(graph):
-    """Returns a :py:class:`~planarity.classic.planarity.PGraph` built from a :external+networkx:py:class:`networkx.Graph`."""
+    """Returns :py:class:`~planarity.classic.planarity.PGraph` built from a :external+networkx:py:class:`networkx.Graph`.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`; the intention of
+            this function is to primarily accept a
+            :external+networkx:py:class:`networkx.Graph`.
+
+    Returns:
+        A :py:class:`~planarity.classic.planarity.PGraph` representing the same
+        graph as the input ``graph``.
+    """
     return planarity.PGraph(graph)

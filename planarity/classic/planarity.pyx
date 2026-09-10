@@ -11,10 +11,11 @@ from planarity.classic cimport cplanarity
 
 
 cdef class PGraph:
-    """Wraps a C-layer ``graphP`` and original node label data.
+    """Wraps a C-layer graph data structure instance and retains node label data from the caller.
 
     Attributes:
-        theGraph (``cplanarity.graphP``): The C-layer ``graphP`` wrapped by the
+        theGraph (``cplanarity.graphP``): The C-layer graph data structure
+            wrapped by the
             :py:class:`~planarity.classic.planarity.PGraph`.
         nodemap (dict[typing.Any, int]): the mapping of original labels to the
             internal vertex indices.
@@ -43,7 +44,7 @@ cdef class PGraph:
 
         Args:
             graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
-                Input graph to use to populate ``graphP``.
+                Input graph to use to populate the C-layer graph data structure.
         """
         if isinstance(graph, PGraph):
             raise ValueError(
@@ -198,7 +199,7 @@ cdef class PGraph:
         Raises:
             RuntimeError: If the embedding operation for ``DRAWPLANAR`` has
                 previously been performed on the graph and the graph was
-                determined to be nonplanar.
+                determined to be non-planar.
             RuntimeError: if the embedding operation for ``DRAWPLANAR`` has been
                 performed on the graph and the workflow status is ``NOTOK``.
             RuntimeError: if any embedding operation other than ``DRAWPLANAR``
@@ -220,7 +221,7 @@ cdef class PGraph:
 
             if self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
                 raise RuntimeError(
-                    "planarity: Graph is nonplanar."
+                    "planarity: Graph is non-planar."
                 )
 
         if embedFlags != 0:
@@ -243,7 +244,7 @@ cdef class PGraph:
         self._embedding_workflow_status = status
 
         if status == cplanarity.NONEMBEDDABLE:
-            raise RuntimeError("planarity: Graph is nonplanar.")
+            raise RuntimeError("planarity: Graph is non-planar.")
 
         if status != cplanarity.OK:
             raise RuntimeError(
@@ -268,7 +269,7 @@ cdef class PGraph:
         attribute will be the same as from the previous run.
 
         Returns:
-            ``True`` if the graphP wrapped by `self` was determined to be
+            ``True`` if the graph wrapped by `self` was determined to be
             planar, ``False`` if the graph is nonembeddable.
 
         Raises:
@@ -292,7 +293,7 @@ cdef class PGraph:
 
         Returns:
             Empty list if the graph is planar, or a list of the edges in a
-            minimal non-planar subgraph of a nonplanar graph.
+            minimal non-planar subgraph of a non-planar graph.
 
         Raises:
             RuntimeError: if
@@ -447,11 +448,15 @@ cdef class PGraph:
 
         return edges
 
-    def ascii(self) -> None:
+    def ascii(self) -> str:
         """Produces an ASCII string rendition of a planar graph.
 
+        Returns:
+            The rendition string produced by the C-layer
+            ``gp_DrawPlanar_RenderToString()``
+
         Raises:
-            RuntimeError: if the graph is nonplanar (i.e.,
+            RuntimeError: if the graph is non-planar (i.e.,
                 :py:attr:`~planarity.classic.planarity.PGraph._embedding_workflow_status`
                 is ``NONEMBEDDABLE``).
             RuntimeError: if the
@@ -490,7 +495,7 @@ cdef class PGraph:
         return py_bytes.decode('ascii')
 
     def draw(self, bool labels=True, str outfileName=None) -> None:
-        """Draws planar graph using Matplotlib.
+        """Draws planar graph using Matplotlib if it is planar.
 
         Note that if this method has been invoked on this or any other
         :py:class:`~planarity.classic.planarity.PGraph`, or if the
@@ -530,7 +535,7 @@ cdef class PGraph:
 
         if self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
             raise RuntimeError(
-                "planarity: Unable to draw() nonplanar graph."
+                "planarity: Unable to draw() non-planar graph."
             )
 
         if self._embedding_workflow_status != cplanarity.OK:
@@ -593,11 +598,13 @@ cdef class PGraph:
         if outfileName:
             plt.savefig(outfileName)
 
-    def write(self, path) -> None:
+    def write(self, str path='stdout') -> None:
         """Writes the graph to ``path``.
 
         Args:
-            path (str):
+            path (str): Path to which to write graph. Defaults to ``stdout``
+                stream.
+
         Raises:
             RuntimeError: if the C-layer ``gp_Write()`` failed.
         """
@@ -614,5 +621,11 @@ cdef class PGraph:
             )
 
     def mapping(self) -> dict[int, typing.Any]:
-        """Returns the map of internal vertex labels to their original labels."""
+        """Returns the map of internal vertex labels to their original labels.
+
+        Returns:
+            A mapping of the integers assigned to each vertex when initializing
+            the :py:class:`~planarity.classic.planarity.PGraph` to their
+            original label.
+        """
         return self.reverse_nodemap

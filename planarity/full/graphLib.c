@@ -2527,7 +2527,7 @@ int __pyx_module_is_main_planarity__full__graphLib = 0;
 /* Implementation of "planarity.full.graphLib" */
 /* #### Code section: global_var ### */
 /* #### Code section: string_decls ### */
-static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper for the Edge Addition Planarity Suite Graph Library.\n\nWraps functions and macros that operate over graphP structs and to exposes the\nG6 read and write iterator machinery.\n\nNOTE: No bounds/error checking is done here, and is rather the responsibility\nof the caller to make sure these functions are being called legitimately.\n";
+static const char __pyx_k_Cython_wrapper_for_the_Edge_Add[] = "\nCython wrapper for the Edge Addition Planarity Suite Graph Library.\n\nWraps functions and macros that operate over C-level graph data structures and\nto expose the G6 read and write iterator machinery.\n\nNOTE: No bounds/error checking is done here, and is rather the responsibility\nof the caller to make sure these functions are being called legitimately.\n";
 /* #### Code section: decls ### */
 static PyObject *__pyx_pf_9planarity_4full_8graphLib_gp_GetQuietMode(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_9planarity_4full_8graphLib_2gp_SetQuietMode(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_newQuietMode); /* proto */

@@ -1,4 +1,6 @@
 """Functional interface to planarity."""
+import typing
+
 import planarity
 
 __all__ = [
@@ -24,7 +26,7 @@ def is_planar(graph):
             :py:class:`~planarity.classic.planarity.PGraph`.
 
     Returns:
-        ``True`` if the graph is planar, ``False`` if the graph is nonplanar.
+        ``True`` if the graph is planar, ``False`` if the graph is non-planar.
     """
     return planarity.PGraph(graph).is_planar()
 
@@ -43,18 +45,37 @@ def kuratowski_edges(graph):
 
     Returns:
         Empty list if the graph is planar, or a list of the edges in a
-        minimal non-planar subgraph of a nonplanar graph.
+        minimal non-planar subgraph of a non-planar graph.
     """
     return planarity.PGraph(graph).kuratowski_edges()
 
 
-def ascii(graph):
-    """Draw text representation of a planar graph."""
+def ascii(graph) -> str:
+    """Produces an ASCII string rendition of a planar graph.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its
+    :py:meth:`~planarity.classic.planarity.PGraph.ascii` method.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Returns:
+        An ASCII string rendition of a planar graph.
+    """
     return planarity.PGraph(graph).ascii()
 
 
 def draw(graph, labels=True, outfileName=None):
     """Draw graph with Matplotlib if it is planar.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its
+    :py:meth:`~planarity.classic.planarity.PGraph.draw` method with the
+    given ``labels`` and ``outfileName``.
 
     Args:
         graph: A graph specified in a format that may be converted to a
@@ -79,11 +100,38 @@ def draw(graph, labels=True, outfileName=None):
         ) from import_error
 
 
-def write(graph, path='stdout'):
-    """Write an adjacency list representation of graph to path."""
+def write(graph, path: str = 'stdout') -> None:
+    """Writes the graph to ``path``.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its
+    :py:meth:`~planarity.classic.planarity.PGraph.write` method with the
+    specified ``path``.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        path (str):Path to which to write graph. Defaults to ``stdout``
+            stream.
+    """
     planarity.PGraph(graph).write(path)
 
 
-def mapping(graph):
-    """Return dictionary of internal mapping of nodes to integers."""
+def mapping(graph) -> dict[int, typing.Any]:
+    """Returns the map of internal vertex labels to their original labels.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its
+    :py:meth:`~planarity.classic.planarity.PGraph.mapping` method.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Returns:
+        A mapping of the integers assigned to each vertex when initializing the
+        :py:class:`~planarity.classic.planarity.PGraph` to their original label.
+    """
     return planarity.PGraph(graph).mapping()

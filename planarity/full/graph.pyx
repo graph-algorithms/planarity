@@ -3,8 +3,8 @@
 """
 Cython wrapper for the Edge Addition Planarity Suite Graph Library.
 
-Wraps a ``graphP`` struct using a Cython class and wraps functions and macros
-that operate over ``graphP`` structs.
+Wraps a C-layer graph data structure instance using a Cython class and wraps
+functions and macros that operate over graph data structures.
 """
 from libc.stdlib cimport free
 
@@ -53,14 +53,14 @@ cdef class Graph:
         MemoryError: if the C-layer ``graphLib`` version of ``gp_New()`` fails.
     """
     def __cinit__(self):
-        """Allocates the underlying graph structure with gp_New()."""
+        """Allocates the underlying C-layer graph data structure with gp_New()."""
         global global_id_count
         self._theGraph = graphLib.gp_New()
         if self._theGraph == NULL:
             raise MemoryError("gp_New() failed.")
 
     def __dealloc__(self):
-        """Frees the underlying graph structure with gp_Free()."""
+        """Frees the underlying C-layer graph data structure with gp_Free()."""
         if self._theGraph != NULL:
             graphLib.gp_Free(&self._theGraph)
 
@@ -177,7 +177,8 @@ cdef class Graph:
         Raises:
             MemoryError: if :py:class:`~planarity.full.graph.Graph.gp_DupGraph`
                 failed to duplicate this
-                :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
+                :py:class:`~planarity.full.graph.Graph`'s underlying C-layer
+                graph data structure.
         """
         cdef graphLib.graphP theGraph_dup = graphLib.gp_DupGraph(self._theGraph)
         if theGraph_dup == NULL:
