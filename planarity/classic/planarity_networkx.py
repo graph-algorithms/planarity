@@ -9,18 +9,19 @@ __all__ = [
 
 
 def kuratowski_subgraph(graph):
-    """Return forbidden subgraph of nonplanar graph."""
+    """Returns a minimal non-planar subgraph of the given graph."""
     try:
         import networkx as nx
     except ImportError:
         raise ImportError("NetworkX required for kuratowski_subgraph()")
+
     pgraph = planarity.PGraph(graph)
     edges = pgraph.kuratowski_edges()
     return nx.Graph(edges)
 
 
 def networkx_graph(pgraph):
-    """Return :external+networkx:py:class:`networkx.Graph` built from planarity :py:class:`~planarity.classic.planarity.PGraph`."""
+    """Returns a :external+networkx:py:class:`networkx.Graph` built from a :py:class:`~planarity.classic.planarity.PGraph`."""
     try:
         import networkx as nx
     except ImportError:
@@ -32,5 +33,5 @@ def networkx_graph(pgraph):
 
 
 def pgraph_graph(graph):
-    """Return pgraph graph built from :external+networkx:py:class:`networkx.Graph`."""
+    """Returns a :py:class:`~planarity.classic.planarity.PGraph` built from a :external+networkx:py:class:`networkx.Graph`."""
     return planarity.PGraph(graph)

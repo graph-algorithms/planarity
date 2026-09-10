@@ -167,7 +167,7 @@ cdef class Graph:
             raise RuntimeError("gp_CopyGraph() failed.")
 
     def gp_DupGraph(self) -> Graph:
-        """Creates a :py:class:`~planarity.full.graph.Graph` wrapping a copy of the current :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
+        """Creates a new :py:class:`~planarity.full.graph.Graph` instance that is a copy of the current :py:class:`~planarity.full.graph.Graph` instance.
 
         Returns:
             A new :py:class:`~planarity.full.graph.Graph` containing a duplicate

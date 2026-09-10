@@ -12,12 +12,39 @@ __all__ = [
 
 
 def is_planar(graph):
-    """Test planarity of graph."""
+    """Returns ``True`` if graph is planar.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its :py:meth:`~planarity.classic.planarity.PGraph.is_planar`
+    method.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Returns:
+        ``True`` if the graph is planar, ``False`` if the graph is nonplanar.
+    """
     return planarity.PGraph(graph).is_planar()
 
 
 def kuratowski_edges(graph):
-    """Return edges of forbidden subgraph of non-planar graph."""
+    """Returns a list of the edges in a minimal non-planar subgraph of a non-planar graph.
+
+    Constructs a
+    :py:class:`~planarity.classic.planarity.PGraph`
+    and calls its
+    :py:meth:`~planarity.classic.planarity.PGraph.kuratowski_edges` method.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+
+    Returns:
+        Empty list if the graph is planar, or a list of the edges in a
+        minimal non-planar subgraph of a nonplanar graph.
+    """
     return planarity.PGraph(graph).kuratowski_edges()
 
 
@@ -30,7 +57,7 @@ def draw(graph, labels=True, outfileName=None):
     """Draw graph with Matplotlib if it is planar.
 
     Args:
-        graph: A graph specified in a format that may be converted to a 
+        graph: A graph specified in a format that may be converted to a
             :py:class:`~planarity.classic.planarity.PGraph`.
         labels: If True, render labels of vertices in final drawing.
         outfileName (:obj:`str`): File to which to output Matplotlib

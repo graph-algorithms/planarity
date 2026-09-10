@@ -169,8 +169,8 @@ cdef class G6WriteIterator:
 
     Args:
         graph_to_write: A Cython wrapper :py:class:`~planarity.full.graph.Graph`
-            of a C-layer ``graphP`` that can be iteratively populated with
-            graphs to write to an output source.
+            that can be iteratively populated with graphs to write to an output
+            source.
 
     Raises:
         MemoryError: during initialization, if the C-layer ``graphLib`` version

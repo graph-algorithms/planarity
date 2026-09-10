@@ -52,6 +52,9 @@ cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
     int gp_Embed(graphP theGraph, int embedFlags)
 
     int NONEMBEDDABLE
+
+    int gp_GetEmbedFlags(graphP theGraph)
+
     int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR
 
 
