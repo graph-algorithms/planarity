@@ -23,9 +23,9 @@ cdef class PGraph:
         _embedding_workflow_status (int): Indicates the status of the embedding
             workflow; the value is not meaningful until after an embedding
             workflow method such as one of the following has been called:
-                * :py:meth:`~planarity.classic.planarity.PGraph.is_planar`
-                * :py:meth:`~planarity.classic.planarity.PGraph.embed_planar`
-                * :py:meth:`~planarity.classic.planarity.PGraph.embed_drawplanar`
+            * :py:meth:`~planarity.classic.planarity.PGraph.is_planar`
+            * :py:meth:`~planarity.classic.planarity.PGraph.embed_planar`
+            * :py:meth:`~planarity.classic.planarity.PGraph.embed_drawplanar`
 
             Note that these are called by several of the other member methods.
 

@@ -5153,7 +5153,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_18gp_CopyGraph(struct _
  *             raise RuntimeError("gp_CopyGraph() failed.")
  * 
  *     def gp_DupGraph(self) -> Graph:             # <<<<<<<<<<<<<<
- *         """Creates a :py:class:`~planarity.full.graph.Graph` wrapping a copy of the current :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
+ *         """Creates a new :py:class:`~planarity.full.graph.Graph` instance that is a copy of the current :py:class:`~planarity.full.graph.Graph` instance.
  * 
 */
 
@@ -5165,7 +5165,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_20gp_DupGraph, "Graph.gp_DupGraph(self) -> Graph\n\nCreates a :py:class:`~planarity.full.graph.Graph` wrapping a copy of the current :py:class:`~planarity.full.graph.Graph`\047s ``graphP``.\n\nReturns:\n    A new :py:class:`~planarity.full.graph.Graph` containing a duplicate\n    of the current :py:class:`~planarity.full.graph.Graph`\047s graph data\n    structure.\n\nRaises:\n    MemoryError: if :py:class:`~planarity.full.graph.Graph.gp_DupGraph`\n        failed to duplicate this\n        :py:class:`~planarity.full.graph.Graph`\047s ``graphP``.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_20gp_DupGraph, "Graph.gp_DupGraph(self) -> Graph\n\nCreates a new :py:class:`~planarity.full.graph.Graph` instance that is a copy of the current :py:class:`~planarity.full.graph.Graph` instance.\n\nReturns:\n    A new :py:class:`~planarity.full.graph.Graph` containing a duplicate\n    of the current :py:class:`~planarity.full.graph.Graph`\047s graph data\n    structure.\n\nRaises:\n    MemoryError: if :py:class:`~planarity.full.graph.Graph.gp_DupGraph`\n        failed to duplicate this\n        :py:class:`~planarity.full.graph.Graph`\047s ``graphP``.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_21gp_DupGraph = {"gp_DupGraph", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_21gp_DupGraph, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_20gp_DupGraph};
 static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pw_9planarity_4full_5graph_5Graph_21gp_DupGraph(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -5325,7 +5325,7 @@ static struct __pyx_obj_9planarity_4full_5graph_Graph *__pyx_pf_9planarity_4full
  *             raise RuntimeError("gp_CopyGraph() failed.")
  * 
  *     def gp_DupGraph(self) -> Graph:             # <<<<<<<<<<<<<<
- *         """Creates a :py:class:`~planarity.full.graph.Graph` wrapping a copy of the current :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
+ *         """Creates a new :py:class:`~planarity.full.graph.Graph` instance that is a copy of the current :py:class:`~planarity.full.graph.Graph` instance.
  * 
 */
 
@@ -34616,7 +34616,7 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
  *             raise RuntimeError("gp_CopyGraph() failed.")
  * 
  *     def gp_DupGraph(self) -> Graph:             # <<<<<<<<<<<<<<
- *         """Creates a :py:class:`~planarity.full.graph.Graph` wrapping a copy of the current :py:class:`~planarity.full.graph.Graph`'s ``graphP``.
+ *         """Creates a new :py:class:`~planarity.full.graph.Graph` instance that is a copy of the current :py:class:`~planarity.full.graph.Graph` instance.
  * 
 */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 169, __pyx_L1_error)
