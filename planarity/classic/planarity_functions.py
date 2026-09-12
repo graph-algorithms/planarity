@@ -51,7 +51,7 @@ def kuratowski_edges(graph):
 
 
 def ascii(graph) -> str:
-    """Produces an ASCII string rendition of a planar graph.
+    """Produces an ASCII string rendition of the graph, if it is planar.
 
     Constructs a
     :py:class:`~planarity.classic.planarity.PGraph`
@@ -64,12 +64,20 @@ def ascii(graph) -> str:
 
     Returns:
         An ASCII string rendition of a planar graph.
+
+    Raises:
+        ValueError: if the given graph is already a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if the graph couldn't be converted to a 
+            :py:class:`~planarity.classic.planarity.PGraph`, 
+            if the graph is non-planar, or if an error was reported by
+            the C-layer functions for embedding and drawing the graph.
     """
     return planarity.PGraph(graph).ascii()
 
 
 def draw(graph, labels=True, outfileName=None):
-    """Draw graph with Matplotlib if it is planar.
+    """Draws the graph with Matplotlib, if it is planar.
 
     Constructs a
     :py:class:`~planarity.classic.planarity.PGraph`
@@ -80,14 +88,20 @@ def draw(graph, labels=True, outfileName=None):
     Args:
         graph: A graph specified in a format that may be converted to a
             :py:class:`~planarity.classic.planarity.PGraph`.
-        labels: If True, render labels of vertices in final drawing.
-        outfileName (:obj:`str`): File to which to output Matplotlib
-                rendering of planar drawing. If not given, then the caller must
-                call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+        labels (bool): If ``True``, vertex labels are rendered in the drawing.
+            Otherwise, vertices are rendered unlabelled in the drawing.
+        outfileName (:obj:`str`): File to which to output a Matplotlib
+            rendering of the planar graph. If not given, then the caller can
+            call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
 
     Raises:
-        ImportError: if there are dependencies missing from the current
-            environment.
+        ValueError: if the given graph is already a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        ImportError: if dependencies from Matplotlib fail to be imported.
+        RuntimeError: if the graph couldn't be converted to a 
+            :py:class:`~planarity.classic.planarity.PGraph`, 
+            if the graph is non-planar, or if an error was reported by
+            the C-layer functions for embedding and drawing the graph.
     """
     pgraph = planarity.PGraph(graph)
 

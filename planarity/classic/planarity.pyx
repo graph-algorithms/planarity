@@ -449,7 +449,7 @@ cdef class PGraph:
         return edges
 
     def ascii(self) -> str:
-        """Produces an ASCII string rendition of a planar graph.
+        """Produces an ASCII string rendition of the graph, if it is planar.
 
         Returns:
             The rendition string produced by the C-layer
@@ -495,29 +495,22 @@ cdef class PGraph:
         return py_bytes.decode('ascii')
 
     def draw(self, bool labels=True, str outfileName=None) -> None:
-        """Draws planar graph using Matplotlib if it is planar.
+        """Draws the graph using Matplotlib, if it is planar.
 
-        Note that if this method has been invoked on this or any other
-        :py:class:`~planarity.classic.planarity.PGraph`, or if the
-        :external+matplotlib:py:mod:`matplotlib.pyplot` image stack has been
-        updated at any other point during execution, the
-        :external+matplotlib:py:mod:`matplotlib.pyplot` figure stack will be
-        nonempty. Therefore, we use
-        :external+matplotlib:py:func:`matplotlib.pyplot.clf` to clear the figure
-        stack so that we are guaranteed a fresh plot.
-
+        If the graph is planar, then it is drawn as a figure within
+        Matplotlib and then saved to ``outfileName``, if given.
+        
         Args:
-            labels (bool): If True, render labels of vertices in final drawing.
-                Otherwise, vertices are rendered as unlabelled circles.
-            outfileName (:obj:`str`): File to which to output Matplotlib
-                rendering of planar drawing. If not given, then the caller must
-                call
-                :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+            labels (bool): If ``True``, vertex labels are rendered in the drawing.
+                Otherwise, vertices are rendered unlabelled in the drawing.
+            outfileName (:obj:`str`): File to which to output a Matplotlib
+                rendering of the planar graph. If not given, then the caller can
+                call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
 
         Raises:
-            ImportError: if Matplotlib isn't installed in the environment.
-            RuntimeError: if the graph is non-planar, or if some other error had
-                been encountered when trying to embed the graph.
+            ImportError: if dependencies from Matplotlib fail to be imported.
+            RuntimeError: if the graph is non-planar, or if an error was reported
+                by the C-layer functions for embedding and drawing the graph.
         """
         try:
             import matplotlib.pyplot as plt
@@ -525,10 +518,13 @@ cdef class PGraph:
             from matplotlib.collections import PatchCollection
         except ImportError as matplotlib_import_error:
             raise ImportError(
-                "planarity: draw() method failed, as dependency Matplotlib is "
-                "not installed."
+                "planarity: draw() method failed, unable to import "
+                "dependencies from Matplotlib."
             ) from matplotlib_import_error
 
+        # We must clear the figure stack to guarantee a fresh plot, since the
+        # figure stack can be mdoified by others, including invocations of this
+        # method on other PGraphs.
         plt.clf()
 
         self.embed_drawplanar()
