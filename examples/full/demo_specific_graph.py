@@ -133,7 +133,7 @@ def specific_graph(
             "or file (f)? (Select any other input to dismiss.)\n\t"
         )
         if choice.lower() == "s":
-            _, rendition_string = graph_for_embedding.gp_DrawPlanar_RenderToString()
+            rendition_string = graph_for_embedding.gp_DrawPlanar_RenderToString()
             print(rendition_string)
         elif choice.lower() == "f":
             render_outfile = Path.joinpath(
