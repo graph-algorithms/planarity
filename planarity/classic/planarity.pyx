@@ -43,7 +43,8 @@ cdef class PGraph:
 
         Args:
             graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
-                Input graph to use to populate the C-layer graph data structure instance.
+                Input graph to use to populate the C-layer graph data structure
+                instance.
 
         Raises:
             ValueError: if the given graph is already a
@@ -56,7 +57,7 @@ cdef class PGraph:
         """
         if isinstance(graph, PGraph):
             raise ValueError(
-                "Initializing a PGraph with a PGraph is not supported at this"
+                "Initializing a PGraph with a PGraph is not supported at this "
                 "time."
             )
 
@@ -84,6 +85,14 @@ cdef class PGraph:
                     "planarity: Unable to initialize PGraph with unknown input "
                     "type."
                 ) from type_inference_error
+
+            try:
+                nodes = sorted(nodes)
+            except TypeError:
+                # If the node label type doesn't implement __lt__(), then we are
+                # unable to sort the nodes, and therefore can't guarantee
+                # consistent label node ordering across sessions.
+                pass
 
             edges = graph
 
