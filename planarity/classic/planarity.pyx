@@ -474,7 +474,7 @@ cdef class PGraph:
         return py_bytes.decode('ascii')
 
 
-    def draw(self, bool labels=True, str outfileName=None) -> None:
+    def draw(self, bool labels=True, str outfileName=None, dict fig_kwargs=None) -> None:
         """Draws the graph using Matplotlib, if it is planar.
 
         If the graph is planar, then it is drawn as a figure within
@@ -486,6 +486,11 @@ cdef class PGraph:
             outfileName (:obj:`str`): File to which to output a Matplotlib
                 rendering of the planar graph. If not given, then the caller can
                 call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+            fig_kwargs (:obj:`dict`): Optional dictionary of Matplotlib
+                figure-level parameters (e.g. ``figsize``, ``dpi``) to apply
+                to the current figure after it is cleared. If not given,
+                Matplotlib's default figure size and DPI are used, matching
+                prior behavior.
 
         Raises:
             ImportError: if dependencies from Matplotlib fail to be imported.
@@ -511,6 +516,14 @@ cdef class PGraph:
         # method on other PGraphs.
         plt.clf()
 
+        fig = plt.gcf()
+        if fig_kwargs is not None:
+            kwargs = dict(fig_kwargs)
+            if 'figsize' in kwargs:
+                fig.set_size_inches(kwargs.pop('figsize'))
+            if kwargs:
+                fig.set(**kwargs)
+
         self.embed_drawplanar()
 
         if self._embedding_workflow_status != cplanarity.OK:
@@ -519,13 +532,11 @@ cdef class PGraph:
                 "planarity: Unable to draw() graph due to error encountered in "
                 "embedding workflow."
             )
-
         patches = []
         node_labels = {}
         xs = []
         ys = []
         # Use tuple unpacking for the list of tuples representing nodes
-       
         for node, drawplanar_vertex_info in self.nodes(
             include_drawplanar_vertex_info=True
         ):
@@ -577,18 +588,12 @@ cdef class PGraph:
         plt.axis('off')
 
         if outfileName:
-            plt.savefig(outfileName)
+            plt.savefig(outfileName, dpi=fig.dpi)
 
     def write(self, str path='stdout', int writeMode=cplanarity.WRITE_ADJLIST) -> None:
         """Writes the graph to ``path``.
 
         Supports writing in formats: WRITE_ADJLIST, WRITE_ADJMATRIX, and WRITE_G6.
-
-        Args:
-            path (str): Path to which to write graph. Defaults to ``stdout``
-                stream.
-            writeMode (int): Format to write the graph. Defaults to
-                ``cplanarity.WRITE_ADJLIST``.
 
         Raises:
             RuntimeError: if the C-layer ``gp_Write()`` failed.

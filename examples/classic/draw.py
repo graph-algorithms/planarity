@@ -33,7 +33,14 @@ if P1.is_planar():
     planar_rendition = P2.ascii()
     print(planar_rendition)
 
-    # Output Matplotlib rendering
+        # Output Matplotlib rendering
     P2.draw(outfileName='K5-minus-edge.png')
+
+    # Verify fig_kwargs (#87): generate 300dpi and 600dpi variants
+    P3 = planarity.PGraph(edgelist)
+    P3.draw(outfileName='K5-minus-edge-300dpi.png', fig_kwargs={'dpi': 300})
+
+    P4 = planarity.PGraph(edgelist)
+    P4.draw(outfileName='K5-minus-edge-600dpi.png', fig_kwargs={'dpi': 600})
 else:
     print("The graph cannot be drawn because it is non-planar.")
