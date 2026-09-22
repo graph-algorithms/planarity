@@ -119,3 +119,94 @@ def test_unknown_keyword_still_rejected(draw):
 def test_invalid_color_rejected(draw):
     with pytest.raises(ValueError, match='not-a-color'):
         draw(vertex_facecolor='not-a-color')
+
+
+# draw() defaults the figure dpi to 100, so pad_inches of padding shows up
+# in the saved image as pad_inches * 100 pixels of background on each side.
+DEFAULT_DPI = 100
+
+# draw() also defaults the figure facecolor to white, and the padding it
+# leaves around the drawing has that same color, so a pixel counts as
+# background when each channel is close to white. The slack keeps the
+# anti-aliased pixels that blend background into ink from counting as ink.
+BACKGROUND = (255, 255, 255)
+BACKGROUND_SLACK = 8
+
+
+def _background_run_length(image, start, step):
+    """Walks from the start pixel in the step direction, counting how many
+    background pixels are seen before the first non-background pixel.
+
+    Fails the test if the walk reaches the far side of the image without
+    meeting any ink, since then the padding is not being measured against
+    the drawing at all.
+    """
+    x, y = start
+    run = 0
+    while 0 <= x < image.width and 0 <= y < image.height:
+        pixel = image.getpixel((x, y))
+        if max(abs(pixel[i] - BACKGROUND[i]) for i in range(3)) > BACKGROUND_SLACK:
+            return run
+        run += 1
+        x, y = x + step[0], y + step[1]
+    raise AssertionError(
+        f'walked from {start} across the image without finding the drawing'
+    )
+
+
+def _assert_pad_inches(draw, tmp_path, pad_inches):
+    output = tmp_path / f'pad-{pad_inches}.png'
+    # EDGES is K5 minus an edge, drawn here on the custom 4x3 figure. The
+    # padding has to come out right on a caller-chosen figure size, not
+    # only on the default one.
+    draw(outfileName=str(output), pad_inches=pad_inches, figsize=(4, 3))
+    with Image.open(output) as saved:
+        image = saved.convert('RGBA')
+        width, height = image.size
+        # The padding is only meaningful in pixels if the saved image really
+        # is the requested figsize at the default dpi.
+        assert (width, height) == (4 * DEFAULT_DPI, 3 * DEFAULT_DPI)
+
+        expected = round(pad_inches * DEFAULT_DPI)
+        # From each starting point below, walk straight into the image and
+        # expect expected pixels of background, then a pixel of the drawing.
+        # Three sides start at the midpoints of the image edges. The right
+        # side instead starts a quarter of the way down: the rightmost ink
+        # in this drawing is a vertical edge line drawn a little to the
+        # right of the rightmost vertices, and the line spans only part of
+        # the image height. Below its lower end the rightmost ink is a
+        # vertex box that ends slightly left of the line, so a walk there
+        # would overcount the background. A quarter of the way down is
+        # safely within the line at every pad_inches value used here.
+        probes = [
+            ('top', (width // 2, 0), (0, 1)),
+            ('bottom', (width // 2, height - 1), (0, -1)),
+            ('left', (0, height // 2), (1, 0)),
+            ('right', (width - 1, height // 4), (-1, 0)),
+        ]
+        for side, start, step in probes:
+            run = _background_run_length(image, start, step)
+            # The measured run can deviate from pad_inches * dpi by a pixel
+            # or two: anti-aliasing blends the outermost drawing pixels
+            # into the background, and when vertices are drawn with a
+            # border (vertex_bordercolor) the border widens them, which
+            # measured one pixel short of the expected run. Two pixels of
+            # slack absorbs that, while still failing if the padding is off
+            # by a whole step between the tested values (0.1 inch = 10
+            # pixels at the default dpi).
+            assert abs(run - expected) <= 2, (side, run, expected)
+
+
+def test_draw_pad_inches_controls_output_padding(draw, tmp_path):
+    for pad_inches in (0.0, 0.1, 0.5):
+        _assert_pad_inches(draw, tmp_path, pad_inches)
+
+
+def test_draw_text():
+    # ascii() is going to be deprecated in favor of calling draw() (#94),
+    # so its rendering test lives with the drawing tests until then.
+    e = ([1,2],)
+    P = planarity.PGraph(e)
+    s = P.ascii()#.decode()
+    assert s == '1\n|\n2\n \n'
+
