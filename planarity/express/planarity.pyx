@@ -628,11 +628,12 @@ cdef class PGraph:
             xe = drawplanar_vertex_info['vertex_end']
             x = (xe+xb)/2
             node_labels[node] = (x, y)
-            vertex_bounds[node] = (xb, xe)
             patches += [FancyBboxPatch(
                 (xb, y - 0.25), xe - xb, 0.5,
                 boxstyle="round,pad=0.05",
             )]
+            # Include the padding, which supplies the width for degree-one vertices.
+            vertex_bounds[node] = patches[-1].get_extents().intervalx
 
         p = PatchCollection(
             patches,
