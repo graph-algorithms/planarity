@@ -24,7 +24,10 @@ extern "C"
         char **pOutputStr;
         strBufP theStrBuf;
         FILE *pFile;
+        char *fileName;
+        char const *fileMode;
         int containerType;
+        int outputErrorFlag;
         stackP ungetBuf;
     };
 
@@ -36,7 +39,7 @@ extern "C"
 
     int sf_IsValidStrOrFile(strOrFileP theStrOrFile);
 
-    char sf_getc(strOrFileP theStrOrFile);
+    int sf_getc(strOrFileP theStrOrFile);
     int sf_ReadSkipChar(strOrFileP theStrOrFile);
     int sf_ReadSkipWhitespace(strOrFileP theStrOrFile);
     int sf_ReadSingleDigit(int *digitToRead, strOrFileP theStrOrFile);
@@ -44,12 +47,15 @@ extern "C"
     int sf_ReadSkipInteger(strOrFileP theStrOrFile);
     int sf_ReadSkipLineRemainder(strOrFileP theStrOrFile);
 
-    char sf_ungetc(char theChar, strOrFileP theStrOrFile);
+    int sf_ungetc(int theChar, strOrFileP theStrOrFile);
     int sf_ungets(char *contentsToUnget, strOrFileP theStrOrFile);
 
     char *sf_fgets(char *str, int count, strOrFileP theStrOrFile);
 
     int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile);
+    int sf_WriteInteger(int intToWrite, strOrFileP theStrOrFile);
+
+    int sf_SetOutputErrorFlag(strOrFileP theStrOrFile);
 
     int sf_closeFile(strOrFileP theStrOrFile);
 

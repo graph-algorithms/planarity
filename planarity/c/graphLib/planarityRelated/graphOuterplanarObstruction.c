@@ -9,7 +9,7 @@ See the LICENSE.TXT file for licensing information.
 
 /* Imported functions */
 
-extern void _ClearAllVisitedFlagsInGraph(graphP);
+extern void _ClearAllVisitedFlagsInGraph(graphP theGraph);
 
 extern int _JoinBicomps(graphP theGraph);
 
@@ -59,7 +59,7 @@ int _ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
 
     // If the root copy is not a root copy of the current vertex v,
     // then the Walkdown terminated on a descendant bicomp, which is Minor A.
-    if (gp_GetVertexFromBicompRoot(theGraph, R) != v)
+    if (_gp_GetVertexFromBicompRoot(theGraph, R) != v)
     {
         theGraphIC(theGraph)->minorType |= MINORTYPE_A;
         return OK;

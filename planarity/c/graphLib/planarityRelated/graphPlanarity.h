@@ -34,6 +34,10 @@ extern "C"
     int gp_Embed(graphP theGraph, unsigned embedFlags);
     int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult);
 
+    // Graph embedding face enumeration and listing methods
+    int gp_CountEmbeddingFaces(graphP theGraph);
+    int gp_CreateEmbeddingFaceList(graphP theGraph, char **pFaceList);
+
 // A return result value for gp_Embed() to indicate success prior to embedding completion,
 // due to finding an obstruction to embedding.
 #define NONEMBEDDABLE -1

@@ -40,6 +40,7 @@ int _K33Search_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int W
 void _K33Search_MergeVertex(graphP theGraph, int W, int WPrevLink, int R);
 int _K33Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R);
 int _K33Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult);
+int _K33Search_DeleteEdge(graphP theGraph, int e);
 int _K33Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _K33Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
@@ -51,7 +52,7 @@ int _K33Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 void *_K33Search_DupContext(void *pContext, void *theGraph);
 int _K33Search_CopyData(void *dstContext, void *srcContext);
-void _K33Search_FreeContext(void *);
+void _K33Search_FreeContext(void *pContext);
 
 /****************************************************************************
  * K33SEARCH_ID - the variable used to hold the integer identifier for this
@@ -72,7 +73,7 @@ int gp_ExtendWith_K33Search(graphP theGraph)
 {
     K33SearchContext *context = NULL;
 
-    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+    if (theGraph == NULL)
         return NOTOK;
 
     // If the K3,3 search feature has already been attached to the graph,
@@ -117,6 +118,7 @@ int gp_ExtendWith_K33Search(graphP theGraph)
     context->functions.fpEnsureVertexCapacity = _K33Search_EnsureVertexCapacity;
     context->functions.fpResetGraphStorage = _K33Search_ResetGraphStorage;
     context->functions.fpEnsureEdgeCapacity = _K33Search_EnsureEdgeCapacity;
+    context->functions.fpDeleteEdge = _K33Search_DeleteEdge;
 
     _K33Search_ClearStructures(context);
 
@@ -782,6 +784,28 @@ int _K33Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
     }
 
     return NOTOK;
+}
+
+/********************************************************************
+ Edge deletion that occurs during a reduction or restoration of a
+ reduction is augmented by clearing the K_{3,3} search-specific
+ data members.  This augmentation is not needed in the delete edge
+ operations that happen once a K_{3,3} homeomorph has been found and
+ marked for isolation.
+ ********************************************************************/
+
+int _K33Search_DeleteEdge(graphP theGraph, int e)
+{
+    K33SearchContext *context = NULL;
+    gp_FindExtension(theGraph, K33SEARCH_ID, (void *)&context);
+
+    if (context == NULL)
+        return NOTOK;
+
+    _K33Search_InitEdgeRec(context, e);
+    _K33Search_InitEdgeRec(context, gp_GetTwin(theGraph, e));
+
+    return context->functions.fpDeleteEdge(theGraph, e);
 }
 
 /********************************************************************

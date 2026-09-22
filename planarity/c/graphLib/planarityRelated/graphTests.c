@@ -13,7 +13,7 @@ See the LICENSE.TXT file for licensing information.
 #include "graphPlanarity.h"
 #include "graphPlanarity.private.h"
 
-extern void _ClearVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearVertexVisitedFlags(graphP theGraph, int includeVirtualVertices);
 
 /* Private function declarations (some exported to system) */
 
@@ -172,92 +172,7 @@ int _CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph)
 
 int _CheckEmbeddingFacialIntegrity(graphP theGraph)
 {
-    stackP theStack = theGraph->theStack;
-    int v, e, eTwin, eStart, eNext, NumFaces, connectedComponents;
-
-    if (theGraph == NULL)
-        return NOTOK;
-
-    /* The stack need only contain 2M entries, one for each edge record. With
-            max M at 3N, this amounts to 6N integers of space.  The embedding
-            structure already contains this stack, so we just make sure it
-            starts out empty. */
-
-    sp_ClearStack(theStack);
-
-    /* Push all edge records (both parts of each edge) and set them all to unvisited */
-
-    for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); e += 2)
-    {
-        // Except skip edge holes
-        if (gp_EdgeInUse(theGraph, e))
-        {
-            // Push e and clear its visited flag
-            sp_Push(theStack, e);
-            gp_ClearEdgeVisited(theGraph, e);
-
-            // And now the same for the twin of e
-            eTwin = gp_GetTwin(theGraph, e);
-            sp_Push(theStack, eTwin);
-            gp_ClearEdgeVisited(theGraph, eTwin);
-        }
-    }
-
-    // There are M edges, so we better have pushed 2M edge records,
-    // i.e., we test that the continue above skipped edge holes and
-    // didn't push edge records beyond the boundary of those in use.
-    if (sp_GetCurrentSize(theStack) != 2 * gp_GetM(theGraph))
-        return NOTOK;
-
-    /* Read faces until every edge record is popped */
-
-    NumFaces = 0;
-    while (sp_NonEmpty(theStack))
-    {
-        /* Get an edge record; if it has already been used by a face,
-            then don't use it to traverse a new face */
-        sp_Pop(theStack, eStart);
-        if (gp_GetEdgeVisited(theGraph, eStart))
-            continue;
-
-        e = eStart;
-        do
-        {
-            eNext = gp_GetNextEdgeCircular(theGraph, gp_GetTwin(theGraph, e));
-            if (gp_GetEdgeVisited(theGraph, eNext))
-                return NOTOK;
-            gp_SetEdgeVisited(theGraph, eNext);
-            e = eNext;
-        } while (e != eStart);
-        NumFaces++;
-    }
-
-    /* Count the external face once rather than once per connected component;
-        each connected component is detected by the fact that it has no
-        DFS parent, except in the case of isolated vertices, no face was counted
-        so we do not subtract one. */
-
-    connectedComponents = 0;
-    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
-    {
-        if (gp_IsDFSTreeRoot(theGraph, v))
-        {
-            if (gp_GetVertexDegree(theGraph, v) > 0)
-                NumFaces--;
-            connectedComponents++;
-        }
-    }
-
-    NumFaces++;
-
-    /* Test number of faces using the extended Euler's formula.
-         For connected components, Euler's formula is f=m-n+2, but
-         for disconnected graphs it is extended to f=m-n+1+c where
-         c is the number of connected components.*/
-
-    return NumFaces == gp_GetM(theGraph) - gp_GetN(theGraph) + 1 + connectedComponents
-               ? OK
-               : NOTOK;
+    return gp_CountEmbeddingFaces(theGraph) < 0 ? NOTOK : OK;
 }
 
 /********************************************************************
@@ -282,7 +197,7 @@ int _CheckAllVerticesOnExternalFace(graphP theGraph)
     // mark the vertices as visited
     for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
-        if (gp_IsDFSTreeRoot(theGraph, v))
+        if (_gp_IsDFSTreeRoot(theGraph, v))
             _MarkExternalFaceVertices(theGraph, v);
     }
 

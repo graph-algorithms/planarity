@@ -71,7 +71,7 @@ int _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
             then the Walkdown terminated because it couldn't find
             a viable path along a child bicomp, which is Minor A. */
 
-    if (gp_GetVertexFromBicompRoot(theGraph, R) != v)
+    if (_gp_GetVertexFromBicompRoot(theGraph, R) != v)
     {
         theGraphIC(theGraph)->minorType |= MINORTYPE_A;
         return OK;
@@ -202,7 +202,7 @@ int _InitializeNonplanarityContext(graphP theGraph, int v, int R)
     // NOTE: We do not need to set up for xy path identification when we
     //       have minor A, which occurs when the parent copy vertex of
     //       bicomp root R is a descendant of v (not v).
-    if (gp_GetVertexFromBicompRoot(theGraph, R) == v)
+    if (_gp_GetVertexFromBicompRoot(theGraph, R) == v)
     {
         if (_SetVertexTypesForMarkingXYPath(theGraph) != OK)
             return NOTOK;

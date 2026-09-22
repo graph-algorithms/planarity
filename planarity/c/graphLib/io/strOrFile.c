@@ -12,6 +12,51 @@ See the LICENSE.TXT file for licensing information.
 #include "../lowLevelUtils/appconst.h"
 #include "strOrFile.h"
 
+char *_sf_DuplicateString(char const *const str);
+int _sf_ShouldRemoveFailedOutputFile(strOrFileP theStrOrFile);
+int _sf_RemoveFailedOutputFile(strOrFileP theStrOrFile);
+
+char *_sf_DuplicateString(char const *const str)
+{
+    char *copy = NULL;
+    size_t strLen = 0;
+
+    if (str == NULL)
+        return NULL;
+
+    strLen = strlen(str) + 1;
+    copy = (char *)malloc(strLen * sizeof(char));
+    if (copy != NULL)
+        memcpy(copy, str, strLen);
+
+    return copy;
+}
+
+int _sf_ShouldRemoveFailedOutputFile(strOrFileP theStrOrFile)
+{
+    // NOTE: (#56) Used for spot-testing removal of output files upon error.
+    // return FALSE;
+    return (theStrOrFile != NULL &&
+            theStrOrFile->containerType == OUTPUT_CONTAINER &&
+            theStrOrFile->outputErrorFlag &&
+            theStrOrFile->fileName != NULL &&
+            strcmp(theStrOrFile->fileName, "stdout") != 0 &&
+            strcmp(theStrOrFile->fileName, "stderr") != 0 &&
+            theStrOrFile->pFile != NULL &&
+            theStrOrFile->fileMode != NULL &&
+            strcmp(theStrOrFile->fileMode, WRITETEXT) == 0)
+               ? TRUE
+               : FALSE;
+}
+
+int _sf_RemoveFailedOutputFile(strOrFileP theStrOrFile)
+{
+    if (!_sf_ShouldRemoveFailedOutputFile(theStrOrFile))
+        return OK;
+
+    return remove(theStrOrFile->fileName) == 0 ? OK : NOTOK;
+}
+
 /********************************************************************
  sf_NewInputContainer()
 
@@ -58,7 +103,11 @@ strOrFileP sf_NewInputContainer(char const *const inputStr, char const *const fi
             }
             else
             {
-                if ((theStrOrFile->pFile = fopen(fileName, READTEXT)) == NULL)
+                theStrOrFile->fileMode = READTEXT;
+                theStrOrFile->fileName = _sf_DuplicateString(fileName);
+
+                if (theStrOrFile->fileName == NULL ||
+                    (theStrOrFile->pFile = fopen(fileName, READTEXT)) == NULL)
                 {
                     sf_Free(&theStrOrFile);
                     theStrOrFile = NULL;
@@ -141,12 +190,21 @@ strOrFileP sf_NewOutputContainer(char **pOutputStr, char const *const fileName)
                 return NULL;
             }
             else if (strcmp(fileName, "stdout") == 0)
+            {
                 theStrOrFile->pFile = stdout;
+                theStrOrFile->fileMode = WRITETEXT;
+            }
             else if (strcmp(fileName, "stderr") == 0)
+            {
                 theStrOrFile->pFile = stderr;
+                theStrOrFile->fileMode = WRITETEXT;
+            }
             else
             {
-                if (
+                theStrOrFile->fileMode = WRITETEXT;
+                theStrOrFile->fileName = _sf_DuplicateString(fileName);
+
+                if (theStrOrFile->fileName == NULL ||
                     (theStrOrFile->pFile = fopen(fileName, WRITETEXT)) == NULL)
                 {
                     sf_Free(&theStrOrFile);
@@ -199,7 +257,6 @@ int sf_IsValidStrOrFile(strOrFileP theStrOrFile)
         if (
             (theStrOrFile->ungetBuf == NULL) ||
             (theStrOrFile->theStrBuf != NULL && sb_GetSize(theStrOrFile->theStrBuf) == 0))
-
         {
             return FALSE;
         }
@@ -222,11 +279,17 @@ int sf_IsValidStrOrFile(strOrFileP theStrOrFile)
  If the ungetBuf is empty, then we'll read from pFile using getc() OR
  from theStrBuf by fetching the character at theStrPos and incrementing
  theStrPos.
+
+ Like getc() in stdio, returns the character as an unsigned char
+ converted to int, or EOF. The int return type is what keeps EOF
+ distinguishable from the byte 0xFF on builds where plain char is
+ unsigned, e.g. the Linux ABIs for AArch64, ARM, PowerPC and s390x,
+ where (char)EOF == 255 (issue #319).
  ********************************************************************/
 
-char sf_getc(strOrFileP theStrOrFile)
+int sf_getc(strOrFileP theStrOrFile)
 {
-    char theChar = EOF;
+    int theChar = EOF;
 
     if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
@@ -245,14 +308,16 @@ char sf_getc(strOrFileP theStrOrFile)
         // so we cut to the underlying debug method to stop its warnings
         sp__Pop(theStrOrFile->ungetBuf, &(currChar));
 #endif
-        theChar = (char)currChar;
+        theChar = currChar;
     }
     else if (theStrOrFile->pFile != NULL)
-        theChar = (char)getc(theStrOrFile->pFile);
+        theChar = getc(theStrOrFile->pFile);
     else if (theStrOrFile->theStrBuf != NULL && sb_GetUnreadCharCount(theStrOrFile->theStrBuf) > 0)
     {
+        // N.B. Convert through unsigned char so that a literal 0xFF byte in
+        // the string buffer does not sign-extend to EOF on signed-char platforms
         theChar = sb_GetReadString(theStrOrFile->theStrBuf) != NULL
-                      ? sb_GetReadString(theStrOrFile->theStrBuf)[0]
+                      ? (unsigned char)sb_GetReadString(theStrOrFile->theStrBuf)[0]
                       : EOF;
         if (theChar != EOF)
             sb_ReadSkipChar(theStrOrFile->theStrBuf);
@@ -288,7 +353,7 @@ int sf_ReadSkipChar(strOrFileP theStrOrFile)
 
 int sf_ReadSkipWhitespace(strOrFileP theStrOrFile)
 {
-    char currChar = EOF;
+    int currChar = EOF;
 
     if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER)
@@ -348,7 +413,7 @@ int sf_ReadInteger(int *intToRead, strOrFileP theStrOrFile)
     int exitCode = OK;
 
     int intCandidate = 0, intCandidateIndex = 0;
-    char currChar = '\0', nextChar = '\0';
+    int currChar = '\0', nextChar = '\0';
     int startedReadingInt = FALSE, isNegative = FALSE;
     char intCandidateStr[MAXCHARSFOR32BITINT + 1];
     memset(intCandidateStr, '\0', (MAXCHARSFOR32BITINT + 1) * sizeof(char));
@@ -383,14 +448,14 @@ int sf_ReadInteger(int *intToRead, strOrFileP theStrOrFile)
                 }
                 else
                 {
-                    intCandidateStr[intCandidateIndex++] = currChar;
+                    intCandidateStr[intCandidateIndex++] = (char)currChar;
                     isNegative = TRUE;
                 }
             }
         }
         else if (isdigit(currChar))
         {
-            intCandidateStr[intCandidateIndex++] = currChar;
+            intCandidateStr[intCandidateIndex++] = (char)currChar;
             startedReadingInt = TRUE;
         }
         else
@@ -432,7 +497,7 @@ int sf_ReadInteger(int *intToRead, strOrFileP theStrOrFile)
 
                     if (exitCode == OK)
                     {
-                        intCandidateStr[intCandidateIndex++] = nextChar;
+                        intCandidateStr[intCandidateIndex++] = (char)nextChar;
                     }
                 }
                 else if (sf_ungetc(nextChar, theStrOrFile) != nextChar)
@@ -495,17 +560,23 @@ int sf_ReadSkipLineRemainder(strOrFileP theStrOrFile)
  where it contains a strBufP, we unget to the ungetBuf; this ungetBuf
  is consumed first when we sf_getc(), sf_fgets(), etc.
 
- Like ungetc() in stdio, on success theChar is returned. On failure,
- EOF is returned.
+ Like ungetc() in stdio, on success the pushed byte is returned as
+ (unsigned char)theChar converted to int. On failure, EOF is
+ returned. Takes and returns int for the same reason as sf_getc():
+ EOF must stay distinguishable from the byte 0xFF.
  ********************************************************************/
 
-char sf_ungetc(char theChar, strOrFileP theStrOrFile)
+int sf_ungetc(int theChar, strOrFileP theStrOrFile)
 {
     if (theChar == EOF ||
         !sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER ||
         sp_GetCurrentSize(theStrOrFile->ungetBuf) >= sp_GetCapacity(theStrOrFile->ungetBuf))
-        return EOF; // Acceptable downcast, allowing char rather than int return type
+        return EOF;
+
+    // N.B. Store the byte value as an unsigned char would deliver it, so a
+    // pushed-back byte reads back from sf_getc() exactly as it was read
+    theChar = (unsigned char)theChar;
 
 #ifndef DEBUG
     sp_Push(theStrOrFile->ungetBuf, theChar);
@@ -530,13 +601,18 @@ char sf_ungetc(char theChar, strOrFileP theStrOrFile)
 
 int sf_ungets(char *strToUnget, strOrFileP theStrOrFile)
 {
+    if (strToUnget == NULL || strlen(strToUnget) > INT_MAX)
+        return NOTOK;
+
     if (!sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != INPUT_CONTAINER ||
         (int)strlen(strToUnget) > (sp_GetCapacity(theStrOrFile->ungetBuf) - sp_GetCurrentSize(theStrOrFile->ungetBuf)))
         return NOTOK;
 
-    for (int i = (strlen(strToUnget) - 1); i >= 0; i--)
-        sp_Push(theStrOrFile->ungetBuf, strToUnget[i]);
+    for (int i = ((int)strlen(strToUnget) - 1); i >= 0; i--)
+        // N.B. Convert through unsigned char so a 0xFF byte does not enter the
+        // unget buffer as EOF on signed-char platforms
+        sp_Push(theStrOrFile->ungetBuf, (unsigned char)strToUnget[i]);
 
     return OK;
 }
@@ -573,7 +649,7 @@ char *sf_fgets(char *str, int count, strOrFileP theStrOrFile)
         int numCharsInUngetBuf = sp_GetCurrentSize(theStrOrFile->ungetBuf);
         if (numCharsInUngetBuf > 0)
         {
-            char currChar = '\0';
+            int currChar = '\0';
             int encounteredNewline = FALSE;
 
             charsToReadFromUngetBuf = (count > numCharsInUngetBuf) ? numCharsInUngetBuf : count;
@@ -582,7 +658,7 @@ char *sf_fgets(char *str, int count, strOrFileP theStrOrFile)
                 currChar = sf_getc(theStrOrFile);
                 if (currChar == EOF)
                     return NULL;
-                str[i] = currChar;
+                str[i] = (char)currChar;
                 str[i + 1] = '\0';
                 // N.B. fgets() includes the \n in the string returned, and
                 // no further characters shall be read
@@ -649,9 +725,14 @@ int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile)
     int outputLen = EOF;
 
     if (strToWrite == NULL ||
+        strlen(strToWrite) > INT_MAX ||
         !sf_IsValidStrOrFile(theStrOrFile) ||
         theStrOrFile->containerType != OUTPUT_CONTAINER)
+    {
+        gp_ErrorMessage("Internal error.");
+        sf_SetOutputErrorFlag(theStrOrFile);
         return EOF;
+    }
 
     // N.B. fputs() will fail and return EOF if pFile doesn't correspond
     // to an output stream
@@ -660,12 +741,64 @@ int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile)
     else if (theStrOrFile->theStrBuf != NULL)
     {
         if (sb_ConcatString(theStrOrFile->theStrBuf, strToWrite) == OK)
-            outputLen = strlen(strToWrite);
+            outputLen = (int)strlen(strToWrite);
         else
             outputLen = EOF;
     }
 
+    if (outputLen == EOF)
+        sf_SetOutputErrorFlag(theStrOrFile);
+
     return outputLen;
+}
+
+/********************************************************************
+ sf_WriteInteger()
+
+ Writes an integer to a string-or-file output container.
+
+ Returns OK on success, NOTOK on failure.
+ ********************************************************************/
+
+int sf_WriteInteger(int intToWrite, strOrFileP theStrOrFile)
+{
+    int result = OK;
+
+    if (!sf_IsValidStrOrFile(theStrOrFile) ||
+        theStrOrFile->containerType != OUTPUT_CONTAINER)
+    {
+        gp_ErrorMessage("Internal error.");
+        sf_SetOutputErrorFlag(theStrOrFile);
+        return NOTOK;
+    }
+
+    if (theStrOrFile->pFile != NULL)
+        result = fprintf(theStrOrFile->pFile, "%d", intToWrite) < 0 ? NOTOK : OK;
+    else if (theStrOrFile->theStrBuf != NULL)
+        result = sb_ConcatInt(theStrOrFile->theStrBuf, intToWrite);
+
+    if (result != OK)
+        sf_SetOutputErrorFlag(theStrOrFile);
+
+    return result;
+}
+
+/********************************************************************
+ sf_SetOutputErrorFlag()
+
+ Marks the container as having encountered an error while reading or writing.
+ Output containers use this state during sf_Free() to avoid returning partial
+ strings and to remove partial ordinary output files.
+ ********************************************************************/
+
+int sf_SetOutputErrorFlag(strOrFileP theStrOrFile)
+{
+    if (theStrOrFile == NULL)
+        return NOTOK;
+
+    theStrOrFile->outputErrorFlag = TRUE;
+
+    return OK;
 }
 
 /********************************************************************
@@ -683,8 +816,13 @@ int sf_fputs(char const *strToWrite, strOrFileP theStrOrFile)
 
 int sf_closeFile(strOrFileP theStrOrFile)
 {
-    FILE *pFile = theStrOrFile->pFile;
-    theStrOrFile->pFile = NULL;
+    int closeResult = OK;
+    FILE *pFile = NULL;
+
+    if (theStrOrFile == NULL)
+        return NOTOK;
+
+    pFile = theStrOrFile->pFile;
     if (pFile != NULL)
     {
         int errorCode = 0;
@@ -695,12 +833,32 @@ int sf_closeFile(strOrFileP theStrOrFile)
             errorCode = fclose(pFile);
 
         if (errorCode < 0)
-            return NOTOK;
+        {
+            theStrOrFile->outputErrorFlag = TRUE;
+            closeResult = NOTOK;
+        }
+
+        // If the outputErrorFlag was already set on the output container, or if
+        // an error was encountered when trying to fclose() the file, then the
+        // output file must be removed. However, the behaviour of what happens
+        // when you call remove() after fclose() fails is platform-dependent: on
+        // Windows, remove() will fail and the output file will still persist,
+        // whereas on POSIX systems, the file will only persist on disk until
+        // any processes with open file descriptors (i.e. should only be this
+        // thread) terminate.
+        if (_sf_RemoveFailedOutputFile(theStrOrFile) != OK)
+            closeResult = NOTOK;
+
+        // NOTE: This indicates that we no longer own the FILE *, but we've
+        // delayed to this point because the FILE * tells us whether we've
+        // successfully opened the file, which is part of how we determine
+        // whether or not to remove() the file in an error case.
+        theStrOrFile->pFile = NULL;
     }
 
     sp_Free(&(theStrOrFile->ungetBuf));
 
-    return OK;
+    return closeResult;
 }
 
 /********************************************************************
@@ -728,29 +886,31 @@ void sf_Free(strOrFileP *pStrOrFile)
     {
         if ((*pStrOrFile)->theStrBuf != NULL)
         {
-            // TODO: (#56) If in an error state, just don't sb_TakeString()
-            // before freeing it
-            if ((*pStrOrFile)->pOutputStr != NULL)
-            {
+            // In an error state, discard the partial string instead of
+            // returning it to the caller.
+            if ((*pStrOrFile)->pOutputStr != NULL && !(*pStrOrFile)->outputErrorFlag)
                 (*((*pStrOrFile)->pOutputStr)) = sb_TakeString((*pStrOrFile)->theStrBuf);
-                (*pStrOrFile)->pOutputStr = NULL;
-            }
+
+            (*pStrOrFile)->pOutputStr = NULL;
+
             sb_Free(&((*pStrOrFile)->theStrBuf));
         }
 
-        // TODO: (#56) if the strOrFile container's FILE pointer
-        // corresponds to an output file, i.e. ioMode is 'w',
-        // we should try to remove the file since the error state
-        // means the contents are invalid
         if ((*pStrOrFile)->pFile != NULL)
             sf_closeFile((*pStrOrFile));
         (*pStrOrFile)->pFile = NULL;
 
         if ((*pStrOrFile)->ungetBuf != NULL)
-        {
             sp_Free(&((*pStrOrFile)->ungetBuf));
-        }
         (*pStrOrFile)->ungetBuf = NULL;
+
+        if ((*pStrOrFile)->fileName != NULL)
+        {
+            free((*pStrOrFile)->fileName);
+            (*pStrOrFile)->fileName = NULL;
+        }
+
+        (*pStrOrFile)->fileMode = NULL;
 
         free(*pStrOrFile);
         (*pStrOrFile) = NULL;

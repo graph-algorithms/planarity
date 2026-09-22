@@ -12,10 +12,13 @@ See the LICENSE.TXT file for licensing information.
 
 #include <stdlib.h>
 
-extern void _ClearVertexVisitedFlags(graphP theGraph, int);
+extern void _ClearVertexVisitedFlags(graphP theGraph, int includeVirtualVertices);
 
 extern void _CollectDrawingData(DrawPlanarContext *context, int RootVertex, int W, int WPrevLink);
 extern int _BreakTie(DrawPlanarContext *context, int BicompRoot, int W, int WPrevLink);
+extern int _IsolateKuratowskiSubgraph(graphP theGraph, int v, int R);
+extern int _CheckKuratowskiSubgraphIntegrity(graphP theGraph);
+extern int _TestSubgraph(graphP theSubgraph, graphP theGraph);
 
 extern int _ComputeVisibilityRepresentation(DrawPlanarContext *context);
 extern int _CheckVisibilityRepresentationIntegrity(DrawPlanarContext *context);
@@ -33,6 +36,7 @@ void _DrawPlanar_InitVertexInfo(DrawPlanarContext *context, int v);
 
 int _DrawPlanar_MergeBicomps(graphP theGraph, int v, int RootVertex, int W, int WPrevLink);
 int _DrawPlanar_HandleInactiveVertex(graphP theGraph, int BicompRoot, int *pW, int *pWPrevLink);
+int _DrawPlanar_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R);
 int _DrawPlanar_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult);
 int _DrawPlanar_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _DrawPlanar_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
@@ -49,7 +53,7 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData);
 
 void *_DrawPlanar_DupContext(void *pContext, void *theGraph);
 int _DrawPlanar_CopyData(void *dstContext, void *srcContext);
-void _DrawPlanar_FreeContext(void *);
+void _DrawPlanar_FreeContext(void *pContext);
 
 /****************************************************************************
  * DRAWPLANAR_ID - the variable used to hold the integer identifier for this
@@ -82,7 +86,7 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
 {
     DrawPlanarContext *context = NULL;
 
-    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+    if (theGraph == NULL)
         return NOTOK;
 
     // If the drawing feature has already been attached to the graph,
@@ -106,6 +110,7 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
 
     // First, tell the context that it is not initialized
     context->initialized = 0;
+    context->drawingDataValid = FALSE;
 
     // Save a pointer to theGraph in the context
     context->theGraph = theGraph;
@@ -117,6 +122,7 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
 
     context->functions.fpMergeBicomps = _DrawPlanar_MergeBicomps;
     context->functions.fpHandleInactiveVertex = _DrawPlanar_HandleInactiveVertex;
+    context->functions.fpHandleBlockedBicomp = _DrawPlanar_HandleBlockedBicomp;
     context->functions.fpEmbedPostprocess = _DrawPlanar_EmbedPostprocess;
     context->functions.fpCheckEmbeddingIntegrity = _DrawPlanar_CheckEmbeddingIntegrity;
     context->functions.fpCheckObstructionIntegrity = _DrawPlanar_CheckObstructionIntegrity;
@@ -134,8 +140,8 @@ int gp_ExtendWith_DrawPlanar(graphP theGraph)
     // Store the Draw context, including the data structure and the
     // function pointers, as an extension of the graph
     if (gp_AddExtension(theGraph, &DRAWPLANAR_ID, (void *)context,
-                        _DrawPlanar_DupContext, 
-                        _DrawPlanar_CopyData, 
+                        _DrawPlanar_DupContext,
+                        _DrawPlanar_CopyData,
                         _DrawPlanar_FreeContext,
                         &context->functions) != OK)
     {
@@ -194,6 +200,8 @@ void _DrawPlanar_ClearStructures(DrawPlanarContext *context)
         context->E = NULL;
         context->VI = NULL;
 
+        context->drawingDataValid = FALSE;
+
         context->initialized = 1;
     }
     else
@@ -208,6 +216,8 @@ void _DrawPlanar_ClearStructures(DrawPlanarContext *context)
             free(context->VI);
             context->VI = NULL;
         }
+
+        context->drawingDataValid = FALSE;
     }
 }
 
@@ -246,7 +256,6 @@ int _DrawPlanar_InitStructures(DrawPlanarContext *context)
     memset(context->VI, NIL_CHAR, gp_UpperBoundVertices(context->theGraph) * sizeof(DrawPlanar_VertexInfo));
 #else
     graphP theGraph = context->theGraph;
-
     if (gp_GetN(theGraph) <= 0)
         return NOTOK;
 
@@ -255,6 +264,8 @@ int _DrawPlanar_InitStructures(DrawPlanarContext *context)
 #endif
 
     memset(context->E, 0, gp_UpperBoundEdgeStorage(context->theGraph) * sizeof(DrawPlanar_EdgeRec));
+
+    context->drawingDataValid = FALSE;
 
     return OK;
 }
@@ -315,6 +326,8 @@ int _DrawPlanar_CopyData(void *dstContext, void *srcContext)
         return _DrawPlanar_InitStructures(dstDrawPlanarContext);
 
     // ELSE: If there is also a srcContext, then we copy data from it
+    dstDrawPlanarContext->drawingDataValid = srcDrawPlanarContext->drawingDataValid;
+
     dstEdgeStorage = gp_UpperBoundEdgeStorage(dstDrawPlanarContext->theGraph);
     srcEdgeStorage = gp_UpperBoundEdgeStorage(srcDrawPlanarContext->theGraph);
 
@@ -565,6 +578,37 @@ int _DrawPlanar_HandleInactiveVertex(graphP theGraph, int BicompRoot, int *pW, i
 /********************************************************************
  ********************************************************************/
 
+int _DrawPlanar_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R)
+{
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
+
+    if (context != NULL)
+    {
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
+        {
+            int RetVal = NONEMBEDDABLE;
+
+            context->drawingDataValid = FALSE;
+
+            if (R != RootVertex)
+                sp_Push2(theGraph->theStack, R, 0);
+
+            if (_IsolateKuratowskiSubgraph(theGraph, v, RootVertex) != OK)
+                RetVal = NOTOK;
+
+            return RetVal;
+        }
+
+        return context->functions.fpHandleBlockedBicomp(theGraph, v, RootVertex, R);
+    }
+
+    return NOTOK;
+}
+
+/********************************************************************
+ ********************************************************************/
+
 void _DrawPlanar_InitEdgeRec(DrawPlanarContext *context, int e)
 {
     context->E[e].pos = 0;
@@ -602,9 +646,13 @@ int _DrawPlanar_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult
 
         if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
         {
+            context->drawingDataValid = FALSE;
+
             if (RetVal == OK)
             {
                 RetVal = _ComputeVisibilityRepresentation(context);
+                if (RetVal == OK)
+                    context->drawingDataValid = TRUE;
             }
         }
 
@@ -638,7 +686,23 @@ int _DrawPlanar_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph)
 
 int _DrawPlanar_CheckObstructionIntegrity(graphP theGraph, graphP origGraph)
 {
-    return OK;
+    DrawPlanarContext *context = NULL;
+    gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
+
+    if (context != NULL)
+    {
+        if (gp_GetEmbedFlags(theGraph) == EMBEDFLAGS_DRAWPLANAR)
+        {
+            if (_TestSubgraph(theGraph, origGraph) != TRUE)
+                return NOTOK;
+
+            return _CheckKuratowskiSubgraphIntegrity(theGraph);
+        }
+
+        return context->functions.fpCheckObstructionIntegrity(theGraph, origGraph);
+    }
+
+    return NOTOK;
 }
 
 /********************************************************************
@@ -690,6 +754,8 @@ int _DrawPlanar_ReadPostprocess(graphP theGraph, char *extraData)
 
                 extraData = strchr(extraData, '\n') + 1;
             }
+
+            context->drawingDataValid = TRUE;
         }
 
         return OK;
@@ -725,9 +791,14 @@ int _DrawPlanar_WritePostprocess(graphP theGraph, char **pExtraData)
             int v, e;
             char line[64];
             int maxLineSize = 64, extraDataPos = 0;
-            char *extraData = (char *)calloc((1 + gp_GetN(theGraph) + 2 * gp_GetM(theGraph) + 1) * maxLineSize, sizeof(char));
+            char *extraData = NULL;
             int zeroBasedVertexOffset = 0;
             int zeroBasedEdgeOffset = 0;
+
+            if (!context->drawingDataValid)
+                return OK;
+
+            extraData = (char *)calloc((1 + gp_GetN(theGraph) + 2 * gp_GetM(theGraph) + 1) * maxLineSize, sizeof(char));
 
             if (extraData == NULL)
                 return NOTOK;

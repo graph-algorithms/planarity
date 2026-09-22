@@ -24,6 +24,7 @@ See the LICENSE.TXT file for licensing information.
 /* Imported functions */
 extern int _g6_ReadGraphFromStrOrFile(graphP theGraph, strOrFileP *pG6InputContainer);
 extern int _g6_WriteGraphToStrOrFile(graphP theGraph, strOrFileP *pOutputContainer);
+extern int _WriteGraphMLGraph(graphP theGraph, strOrFileP outputContainer);
 
 /* Private functions (exported to system) */
 
@@ -133,7 +134,7 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
     int ErrorCode = OK;
 
     int N = 0, v = NIL, W = NIL, adjList = NIL, e = NIL, indexValue = NIL;
-    int zeroBased = FALSE;
+    int zeroBased = FALSE, inputOffset = NIL, inputTerminatorLowerBound = NIL;
 
     if (!sf_IsValidStrOrFile(inputContainer))
         return NOTOK;
@@ -158,10 +159,10 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
     if (gp_EnsureVertexCapacity(theGraph, N) != OK)
         return NOTOK;
 
-    // Clear the visited members of the vertices so they can be used
+    // Clear the index members of the vertices so they can be used
     // during the adjacency list read operation
     for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
-        gp_SetVertexVisitedInfo(theGraph, v, NIL);
+        gp_SetIndex(theGraph, v, NIL);
 
     // Do the adjacency list read operation for each vertex in order
     for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
@@ -174,20 +175,22 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
         if (sf_ReadSkipWhitespace(inputContainer) != OK)
             return NOTOK;
 
-        if (indexValue == 0 && v == gp_LowerBoundVertexStorage(theGraph))
-            zeroBased = TRUE;
+        if (v == gp_LowerBoundVertexStorage(theGraph))
+        {
+            // Infer whether the input file is zero-based or one-based from
+            // the first vertex label, then convert file labels to storage indexes.
+            // A zero-based file terminates adjacency lists with any negative
+            // value; a one-based file terminates them with any value below 1.
+            zeroBased = indexValue == 0;
+            inputOffset = gp_LowerBoundVertexStorage(theGraph) - (zeroBased ? 0 : 1);
+            inputTerminatorLowerBound = zeroBased ? 0 : 1;
+        }
 
-        // If we are reading a zero-based input file, then we have to add to the
-        // indexValue for v the offset of the first vertex in storage, which is
-        // usually 1 (because we compile with USE_1BASEDARRAYS by default) but
-        // which may be 0 if this library was compiled with USE_0BASEDARRAYS.
-        if (zeroBased)
-            indexValue += gp_LowerBoundVertexStorage(theGraph);
-
-        gp_SetIndex(theGraph, v, indexValue);
+        // Convert the file vertex label to the corresponding storage location.
+        indexValue += inputOffset;
 
         // The vertices are expected to be in numeric ascending order
-        if (gp_GetIndex(theGraph, v) != v)
+        if (indexValue != v)
             return NOTOK;
 
         // Skip the colon after the vertex number
@@ -207,14 +210,14 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
         adjList = gp_GetFirstEdge(theGraph, v);
         if (gp_IsEdge(theGraph, adjList))
         {
-            // Store the adjacency node location in the visited member of each
+            // Store the adjacency node location in the index member of each
             // of the preceding vertices to which v is adjacent so that we can
             // efficiently detect the adjacency during the read operation and
             // efficiently find the adjacency node.
             e = gp_GetFirstEdge(theGraph, v);
             while (gp_IsEdge(theGraph, e))
             {
-                gp_SetVertexVisitedInfo(theGraph, gp_GetNeighbor(theGraph, e), e);
+                gp_SetIndex(theGraph, gp_GetNeighbor(theGraph, e), e);
                 e = gp_GetNextEdge(theGraph, e);
             }
 
@@ -238,17 +241,16 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
             if (sf_ReadSkipWhitespace(inputContainer) != OK)
                 return NOTOK;
 
-            // If we are reading a zero-based input file, then we have to add to W
-            // the offset of the first vertex in storage, which is usually 1
-            // (because we compile with USE_1BASEDARRAYS by default) but which may
-            // be 0 if this library was compiled with USE_0BASEDARRAYS.
-            if (zeroBased)
-                W += gp_LowerBoundVertexStorage(theGraph);
-
-            // A value below the valid range indicates the adjacency list end
-            // This was written before gp_IsNotVertex() existed
-            if (W < gp_LowerBoundVertices(theGraph))
+            // The adjacency list terminator belongs to the input numbering base,
+            // so detect it before converting labels to storage locations.
+            if (W < inputTerminatorLowerBound)
                 break;
+
+            W += inputOffset;
+
+            // A value outside the valid range is an error.
+            if (W < gp_LowerBoundVertices(theGraph))
+                return NOTOK;
 
             // A value above the valid range is an error
             if (W >= gp_UpperBoundVertices(theGraph))
@@ -273,12 +275,12 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
             {
                 // If the directed edge already exists, then we add it
                 // as the new first edge of the vertex and delete it from adjList
-                if (gp_IsEdge(theGraph, gp_GetVertexVisitedInfo(theGraph, W)))
+                if (gp_IsEdge(theGraph, gp_GetIndex(theGraph, W)))
                 {
-                    e = gp_GetVertexVisitedInfo(theGraph, W);
+                    e = gp_GetIndex(theGraph, W);
 
                     // Remove the directed edge  e from the adjList construct
-                    gp_SetVertexVisitedInfo(theGraph, W, NIL);
+                    gp_SetIndex(theGraph, W, NIL);
                     if (adjList == e)
                     {
                         if ((adjList = gp_GetNextEdge(theGraph, e)) == e)
@@ -315,7 +317,7 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
         {
             e = adjList;
 
-            gp_SetVertexVisitedInfo(theGraph, gp_GetNeighbor(theGraph, e), NIL);
+            gp_SetIndex(theGraph, gp_GetNeighbor(theGraph, e), NIL);
 
             if ((adjList = gp_GetNextEdge(theGraph, e)) == e)
                 adjList = NIL;
@@ -331,6 +333,12 @@ int _ReadAdjList(graphP theGraph, strOrFileP inputContainer)
 
     if (zeroBased)
         theGraph->graphFlags |= GRAPHFLAGS_ZEROBASEDIO;
+
+    // The exit condition of this method is to have the index member of each
+    // non-virtual vertex v be equal to v, until overridden by a depth-first
+    // search (e.g., gp_DepthFirstSearch())
+    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
+        gp_SetIndex(theGraph, v, v);
 
     return OK;
 }
@@ -351,7 +359,7 @@ int _ReadLEDAGraph(graphP theGraph, strOrFileP inputContainer)
 
     int graphType = 0;
     int N = 0, M = 0, u = NIL, v = NIL;
-    int zeroBasedOffset = gp_LowerBoundVertexStorage(theGraph) == ( 0 ) ? ( 1 ) : 0;
+    int zeroBasedOffset = (gp_LowerBoundVertexStorage(theGraph) == ( 0 )) ? ( 1 ) : ( 0 );
     char Line[MAXLINE + 1];
 
     memset(Line, '\0', (MAXLINE + 1));
@@ -548,7 +556,7 @@ int _ReadGraph(graphP theGraph, strOrFileP *pInputContainer)
     // was OK.
     if (extraDataAllowed)
     {
-        char charAfterGraphRead = EOF;
+        int charAfterGraphRead = EOF;
         if ((charAfterGraphRead = sf_getc((*pInputContainer))) != EOF)
         {
             if (sf_ungetc(charAfterGraphRead, (*pInputContainer)) != charAfterGraphRead)
@@ -589,6 +597,11 @@ int _ReadGraph(graphP theGraph, strOrFileP *pInputContainer)
 
 int _ReadPostprocess(graphP theGraph, char *extraData)
 {
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)theGraph;
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)extraData;
+
     return OK;
 }
 
@@ -686,6 +699,12 @@ int _WriteAdjMatrix(graphP theGraph, strOrFileP outputContainer)
 
     if (theGraph == NULL || !sf_IsValidStrOrFile(outputContainer))
         return NOTOK;
+
+    if (gp_GetGraphFlags(theGraph) & GRAPHFLAGS_DIRECTEDEDGEDETECTED)
+    {
+        gp_ErrorMessage("Adjacency matrix writer does not support directed graphs.");
+        return NOTOK;
+    }
 
     // Write the number of vertices in the graph to the file or string buffer
     if (sprintf(numberStr, "%d\n", gp_GetN(theGraph)) < 1)
@@ -914,9 +933,10 @@ int _WriteDebugInfo(graphP theGraph, strOrFileP outputContainer)
  gp_Write()
  Writes theGraph into the file.
  Pass "stdout" or "stderr" to fileName to write to the corresponding stream
- Pass WRITE_G6, WRITE_ADJLIST, WRITE_ADJMATRIX, or WRITE_DEBUGINFO for writeMode
+ Pass WRITE_G6, WRITE_GRAPHML, WRITE_ADJLIST, WRITE_ADJMATRIX, or
+ WRITE_DEBUGINFO for writeMode.
 
- NOTE: For digraphs, it is an error to use a writeMode other than WRITE_ADJLIST
+ NOTE: For digraphs, only WRITE_ADJLIST and WRITE_GRAPHML are supported.
 
  Returns NOTOK on error, OK on success.
  ********************************************************************/
@@ -950,10 +970,10 @@ int gp_Write(graphP theGraph, char const *fileName, int writeMode)
  * The string is owned by the caller and should be released with
  * free() when the caller doesn't need the string anymore.
  * The format of the content written into the returned string is based
- * on writeMode: WRITE_G6, WRITE_ADJLIST, or WRITE_ADJMATRIX
+ * on writeMode: WRITE_G6, WRITE_GRAPHML, WRITE_ADJLIST, or WRITE_ADJMATRIX
  * (the WRITE_DEBUGINFO writeMode is not supported at this time)
 
- NOTE: For digraphs, it is an error to use a mode other than WRITE_ADJLIST
+ NOTE: For digraphs, only WRITE_ADJLIST and WRITE_GRAPHML are supported.
 
  Returns NOTOK on error, or OK on success along with an allocated string
          *pOutputStr that the caller must free()
@@ -974,21 +994,6 @@ int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
 
     sf_Free(&outputContainer);
 
-    // NOTE: (#56) If an error was encountered when we _WriteGraph(), we do not
-    // want to return garbage to the caller. When we free the output container,
-    // if writing to string, this means that we will have taken the string from
-    // the internal theStrBuf and have assigned it to the container's
-    // pointer-pointer pOutputStr for output; if the RetVal is not OK, we
-    // must free the string and set the pointer-pointer to NULL.
-    if (RetVal != OK)
-    {
-        if (pOutputStr != NULL && (*pOutputStr) != NULL)
-        {
-            free((*pOutputStr));
-            pOutputStr = NULL;
-        }
-    }
-
     // NOTE: If the output string is NULL or empty, need to report NOTOK
     if (pOutputStr != NULL && (*pOutputStr) == NULL)
         RetVal = NOTOK;
@@ -1006,9 +1011,10 @@ int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
  _WriteGraph()
  Writes theGraph into the strOrFile container.
 
- Pass WRITE_G6, WRITE_ADJLIST, WRITE_ADJMATRIX, or WRITE_DEBUGINFO for the Mode
+ Pass WRITE_G6, WRITE_GRAPHML, WRITE_ADJLIST, WRITE_ADJMATRIX, or
+ WRITE_DEBUGINFO for the Mode.
 
- NOTE: For digraphs, it is an error to use a mode other than WRITE_ADJLIST
+ NOTE: For digraphs, only WRITE_ADJLIST and WRITE_GRAPHML are supported.
 
  Returns NOTOK on error, OK on success.
  ********************************************************************/
@@ -1016,6 +1022,7 @@ int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
 int _WriteGraph(graphP theGraph, strOrFileP *pOutputContainer, int Mode)
 {
     int RetVal = OK;
+    int extraDataAllowed = FALSE;
 
     switch (Mode)
     {
@@ -1026,19 +1033,26 @@ int _WriteGraph(graphP theGraph, strOrFileP *pOutputContainer, int Mode)
         break;
     case WRITE_ADJLIST:
         RetVal = _WriteAdjList(theGraph, (*pOutputContainer));
+        if (RetVal == OK)
+            extraDataAllowed = TRUE;
         break;
     case WRITE_ADJMATRIX:
         RetVal = _WriteAdjMatrix(theGraph, (*pOutputContainer));
+        if (RetVal == OK)
+            extraDataAllowed = TRUE;
         break;
     case WRITE_DEBUGINFO:
         RetVal = _WriteDebugInfo(theGraph, (*pOutputContainer));
+        break;
+    case WRITE_GRAPHML:
+        RetVal = _WriteGraphMLGraph(theGraph, (*pOutputContainer));
         break;
     default:
         RetVal = NOTOK;
         break;
     }
 
-    if (RetVal == OK)
+    if (extraDataAllowed)
     {
         char *extraData = NULL;
 
@@ -1054,6 +1068,9 @@ int _WriteGraph(graphP theGraph, strOrFileP *pOutputContainer, int Mode)
         }
     }
 
+    if (RetVal != OK && pOutputContainer != NULL && (*pOutputContainer) != NULL)
+        sf_SetOutputErrorFlag((*pOutputContainer));
+
     return RetVal;
 }
 
@@ -1065,5 +1082,10 @@ int _WriteGraph(graphP theGraph, strOrFileP *pOutputContainer, int Mode)
 
 int _WritePostprocess(graphP theGraph, char **pExtraData)
 {
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)theGraph;
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)pExtraData;
+
     return OK;
 }

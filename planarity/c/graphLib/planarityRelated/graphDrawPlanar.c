@@ -91,7 +91,7 @@ int _ComputeVertexPositions(DrawPlanarContext *context)
     {
         // For each DFS tree root in the embedding, we
         // compute the vertex positions
-        if (gp_IsDFSTreeRoot(theEmbedding, v))
+        if (_gp_IsDFSTreeRoot(theEmbedding, v))
         {
             if (_ComputeVertexPositionsInComponent(context, v, &vertpos) != OK)
                 return NOTOK;
@@ -329,7 +329,7 @@ void _LogEdgeList(graphP theEmbedding, listCollectionP edgeList, int edgeListHea
   advances through the vertices according to their assigned
   vertical positions.
 
-  The 'visitedInfo' member of each vertex is used to indicate the
+  The 'visitedIndex' member of each vertex is used to indicate the
   location in the edge order list of the generator edge for the vertex.
   The generator edge is the first edge used to visit the vertex from
   a higher vertex in the drawing (i.e. a vertex with an earlier, or
@@ -379,7 +379,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
     // Each vertex starts out with a NIL generator edge.
 
     for (v = gp_LowerBoundVertices(theEmbedding); v < gp_UpperBoundVertices(theEmbedding); ++v)
-        gp_SetVertexVisitedInfo(theEmbedding, v, NIL);
+        gp_SetVertexVisitedIndex(theEmbedding, v, NIL);
 
     // Perform the vertical sweep of the combinatorial embedding, using
     // the vertex ordering to guide the sweep.
@@ -399,13 +399,13 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
         // false generator edge so that it is still "visited" and then
         // all of its edges are generators for its neighbor vertices because
         // they all have greater numbers in the vertex order.
-        if (gp_IsDFSTreeRoot(theEmbedding, v))
+        if (_gp_IsDFSTreeRoot(theEmbedding, v))
         {
             // Set a false generator edge, so the vertex is distinguishable from
             // a vertex with no generator edge when its neighbors are visited
             // This way, an edge from a neighbor won't get recorded as the
             // generator edge of the DFS tree root.
-            gp_SetVertexVisitedInfo(theEmbedding, v, NIL - 1);
+            gp_SetVertexVisitedIndex(theEmbedding, v, NIL - 1);
 
             // Now we traverse the adjacency list of the DFS tree root and
             // record each edge as the generator edge of the neighbors
@@ -419,7 +419,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
                                             gp_GetIndex(theEmbedding, v), gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e))));
 
                 // Set the generator edge for the root's neighbor
-                gp_SetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, e), e);
+                gp_SetVertexVisitedIndex(theEmbedding, gp_GetNeighbor(theEmbedding, e), e);
 
                 // Go to the next node of the root's adj list
                 e = gp_GetNextEdge(theEmbedding, e);
@@ -431,7 +431,7 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
         {
             // Get the generator edge of the vertex
             // Note that this never gets the false generator edge of a DFS tree root
-            eTwin = gp_GetVertexVisitedInfo(theEmbedding, v);
+            eTwin = gp_GetVertexVisitedIndex(theEmbedding, v);
             if (gp_IsNotEdge(theEmbedding, eTwin))
                 return NOTOK;
             e = gp_GetTwin(theEmbedding, eTwin);
@@ -465,9 +465,9 @@ int _ComputeEdgePositions(DrawPlanarContext *context)
                     // If the vertex does not yet have a generator edge, then set it.
                     // Note that a DFS tree root has a false generator edge, so this if
                     // test avoids setting a generator edge for a DFS tree root
-                    if (gp_IsNotEdge(theEmbedding, gp_GetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))))
+                    if (gp_IsNotEdge(theEmbedding, gp_GetVertexVisitedIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))))
                     {
-                        gp_SetVertexVisitedInfo(theEmbedding, gp_GetNeighbor(theEmbedding, eCur), eCur);
+                        gp_SetVertexVisitedIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur), eCur);
                         _gp_LogLine(_gp_MakeLogStr2("Generator edge (%d, %d)",
                                                     gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, gp_GetTwin(theEmbedding, e))),
                                                     gp_GetIndex(theEmbedding, gp_GetNeighbor(theEmbedding, eCur))));
@@ -646,6 +646,13 @@ void _CollectDrawingData(DrawPlanarContext *context, int RootVertex, int W, int 
     graphP theEmbedding = context->theGraph;
     int K, Parent, BicompRoot, DFSChild, direction, descendant;
 
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)RootVertex;
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)W;
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)WPrevLink;
+
     _gp_LogLine("\ngraphDrawPlanar.c/_CollectDrawingData() start");
     _gp_LogLine(_gp_MakeLogStr3("_CollectDrawingData(RootVertex=%d, W=%d, W_in=%d)",
                                 RootVertex, W, WPrevLink));
@@ -753,7 +760,7 @@ int _BreakTie(DrawPlanarContext *context, int BicompRoot, int W, int WPrevLink)
             or 'beyond' its parent relative to what. */
 
         context->VI[DFSChild].ancestorChild = gp_GetDFSChildFromBicompRoot(theEmbedding, BicompRoot);
-        context->VI[DFSChild].ancestor = gp_GetVertexFromBicompRoot(theEmbedding, BicompRoot);
+        context->VI[DFSChild].ancestor = _gp_GetVertexFromBicompRoot(theEmbedding, BicompRoot);
 
         _gp_LogLine(_gp_MakeLogStr4("V[child=%d]=.ancestorChild = %d, V[child=%d]=.ancestor = %d",
                                     DFSChild, context->VI[DFSChild].ancestorChild, DFSChild, context->VI[DFSChild].ancestor));
@@ -1242,4 +1249,3 @@ int gp_DrawPlanar_GetEdgeEnd(graphP theEmbedding, int e)
 
     return  context->E[e].end;
 }
-

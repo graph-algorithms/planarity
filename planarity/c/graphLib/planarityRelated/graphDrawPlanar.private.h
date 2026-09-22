@@ -70,6 +70,9 @@ extern "C"
                 // Helps distinguish initialize from re-initialize
                 int initialized;
 
+                // Indicates that the visibility representation data is valid
+                int drawingDataValid;
+
                 // The graph that this context augments
                 graphP theGraph;
 

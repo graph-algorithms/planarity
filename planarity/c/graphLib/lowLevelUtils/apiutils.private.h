@@ -35,11 +35,11 @@ extern "C"
 #define _gp_MakeLogStr4 _MakeLogStr4
 #define _gp_MakeLogStr5 _MakeLogStr5
 
-    char *_MakeLogStr1(const char *format, int);
-    char *_MakeLogStr2(const char *format, int, int);
-    char *_MakeLogStr3(const char *format, int, int, int);
-    char *_MakeLogStr4(const char *format, int, int, int, int);
-    char *_MakeLogStr5(const char *format, int, int, int, int, int);
+    char *_MakeLogStr1(const char *format, int one);
+    char *_MakeLogStr2(const char *format, int one, int two);
+    char *_MakeLogStr3(const char *format, int one, int two, int three);
+    char *_MakeLogStr4(const char *format, int one, int two, int three, int four);
+    char *_MakeLogStr5(const char *format, int one, int two, int three, int four, int five);
 
 #else
 #define _gp_LogLine(Line)

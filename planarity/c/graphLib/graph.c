@@ -53,7 +53,8 @@ void _ClearEdgeVisitedFlags(graphP theGraph);
 int _ClearAllVisitedFlagsInBicomp(graphP theGraph, int BicompRoot);
 int _ClearAllVisitedFlagsInOtherBicomps(graphP theGraph, int BicompRoot);
 void _ClearEdgeVisitedFlagsInUnembeddedEdges(graphP theGraph);
-int _FillVertexVisitedInfoInBicomp(graphP theGraph, int BicompRoot, int FillValue);
+int _FillVertexVisitedIndexes(graphP theGraph, int FillValue);
+int _FillVertexVisitedIndexesInBicomp(graphP theGraph, int BicompRoot, int FillValue);
 int _ClearObstructionMarksInBicomp(graphP theGraph, int BicompRoot);
 
 int _gp_FindEdge(graphP theGraph, int u, int v);
@@ -83,14 +84,28 @@ void _InitEdges(graphP theGraph);
 
 void _ClearGraph(graphP theGraph);
 
-int _GetRandomNumber(int NMin, int NMax);
+typedef struct
+{
+    int u;
+    int v;
+} randomGraphEdgeRec;
 
-int _getUnprocessedChild(graphP theGraph, int parent);
-int _hasUnprocessedChild(graphP theGraph, int parent);
+typedef struct
+{
+    int a;
+    int b;
+    int c;
+} randomGraphFaceRec;
+
+int _AddRandomGraphEdgeCandidate(randomGraphEdgeRec *edgeList, int edgeListCapacity, int *pEdgeListCount, int u, int v);
+int _ProcessRandomGraphOptionalEdge(graphP theGraph, randomGraphEdgeRec *edgeList, int edgeListCapacity,
+                                    int *pEdgeListCount, int addImmediately, int u, int v);
+void _ShuffleRandomGraphEdgeCandidates(randomGraphEdgeRec *edgeList, int edgeCount);
 
 void _AttachEdgeRecord(graphP theGraph, int v, int e, int link, int newEdge);
 void _DetachEdgeRecord(graphP theGraph, int e);
 void _RestoreEdgeRecord(graphP theGraph, int e);
+int _DeleteEdge(graphP theGraph, int e);
 
 /* Private functions for which there are FUNCTION POINTERS */
 
@@ -113,10 +128,13 @@ graphP gp_New(void)
     graphP theGraph = (graphP)calloc(1, sizeof(graphStruct));
     graphFunctionTableP functionTable = (graphFunctionTableP)calloc(1, sizeof(graphFunctionTableStruct));
     graphPrivateDataP theGraphPrivateData = (graphPrivateDataP)calloc(1, sizeof(graphPrivateDataStruct));
+    graphExtensionP *extensionLookupTable = (graphExtensionP *)calloc(MAXNUMSUPPORTEDEXTENSIONS + 1, sizeof(graphExtensionP));
 
-    if (theGraph != NULL && functionTable != NULL && theGraphPrivateData != NULL)
+    if (theGraph != NULL && functionTable != NULL &&
+        theGraphPrivateData != NULL && extensionLookupTable != NULL)
     {
         theGraph->privateData = (void *)theGraphPrivateData;
+        theGraph->extensionLookupTable = extensionLookupTable;
 
         theGraph->functions = functionTable;
         _InitFunctionTable(theGraph);
@@ -139,6 +157,11 @@ graphP gp_New(void)
         {
             free(theGraphPrivateData);
             theGraphPrivateData = NULL;
+        }
+        if (extensionLookupTable != NULL)
+        {
+            free(extensionLookupTable);
+            extensionLookupTable = NULL;
         }
     }
 
@@ -184,6 +207,7 @@ void _InitFunctionTable(graphP theGraph)
         theGraph->functions->fpReadPostprocess = _ReadPostprocess;
         theGraph->functions->fpWritePostprocess = _WritePostprocess;
 
+        theGraph->functions->fpDeleteEdge = _DeleteEdge;
         theGraph->functions->fpHideEdge = _HideEdge;
         theGraph->functions->fpRestoreEdge = _RestoreEdge;
         theGraph->functions->fpHideVertex = _HideVertex;
@@ -225,19 +249,36 @@ void _InitFunctionTable(graphP theGraph)
 
  An instance of the isolator context is created.
 
- Returns OK on success, NOTOK on aany failure.
+ Returns OK on success, NOTOK on any failure.
           On NOTOK, graph extensions are freed so that the graph is
           returned to the post-condition of gp_New().
  ********************************************************************/
 
 int gp_EnsureVertexCapacity(graphP theGraph, int N)
 {
+    long long effectiveEdgeCapacity = 0;
+
     // valid params check
     if (theGraph == NULL || N <= 0)
         return NOTOK;
 
     // Should not call init a second time; use reinit
     if (gp_GetN(theGraph) > 0)
+        return NOTOK;
+
+    // Reject a vertex count whose capacity arithmetic cannot be represented
+    // in int (issue #325). The effective edge capacity is the greater of a
+    // pre-set edgeCapacity and DEFAULT_EDGE_CAPACITY_FACTOR * N, because
+    // gp_EnsureEdgeCapacity() may legitimately have stored a lower value
+    // before this call. The stack holds (edgeCapacity << 2) + 2 entries,
+    // which strictly exceeds every other derived quantity (vertex storage,
+    // edge storage and the 2 * 2 * DEFAULT_EDGE_CAPACITY_FACTOR * N + 2
+    // fallback), so one test on it shields them all, including the
+    // gp_UpperBoundEdgeStorage() uses in the algorithm extensions.
+    effectiveEdgeCapacity = (long long)DEFAULT_EDGE_CAPACITY_FACTOR * N;
+    if (effectiveEdgeCapacity < theGraph->edgeCapacity)
+        effectiveEdgeCapacity = theGraph->edgeCapacity;
+    if ((effectiveEdgeCapacity << 2) + 2 > INT_MAX)
         return NOTOK;
 
     return theGraph->functions->fpEnsureVertexCapacity(theGraph, N);
@@ -343,8 +384,10 @@ void _ResetGraphStorage(graphP theGraph)
     theGraph->embedFlags = 0;
 
     theGraph->graphFlags &= ~GRAPHFLAGS_DFSNUMBERED;
+    theGraph->graphFlags &= ~GRAPHFLAGS_DFSNUMBERED_DIRECTED;
     theGraph->graphFlags &= ~GRAPHFLAGS_SORTEDBYDFI;
-
+    theGraph->graphFlags &= ~GRAPHFLAGS_LOWPOINTSCOMPUTED;
+    theGraph->graphFlags &= ~GRAPHFLAGS_DIRECTEDEDGEDETECTED;
     _InitVertices(theGraph);
     _InitEdges(theGraph);
     _InitIsolatorContext(theGraph);
@@ -400,6 +443,15 @@ int gp_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
     if (theGraph == NULL || requiredEdgeCapacity <= 0)
         return NOTOK;
 
+    // Reject a capacity whose stack arithmetic cannot be represented in int
+    // (issue #325). Together with the guard in gp_EnsureVertexCapacity(),
+    // this keeps every stored capacity able to support its stack and edge
+    // storage arithmetic: the vertex-side guard covers the derived
+    // quantities computed from N, and this test covers the ones computed
+    // from a stored or requested capacity
+    if ((((long long)requiredEdgeCapacity) << 2) + 2 > INT_MAX)
+        return NOTOK;
+
     if (theGraph->edgeCapacity >= requiredEdgeCapacity)
         return OK;
 
@@ -434,7 +486,7 @@ int _EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
     {
         int newStackSize = 2 * (2 * requiredEdgeCapacity) + 2;
 
-        if (newStackSize < 2 * DEFAULT_EDGE_CAPACITY_FACTOR * gp_GetN(theGraph) + 2)
+        if (newStackSize < 2 * (2 * DEFAULT_EDGE_CAPACITY_FACTOR * gp_GetN(theGraph)) + 2)
         {
             // NOTE: We enforce a minimum stack based on number of vertices
             //       if edgeCapacity is small. Currently, this will not
@@ -442,7 +494,7 @@ int _EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity)
             //       the capacity can only ever get bigger. However, this
             //       rule is enforced in case future methods are added
             //       that reduce edge capacity
-            newStackSize = 2 * DEFAULT_EDGE_CAPACITY_FACTOR * gp_GetN(theGraph) + 2;
+            newStackSize = 2 * (2 * DEFAULT_EDGE_CAPACITY_FACTOR * gp_GetN(theGraph)) + 2;
         }
 
         if ((newStack = sp_New(newStackSize)) == NULL)
@@ -502,7 +554,7 @@ void _InitVertexInfo(graphP theGraph, int v)
     gp_SetVertexLeastAncestor(theGraph, v, NIL);
     gp_SetVertexLowpoint(theGraph, v, NIL);
 
-    gp_SetVertexVisitedInfo(theGraph, v, NIL);
+    gp_SetVertexVisitedIndex(theGraph, v, NIL);
     gp_SetVertexPertinentEdge(theGraph, v, NIL);
     gp_SetVertexPertinentRootsList(theGraph, v, NIL);
     gp_SetVertexFuturePertinentChild(theGraph, v, NIL);
@@ -680,6 +732,9 @@ int _ClearAllVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x)
 {
     int e, eTwin;
 
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)w;
+
     // We want to exit u from e, but we get eTwin first here in order to avoid
     // work, in case the degree of u is greater than 2.
     eTwin = _gp_FindEdge(theGraph, v, u);
@@ -722,6 +777,9 @@ int _SetAllVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x)
 {
     int e, eTwin;
 
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)w;
+
     // We want to exit u from e, but we get eTwin first here in order to avoid
     // work, in case the degree of u is greater than 2.
     eTwin = _gp_FindEdge(theGraph, v, u);
@@ -751,9 +809,29 @@ int _SetAllVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x)
 }
 
 /********************************************************************
- _FillVertexVisitedInfoInBicomp()
+ _FillVertexVisitedIndexes()
 
- Places the FillValue into the visitedInfo of the non-virtual vertices
+ Places the FillValue into the visitedIndex of all non-virtual vertices
+ in the graph.
+
+ Returns OK on success, NOTOK on failure.
+ ********************************************************************/
+
+int _FillVertexVisitedIndexes(graphP theGraph, int FillValue)
+{
+    if (theGraph == NULL)
+        return NOTOK;
+
+    for (int v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
+        gp_SetVertexVisitedIndex(theGraph, v, FillValue);
+
+    return OK;
+}
+
+/********************************************************************
+ _FillVertexVisitedIndexesInBicomp()
+
+ Places the FillValue into the visitedIndex of the non-virtual vertices
  in the bicomp rooted by BicompRoot.
 
  This method uses the stack but preserves whatever may have been
@@ -763,7 +841,7 @@ int _SetAllVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x)
  Returns OK on success, NOTOK on implementation failure.
  ********************************************************************/
 
-int _FillVertexVisitedInfoInBicomp(graphP theGraph, int BicompRoot, int FillValue)
+int _FillVertexVisitedIndexesInBicomp(graphP theGraph, int BicompRoot, int FillValue)
 {
     int v, e;
     int stackBottom = sp_GetCurrentSize(theGraph->theStack);
@@ -774,7 +852,7 @@ int _FillVertexVisitedInfoInBicomp(graphP theGraph, int BicompRoot, int FillValu
         sp_Pop(theGraph->theStack, v);
 
         if (gp_IsNotVirtualVertex(theGraph, v))
-            gp_SetVertexVisitedInfo(theGraph, v, FillValue);
+            gp_SetVertexVisitedIndex(theGraph, v, FillValue);
 
         e = gp_GetFirstEdge(theGraph, v);
         while (gp_IsEdge(theGraph, e))
@@ -918,6 +996,11 @@ void gp_Free(graphP *pGraph)
         free((*pGraph)->privateData);
         (*pGraph)->privateData = NULL;
     }
+    if ((*pGraph)->extensionLookupTable != NULL)
+    {
+        free((*pGraph)->extensionLookupTable);
+        (*pGraph)->extensionLookupTable = NULL;
+    }
 
     free(*pGraph);
     *pGraph = NULL;
@@ -967,6 +1050,14 @@ int gp_CopyAdjacencyLists(graphP dstGraph, graphP srcGraph)
     dstGraph->M = gp_GetM(srcGraph);
     sp_Copy(dstGraph->edgeHoles, srcGraph->edgeHoles);
     dstGraph->numEdgeHoles = sp_GetCurrentSize(dstGraph->edgeHoles);
+
+    dstGraph->graphFlags &= ~GRAPHFLAGS_DFSNUMBERED;
+    dstGraph->graphFlags &= ~GRAPHFLAGS_DFSNUMBERED_DIRECTED;
+    dstGraph->graphFlags &= ~GRAPHFLAGS_SORTEDBYDFI;
+    dstGraph->graphFlags &= ~GRAPHFLAGS_LOWPOINTSCOMPUTED;
+    dstGraph->graphFlags &= ~GRAPHFLAGS_DIRECTEDEDGEDETECTED;
+    if (gp_GetGraphFlags(srcGraph) & GRAPHFLAGS_DIRECTEDEDGEDETECTED)
+        dstGraph->graphFlags |= GRAPHFLAGS_DIRECTEDEDGEDETECTED;
 
     return OK;
 }
@@ -1135,6 +1226,12 @@ graphP gp_DupGraph(graphP theGraph)
 int gp_CreateRandomGraph(graphP theGraph)
 {
     int N, M, u, v, m;
+    long long maxSimpleEdges;
+
+    if (theGraph == NULL)
+    {
+        return NOTOK;
+    }
 
     N = gp_GetN(theGraph);
 
@@ -1145,7 +1242,7 @@ int gp_CreateRandomGraph(graphP theGraph)
 
     for (v = gp_LowerBoundVertices(theGraph) + 1; v < gp_UpperBoundVertices(theGraph); ++v)
     {
-        u = _GetRandomNumber(gp_LowerBoundVertices(theGraph), v - 1);
+        u = gp_GetRandomNumber(gp_LowerBoundVertices(theGraph), v - 1);
         if (gp_AddEdge(theGraph, u, 0, v, 0) != OK)
             return NOTOK;
     }
@@ -1154,15 +1251,21 @@ int gp_CreateRandomGraph(graphP theGraph)
             (actually, leave open a small chance that no
             additional edges will be added). */
 
-    M = _GetRandomNumber(7 * N / 8, theGraph->edgeCapacity);
+    M = gp_GetRandomNumber(7 * N / 8, theGraph->edgeCapacity);
 
-    if (M > N * (N - 1) / 2)
-        M = N * (N - 1) / 2;
+    /* N * (N - 1) overflows a 32-bit int at N == 46342, before the halved
+            result would, so the simple undirected edge bound is formed in a
+            wider type. */
+
+    maxSimpleEdges = ((long long)N * (N - 1)) / 2;
+
+    if (M > maxSimpleEdges)
+        M = (int)maxSimpleEdges;
 
     for (m = N - 1; m < M; m++)
     {
-        u = _GetRandomNumber(gp_LowerBoundVertices(theGraph), gp_UpperBoundVertices(theGraph) - 2);
-        v = _GetRandomNumber(u + 1, gp_UpperBoundVertices(theGraph) - 1);
+        u = gp_GetRandomNumber(gp_LowerBoundVertices(theGraph), gp_UpperBoundVertices(theGraph) - 2);
+        v = gp_GetRandomNumber(u + 1, gp_UpperBoundVertices(theGraph) - 1);
 
         // If the edge (u,v) exists, decrement eIndex to try again
         if (gp_IsNeighbor(theGraph, u, v))
@@ -1179,98 +1282,45 @@ int gp_CreateRandomGraph(graphP theGraph)
     return OK;
 }
 
-/********************************************************************
- _GetRandomNumber()
- This function generates a random number between NMin and NMax
- inclusive.  It assumes that the caller has called srand().
- It calls rand(), but before truncating to the proper range,
- it adds the high bits of the rand() result into the low bits.
- The result of this is that the randomness appearing in the
- truncated bits also has an affect on the non-truncated bits.
- ********************************************************************/
-
-int _GetRandomNumber(int NMin, int NMax)
+int _AddRandomGraphEdgeCandidate(randomGraphEdgeRec *edgeList, int edgeListCapacity, int *pEdgeListCount, int u, int v)
 {
-    int N = rand();
+    if (edgeList == NULL || pEdgeListCount == NULL || *pEdgeListCount >= edgeListCapacity)
+        return NOTOK;
 
-    if (NMax < NMin)
-        return NMin;
+    edgeList[*pEdgeListCount].u = u;
+    edgeList[*pEdgeListCount].v = v;
+    (*pEdgeListCount)++;
 
-    N += ((N & 0xFFFF0000) >> 16);
-    N += ((N & 0x0000FF00) >> 8);
-    N &= 0x7FFFFFF;
-    N %= (NMax - NMin + 1);
-    return N + NMin;
+    return OK;
 }
 
-/********************************************************************
- _getUnprocessedChild()
- Support routine for gp_Create RandomGraphEx(), this function
- obtains a child of the given vertex in the randomly generated
- tree that has not yet been processed.  NIL is returned if the
- given vertex has no unprocessed children
-
- ********************************************************************/
-
-int _getUnprocessedChild(graphP theGraph, int parent)
+int _ProcessRandomGraphOptionalEdge(graphP theGraph, randomGraphEdgeRec *edgeList, int edgeListCapacity,
+                                    int *pEdgeListCount, int addImmediately, int u, int v)
 {
-    int e = gp_GetFirstEdge(theGraph, parent);
-    int eTwin = gp_GetTwin(theGraph, e);
-    int child = gp_GetNeighbor(theGraph, e);
+    if (addImmediately)
+        return gp_AddEdge(theGraph, u, 0, v, 0) == OK ? OK : NOTOK;
 
-    // The tree edges were added to the beginning of the adjacency list,
-    // and we move processed tree edge records to the end of the list, so
-    // if the immediate next edge record is not a tree edge, then we
-    // return NIL because the vertex has no remaining unprocessed children
-    if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_NOTDEFINED)
-        return NIL;
+    if (edgeList != NULL)
+        return _AddRandomGraphEdgeCandidate(edgeList, edgeListCapacity, pEdgeListCount, u, v);
 
-    // If the child has already been processed, then all children
-    // have been pushed to the end of the list, and we have just
-    // encountered the first child we processed, so there are no
-    // remaining unprocessed children */
-    if (gp_GetEdgeVisited(theGraph, e))
-        return NIL;
-
-    // We have found an edge leading to an unprocessed child, so
-    // we mark it as processed so that it doesn't get returned
-    // again in future iterations.
-    gp_SetEdgeVisited(theGraph, e);
-    gp_SetEdgeVisited(theGraph, eTwin);
-
-    // Now we move the edge record in the parent vertex to the end
-    // of the adjacency list of that vertex.
-    gp_MoveEdgeToLast(theGraph, parent, e);
-
-    // Now we move the edge record in the child vertex to the
-    // end of the adjacency list of the child.
-    gp_MoveEdgeToLast(theGraph, child, eTwin);
-
-    // Now we set the child's parent and return the child.
-    gp_SetVertexParent(theGraph, child, parent);
-
-    return child;
+    return OK;
 }
 
-/********************************************************************
- _hasUnprocessedChild()
- Support routine for gp_Create RandomGraphEx(), this function
- obtains a child of the given vertex in the randomly generated
- tree that has not yet been processed.  False (0) is returned
- unless the given vertex has an unprocessed child.
- ********************************************************************/
-
-int _hasUnprocessedChild(graphP theGraph, int parent)
+void _ShuffleRandomGraphEdgeCandidates(randomGraphEdgeRec *edgeList, int edgeCount)
 {
-    int e = gp_GetFirstEdge(theGraph, parent);
+    int e;
 
-    if (gp_GetEdgeType(theGraph, e) == EDGE_TYPE_NOTDEFINED)
-        return 0;
+    if (edgeList == NULL)
+        return;
 
-    if (gp_GetEdgeVisited(theGraph, e))
-        return 0;
+    for (e = edgeCount - 1; e > 0; --e)
+    {
+        int e2 = gp_GetRandomNumber(0, e);
+        randomGraphEdgeRec temp = edgeList[e];
 
-    return 1;
+        edgeList[e] = edgeList[e2];
+        edgeList[e2] = temp;
+    }
 }
 
 /********************************************************************
@@ -1284,18 +1334,27 @@ int _hasUnprocessedChild(graphP theGraph, int parent)
  of random additional edges. These cases correspond to the
  numEdges being equal to 3N-6 or greater than 3N-6, respectively.
 
- If numEdges < 3N-6, then the graph generated is a random tree plus
- edges added systematically to the tree while maintaining planarity.
- The output graph will have at least numEdges edges, but it may have
- a few more since more than one edge is added per iteration of the
- loop that adds the extra edges to the random tree.
+ If numEdges < 3N-6, then the graph generated is a connected planar
+ subgraph of a random maximal planar graph. The output graph will
+ have exactly numEdges edges.
 
- This function assumes the caller has already called srand().
+ NOTE: This function assumes the caller has already called srand().
+
+ NOTE: If numEdges is larger than the edge capacity of theGraph, then
+       then its value is reduced internally. The caller can invoke
+       gp_EnsureEdgeCapacity() beforehand, if desired.
  ********************************************************************/
 
 int gp_CreateRandomGraphEx(graphP theGraph, int numEdges)
 {
-    int N, M, root, v, c, p, last, u, e;
+    randomGraphEdgeRec *optionalEdges = NULL;
+    randomGraphFaceRec *faces = NULL;
+    int N, maxPlanarEdges, numPlanarCoreEdges;
+    long long maxNumEdges;
+    int lowerVertex, upperVertex, faceCapacity, optionalEdgeCapacity;
+    int optionalEdgeCount = 0, faceCount = 0, addAllPlanarEdges;
+    int Result = OK;
+    int v, u, e;
 
     // Parameter checks: Must have a graph of at least three vertices, and the
     // number of edges must be at least enough to support making a random tree.
@@ -1303,215 +1362,161 @@ int gp_CreateRandomGraphEx(graphP theGraph, int numEdges)
         return NOTOK;
 
     N = gp_GetN(theGraph);
+    lowerVertex = gp_LowerBoundVertices(theGraph);
+    upperVertex = gp_UpperBoundVertices(theGraph);
+    // Formed in a wider type because N * (N - 1) overflows a 32-bit int at
+    // N == 46342, before the halved result would.
+    maxNumEdges = ((long long)N * (N - 1)) >> 1;
+    maxPlanarEdges = 3 * N - 6;
 
     if (numEdges > theGraph->edgeCapacity)
         numEdges = theGraph->edgeCapacity;
 
-    /* Generate a random tree. */
+    if (numEdges > maxNumEdges)
+        numEdges = (int)maxNumEdges;
 
-    for (v = gp_LowerBoundVertices(theGraph) + 1; v < gp_UpperBoundVertices(theGraph); ++v)
-    {
-        u = _GetRandomNumber(gp_LowerBoundVertices(theGraph), v - 1);
-        if (gp_AddEdge(theGraph, u, 0, v, 0) != OK)
-            return NOTOK;
-
-        else
-        {
-            e = _gp_FindEdge(theGraph, u, v);
-            gp_SetEdgeType(theGraph, e, EDGE_TYPE_TREE);
-            gp_SetEdgeType(theGraph, gp_GetTwin(theGraph, e), EDGE_TYPE_TREE);
-            gp_ClearEdgeVisited(theGraph, e);
-            gp_ClearEdgeVisited(theGraph, gp_GetTwin(theGraph, e));
-        }
-    }
-
-    // Start with generating a maxplanar graph on the random tree
-    // (or adding edges up to numEdges in the fashion of generating a maxplanar graph)
-
-    M = numEdges <= 3 * N - 6 ? numEdges : 3 * N - 6;
-
-    // Start with the first vertex
-    root = gp_LowerBoundVertices(theGraph);
-
-    // Generally, we use v keep track of a traversal down and up all the random tree edges
-    // The last variable marks the location of the last vertex that was an endpoint of the
-    // most recently added edge.
-    v = last = _getUnprocessedChild(theGraph, root);
-
-    // Just a safety check (all children of root are initially unprocessed)
-    if (gp_IsNotVertex(theGraph, v))
+    if (numEdges < N - 1)
         return NOTOK;
 
-    // Vertex v starts at the first unprocessed child of root and traverses around both sides
-    // of the edges of the random tree until it gets back to the root... except,
-    // The original version of this method generated a maxplanar graph only, but it was
-    // refactored to give greater control of the number of edges. After the refactor, this
-    // loop now stops when the edge count reaches M. Even for a maxplanar graph, that will
-    // happen when v reaches the last unprocessed child of the last unprocessed child of root.
-    // Still, we test for v != root for greater understanding of the idea of this method.
-    while (v != root && gp_GetM(theGraph) < M)
+    numPlanarCoreEdges = numEdges <= maxPlanarEdges ? numEdges : maxPlanarEdges;
+    addAllPlanarEdges = numPlanarCoreEdges == maxPlanarEdges;
+    faceCapacity = 2 * N - 4;
+    optionalEdgeCapacity = maxPlanarEdges - (N - 1);
+
+    faces = (randomGraphFaceRec *)calloc((size_t)faceCapacity, sizeof(randomGraphFaceRec));
+
+    if (!addAllPlanarEdges && numPlanarCoreEdges > N - 1)
+        optionalEdges = (randomGraphEdgeRec *)calloc((size_t)optionalEdgeCapacity, sizeof(randomGraphEdgeRec));
+
+    if (faces == NULL || (!addAllPlanarEdges && numPlanarCoreEdges > N - 1 && optionalEdges == NULL))
     {
-        // Get the next unprocessed child of v, if any. This method has the side effect
-        // that it marks the edge (v, c) and hence c as being processed. This method
-        // returns NIL (which not a vertex) if v has no _unprocessed_ children left.
-        c = _getUnprocessedChild(theGraph, v);
+        Result = NOTOK;
+        goto gp_CreateRandomGraphEx_Cleanup;
+    }
 
-        // If v did have an unprocessed child...
-        if (gp_IsVertex(theGraph, c))
+    faces[faceCount].a = lowerVertex;
+    faces[faceCount].b = lowerVertex + 1;
+    faces[faceCount].c = lowerVertex + 2;
+    faceCount++;
+
+    faces[faceCount].a = lowerVertex;
+    faces[faceCount].b = lowerVertex + 2;
+    faces[faceCount].c = lowerVertex + 1;
+    faceCount++;
+
+    if (gp_AddEdge(theGraph, lowerVertex, 0, lowerVertex + 1, 0) != OK ||
+        gp_AddEdge(theGraph, lowerVertex + 1, 0, lowerVertex + 2, 0) != OK)
+    {
+        Result = NOTOK;
+        goto gp_CreateRandomGraphEx_Cleanup;
+    }
+
+    if (_ProcessRandomGraphOptionalEdge(theGraph, optionalEdges, optionalEdgeCapacity, &optionalEdgeCount,
+                                        addAllPlanarEdges, lowerVertex + 2, lowerVertex) != OK)
+    {
+        Result = NOTOK;
+        goto gp_CreateRandomGraphEx_Cleanup;
+    }
+
+    for (v = lowerVertex + 3; v < upperVertex; ++v)
+    {
+        int faceIndex = gp_GetRandomNumber(0, faceCount - 1);
+        int a = faces[faceIndex].a;
+        int b = faces[faceIndex].b;
+        int c = faces[faceIndex].c;
+        int faceVertices[3] = {a, b, c};
+        int treeEdgeIndex = gp_GetRandomNumber(0, 2);
+        int i;
+
+        if (gp_AddEdge(theGraph, v, 0, faceVertices[treeEdgeIndex], 0) != OK)
         {
-            // FORWARD_LABEL_0 (see below)
-            if (last != v)
-            {
-                if (gp_AddEdge(theGraph, last, 1, c, 1) != OK)
-                    return NOTOK;
-            }
-
-            // Add an edge to create a new triangular face with root, v, and the child c
-            // FORWARD_LABEL_1 (see below)
-            if (gp_AddEdge(theGraph, root, 1, c, 1) != OK)
-                return NOTOK;
-
-            // Advance the traversal of v to the child c, and also assign c to last because
-            // (root, c) is the last non-tree edge added.
-            v = last = c;
+            Result = NOTOK;
+            goto gp_CreateRandomGraphEx_Cleanup;
         }
 
-        // If v did not have any more unprocessed children, then we have to back up to
-        // the nearest of its tree ancestors that does have an unprocessed child
-        else
+        for (i = 0; i < 3; ++i)
         {
-            // Get the parent of v and get its next unprocessed child, if any
-            p = gp_GetVertexParent(theGraph, v);
-            if (gp_IsVertex(theGraph, p))
-                c = _getUnprocessedChild(theGraph, p);
-
-            // Loop until we find an ancestor (p) of v that does have an unprocessed child
-            // This loop also creates more triangular faces as it traverses back up along
-            // the child-to-parent sides of edges to the successive ancestors of v.
-            // FORWARD_LABEL_2 (see below)
-            while (gp_IsVertex(theGraph, p) && gp_IsNotVertex(theGraph, (c)))
+            if (i != treeEdgeIndex &&
+                _ProcessRandomGraphOptionalEdge(theGraph, optionalEdges, optionalEdgeCapacity,
+                                                &optionalEdgeCount, addAllPlanarEdges, v, faceVertices[i]) != OK)
             {
-                // Since we are in this loop, the parent p did not have
-                // an unprocessed child, so we advance both p and v to
-                // enable checking the next higher ancestor
-                v = p;
-                p = gp_GetVertexParent(theGraph, v);
-
-                // Now that we have advanced upward, there is now a triangular face
-                // we can create between the original v (denoted last) and the new
-                // parent, which is a grandparent or higher of last.
-                // This ensures that we triangulate along the path leading back
-                // up to the next vertex with an unprocessed child.
-                if (gp_IsVertex(theGraph, p))
-                {
-                    // We exclude adding an edge between last and p in the special case
-                    // that p has ascended back up to the root because adding the edge
-                    // would create a duplicate of the edge added at FORWARD_LABEL_1
-                    if (p != root)
-                    {
-                        if (gp_AddEdge(theGraph, last, 1, p, 1) != OK)
-                            return NOTOK;
-                    }
-                }
-
-                // Now that we have dealt with triangulation of that path up to the new p,
-                // we obtain its next unprocessed child, if any to see if we have gone
-                // to a high enough ancestor that we have an unprocessed child to deal with.
-                // NOTE: At the very least, there will still be an unprocessed child by the
-                //       time p gets to the tree root because we haven't yet reached the
-                //       edge limit in the outer loop condition.
-                if (gp_IsVertex(theGraph, p))
-                    c = _getUnprocessedChild(theGraph, p);
+                Result = NOTOK;
+                goto gp_CreateRandomGraphEx_Cleanup;
             }
+        }
 
-            // Back when v != root was the outer loop condition, it was possible for v to
-            // go to the root, and for p to become NIL (not a vertex). Now, that the outer
-            // loop ends as soon as enough edges are added, p is always a vertex.
-            // Still, we do the test here.
-            if (gp_IsVertex(theGraph, p))
+        faces[faceIndex].a = a;
+        faces[faceIndex].b = b;
+        faces[faceIndex].c = v;
+
+        if (faceCount + 2 > faceCapacity)
+        {
+            Result = NOTOK;
+            goto gp_CreateRandomGraphEx_Cleanup;
+        }
+
+        faces[faceCount].a = b;
+        faces[faceCount].b = c;
+        faces[faceCount].c = v;
+        faceCount++;
+
+        faces[faceCount].a = c;
+        faces[faceCount].b = a;
+        faces[faceCount].c = v;
+        faceCount++;
+    }
+
+    if (optionalEdges != NULL)
+    {
+        _ShuffleRandomGraphEdgeCandidates(optionalEdges, optionalEdgeCount);
+
+        for (e = 0; e < optionalEdgeCount && gp_GetM(theGraph) < numPlanarCoreEdges; ++e)
+        {
+            if (gp_AddEdge(theGraph, optionalEdges[e].u, 0, optionalEdges[e].v, 0) != OK)
             {
-                if (p == root)
-                {
-                    // If p is the root, then we create a triangular face containing
-                    // v, p==root, and c, where v is the last vertex visited in one
-                    // of subtree of p==root, and c is the first vertex visited in the
-                    // next subtree of p== root.
-                    // NOTE: This is a special kind of edge called a "cross edge" that
-                    //       joins two vertices that do not have the ancestor-descendant
-                    //       relationship (i.e., it is not a "back edge" and so the tree
-                    //       is not a DFS tree).
-                    if (gp_AddEdge(theGraph, v, 1, c, 1) != OK)
-                        return NOTOK;
-
-                    // If v advanced upward to a higher ancestor than the parent of last,
-                    // then we entered the loop at FORWARD_LABEL_2, which triangulated
-                    // on the way up, except now we must add an edge that creates a
-                    // triangular face with last, v, and c.
-                    if (v != last)
-                    {
-                        if (gp_AddEdge(theGraph, last, 1, c, 1) != OK)
-                            return NOTOK;
-                    }
-
-                    // NOTE: Because p is the root, we do not advance 'last' to c quite yet
-                    //       because v will advance to c below and the next iteration of
-                    //       the outer loop will get _its_ next unprocessed child, say c2.
-                    //       Only once we know the identity of c2 can we add the extra edge
-                    //       needed to create a triangular face with last, c, and c2.
-                    //       This occurs at FORWARD_LABEL_0 above, with v=c and c=c2,
-                    //       after which last is assigned the value c2.
-                    //       Perhaps one day enough guilt will accrue to foster doing what
-                    //       is needed here to allow c to be assigned to last.
-                }
-
-                // In case p is not the root, then we have already triangulated along the
-                // path up from last to p, so...
-                else
-                {
-                    // We add an edge that creates a triangular face with last, p, and c.
-                    if (gp_AddEdge(theGraph, last, 1, c, 1) != OK)
-                        return NOTOK;
-
-                    // And then an edge that creates a triangular face with root, last, and c.
-                    if (gp_AddEdge(theGraph, root, 1, c, 1) != OK)
-                        return NOTOK;
-
-                    // At which point, last can advance to c
-                    last = c;
-                }
-
-                // The main traversal tracking variable v can now advance to c
-                v = c;
+                Result = NOTOK;
+                goto gp_CreateRandomGraphEx_Cleanup;
             }
         }
     }
 
-    /* Add additional edges if the limit has not yet been reached. */
+    if (gp_GetM(theGraph) < numPlanarCoreEdges)
+    {
+        Result = NOTOK;
+        goto gp_CreateRandomGraphEx_Cleanup;
+    }
+
+    /* Add additional random edges if the limit has not yet been reached. */
 
     while (gp_GetM(theGraph) < numEdges)
     {
-        u = _GetRandomNumber(gp_LowerBoundVertices(theGraph), gp_UpperBoundVertices(theGraph) - 1);
-        v = _GetRandomNumber(gp_LowerBoundVertices(theGraph), gp_UpperBoundVertices(theGraph) - 1);
+        u = gp_GetRandomNumber(lowerVertex, upperVertex - 1);
+        v = gp_GetRandomNumber(lowerVertex, upperVertex - 1);
 
         if (u != v && !gp_IsNeighbor(theGraph, u, v))
+        {
             if (gp_AddEdge(theGraph, u, 0, v, 0) != OK)
-                return NOTOK;
+            {
+                Result = NOTOK;
+                goto gp_CreateRandomGraphEx_Cleanup;
+            }
+        }
     }
 
-    /* Clear the edge types back to 'unknown' */
+gp_CreateRandomGraphEx_Cleanup:
 
-    for (e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); ++e)
+    if (optionalEdges != NULL)
     {
-        gp_ClearEdgeType(theGraph, e);
-        gp_ClearEdgeVisited(theGraph, e);
+        free(optionalEdges);
+        optionalEdges = NULL;
+    }
+    if (faces != NULL)
+    {
+        free(faces);
+        faces = NULL;
     }
 
-    /* Put all DFSParent indicators back to NIL */
-
-    for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
-        gp_SetVertexParent(theGraph, v, NIL);
-
-    return OK;
+    return Result;
 }
 
 /********************************************************************
@@ -1940,41 +1945,26 @@ void _DetachEdgeRecord(graphP theGraph, int e)
        caller can guard against these conditions by pre-testing that
        u != v and that gp_FindEdge() returns NIL.
 
- Returns OK on success, NOTOK on failure, or AT_EDGE_CAPACITY_LIMIT if
-         adding the edge would exceed the graph's edge capacity (the
-         caller can use gp_DynamicAddEdge()).
+ Returns OK on success, NOTOK on failure (including when adding the
+         edge would exceed the graph's edge capacity; the caller can
+         use gp_DynamicAddEdge()).
  ********************************************************************/
 
 int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 {
-    int upos, vpos;
-
     if (theGraph == NULL ||
         u < gp_LowerBoundVertexStorage(theGraph) || v < gp_LowerBoundVertexStorage(theGraph) ||
         u >= gp_UpperBoundVertexStorage(theGraph) || v >= gp_UpperBoundVertexStorage(theGraph))
         return NOTOK;
 
-    /* We enforce the edge limit */
-
-    if (gp_GetM(theGraph) >= theGraph->edgeCapacity)
-        return AT_EDGE_CAPACITY_LIMIT;
-
-    if (sp_NonEmpty(theGraph->edgeHoles))
+    if ((ulink != 0 && ulink != 1) || (vlink != 0 && vlink != 1))
     {
-        sp_Pop(theGraph->edgeHoles, vpos);
-        theGraph->numEdgeHoles = sp_GetCurrentSize(theGraph->edgeHoles);
+        return NOTOK;
     }
-    else
-        vpos = gp_UpperBoundEdges(theGraph);
 
-    upos = gp_GetTwin(theGraph, vpos);
+    if (gp_InsertEdge(theGraph, u, NIL, ulink, v, NIL, vlink) != OK)
+        return NOTOK;
 
-    gp_SetNeighbor(theGraph, upos, v);
-    _AttachEdgeRecord(theGraph, u, NIL, ulink, upos);
-    gp_SetNeighbor(theGraph, vpos, u);
-    _AttachEdgeRecord(theGraph, v, NIL, vlink, vpos);
-
-    theGraph->M++;
     return OK;
 }
 
@@ -1982,46 +1972,60 @@ int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
  gp_DynamicAddEdge()
  Refer to documentation for gp_AddEdge() for parameter description.
 
- Calls gp_AddEdge(); if AT_EDGE_CAPACITY_LIMIT, doubles the edge
- capacity using gp_EnsureEdgeCapacity(), then retries gp_AddEdge().
+ Calls gp_DynamicInsertEdge() with insertion positions that prepend or
+ append the new edge records according to ulink and vlink.
 
  Returns OK on success, NOTOK on failure.
  ********************************************************************/
 int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
 {
-    int Result = OK;
+    if (gp_DynamicInsertEdge(theGraph, u, NIL, ulink, v, NIL, vlink) != OK)
+        return NOTOK;
 
-    Result = gp_AddEdge(theGraph, u, ulink, v, vlink);
+    return OK;
+}
 
-    if (Result == AT_EDGE_CAPACITY_LIMIT)
+/********************************************************************
+ gp_DynamicInsertEdge()
+ Refer to documentation for gp_InsertEdge() for parameter description.
+
+ If the graph is at its edge capacity and has no reusable edge hole,
+ doubles the edge capacity using gp_EnsureEdgeCapacity() before calling
+ gp_InsertEdge().
+
+ Returns OK on success, NOTOK on failure.
+ ********************************************************************/
+int gp_DynamicInsertEdge(graphP theGraph, int u, int e_u, int e_ulink,
+                         int v, int e_v, int e_vlink)
+{
+    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+        return NOTOK;
+
+    if (gp_GetM(theGraph) >= theGraph->edgeCapacity && sp_IsEmpty(theGraph->edgeHoles))
     {
-        // The candidate edge capacity is double the current capacity
-        int candidateEdgeCapacity = gp_GetEdgeCapacity(theGraph) << 1;
-        int N = gp_GetN(theGraph);
-        int newEdgeCapacity = candidateEdgeCapacity;
+        // The new edge capacity is double the current capacity. Parallel
+        // edges are supported, so the capacity is not capped at the number
+        // of edges needed for an undirected clique on N vertices.
+        long long newEdgeCapacity = ((long long)gp_GetEdgeCapacity(theGraph)) << 1;
 
-        // If the candidate edge capacity exceeds the number of edges
-        // needed in an undirected clique on N vertices, then attempt
-        // to use that as the new edge capacity.
-        if (candidateEdgeCapacity > ((N * (N - 1)) >> 1))
-            newEdgeCapacity = ((N * (N - 1)) >> 1);
+        // If left shift would overflow signed integer, then cap it at INT_MAX.
+        if (newEdgeCapacity > INT_MAX)
+        {
+            newEdgeCapacity = INT_MAX;
+            // If unable to allocate more edges due to already being at INT_MAX,
+            // then return failure.
+            if (newEdgeCapacity <= gp_GetEdgeCapacity(theGraph))
+                return NOTOK;
+        }
 
-        // However, if the edge capacity is already greater than or
-        // equal to that maximum capacity needed for an undirected
-        // clique on N vertices, then we allow the capacity to double
-        // beyond the simple undirected graph limit.
-        if (newEdgeCapacity <= gp_GetEdgeCapacity(theGraph))
-            newEdgeCapacity = candidateEdgeCapacity;
-
-        Result = gp_EnsureEdgeCapacity(theGraph, newEdgeCapacity);
-
-        if (Result != OK)
+        if (gp_EnsureEdgeCapacity(theGraph, (int)newEdgeCapacity) != OK)
             return NOTOK;
-
-        Result = gp_AddEdge(theGraph, u, ulink, v, vlink);
     }
 
-    return Result != OK ? NOTOK : Result;
+    if (gp_InsertEdge(theGraph, u, e_u, e_ulink, v, e_v, e_vlink) != OK)
+        return NOTOK;
+
+    return OK;
 }
 
 /********************************************************************
@@ -2067,14 +2071,13 @@ int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink,
         e_ulink < 0 || e_ulink > 1 || e_vlink < 0 || e_vlink > 1)
         return NOTOK;
 
-    if (gp_GetM(theGraph) >= theGraph->edgeCapacity)
-        return AT_EDGE_CAPACITY_LIMIT;
-
     if (sp_NonEmpty(theGraph->edgeHoles))
     {
         sp_Pop(theGraph->edgeHoles, vpos);
         theGraph->numEdgeHoles = sp_GetCurrentSize(theGraph->edgeHoles);
     }
+    else if (gp_GetM(theGraph) >= theGraph->edgeCapacity)
+        return AT_EDGE_CAPACITY_LIMIT;
     else
         vpos = gp_UpperBoundEdges(theGraph);
 
@@ -2106,10 +2109,7 @@ int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink,
 
  NOTE: This method reinitializes the edge records for e and its twin
        in the base graph data structure. Extensions having parallel
-       edge record extension data elements must implement and use their
-       own edge deletion methods, which must then call gp_DeleteEdge().
-       Calling gp_DeleteEdge() does not currently clear data in extension
-       data structures.
+       edge record extension data elements must overload gp_DeleteEdge().
 
  Returns OK on success, NOTOK on failure
  ****************************************************************************/
@@ -2122,6 +2122,11 @@ int gp_DeleteEdge(graphP theGraph, int e)
         gp_EdgeNotInUse(theGraph, e))
         return NOTOK;
 
+    return theGraph->functions->fpDeleteEdge(theGraph, e);
+}
+
+int _DeleteEdge(graphP theGraph, int e)
+{
     // Delete the edge records e and eTwin from their adjacency lists.
     _DetachEdgeRecord(theGraph, e);
     _DetachEdgeRecord(theGraph, gp_GetTwin(theGraph, e));
@@ -2139,7 +2144,7 @@ int gp_DeleteEdge(graphP theGraph, int e)
     theGraph->M--;
 
     // If records e and eTwin were not the last in the edge record array,
-    // then record a new hole in the edge array. */
+    // then record a new hole in the edge array.
     if (e < gp_UpperBoundEdges(theGraph))
     {
         if (theGraph->edgeHoles->size + 1 >= theGraph->edgeHoles->capacity)
@@ -2150,6 +2155,56 @@ int gp_DeleteEdge(graphP theGraph, int e)
     }
 
     // Return the previously calculated successor of e.
+    return OK;
+}
+
+int gp_ClearEdgeDirectionFlags(graphP theGraph)
+{
+    if (theGraph == NULL)
+        return NOTOK;
+
+    for (int e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); e += 2)
+    {
+        if (gp_EdgeInUse(theGraph, e))
+        {
+            // Clear direction flags if non-loop edge
+            if (gp_GetNeighbor(theGraph, gp_GetTwin(theGraph, e)) != gp_GetNeighbor(theGraph, e))
+                gp_SetDirection(theGraph, e, 0);
+        }
+    }
+
+    theGraph->graphFlags &= ~GRAPHFLAGS_DIRECTEDEDGEDETECTED;
+    return OK;
+}
+
+/*
+ * Reverse every in-use directed edge. This can be used along with a directed
+ * depth-first search when computing strongly connected components.
+ */
+int gp_TransposeDirectedGraph(graphP theGraph)
+{
+    if (theGraph == NULL)
+        return NOTOK;
+
+    for (int e = gp_LowerBoundEdges(theGraph); e < gp_UpperBoundEdges(theGraph); e += 2)
+    {
+        if (gp_EdgeInUse(theGraph, e))
+        {
+            int direction = gp_GetDirection(theGraph, e);
+
+            if (direction == EDGEFLAG_DIRECTION_INONLY ||
+                direction == EDGEFLAG_DIRECTION_OUTONLY)
+            {
+                int transposedDirection = direction == EDGEFLAG_DIRECTION_INONLY
+                                              ? EDGEFLAG_DIRECTION_OUTONLY
+                                              : EDGEFLAG_DIRECTION_INONLY;
+
+                gp_SetDirection(theGraph, e, 0);
+                gp_SetDirection(theGraph, e, transposedDirection);
+            }
+        }
+    }
+
     return OK;
 }
 
@@ -2361,12 +2416,24 @@ int _HideVertex(graphP theGraph, int vertex)
     // Cycle through all the edges, pushing and hiding each
     while (gp_IsEdge(theGraph, e))
     {
+        if (sp_GetCurrentSize(theGraph->theStack) >= sp_GetCapacity(theGraph->theStack))
+        {
+            gp_ErrorMessage("_HideVertex() is attempting to push to a full stack.");
+            return NOTOK;
+        }
+
         sp_Push(theGraph->theStack, e);
         gp_HideEdge(theGraph, e);
         e = gp_GetNextEdge(theGraph, e);
     }
 
     // Push the additional integers needed by gp_RestoreVertex()
+    if (sp_GetCurrentSize(theGraph->theStack) + 7 > sp_GetCapacity(theGraph->theStack))
+    {
+        gp_ErrorMessage("_HideVertex() is attempting to push to a full stack.");
+        return NOTOK;
+    }
+
     sp_Push(theGraph->theStack, hiddenEdgeStackBottom);
     sp_Push(theGraph->theStack, NIL);
     sp_Push(theGraph->theStack, NIL);
@@ -2411,6 +2478,13 @@ int _ContractEdge(graphP theGraph, int e)
     v = gp_GetNeighbor(theGraph, e);
 
     eBefore = gp_GetNextEdge(theGraph, e);
+
+    if (sp_GetCurrentSize(theGraph->theStack) >= sp_GetCapacity(theGraph->theStack))
+    {
+        gp_ErrorMessage("_ContractEdge() is attempting to push to a full stack.");
+        return NOTOK;
+    }
+
     sp_Push(theGraph->theStack, e);
     gp_HideEdge(theGraph, e);
 
@@ -2477,6 +2551,11 @@ int _IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
     if (gp_IsEdge(theGraph, e))
     {
         int result = gp_ContractEdge(theGraph, e);
+        int hiddenEdgesStackBottomIndex;
+        int hiddenEdgesStackBottomValue;
+
+        if (result != OK)
+            return result;
 
         // The edge contraction operation pushes one hidden edge then
         // recursively calls this method. This method then pushes K
@@ -2489,8 +2568,8 @@ int _IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
         // six more integers to indicate edges that were moved from
         // v to u, so the "hidden edges stackBottom" is in the next
         // position down.
-        int hiddenEdgesStackBottomIndex = sp_GetCurrentSize(theGraph->theStack) - 7;
-        int hiddenEdgesStackBottomValue = sp_Get(theGraph->theStack, hiddenEdgesStackBottomIndex);
+        hiddenEdgesStackBottomIndex = sp_GetCurrentSize(theGraph->theStack) - 7;
+        hiddenEdgesStackBottomValue = sp_Get(theGraph->theStack, hiddenEdgesStackBottomIndex);
 
         sp_Set(theGraph->theStack, hiddenEdgesStackBottomIndex, hiddenEdgesStackBottomValue - 1);
 
@@ -2520,6 +2599,18 @@ int _IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
     {
         if (gp_GetVisited(theGraph, gp_GetNeighbor(theGraph, e)))
         {
+            if (sp_GetCurrentSize(theGraph->theStack) >= sp_GetCapacity(theGraph->theStack))
+            {
+                gp_ErrorMessage("_IdentifyVertices() is attempting to push to a full stack.");
+                e = gp_GetFirstEdge(theGraph, u);
+                while (gp_IsEdge(theGraph, e))
+                {
+                    gp_ClearVisited(theGraph, gp_GetNeighbor(theGraph, e));
+                    e = gp_GetNextEdge(theGraph, e);
+                }
+                return NOTOK;
+            }
+
             sp_Push(theGraph->theStack, e);
             gp_HideEdge(theGraph, e);
         }
@@ -2536,6 +2627,12 @@ int _IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
 
     // Push the hiddenEdgeStackBottom as a record of how many hidden
     // edges were pushed (also, see above for Contract Edge adjustment)
+    if (sp_GetCurrentSize(theGraph->theStack) + 7 > sp_GetCapacity(theGraph->theStack))
+    {
+        gp_ErrorMessage("_IdentifyVertices() is attempting to push to a full stack.");
+        return NOTOK;
+    }
+
     sp_Push(theGraph->theStack, hiddenEdgeStackBottom);
 
     // Moving v's adjacency list to u is aided by knowing the predecessor
@@ -2655,7 +2752,10 @@ int _RestoreVertex(graphP theGraph)
     int u, v, e_u_succ, e_u_pred, e_v_first, e_v_last, HESB, e;
 
     if (sp_GetCurrentSize(theGraph->theStack) < 7)
+    {
+        gp_ErrorMessage("_RestoreVertex() is attempting to pop from an empty stack.");
         return NOTOK;
+    }
 
     sp_Pop(theGraph->theStack, v);
     sp_Pop(theGraph->theStack, u);
@@ -2699,7 +2799,7 @@ int _RestoreVertex(graphP theGraph)
         if (gp_IsEdge(theGraph, e_v_first))
             gp_SetPrevEdge(theGraph, e_v_first, NIL);
         if (gp_IsEdge(theGraph, e_v_last))
-            gp_SetPrevEdge(theGraph, e_v_last, NIL);
+            gp_SetNextEdge(theGraph, e_v_last, NIL);
 
         // For each edge record restored to v's adjacency list, reassign the 'v' member
         //    of each twin edge record to indicate v rather than u.
@@ -2712,6 +2812,12 @@ int _RestoreVertex(graphP theGraph)
     }
 
     // Restore the hidden edges of v, if any
+    if (sp_IsEmpty(theGraph->theStack))
+    {
+        gp_ErrorMessage("_RestoreVertex() is attempting to pop from an empty stack.");
+        return NOTOK;
+    }
+
     sp_Pop(theGraph->theStack, HESB);
     return _RestoreHiddenEdges(theGraph, HESB);
 }
@@ -2762,8 +2868,8 @@ int gp_RestoreVertices(graphP theGraph)
 
 int _ComputeEdgeRecordType(graphP theGraph, int a, int b, int edgeType)
 {
-    a = gp_IsVirtualVertex(theGraph, a) ? gp_GetVertexFromBicompRoot(theGraph, a) : a;
-    b = gp_IsVirtualVertex(theGraph, b) ? gp_GetVertexFromBicompRoot(theGraph, b) : b;
+    a = gp_IsVirtualVertex(theGraph, a) ? _gp_GetVertexFromBicompRoot(theGraph, a) : a;
+    b = gp_IsVirtualVertex(theGraph, b) ? _gp_GetVertexFromBicompRoot(theGraph, b) : b;
 
     if (a < b)
         return edgeType == EDGE_TYPE_PARENT || edgeType == EDGE_TYPE_CHILD ? EDGE_TYPE_CHILD : EDGE_TYPE_FORWARD;
@@ -2786,8 +2892,8 @@ int _RestoreEdgeType(graphP theGraph, int u, int v)
     int e, eTwin, u_orig, v_orig;
 
     // If u or v is a virtual vertex (a root copy), then get the non-virtual counterpart.
-    u_orig = gp_IsVirtualVertex(theGraph, u) ? (gp_GetVertexFromBicompRoot(theGraph, u)) : u;
-    v_orig = gp_IsVirtualVertex(theGraph, v) ? (gp_GetVertexFromBicompRoot(theGraph, v)) : v;
+    u_orig = gp_IsVirtualVertex(theGraph, u) ? (_gp_GetVertexFromBicompRoot(theGraph, u)) : u;
+    v_orig = gp_IsVirtualVertex(theGraph, v) ? (_gp_GetVertexFromBicompRoot(theGraph, v)) : v;
 
     // Get the edge for which we will set the type
 

@@ -11,7 +11,8 @@ extern "C"
 {
 #endif
 
-#include "stdio.h"
+#include <stdio.h>
+#include <limits.h>
 
 #define MAXLINE 1024
 
@@ -54,6 +55,8 @@ extern "C"
 
 #define gp_ErrorMessage(...) (gp_LogErrorMessage(__LINE__, __FILE__, __VA_ARGS__))
     void gp_LogErrorMessage(int lineNum, const char *srcFileName, const char *message, ...) FORMAT_PRINTF(3, 4);
+
+    int gp_GetRandomNumber(int NMin, int NMax);
 
 #ifdef __cplusplus
 }

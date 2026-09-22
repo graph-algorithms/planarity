@@ -30,14 +30,25 @@ extern "C"
         GRAPHFLAGS_SORTEDBYDFI records whether the graph is in original vertex order
                 or sorted by depth first index. Successive calls to the
                 gp_SortVertices() utility method below toggle this bit.
+        GRAPHFLAGS_LOWPOINTSCOMPUTED records whether lowpoint calculations have
+                been performed on the graph.
+        GRAPHFLAGS_DFSNUMBERED_DIRECTED is set when a directed depth-first search
+                performs the DFS numbering.
 */
 #define GRAPHFLAGS_EXTENDEDWITH_DFSUTILS 256
 #define GRAPHFLAGS_DFSNUMBERED 512
 #define GRAPHFLAGS_SORTEDBYDFI 1024
+#define GRAPHFLAGS_LOWPOINTSCOMPUTED 2048
+#define GRAPHFLAGS_DFSNUMBERED_DIRECTED 4096
 
         // DFS-related utility methods that create a DFS tree, sort vertices and
         // compute least ancestor and lowpoint values
         int gp_DepthFirstSearch(graphP theGraph);
+        int gp_DepthFirstSearchEx(graphP theGraph, unsigned mode);
+
+#define DFSMODE_UNDIRECTED 1
+#define DFSMODE_DIRECTED 2
+
         int gp_SortVertices(graphP theGraph);
         int gp_ComputeLowpoints(graphP theGraph);
         int gp_ComputeLeastAncestors(graphP theGraph);
@@ -45,14 +56,16 @@ extern "C"
         // Additional DFS-related uitility methods (functions and macros) that assume
         // one or more of the above methods have been called to create a DFS tree,
         // sort vertices and/or compute least ancestor and lowpoint values
+        int gp_CountConnectedComponents(graphP theGraph);
         int gp_GetParent(graphP theGraph, int v);
+        int gp_GetVisitedIndex(graphP theGraph, int v);
         int gp_GetLeastAncestor(graphP theGraph, int v);
         int gp_GetLowpoint(graphP theGraph, int v);
 
 // A DFS tree root is one that has no DFS parent. There is one DFS tree root
 // per connected component of a graph (connected, not biconnected; component, not bicomp)
-#define gp_IsDFSTreeRoot(theGraph, v) gp_IsNotVertex(theGraph, gp_GetVertexParent(theGraph, v))
-#define gp_IsNotDFSTreeRoot(theGraph, v) gp_IsVertex(theGraph, gp_GetVertexParent(theGraph, v))
+#define gp_IsDFSTreeRoot(theGraph, v) gp_IsNotVertex(theGraph, gp_GetParent(theGraph, v))
+#define gp_IsNotDFSTreeRoot(theGraph, v) gp_IsVertex(theGraph, gp_GetParent(theGraph, v))
 
 // Mapping between bicomp roots and virtual vertex locations used to store them.
 // A cut vertex v separates one or more of its DFS children, say c1 and c2, from
@@ -70,7 +83,7 @@ extern "C"
 // pairs of vertices in, respectively, T(c1) and T(c2).
 #define gp_GetBicompRootFromDFSChild(theGraph, c) ((c) + gp_GetN(theGraph))
 #define gp_GetDFSChildFromBicompRoot(theGraph, R) ((R) - gp_GetN(theGraph))
-#define gp_GetVertexFromBicompRoot(theGraph, R) gp_GetVertexParent(theGraph, gp_GetDFSChildFromBicompRoot(theGraph, R))
+#define gp_GetVertexFromBicompRoot(theGraph, R) gp_GetParent(theGraph, gp_GetDFSChildFromBicompRoot(theGraph, R))
 #define gp_IsBicompRoot(theGraph, v) ((v) >= gp_LowerBoundVirtualVertices(theGraph))
 
 // If a vertex v is a cut vertex that separates one of its DFS children, say c,

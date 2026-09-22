@@ -12,7 +12,7 @@ See the LICENSE.TXT file for licensing information.
 
 /* Imported functions */
 
-extern void _ClearAllVisitedFlagsInGraph(graphP);
+extern void _ClearAllVisitedFlagsInGraph(graphP theGraph);
 
 extern int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int _JoinBicomps(graphP theGraph);
@@ -619,7 +619,7 @@ int _MarkDFSPath(graphP theGraph, int ancestor, int descendant)
     // If we are marking from a root (virtual) vertex upward, then go up to the
     // non-virtual parent copy before starting the loop
     if (gp_IsVirtualVertex(theGraph, descendant))
-        descendant = gp_GetVertexFromBicompRoot(theGraph, descendant);
+        descendant = _gp_GetVertexFromBicompRoot(theGraph, descendant);
 
     // Mark the lowest vertex (the one with the highest number).
     gp_SetVisited(theGraph, descendant);
@@ -637,7 +637,7 @@ int _MarkDFSPath(graphP theGraph, int ancestor, int descendant)
         // counterpart, so that can also be marked as visited.
         if (gp_IsVirtualVertex(theGraph, descendant))
         {
-            parent = gp_GetVertexFromBicompRoot(theGraph, descendant);
+            parent = _gp_GetVertexFromBicompRoot(theGraph, descendant);
         }
 
         // If we are on a regular, non-virtual vertex then get the edge to the parent,
