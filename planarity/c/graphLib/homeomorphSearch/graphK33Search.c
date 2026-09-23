@@ -13,7 +13,7 @@ See the LICENSE.TXT file for licensing information.
 extern int _ClearAllVisitedFlagsInBicomp(graphP theGraph, int BicompRoot);
 extern int _ClearAllVisitedFlagsInOtherBicomps(graphP theGraph, int BicompRoot);
 extern void _ClearEdgeVisitedFlagsInUnembeddedEdges(graphP theGraph);
-extern int _FillVertexVisitedInfoInBicomp(graphP theGraph, int BicompRoot, int FillValue);
+extern int _FillVertexVisitedIndexesInBicomp(graphP theGraph, int BicompRoot, int FillValue);
 
 // extern int  _GetBicompSize(graphP theGraph, int BicompRoot);
 extern int _HideInternalEdges(graphP theGraph, int vertex);
@@ -78,7 +78,6 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
 int _TestForZtoWPath(graphP theGraph);
 int _TestForStraddlingBridge(graphP theGraph, K33SearchContext *context, int u_max);
 int _K33Search_DeleteUnmarkedEdgesInBicomp(graphP theGraph, K33SearchContext *context, int BicompRoot);
-int _K33Search_DeleteEdge(graphP theGraph, K33SearchContext *context, int e);
 int _ReduceBicomp(graphP theGraph, K33SearchContext *context, int R);
 int _ReduceExternalFacePathToEdge(graphP theGraph, K33SearchContext *context, int u, int x, int edgeType);
 int _ReduceXYPathToEdge(graphP theGraph, K33SearchContext *context, int u, int x, int edgeType);
@@ -205,10 +204,10 @@ int _SearchForK33InBicomp(graphP theGraph, K33SearchContext *context, int v, int
     if (_ReduceBicomp(theGraph, context, R) != OK)
         return NOTOK;
 
-    /* Set visitedInfo values in the bicomp to the initialized state so the planarity
+    /* Set visitedIndex values in the bicomp to the initialized state so the planarity
         algorithm can properly do the Walkup procedure in future steps */
 
-    if (_FillVertexVisitedInfoInBicomp(theGraph, IC->r, gp_GetN(theGraph)) != OK)
+    if (_FillVertexVisitedIndexesInBicomp(theGraph, IC->r, gp_GetN(theGraph)) != OK)
         return NOTOK;
 
     /* We now intend to ignore the pertinence of W (conceptually eliminating
@@ -824,13 +823,13 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
     /* Switch the 'current step' variable v to be equal to the
       non-virtual counterpart of the bicomp root. */
 
-    IC->v = gp_GetVertexFromBicompRoot(theGraph, R);
+    IC->v = _gp_GetVertexFromBicompRoot(theGraph, R);
 
     /* Reset the visitation, pertinence and future pertinence settings from step u_max for step v */
 
     for (v = gp_LowerBoundVertices(theGraph); v < gp_UpperBoundVertices(theGraph); ++v)
     {
-        gp_SetVertexVisitedInfo(theGraph, v, gp_GetN(theGraph));
+        gp_SetVertexVisitedIndex(theGraph, v, gp_GetN(theGraph));
         gp_SetVertexPertinentEdge(theGraph, v, NIL);
         gp_SetVertexPertinentRootsList(theGraph, v, NIL);
 
@@ -928,12 +927,12 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
 
  The depth first search has to "mark" the vertices it has seen as visited,
  but the visited flags are already in use to distinguish the X-Y path.
- So, we reuse the visitedInfo setting of each vertex. The core planarity
+ So, we reuse the visitedIndex setting of each vertex. The core planarity
  algorithm makes settings between 0 and N, so we will regard all of those
  as indicating 'unvisited' by this method, and use -1 to indicate visited.
  These markings need not be cleaned up because, if the desired path is found
  the a K_{3,3} is isolated and if the desired path is not found then the
- bicomp is reduced and the visitedInfo in the remaining vertices are set
+ bicomp is reduced and the visitedIndex in the remaining vertices are set
  appropriately for future Walkup processing of the core planarity algorithm.
 
  For each vertex we visit, if it is an internal vertex on the X-Y path
@@ -941,7 +940,7 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
  and unroll the stack to obtain the desired path (described below). If the
  vertex is internal but not on the X-Y path (i.e. visited flag clear and
  obstruction type unknown), then we want to visit its neighbors, except
- those already marked visited by this method (i.e. those with visitedInfo
+ those already marked visited by this method (i.e. those with visitedIndex
  of -1) and those with a known obstruction type.
 
  We want to manage the stack so that it when the desired vertex is found,
@@ -950,7 +949,7 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
  some vertex-edge pair (v, e), we push *only* the next edge after e in
  v's adjacency list (starting with the first if e is NIL) that leads to a
  new 'eligible' vertex.  An eligible vertex is one whose obstruction type
- is unknown and whose visitedInfo is other than -1 (so, internal and not
+ is unknown and whose visitedIndex is other than -1 (so, internal and not
  yet processed by this method). Second, when we decide a new vertex w
  adjacent to v is eligible, we push not only (v, e) but also (w, NIL).
  When we later pop the vertex-edge pair containing NIL, we know that
@@ -964,7 +963,7 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
  is not the desired connection endpoint to the X-Y path.  We need to process
  all paths extending from it, but we don't want any of those paths to cycle
  back to this vertex, so we mark it as ineligible by putting -1 in its
- visitedInfo member.  This is also the case in which the _first_ edge record e
+ visitedIndex member.  This is also the case in which the _first_ edge record e
  leading from v to an eligible vertex w is obtained, whereupon we push both
  (v, e) and (w, NIL).  Eventually all paths leading from w to eligible
  vertices will be explored, and if none find the desired vertex connection
@@ -1003,7 +1002,7 @@ int _TestForZtoWPath(graphP theGraph)
 
             // Mark this vertex as being visited by this method (i.e. ineligible
             // to have processing started on it again)
-            gp_SetVertexVisitedInfo(theGraph, v, -1);
+            gp_SetVertexVisitedIndex(theGraph, v, -1);
 
             e = gp_GetFirstEdge(theGraph, v);
         }
@@ -1021,7 +1020,7 @@ int _TestForZtoWPath(graphP theGraph)
             // The test for w being a virtual vertex is just safeguarding the two subsequent calls,
             // but it can never happen due to the obstructing X-Y path.
             if (gp_IsNotVirtualVertex(theGraph, w) &&
-                gp_GetVertexVisitedInfo(theGraph, w) != -1 &&
+                gp_GetVertexVisitedIndex(theGraph, w) != -1 &&
                 gp_GetObstructionMark(theGraph, w) == ANYVERTEX_OBSTRUCTIONMARK_UNMARKED)
             {
                 sp_Push2(theGraph->theStack, v, e);
@@ -1409,22 +1408,6 @@ int _ReduceBicomp(graphP theGraph, K33SearchContext *context, int R)
 }
 
 /********************************************************************
- Edge deletion that occurs during a reduction or restoration of a
- reduction is augmented by clearing the K_{3,3} search-specific
- data members.  This is augmentation is not needed in the delete edge
- operations that happen once a K_{3,3} homeomorph has been found and
- marked for isolation.
- ********************************************************************/
-
-int _K33Search_DeleteEdge(graphP theGraph, K33SearchContext *context, int e)
-{
-    _K33Search_InitEdgeRec(context, e);
-    _K33Search_InitEdgeRec(context, gp_GetTwin(theGraph, e));
-
-    return gp_DeleteEdge(theGraph, e);
-}
-
-/********************************************************************
  _K33Search_DeleteUnmarkedEdgesInBicomp()
 
  This function deletes from a given biconnected component all edges
@@ -1435,7 +1418,7 @@ int _K33Search_DeleteEdge(graphP theGraph, K33SearchContext *context, int e)
  per vertex in the bicomp.
 
  This is the same as _DeleteUnmarkedEdgesInBicomp(), except it calls
- the overloaded _K33_DeleteEdge() rather than gp_DeleteEdge()
+ the overloaded gp_DeleteEdge()
 
  Returns OK on success, NOTOK on implementation failure
  ********************************************************************/
@@ -1444,6 +1427,9 @@ int _K33Search_DeleteUnmarkedEdgesInBicomp(graphP theGraph, K33SearchContext *co
 {
     int V, e, eNext;
     int stackBottom = sp_GetCurrentSize(theGraph->theStack);
+
+    // Suppresses an unused-parameter warning for a parameter we intend to keep
+    (void)context;
 
     sp_Push(theGraph->theStack, BicompRoot);
     while (sp_GetCurrentSize(theGraph->theStack) > stackBottom)
@@ -1458,7 +1444,7 @@ int _K33Search_DeleteUnmarkedEdgesInBicomp(graphP theGraph, K33SearchContext *co
 
             eNext = gp_GetNextEdge(theGraph, e);
             if (!gp_GetEdgeVisited(theGraph, e))
-                _K33Search_DeleteEdge(theGraph, context, e);
+                gp_DeleteEdge(theGraph, e);
             e = eNext;
         }
     }
@@ -1508,7 +1494,7 @@ int _ReduceExternalFacePathToEdge(graphP theGraph, K33SearchContext *context, in
         e = gp_GetFirstEdge(theGraph, u);
         v = gp_GetNeighbor(theGraph, e);
     }
-    _K33Search_DeleteEdge(theGraph, context, e);
+    gp_DeleteEdge(theGraph, e);
 
     e = gp_GetLastEdge(theGraph, x);
     // An edge e is a reduction edge if it has a pathConnector vertex set
@@ -1519,7 +1505,7 @@ int _ReduceExternalFacePathToEdge(graphP theGraph, K33SearchContext *context, in
         e = gp_GetLastEdge(theGraph, x);
         w = gp_GetNeighbor(theGraph, e);
     }
-    _K33Search_DeleteEdge(theGraph, context, e);
+    gp_DeleteEdge(theGraph, e);
 
     /* Add the reduction edge, then set its path connectors so the original
        path can be recovered and set the edge type so the essential structure
@@ -1572,7 +1558,7 @@ int _ReduceXYPathToEdge(graphP theGraph, K33SearchContext *context, int u, int x
         e = gp_GetNextEdge(theGraph, e);
         v = gp_GetNeighbor(theGraph, e);
     }
-    _K33Search_DeleteEdge(theGraph, context, e);
+    gp_DeleteEdge(theGraph, e);
 
     e = gp_GetFirstEdge(theGraph, x);
     e = gp_GetNextEdge(theGraph, e);
@@ -1586,7 +1572,7 @@ int _ReduceXYPathToEdge(graphP theGraph, K33SearchContext *context, int u, int x
         e = gp_GetNextEdge(theGraph, e);
         w = gp_GetNeighbor(theGraph, e);
     }
-    _K33Search_DeleteEdge(theGraph, context, e);
+    gp_DeleteEdge(theGraph, e);
 
     /* Now add a single edge to represent the XY-path */
     gp_InsertEdge(theGraph, u, gp_GetFirstEdge(theGraph, u), 0,
@@ -1647,7 +1633,7 @@ int _RestoreReducedPath(graphP theGraph, K33SearchContext *context, int e)
     /* We first delete the edge represented by e and eTwin. We do so before
        restoring the path to ensure we do not exceed the maximum edge capacity. */
 
-    _K33Search_DeleteEdge(theGraph, context, e);
+    gp_DeleteEdge(theGraph, e);
 
     /* Now we add the two edges to reconnect the reduced path represented
        by the edge [e, eTwin].  The edge record in u is added between e0 and e1.
@@ -1732,7 +1718,7 @@ int _RestoreAndOrientReducedPaths(graphP theGraph, K33SearchContext *context)
             /* We first delete the edge represented by e and eTwin. We do so before
                restoring the path to ensure we do not exceed the maximum edge capacity. */
 
-            _K33Search_DeleteEdge(theGraph, context, e);
+            gp_DeleteEdge(theGraph, e);
 
             /* Now we add the two edges to reconnect the reduced path represented
                by the edge [e, eTwin].  The edge record in u is added between e0 and e1.
@@ -1846,7 +1832,7 @@ int _MarkStraddlingBridgePath(graphP theGraph, int u_min, int u_max, int u_d, in
         if (gp_IsVirtualVertex(theGraph, p))
         {
             gp_SetVisited(theGraph, p);
-            p = gp_GetVertexFromBicompRoot(theGraph, p);
+            p = _gp_GetVertexFromBicompRoot(theGraph, p);
         }
     }
 
@@ -1878,7 +1864,7 @@ int _MarkStraddlingBridgePath(graphP theGraph, int u_min, int u_max, int u_d, in
 
         if (gp_IsVirtualVertex(theGraph, p))
         {
-            p = gp_GetVertexFromBicompRoot(theGraph, p);
+            p = _gp_GetVertexFromBicompRoot(theGraph, p);
             gp_ClearVisited(theGraph, p);
         }
     }

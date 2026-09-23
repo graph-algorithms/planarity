@@ -23,12 +23,12 @@ extern "C"
 
         typedef strBuf *strBufP;
 
-        strBufP sb_New(int);
-        void sb_Free(strBufP *);
+        strBufP sb_New(int capacity);
+        void sb_Free(strBufP *pStrBuf);
 
-        void sb_ClearBuf(strBufP);
-        int sb_Copy(strBufP, strBufP);
-        strBufP sb_Duplicate(strBufP);
+        void sb_ClearBuf(strBufP theStrBuf);
+        int sb_Copy(strBufP strBufDst, strBufP strBufSrc);
+        strBufP sb_Duplicate(strBufP theStrBuf);
 
 #define sb_GetFullString(theStrBuf) (theStrBuf->buf)
 #define sb_GetSize(theStrBuf) (theStrBuf->size)
@@ -42,17 +42,18 @@ extern "C"
                 theStrBuf->readPos = theReadPos; \
         }
 
-        void sb_ReadSkipWhitespace(strBufP);
-        void sb_ReadSkipInteger(strBufP);
+        void sb_ReadSkipWhitespace(strBufP theStrBuf);
+        void sb_ReadSkipInteger(strBufP theStrBuf);
 #define sb_ReadSkipChar(theStrBuf)    \
         {                             \
                 theStrBuf->readPos++; \
         }
 
-        int sb_ConcatString(strBufP, char const *);
-        int sb_ConcatChar(strBufP, char);
+        int sb_ConcatString(strBufP theStrBuf, char const *s);
+        int sb_ConcatChar(strBufP theStrBuf, char ch);
+        int sb_ConcatInt(strBufP theStrBuf, int value);
 
-        char *sb_TakeString(strBufP);
+        char *sb_TakeString(strBufP theStrBuf);
 
 #ifndef SPEED_MACROS
 // Optimized SPEED_MACROS versions of larger methods are not used in this module

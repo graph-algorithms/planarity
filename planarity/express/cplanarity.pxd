@@ -45,6 +45,7 @@ cdef extern from "../c/graphLib/io/graphIO.h":
     int WRITE_ADJLIST
     int WRITE_ADJMATRIX
     int WRITE_G6
+    int WRITE_GRAPHML
     int gp_Write(graphP theGraph, char *FileName, int Mode)
 
 

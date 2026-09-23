@@ -74,11 +74,6 @@ extern "C"
     //
     Planarity-specific additional vertex information.
 
-        visitedInfo: enables algorithms to manage vertex visitation with more than
-                    just a flag.  For example, the planarity test flags visitation
-                    as a step number that implicitly resets on each step, whereas
-                    part of the planar drawing method signifies a first visitation
-                    by storing the index of the first edge used to reach a vertex
         pertinentEdge: Used by the planarity method; during Walkup, each vertex
                     that is directly adjacent via a back edge to the vertex v
                     currently being embedded will have the forward edge's index
@@ -113,8 +108,6 @@ extern "C"
 
     struct Planarity_VertexInfo
     {
-        int visitedInfo;
-
         int pertinentEdge,
             pertinentRoots,
             futurePertinentChild,
@@ -124,9 +117,6 @@ extern "C"
 
     typedef struct Planarity_VertexInfo Planarity_VertexInfo;
     typedef Planarity_VertexInfo *Planarity_VertexInfoP;
-
-#define gp_GetVertexVisitedInfo(theGraph, v) (theGraphPVI(theGraph)[v].visitedInfo)
-#define gp_SetVertexVisitedInfo(theGraph, v, theVisitedInfo) (theGraphPVI(theGraph)[v].visitedInfo = theVisitedInfo)
 
 #define gp_GetVertexPertinentEdge(theGraph, v) (theGraphPVI(theGraph)[v].pertinentEdge)
 #define gp_SetVertexPertinentEdge(theGraph, v, e) (theGraphPVI(theGraph)[v].pertinentEdge = e)

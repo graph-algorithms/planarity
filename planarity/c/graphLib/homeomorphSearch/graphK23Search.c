@@ -9,7 +9,7 @@ See the LICENSE.TXT file for licensing information.
 
 /* Imported functions */
 
-extern void _ClearAllVisitedFlagsInGraph(graphP);
+extern void _ClearAllVisitedFlagsInGraph(graphP theGraph);
 
 extern int _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns);

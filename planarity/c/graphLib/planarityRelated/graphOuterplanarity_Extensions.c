@@ -24,7 +24,7 @@ See the LICENSE.TXT file for licensing information.
 
 int gp_ExtendWith_Outerplanarity(graphP theGraph)
 {
-    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+    if (theGraph == NULL)
         return NOTOK;
 
     // If the Graph has already been extended with Outerplanarity,

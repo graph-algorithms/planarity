@@ -24,6 +24,8 @@ extern "C"
     int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString);
     int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName);
 
+    void g6_SetOutputErrorFlag(G6WriteIteratorP theG6WriteIterator);
+
     int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator);
 
     void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator);

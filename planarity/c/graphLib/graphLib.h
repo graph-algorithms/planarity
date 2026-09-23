@@ -52,7 +52,7 @@ extern "C"
     // Tweak is for a non-functional revision (e.g. change of build scripts or testing code, user-facing string changes)
 
 #define GP_PROJECTVERSION_MAJOR 5
-#define GP_PROJECTVERSION_MINOR 0
+#define GP_PROJECTVERSION_MINOR 1
 #define GP_PROJECTVERSION_MAINT 0
 #define GP_PROJECTVERSION_TWEAK 0
 
@@ -62,9 +62,9 @@ extern "C"
 // shared library version numbers below.
 //
 // See configure.ac for how to update these version numbers
-#define GP_LIBPLANARITYVERSION_CURRENT 4
+#define GP_LIBPLANARITYVERSION_CURRENT 5
 #define GP_LIBPLANARITYVERSION_REVISION 0
-#define GP_LIBPLANARITYVERSION_AGE 0
+#define GP_LIBPLANARITYVERSION_AGE 1
 
     const char *gp_GetLibPlanarityVersionFull(void);
 

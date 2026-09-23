@@ -30,3 +30,6 @@ print("Graph6: ")
 planarity.write(edgelist, "stdout", planarity.WRITE_G6)
 print("\n")
 
+print("GraphML: ")
+planarity.write(edgelist, "stdout", planarity.WRITE_GRAPHML)
+print("\n")

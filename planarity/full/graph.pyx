@@ -36,6 +36,7 @@ AT_EDGE_CAPACITY_LIMIT = graphLib.AT_EDGE_CAPACITY_LIMIT
 WRITE_ADJLIST = graphLib.WRITE_ADJLIST
 WRITE_ADJMATRIX = graphLib.WRITE_ADJMATRIX
 WRITE_G6 = graphLib.WRITE_G6
+WRITE_GRAPHML = graphLib.WRITE_GRAPHML
 
 
 EMBEDFLAGS_PLANAR = graphLib.EMBEDFLAGS_PLANAR
@@ -1832,15 +1833,15 @@ cdef class Graph:
             fileName: a string containing the name of the file to which to
                 write.
             writeMode: the desired output format, i.e., ``WRITE_ADJLIST``,
-                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
+                ``WRITE_ADJMATRIX``, ``WRITE_G6``, or ``WRITE_GRAPHML``.
 
         Raises:
             ValueError: if ``writeMode`` is not ``WRITE_ADJLIST``,
-                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
+                ``WRITE_ADJMATRIX``, ``WRITE_G6``, or ``WRITE_GRAPHML``.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
         """
-        if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
+        if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6, WRITE_GRAPHML):
             raise ValueError(
                 f"gp_Write() failed: invalid writeMode = {writeMode}"
             )
@@ -1860,7 +1861,7 @@ cdef class Graph:
 
         Args:
             writeMode: the desired output format, i.e., ``WRITE_ADJLIST``,
-                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
+                ``WRITE_ADJMATRIX``, ``WRITE_G6``, or ``WRITE_GRAPHML``.
 
         Returns:
             A Python string containing the graph serialized into the chosen
@@ -1868,12 +1869,12 @@ cdef class Graph:
 
         Raises:
             ValueError: if writeMode is not ``WRITE_ADJLIST``,
-                ``WRITE_ADJMATRIX``, or ``WRITE_G6``.
+                ``WRITE_ADJMATRIX``, ``WRITE_G6``, or ``WRITE_GRAPHML``.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails, if the ``outputString`` is ``NULL``, or if decoding the
                 bytes to produce the Python string fails.
         """
-        if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
+        if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6, WRITE_GRAPHML):
             raise ValueError(
                 f"gp_WriteToString() failed: invalid writeMode = {writeMode}"
             )

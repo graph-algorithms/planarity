@@ -24,10 +24,10 @@ extern "C"
         typedef struct stackStruct stackStruct;
         typedef stackStruct *stackP;
 
-        stackP sp_New(int);
-        void sp_Free(stackP *);
+        stackP sp_New(int capacity);
+        void sp_Free(stackP *pStack);
 
-        int sp_Copy(stackP, stackP);
+        int sp_Copy(stackP stackDst, stackP stackSrc);
 
         int sp_CopyContent(stackP stackDst, stackP stackSrc);
         stackP sp_Duplicate(stackP theStack);
@@ -36,12 +36,12 @@ extern "C"
 
 #ifndef SPEED_MACROS
 
-        int sp_ClearStack(stackP);
+        int sp_ClearStack(stackP theStack);
         int sp_GetCurrentSize(stackP theStack);
         int sp_SetCurrentSize(stackP theStack, int top);
 
-        int sp_IsEmpty(stackP);
-        int sp_NonEmpty(stackP);
+        int sp_IsEmpty(stackP theStack);
+        int sp_NonEmpty(stackP theStack);
 
 #define sp_Push(theStack, a)                       \
         {                                          \
@@ -54,8 +54,8 @@ extern "C"
                         return NOTOK;                    \
         }
 
-        int sp__Push(stackP, int);
-        int sp__Push2(stackP, int, int);
+        int sp__Push(stackP theStack, int a);
+        int sp__Push2(stackP theStack, int a, int b);
 
 #define sp_Pop(theStack, a)                        \
         {                                          \
@@ -84,16 +84,16 @@ extern "C"
                         return NOTOK;                 \
         }
 
-        int sp__Pop(stackP, int *);
+        int sp__Pop(stackP theStack, int *pA);
         int sp__Pop_Discard(stackP theStack);
 
-        int sp__Pop2(stackP, int *, int *);
+        int sp__Pop2(stackP theStack, int *pA, int *pB);
         int sp__Pop2_Discard1(stackP theStack, int *pA);
         int sp__Pop2_Discard(stackP theStack);
 
-        int sp_Top(stackP);
-        int sp_Get(stackP, int);
-        int sp_Set(stackP, int, int);
+        int sp_Top(stackP theStack);
+        int sp_Get(stackP theStack, int pos);
+        int sp_Set(stackP theStack, int pos, int val);
 
 #else
 

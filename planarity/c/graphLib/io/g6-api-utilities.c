@@ -25,7 +25,7 @@ int _g6_ValidateOrderOfEncodedGraph(char *graphBuff, int order);
 int _g6_ValidateGraphEncoding(char *graphBuff, const int order, const size_t numChars);
 
 /* Private functions */
-size_t _g6_GetMaxEdgeCount(int);
+size_t _g6_GetMaxEdgeCount(int order);
 
 size_t _g6_GetMaxEdgeCount(int order)
 {

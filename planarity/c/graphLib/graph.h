@@ -67,7 +67,11 @@ extern "C"
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink);
     int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink,
                       int v, int e_v, int e_vlink);
+    int gp_DynamicInsertEdge(graphP theGraph, int u, int e_u, int e_ulink,
+                             int v, int e_v, int e_vlink);
     int gp_DeleteEdge(graphP theGraph, int e);
+    int gp_ClearEdgeDirectionFlags(graphP theGraph);
+    int gp_TransposeDirectedGraph(graphP theGraph);
 
     // Intermediate graph structure manipulators
     void gp_HideEdge(graphP theGraph, int e);
@@ -89,6 +93,7 @@ extern "C"
         Bits 16-23 reserved for Planarity-Related
         bits 24-31 reserved for future expansion
 */
+#define GRAPHFLAGS_DIRECTEDEDGEDETECTED 1
 #define gp_GetGraphFlags(theGraph) ((theGraph)->graphFlags)
 
     // For graph embedding methods and declarations, see graphPlanarity.h
@@ -293,7 +298,7 @@ extern "C"
 #define gp_SetAdjacentEdge(theGraph, e, theLink, newEdge) (theGraph->E[e].link[theLink] = newEdge)
 
 ////////////////////////////////////////////
-// gp_IsEdge() helps detect the end of an 
+// gp_IsEdge() helps detect the end of an
 // adjacency list iteration loop
 ////////////////////////////////////////////
 #ifdef USE_1BASEDARRAYS
@@ -325,25 +330,37 @@ extern "C"
 #define gp_ClearEdgeMarked(theGraph, e) (theGraph->E[e].flags &= ~EDGE_MARKED_MASK)
 #define gp_SetEdgeMarked(theGraph, e) (theGraph->E[e].flags |= EDGE_MARKED_MASK)
 
-// The edge type is defined by bits 2-4, 4+8+16=28
-#define EDGE_TYPE_MASK 28
-
-// Call gp_GetEdgeType(), then compare to one of these four possibilities
-// EDGE_TYPE_CHILD - edge record points to a neighboring DFS child
-// EDGE_TYPE_FORWARD - edge record points to a DFS descendant, not a DFS child
-// EDGE_TYPE_PARENT - edge record points to the DFS parent
-// EDGE_TYPE_BACK - edge record points to a DFS ancestor, not the DFS parent
-// NOTE: A parent/child tree edge has bit 3 (8) set, forward/back edges do not
-#define EDGE_TYPE_CHILD 28
-#define EDGE_TYPE_FORWARD 20
-#define EDGE_TYPE_PARENT 12
-#define EDGE_TYPE_BACK 4
+// The edge type is defined by bits 2-4 and 8, 4+8+16+256=284
+// Bit 2 set means the edge record neighbor field indicates a parent (in a
+//       tree edge) or ancestor (in a "back" edge, aka a cotree edge)
+// Bit 3 set means edge record is part of a "tree" edge whose endpoints share
+//       the direct DFS parent/child relationship
+// Bit 4 set means the edge record's neighbor field indicates either a child
+//       (in a tree edge) or a descendant (in a "back" edge, aka "cotree" edge)
+// Bit 5 set means the edge record is in a "cross" edge that is neither a
+//       tree edge nor a back edge (so, bits 2, 3, and 4 are clear).
+#define EDGE_TYPE_MASK 284
 
 // EDGE_TYPE_NOTDEFINED - the edge record type has not been defined
-// EDGE_TYPE_TREE - edge record is part of a randomly generated tree
-// NOTE: EDGE_TYPE_TREE uses the same bit 3 as DFS parent and child edges above
 #define EDGE_TYPE_NOTDEFINED 0
+
+// EDGE_TYPE_TREE - gives a name to the bit indicating a tree edge
+// EDGE_TYPE_PARENT - edge record neighbor field indicates DFS parent
+// EDGE_TYPE_CHILD - edge record neighbor field indicates a DFS child
 #define EDGE_TYPE_TREE 8
+#define EDGE_TYPE_PARENT 12
+#define EDGE_TYPE_CHILD 28
+
+// EDGE_TYPE_BACK - edge record points to a DFS ancestor, not the DFS parent
+// EDGE_TYPE_FORWARD - edge record points to a DFS descendant, not a DFS child
+#define EDGE_TYPE_BACK 4
+#define EDGE_TYPE_FORWARD 20
+
+// EDGE_TYPE_CROSS - edge record and its twin represent a cross edge
+//    Bit3 is not set because the edge is not a tree edge
+//    Bits 2 and 4 are not set because the edge's endpoings are not
+//        in a parent-or-ancestor/child-or-descendant relationship
+#define EDGE_TYPE_CROSS 256
 
 #define gp_GetEdgeType(theGraph, e) (theGraph->E[e].flags & EDGE_TYPE_MASK)
 #define gp_ClearEdgeType(theGraph, e) (theGraph->E[e].flags &= ~EDGE_TYPE_MASK)
@@ -361,28 +378,39 @@ extern "C"
 #define EDGEFLAG_DIRECTION_OUTONLY 128
 #define EDGEFLAG_DIRECTION_MASK 192
 
+// NOTE: Edge 'flags' bit 8 used by EDGE_TYPE_CROSS above,
+//       so next available bit is bit 9 = 512
+
 // Returns the direction, if any, of the edge record
 #define gp_GetDirection(theGraph, e) (theGraph->E[e].flags & EDGEFLAG_DIRECTION_MASK)
 
 // A direction of 0 clears directedness. Otherwise, edge record e is set
 // to direction and e's twin edge record is set to the opposing setting.
-#define gp_SetDirection(theGraph, e, direction)                                       \
-    {                                                                                 \
-        if (direction == EDGEFLAG_DIRECTION_INONLY)                                   \
-        {                                                                             \
-            theGraph->E[e].flags |= EDGEFLAG_DIRECTION_INONLY;                        \
-            theGraph->E[gp_GetTwin(theGraph, e)].flags |= EDGEFLAG_DIRECTION_OUTONLY; \
-        }                                                                             \
-        else if (direction == EDGEFLAG_DIRECTION_OUTONLY)                             \
-        {                                                                             \
-            theGraph->E[e].flags |= EDGEFLAG_DIRECTION_OUTONLY;                       \
-            theGraph->E[gp_GetTwin(theGraph, e)].flags |= EDGEFLAG_DIRECTION_INONLY;  \
-        }                                                                             \
-        else                                                                          \
-        {                                                                             \
-            theGraph->E[e].flags &= ~EDGEFLAG_DIRECTION_MASK;                         \
-            theGraph->E[gp_GetTwin(theGraph, e)].flags &= ~EDGEFLAG_DIRECTION_MASK;   \
-        }                                                                             \
+#define gp_SetDirection(theGraph, e, direction)                                                   \
+    {                                                                                             \
+        if (direction == EDGEFLAG_DIRECTION_INONLY)                                               \
+        {                                                                                         \
+            theGraph->E[e].flags |= EDGEFLAG_DIRECTION_INONLY;                                    \
+            theGraph->E[gp_GetTwin(theGraph, e)].flags |= EDGEFLAG_DIRECTION_OUTONLY;             \
+            if (gp_GetNeighbor(theGraph, e) != gp_GetNeighbor(theGraph, gp_GetTwin(theGraph, e))) \
+            {                                                                                     \
+                theGraph->graphFlags |= GRAPHFLAGS_DIRECTEDEDGEDETECTED;                          \
+            }                                                                                     \
+        }                                                                                         \
+        else if (direction == EDGEFLAG_DIRECTION_OUTONLY)                                         \
+        {                                                                                         \
+            theGraph->E[e].flags |= EDGEFLAG_DIRECTION_OUTONLY;                                   \
+            theGraph->E[gp_GetTwin(theGraph, e)].flags |= EDGEFLAG_DIRECTION_INONLY;              \
+            if (gp_GetNeighbor(theGraph, e) != gp_GetNeighbor(theGraph, gp_GetTwin(theGraph, e))) \
+            {                                                                                     \
+                theGraph->graphFlags |= GRAPHFLAGS_DIRECTEDEDGEDETECTED;                          \
+            }                                                                                     \
+        }                                                                                         \
+        else                                                                                      \
+        {                                                                                         \
+            theGraph->E[e].flags &= ~EDGEFLAG_DIRECTION_MASK;                                     \
+            theGraph->E[gp_GetTwin(theGraph, e)].flags &= ~EDGEFLAG_DIRECTION_MASK;               \
+        }                                                                                         \
     }
 
 // Iterate through all edges with gp_LowerBoundEdges, gp_UpperBoundEdges, and gp_EdgeInUse
@@ -415,7 +443,7 @@ extern "C"
 
 // This value is returned by gp_AddEdge() and gp_InsertEdge() if adding or inserting
 // the edge would exceed the edge capacity limit. The limit can be increased by
-// calling gp_EnsureEdgeCapacity(), or by calling gp_DynamicAddEdge().
+// calling gp_EnsureEdgeCapacity(), gp_DynamicAddEdge(), or gp_DynamicInsertEdge().
 #define AT_EDGE_CAPACITY_LIMIT -1
 
 // A bounds-checking version of gp_IsEdge() for DEBUG mode compilation
@@ -434,7 +462,7 @@ extern "C"
     typedef struct stackStruct stackStruct;
     typedef stackStruct *stackP;
 
-    // Declaration of package private data types for extending the base Graph class 
+    // Declaration of package private data types for extending the base Graph class
     // with subclasses having data members and function overloads
     typedef struct graphExtensionStruct graphExtensionStruct;
     typedef graphExtensionStruct *graphExtensionP;
@@ -463,9 +491,9 @@ extern "C"
                 extensions: an object-oriented hierarchy of graph classes is implemented
                             manually as a list of extensions for data of any subclasses
                             with which a graph has been extended.
-                extensionLookupTable: if not NULL, keeps an array of pointers to the 
+                extensionLookupTable: if not NULL, keeps an array of pointers to the
                                       extensions indexed by ID for constant-time lookup.
-                functions: object-oriented class hierarchies includes virtual function 
+                functions: object-oriented class hierarchies includes virtual function
                            overloading, which is provided by this function pointer table.
 
                 privateData: pointer to a package private data structure that can be
@@ -487,7 +515,7 @@ extern "C"
         // Used by base Graph class and its subclasses
         stackP theStack;
 
-        // Provides ability to subclass the base Graph, 
+        // Provides ability to subclass the base Graph,
         // including virtual function overloads by subclasses
         graphExtensionP extensions;
         graphExtensionP *extensionLookupTable;

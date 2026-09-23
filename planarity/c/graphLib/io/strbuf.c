@@ -5,9 +5,11 @@ See the LICENSE.TXT file for licensing information.
 */
 
 #include "../lowLevelUtils/appconst.h"
+#include "../lowLevelUtils/apiutils.h"
 #include "strbuf.h"
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
 
 /********************************************************************
  sb_New()
@@ -20,7 +22,7 @@ strBufP sb_New(int capacity)
 {
     strBufP theStrBuf;
 
-    if (capacity < 0)
+    if (capacity < 0 || capacity == INT_MAX)
         return NULL;
 
     theStrBuf = (strBufP)malloc(sizeof(strBuf));
@@ -182,30 +184,43 @@ void sb_ReadSkipInteger(strBufP theStrBuf)
  ********************************************************************/
 int sb_ConcatString(strBufP theStrBuf, char const *s)
 {
-    int slen = s == NULL ? 0 : strlen(s);
+    // Switched to size_t to fix int overflow and also warnings on 64-bit builds
+    size_t strLen = s == NULL ? 0 : strlen(s);
 
-    if (slen == 0)
+    if (strLen == 0)
         return OK;
 
     if (theStrBuf == NULL || theStrBuf->buf == NULL)
         return NOTOK;
 
-    if (theStrBuf->size + slen > theStrBuf->capacity)
-    {
-        int newLen = theStrBuf->size + slen > 2 * theStrBuf->capacity ? theStrBuf->size + slen : 2 * theStrBuf->capacity;
-        char *newBuf = (char *)malloc((newLen + 1) * sizeof(char));
+    if (theStrBuf->size + strLen > INT_MAX)
+        return NOTOK;
 
+    if ((size_t)theStrBuf->size + strLen > (size_t)theStrBuf->capacity)
+    {
+        size_t newLen = 0, doubleCapacity = 0;
+        char *newBuf = NULL;
+
+        doubleCapacity = ((size_t)theStrBuf->capacity) << 1;
+        newLen = theStrBuf->size + strLen;
+        if (newLen < doubleCapacity && (doubleCapacity + 1) <= INT_MAX)
+            newLen = doubleCapacity;
+
+        if ((newLen + 1) > INT_MAX)
+            return NOTOK;
+
+        newBuf = (char *)malloc((newLen + 1) * sizeof(char));
         if (newBuf == NULL)
             return NOTOK;
 
         strcpy(newBuf, theStrBuf->buf);
         free(theStrBuf->buf);
         theStrBuf->buf = newBuf;
-        theStrBuf->capacity = newLen;
+        theStrBuf->capacity = (int)newLen;
     }
 
     strcpy(theStrBuf->buf + theStrBuf->size, s);
-    theStrBuf->size += slen;
+    theStrBuf->size += (int)strLen;
 
     return OK;
 }
@@ -222,6 +237,21 @@ int sb_ConcatChar(strBufP theStrBuf, char ch)
     s[0] = ch;
     s[1] = '\0';
     return sb_ConcatString(theStrBuf, s);
+}
+
+/********************************************************************
+ sb_ConcatInt()
+ Converts theInt into a string, then invokes sb_ConcatString().
+ Returns Same as sb_ConcatString()
+ ********************************************************************/
+int sb_ConcatInt(strBufP theStrBuf, int theInt)
+{
+    char numberStr[MAXCHARSFOR32BITINT + 1];
+
+    if (sprintf(numberStr, "%d", theInt) < 1)
+        return NOTOK;
+
+    return sb_ConcatString(theStrBuf, numberStr);
 }
 
 /********************************************************************

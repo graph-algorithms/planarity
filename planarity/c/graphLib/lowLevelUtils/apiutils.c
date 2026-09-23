@@ -81,6 +81,33 @@ void gp_LogErrorMessage(int lineNum, const char *srcFileName, const char *messag
 }
 
 /********************************************************************
+ gp_GetRandomNumber()
+ This function generates a random number between NMin and NMax
+ inclusive.  It assumes that the caller has called srand().
+ It calls rand(), but before truncating to the proper range,
+ it adds the high bits of the rand() result into the low bits.
+ The result of this is that the randomness appearing in the
+ truncated bits also has an affect on the non-truncated bits.
+ ********************************************************************/
+
+int gp_GetRandomNumber(int NMin, int NMax)
+{
+    unsigned int N = (unsigned int)rand();
+
+    if (NMax < NMin)
+        return NMin;
+
+    /* Folded in unsigned arithmetic because the additions below overflow a
+       signed int for rand() results just below INT_MAX. */
+
+    N += ((N & 0xFFFF0000) >> 16);
+    N += ((N & 0x0000FF00) >> 8);
+    N %= (unsigned int)(NMax - NMin + 1);
+    return (int)(N & 0x7FFFFFFF) + NMin;
+}
+
+
+/********************************************************************
  debugNOTOK()
 
  This function returns the literal value of NOTOK. In debug mode,

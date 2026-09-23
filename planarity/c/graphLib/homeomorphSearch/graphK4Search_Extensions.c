@@ -33,6 +33,7 @@ void _K4Search_InitEdgeRec(K4SearchContext *context, int e);
 /* Forward declarations of overloading functions */
 int _K4Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R);
 int _K4Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult);
+int _K4Search_DeleteEdge(graphP theGraph, int e);
 int _K4Search_CheckEmbeddingIntegrity(graphP theGraph, graphP origGraph);
 int _K4Search_CheckObstructionIntegrity(graphP theGraph, graphP origGraph);
 
@@ -44,7 +45,7 @@ int _K4Search_EnsureEdgeCapacity(graphP theGraph, int requiredEdgeCapacity);
 
 void *_K4Search_DupContext(void *pContext, void *theGraph);
 int _K4Search_CopyData(void *dstContext, void *srcContext);
-void _K4Search_FreeContext(void *);
+void _K4Search_FreeContext(void *pContext);
 
 /****************************************************************************
  * K4SEARCH_ID - the variable used to hold the integer identifier for this
@@ -65,7 +66,7 @@ int gp_ExtendWith_K4Search(graphP theGraph)
 {
     K4SearchContext *context = NULL;
 
-    if (theGraph == NULL || gp_GetN(theGraph) <= 0)
+    if (theGraph == NULL)
         return NOTOK;
 
     // If the K4 search feature has already been attached to the graph,
@@ -105,6 +106,7 @@ int gp_ExtendWith_K4Search(graphP theGraph)
     context->functions.fpEnsureVertexCapacity = _K4Search_EnsureVertexCapacity;
     context->functions.fpResetGraphStorage = _K4Search_ResetGraphStorage;
     context->functions.fpEnsureEdgeCapacity = _K4Search_EnsureEdgeCapacity;
+    context->functions.fpDeleteEdge = _K4Search_DeleteEdge;
 
     _K4Search_ClearStructures(context);
 
@@ -522,6 +524,28 @@ int _K4Search_EmbedPostprocess(graphP theGraph, int v, int edgeEmbeddingResult)
     }
 
     return NOTOK;
+}
+
+/********************************************************************
+ Edge deletion that occurs during a reduction or restoration of a
+ reduction is augmented by clearing the K_4 search-specific
+ data members.  This augmentation is not needed in the delete edge
+ operations that happen once a K_4 homeomorph has been found and
+ marked for isolation.
+ ********************************************************************/
+
+int _K4Search_DeleteEdge(graphP theGraph, int e)
+{
+    K4SearchContext *context = NULL;
+    gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
+
+    if (context == NULL)
+        return NOTOK;
+
+    _K4Search_InitEdgeRec(context, e);
+    _K4Search_InitEdgeRec(context, gp_GetTwin(theGraph, e));
+
+    return context->functions.fpDeleteEdge(theGraph, e);
 }
 
 /********************************************************************

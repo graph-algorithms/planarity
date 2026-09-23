@@ -8,6 +8,7 @@ See the LICENSE.TXT file for licensing information.
 #include <string.h>
 
 #include "../lowLevelUtils/appconst.h"
+#include "../graph.private.h"
 
 #include "graphExtensions.private.h"
 #include "graphExtensions.h"
@@ -95,15 +96,11 @@ static int moduleIDGenerator = 0;
      if your feature is attached but not active or if your feature
      augments the base behavior rather than replacing it.
 
-     a) If extra data must be maintained at the graph, vertex or edge 
-        levels, then fpEnsureVertexCapacity(), fpEnsureEdgeCapacity(), 
-        and fpResetGraphStorage() must be overloaded.
+     a) If extra data must be maintained at the graph, vertex or edge
+        levels, then fpEnsureVertexCapacity(), fpEnsureEdgeCapacity(),
+        fpDeleteEdge(), and fpResetGraphStorage() must be overloaded.
 
-     b) For a parallel array of edge data, the extension must currently
-        provides its own _Feature_DeleteEdge() that initializes its edge
-        extension data along with calling gp_DeleteEdge().
-
-     c) If any data must be persisted in the file format, then overloads
+     b) If any data must be persisted in the file format, then overloads
         of fpReadPostprocess() and fpWritePostprocess() are needed.
 
   7) Define internal functions for _Feature_ClearStructures(),
@@ -182,7 +179,12 @@ int gp_AddExtension(graphP theGraph,
 
     if (theGraph == NULL || pModuleID == NULL ||
         context == NULL || copyData == NULL || freeContext == NULL ||
-        functions == NULL)
+        functions == NULL || theGraph->extensionLookupTable == NULL)
+    {
+        return NOTOK;
+    }
+
+    if (*pModuleID < 0 || *pModuleID > MAXNUMSUPPORTEDEXTENSIONS)
     {
         return NOTOK;
     }
@@ -196,6 +198,10 @@ int gp_AddExtension(graphP theGraph,
     // Assign a unique ID to the extension if it does not already have one
     if (*pModuleID == 0)
     {
+        if (moduleIDGenerator >= MAXNUMSUPPORTEDEXTENSIONS)
+        {
+            return NOTOK;
+        }
         *pModuleID = ++moduleIDGenerator;
     }
 
@@ -218,6 +224,7 @@ int gp_AddExtension(graphP theGraph,
     // Make the new linkages
     newExtension->next = (struct graphExtensionStruct *)theGraph->extensions;
     theGraph->extensions = newExtension;
+    theGraph->extensionLookupTable[newExtension->moduleID] = newExtension;
 
     // The new extension was successfully added
     return OK;
@@ -273,32 +280,28 @@ void _OverloadFunctions(graphP theGraph, graphFunctionTableP functions)
 
 int gp_FindExtension(graphP theGraph, int moduleID, void **pContext)
 {
-    graphExtensionP first = NULL, next = NULL;
+    graphExtensionP extension = NULL;
 
     if (pContext != NULL)
     {
         *pContext = NULL;
     }
 
-    if (theGraph == NULL || moduleID == 0)
+    if (theGraph == NULL || moduleID <= 0 ||
+        moduleID > MAXNUMSUPPORTEDEXTENSIONS ||
+        theGraph->extensionLookupTable == NULL)
     {
         return FALSE;
     }
 
-    first = theGraph->extensions;
-
-    while (first != NULL)
+    extension = theGraph->extensionLookupTable[moduleID];
+    if (extension != NULL)
     {
-        next = (graphExtensionP)first->next;
-        if (first->moduleID == moduleID)
+        if (pContext != NULL)
         {
-            if (pContext != NULL)
-            {
-                *pContext = first->context;
-            }
-            return TRUE;
+            *pContext = extension->context;
         }
-        first = next;
+        return TRUE;
     }
 
     return FALSE;
@@ -342,7 +345,9 @@ int gp_RemoveExtension(graphP theGraph, int moduleID)
 {
     graphExtensionP prev = NULL, curr = NULL, next = NULL;
 
-    if (theGraph == NULL || moduleID == 0)
+    if (theGraph == NULL || moduleID <= 0 ||
+        moduleID > MAXNUMSUPPORTEDEXTENSIONS ||
+        theGraph->extensionLookupTable == NULL)
         return NOTOK;
 
     curr = theGraph->extensions;
@@ -372,6 +377,7 @@ int gp_RemoveExtension(graphP theGraph, int moduleID)
             theGraph->extensions = next;
 
         // Free the curr extension
+        theGraph->extensionLookupTable[curr->moduleID] = NULL;
         _FreeExtension(curr);
     }
 
@@ -448,7 +454,8 @@ int gp_DupExtensions(graphP dstGraph, graphP srcGraph)
 {
     graphExtensionP next = NULL, newNext = NULL, newLast = NULL;
 
-    if (srcGraph == NULL || dstGraph == NULL)
+    if (srcGraph == NULL || dstGraph == NULL ||
+        dstGraph->extensionLookupTable == NULL)
         return NOTOK;
 
     gp_FreeExtensions(dstGraph);
@@ -457,6 +464,12 @@ int gp_DupExtensions(graphP dstGraph, graphP srcGraph)
 
     while (next != NULL)
     {
+        if (next->moduleID <= 0 || next->moduleID > MAXNUMSUPPORTEDEXTENSIONS)
+        {
+            gp_FreeExtensions(dstGraph);
+            return NOTOK;
+        }
+
         if ((newNext = (graphExtensionP)malloc(sizeof(graphExtensionStruct))) == NULL)
         {
             gp_FreeExtensions(dstGraph);
@@ -471,6 +484,10 @@ int gp_DupExtensions(graphP dstGraph, graphP srcGraph)
         newNext->functions = next->functions;
         newNext->next = NULL;
 
+        // Add the new extension to the dstGraph extension lookup table
+        dstGraph->extensionLookupTable[newNext->moduleID] = newNext;
+
+        // Add the new extension to the dstGraph extensions linked list
         if (newLast != NULL)
             newLast->next = (struct graphExtensionStruct *)newNext;
         else
@@ -488,37 +505,17 @@ int gp_DupExtensions(graphP dstGraph, graphP srcGraph)
  gp_CopyExtensions()
  ********************************************************************/
 
-// This number can just be made bigger if ever needed
-#define MAXNUMSUPPORTEDEXTENSIONS 32
-
 int gp_CopyExtensions(graphP dstGraph, graphP srcGraph)
 {
     graphExtensionP dstExtension = NULL, srcExtension = NULL;
-    graphExtensionP srcExtensionIDMap[MAXNUMSUPPORTEDEXTENSIONS+1];
 
-    if (srcGraph == NULL || dstGraph == NULL)
+    if (srcGraph == NULL || dstGraph == NULL ||
+        srcGraph->extensionLookupTable == NULL ||
+        dstGraph->extensionLookupTable == NULL)
         return NOTOK;
 
     if (gp_GetN(dstGraph) != gp_GetN(srcGraph) || gp_GetN(dstGraph) == 0)
         return NOTOK;
-
-    // NULL out the pointers in the srcExtensionIDMap
-    memset(srcExtensionIDMap, 0, (MAXNUMSUPPORTEDEXTENSIONS+1)*sizeof(graphExtensionP));
-
-    // Run through the srcGraph extensions linked list and put the pointer to 
-    // each extension in the srcExtensionIDMap at the index location indicated
-    // by the extension module ID. This mapping is needed because the srcGraph
-    // may have been extended with the extensions in a different order than the
-    // dstGraph, but the moduleID for each extension is the same across graphs. 
-    srcExtension = srcGraph->extensions;
-    while (srcExtension != NULL)
-    {
-        if (srcExtension->moduleID < 0 || srcExtension->moduleID > MAXNUMSUPPORTEDEXTENSIONS)
-            return NOTOK;
-
-        srcExtensionIDMap[srcExtension->moduleID] = srcExtension;
-        srcExtension = (graphExtensionP)srcExtension->next;        
-    }
 
     // For each extension in the dstGraph, if the srcGraph has the same extension,
     // then we invoke the extension's copyData to copy from srcGraph to dstGraph.
@@ -528,7 +525,11 @@ int gp_CopyExtensions(graphP dstGraph, graphP srcGraph)
     dstExtension = dstGraph->extensions;
     while (dstExtension != NULL)
     {
-        srcExtension = srcExtensionIDMap[dstExtension->moduleID];
+        if (dstExtension->moduleID <= 0 ||
+            dstExtension->moduleID > MAXNUMSUPPORTEDEXTENSIONS)
+            return NOTOK;
+
+        srcExtension = srcGraph->extensionLookupTable[dstExtension->moduleID];
         if (dstExtension->copyData(dstExtension->context, srcExtension ? srcExtension->context : NULL) != OK)
             return NOTOK;
 
@@ -562,6 +563,10 @@ void gp_FreeExtensions(graphP theGraph)
         }
 
         theGraph->extensions = NULL;
+        if (theGraph->extensionLookupTable != NULL)
+        {
+            memset(theGraph->extensionLookupTable, 0, (MAXNUMSUPPORTEDEXTENSIONS+1)*sizeof(graphExtensionP));
+        }
         _InitFunctionTable(theGraph);
     }
 }

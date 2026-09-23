@@ -715,8 +715,8 @@ cdef class PGraph:
     ) -> None:
         """Writes the graph to ``path``.
 
-        Supports writing in formats: ``WRITE_ADJLIST``, ``WRITE_ADJMATRIX``, and
-        ``WRITE_G6``.
+        Supports writing in formats: ``WRITE_ADJLIST``, ``WRITE_ADJMATRIX``,
+        ``WRITE_G6``, and ``WRITE_GRAPHML``.
 
         Args:
             path (str): Path to which to write graph. Defaults to ``stdout``
