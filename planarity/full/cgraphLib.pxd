@@ -182,7 +182,7 @@ cdef extern from "../c/graphLib/io/graphIO.h":
     int gp_Write(graphP theGraph, char *fileName, int writeMode)
     int gp_WriteToString(graphP theGraph, char **pOutputStr, int writeMode)
 
-    int WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_DEBUGINFO, WRITE_G6
+    int WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_DEBUGINFO, WRITE_G6, WRITE_GRAPHML
 
     int GRAPHFLAGS_ZEROBASEDIO
 

@@ -31,6 +31,7 @@ from planarity import (
     WRITE_ADJLIST,
     WRITE_ADJMATRIX,
     WRITE_G6,
+    WRITE_GRAPHML,
     Graph,
 )
 
@@ -65,7 +66,7 @@ def specific_graph(
         outdir: parent directory under which to make output directory
         command: algorithm command specifier
         output_mode: the desired output format, i.e., WRITE_ADJLIST,
-            WRITE_ADJMATRIX, or WRITE_G6
+            WRITE_ADJMATRIX, WRITE_G6, or WRITE_GRAPHML
     
     Returns:
         OK, NONEMBEDDABLE, or NOTOK based on the embed_result
@@ -78,7 +79,7 @@ def specific_graph(
     """
     gp_SetQuietMode(QUIETMODE_NONE)
 
-    if output_mode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6):
+    if output_mode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6, WRITE_GRAPHML):
         raise ValueError(
             f"Invalid output_mode = {output_mode}"
         )
@@ -232,8 +233,8 @@ if __name__ == "__main__":
         type=str,
         required=False,
         default="a",
-        help="Desired graph output format: .g6 (g), Adjacency List (a), or "
-            "Adjacency Matrix (m). Defaults to 'a'\n",
+        help="Desired graph output format: .g6 (g), .graphml (x), "
+            "Adjacency List (a), or Adjacency Matrix (m). Defaults to 'a'\n",
     )
 
     args = parser.parse_args()
@@ -245,14 +246,15 @@ if __name__ == "__main__":
     ] if args.commands else PLANARITY_ALGORITHM_SPECIFIERS()
 
     output_mode = (WRITE_ADJLIST if args.mode == "a"
-                         else (WRITE_ADJMATRIX if args.mode == "m" 
+                         else (WRITE_ADJMATRIX if args.mode == "m"
                                else (WRITE_G6 if args.mode == "g"
-                                     else None)))
+                                     else (WRITE_GRAPHML if args.mode == "x"
+                                        else None))))
 
     if not output_mode:
         raise ValueError(
-            f"Invalid argument for mode = {args.mode}; only accepted values "
-            "are g (.g6), a (Adjacency List), or m (Adjacency Matrix)"
+            f"Invalid argument for mode = {args.mode}; only accepted values are "
+            "g (.g6), x (.graphml), a (Adjacency List), or m (Adjacency Matrix)"
         )
 
     for command in commands:

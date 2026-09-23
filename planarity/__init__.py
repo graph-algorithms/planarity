@@ -53,6 +53,7 @@ from .full.graphLib import (
     WRITE_ADJLIST,
     WRITE_ADJMATRIX,
     WRITE_G6,
+    WRITE_GRAPHML,
     GRAPHFLAGS_ZEROBASEDIO,
 )
 # Surfaced from planarity/c/graphLib/planarityRelated/graphPlanarity.h
