@@ -11,6 +11,8 @@ cdef extern from "../c/graphLib/lowLevelUtils/apiutils.h":
     int gp_GetQuietMode()
     void gp_SetQuietMode(int newQuietMode)
 
+    int gp_GetRandomNumber(int NMin, int NMax)
+
 
 cdef extern from "../c/graphLib/graphLib.h":
     const char *gp_GetProjectVersionFull()
