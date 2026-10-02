@@ -72,6 +72,8 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_RestoreVertices(graphP theGraph)
 
     int gp_GetGraphFlags(graphP theGraph)
+    
+    int GRAPHFLAGS_DIRECTEDEDGEDETECTED
 
     int gp_GetFirstEdge(graphP theGraph, int v)
     int gp_GetLastEdge(graphP theGraph, int v)
@@ -226,7 +228,10 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
     int gp_ExtendWith_DFSUtils(graphP theGraph)
     int gp_Detach_DFSUtils(graphP theGraph)
 
-    int GRAPHFLAGS_EXTENDEDWITH_DFSUTILS, GRAPHFLAGS_DFSNUMBERED, GRAPHFLAGS_SORTEDBYDFI
+    int GRAPHFLAGS_EXTENDEDWITH_DFSUTILS
+    int GRAPHFLAGS_DFSNUMBERED, GRAPHFLAGS_SORTEDBYDFI, GRAPHFLAGS_LOWPOINTSCOMPUTED
+    int DFSMODE_UNDIRECTED, DFSMODE_DIRECTED
+    int GRAPHFLAGS_DFSNUMBERED_DIRECTED
 
     int gp_DepthFirstSearch(graphP theGraph)
     int gp_SortVertices(graphP theGraph)
