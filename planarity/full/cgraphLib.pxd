@@ -234,6 +234,7 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
     int GRAPHFLAGS_DFSNUMBERED_DIRECTED
 
     int gp_DepthFirstSearch(graphP theGraph)
+    int gp_DepthFirstSearchEx(graphP theGraph, unsigned mode)
     int gp_SortVertices(graphP theGraph)
     int gp_ComputeLowpoints(graphP theGraph)
     int gp_ComputeLeastAncestors(graphP theGraph)

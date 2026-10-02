@@ -681,6 +681,10 @@ cdef int gp_DepthFirstSearch(graphP theGraph):
     return cgraphLib.gp_DepthFirstSearch(theGraph)
 
 
+cdef int gp_DepthFirstSearchEx(graphP theGraph, unsigned mode):
+    return cgraphLib.gp_DepthFirstSearchEx(theGraph, mode)
+
+
 cdef int gp_SortVertices(graphP theGraph):
     return cgraphLib.gp_SortVertices(theGraph)
 

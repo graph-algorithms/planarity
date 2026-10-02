@@ -177,6 +177,7 @@ cdef int gp_ExtendWith_DFSUtils(graphP theGraph)
 cdef int gp_Detach_DFSUtils(graphP theGraph)
 
 cdef int gp_DepthFirstSearch(graphP theGraph)
+cdef int gp_DepthFirstSearchEx(graphP theGraph, unsigned mode)
 cdef int gp_SortVertices(graphP theGraph)
 cdef int gp_ComputeLowpoints(graphP theGraph)
 cdef int gp_ComputeLeastAncestors(graphP theGraph)

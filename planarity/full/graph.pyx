@@ -1925,14 +1925,16 @@ cdef class Graph:
             )
 
     def gp_DepthFirstSearch(self) -> None:
-        """Performs a depth-first search (DFS) on the graph.
+        """Performs an undirected depth-first search (DFS) on the graph.
 
         Gives vertices a value for their depth first indexes (DFIs) and DFS
         parents, and gives edges a value for their type. See ``gp_GetParent()``,
         ``gp_GetIndex()``, and ``gp_GetEdgeType()``.
 
-        This method also sets ``GRAPHFLAGS_DFSNUMBERED``. This method performs
-        ``gp_ExtendWith_DFSUtils()`` if not already done.
+        This method sets ``GRAPHFLAGS_DFSNUMBERED``. This method also begins by
+        performing ``gp_ExtendWith_DFSUtils()``, if not already done.
+
+        This method clears ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -1943,16 +1945,48 @@ cdef class Graph:
                 "gp_DepthFirstSearch() failed: unable to perform DFS on graph."
             )
 
+    def gp_DepthFirstSearchEx(self, unsigned mode) -> None:
+        """Performs a depth-first search (DFS) on the graph, based on the ``mode``.
+
+        Gives vertices a value for their depth-first indexes (DFIs) and DFS
+        parents, and gives edges a value for their type. See ``gp_GetParent()``,
+        ``gp_GetIndex()``, and ``gp_GetEdgeType()``. The settings given depend
+        on whether an undirected or directed depth-first search was performed.
+        Upon completion this method sets either ``GRAPHFLAGS_DFSNUMBERED`` or 
+        ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``, depending on the ``mode``. The
+        undirected DFS is performed by ``gp_DepthFirstSearch()``.
+
+        This method also begins by performing ``gp_ExtendWith_DFSUtils()``,
+        if not already done.
+
+        Args:
+            mode: ``DFSMODE_DIRECTED`` or ``DFSMODE_UNDIRECTED``.
+
+        Raises:
+            RuntimeError: if the C-layer ``graphLib`` version of this function
+                fails.
+        """
+        if graphLib.gp_DepthFirstSearchEx(self._theGraph, mode) != OK:
+            raise RuntimeError(
+                "gp_DepthFirstSearchEx() failed."
+            )
+
     def gp_SortVertices(self) -> None:
         """Sorts the vertices in ascending order according to their DFIs.
 
-        This method invokes ``gp_DepthFirstSearch()``, if it has not already
-        been done. This method sets ``GRAPHFLAGS_SORTEDBYDFI``. A second
-        invocation of this method restores vertices to their original order and
-        clears ``GRAPHFLAGS_SORTEDBYDFI``. When ``GRAPHFLAGS_SORTEDBYDFI`` is
-        set, the index values of all vertices are changed from their DFIs to
-        their original index positions in vertex storage.
+        This method rearranges the vertices according to their depth-first 
+        index values, in linear time. The DFIs are set based on a prior call
+        of ``gp_DepthFirstSearch()`` or ``gp_DepthFirstSearchEx()``, which
+        set ``GRAPHFLAGS_DFSNUMBERED`` or ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``.
+        If neither graph flag is set, then this method will begin by invoking 
+        ``gp_DepthFirstSearch()``.
 
+        This method sets ``GRAPHFLAGS_SORTEDBYDFI`` and replaces the DFIs
+        in the index fields of vertices with their original array index 
+        positions prior to sorting. A second invocation of this method 
+        restores vertices to their original order, restores the DFI values
+        into the vertex index fields, and clears ``GRAPHFLAGS_SORTEDBYDFI``. 
+        
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
@@ -1967,6 +2001,7 @@ cdef class Graph:
 
         This method first performs ``gp_DepthFirstSearch()`` and
         ``gp_SortVertices()`` if they have not already been done.
+        This method sets GRAPHFLAGS_LOWPOINTSCOMPUTED.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
