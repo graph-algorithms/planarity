@@ -30,6 +30,7 @@ from .full.graphLib import (
 
 # Surfaced from planarity/c/graphLib/graph.h
 from .full.graphLib import (
+    GRAPHFLAGS_DIRECTEDEDGEDETECTED,
     VERTEX_VISITED_MASK,
     VERTEX_MARKED_MASK,
     EDGE_VISITED_MASK,
