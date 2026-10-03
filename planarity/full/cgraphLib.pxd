@@ -148,6 +148,8 @@ cdef extern from "../c/graphLib/graph.h":
 
     int EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK
 
+    int EDGE_TYPE_CROSS
+
     int EDGE_TYPE_NOTDEFINED, EDGE_TYPE_TREE
 
     int gp_GetEdgeType(graphP theGraph, int e)

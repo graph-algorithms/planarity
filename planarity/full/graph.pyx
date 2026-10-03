@@ -25,6 +25,7 @@ EDGE_TYPE_CHILD = graphLib.EDGE_TYPE_CHILD
 EDGE_TYPE_FORWARD = graphLib.EDGE_TYPE_FORWARD
 EDGE_TYPE_PARENT = graphLib.EDGE_TYPE_PARENT
 EDGE_TYPE_BACK = graphLib.EDGE_TYPE_BACK
+EDGE_TYPE_CROSS = graphLib.EDGE_TYPE_CROSS
 EDGE_TYPE_TREE = graphLib.EDGE_TYPE_TREE
 EDGE_TYPE_NOTDEFINED = graphLib.EDGE_TYPE_NOTDEFINED
 
@@ -1487,7 +1488,7 @@ cdef class Graph:
         Returns:
             The edge type of ``e`` if set, i.e., ``EDGE_TYPE_NOTDEFINED``,
             ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``, ``EDGE_TYPE_PARENT``,
-            ``EDGE_TYPE_BACK``, or ``EDGE_TYPE_TREE``.
+            ``EDGE_TYPE_BACK``, ``EDGE_TYPE_CROSS``, or ``EDGE_TYPE_TREE``.
 
         Raises:
             ValueError: if ``e`` is not a valid in-use edge.
@@ -1528,7 +1529,8 @@ cdef class Graph:
             e: an in-use edge whose edge type you wish to set for the first time
                 to the given ``type``.
             type: one of ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``,
-                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, or ``EDGE_TYPE_TREE``.
+                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, 
+                ``EDGE_TYPE_CROSS``, or ``EDGE_TYPE_TREE``.
 
         Raises:
             ValueError: if ``e`` is not a valid in-use edge or if ``type`` is
@@ -1544,7 +1546,7 @@ cdef class Graph:
                 type not in
                 (
                     EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-                    EDGE_TYPE_BACK, EDGE_TYPE_TREE
+                    EDGE_TYPE_BACK, EDGE_TYPE_CROSS, EDGE_TYPE_TREE
                 )
         ):
             raise ValueError(
@@ -1559,7 +1561,8 @@ cdef class Graph:
         Args:
             e: an in-use edge whose edge type you wish to reset to ``type``.
             type: one of ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``,
-                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, or ``EDGE_TYPE_TREE``.
+                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, 
+                ``EDGE_TYPE_CROSS``, or ``EDGE_TYPE_TREE``.
 
         Raises:
             ValueError: if ``e`` is not a valid in-use edge or if ``type`` is
@@ -1575,7 +1578,7 @@ cdef class Graph:
                 type not in
                 (
                     EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT,
-                    EDGE_TYPE_BACK, EDGE_TYPE_TREE
+                    EDGE_TYPE_BACK, EDGE_TYPE_CROSS, EDGE_TYPE_TREE
                 )
         ):
             raise ValueError(
