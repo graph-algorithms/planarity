@@ -12,6 +12,8 @@ from .full.graphLib import (
 from .full.graphLib import (
     gp_GetQuietMode,
     gp_SetQuietMode,
+)
+from .full.graphLib import (
     gp_GetRandomNumber,
 )
 
@@ -110,13 +112,12 @@ from .full.graphLib import (
 from .full.graph import Graph
 from .full.g6IterationUtils import G6ReadIterator, G6WriteIterator
 
+
 # Seed the random number generator in the C library so that the
 # random number and random graph generators will produce different
 # outputs on each run of a script.
-from .full.graphLib import (
-    seed_rng,
-)
-seed_rng()
+from .full import graphLib
+getattr(graphLib, "__seed_rng")()
 
 # NOTE: In the future, we could automatically generate the version number by
 # configuring setuptools-scm, but presently this seems simpler.

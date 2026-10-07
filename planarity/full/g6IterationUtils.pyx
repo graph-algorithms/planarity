@@ -274,6 +274,17 @@ cdef class G6WriteIterator:
                 "g6_InitWriterWithFileName() in EAPS graphLib failed."
             )
 
+    def g6_SetOutputErrorFlag(self) -> None:
+        """Sets the writer's output error flag to prevent further operation.
+
+        .. Note::
+            This method ensures that when an error is encountered (either by the
+            writer or during some process that outputs graphs using the writer),
+            we clean up any output. See
+            `EAPS PR #313 <(https://github.com/graph-algorithms/edge-addition-planarity-suite/pull/313>`__
+        """
+        graphLib.g6_SetOutputErrorFlag(self._g6WriteIterator)
+
     def g6_WriteGraph(self) -> None:
         """Writes a ``G6``-encoded graph to the output source.
 

@@ -14,33 +14,63 @@ from planarity.full import graphLib
 
 
 OK = graphLib.OK
-NONEMBEDDABLE = graphLib.NONEMBEDDABLE
 NOTOK = graphLib.NOTOK
-
 TRUE = graphLib.TRUE
 FALSE = graphLib.FALSE
 NIL = graphLib.NIL
 
 GRAPHFLAGS_DIRECTEDEDGEDETECTED = graphLib.GRAPHFLAGS_DIRECTEDEDGEDETECTED
 
-EDGE_TYPE_CHILD = graphLib.EDGE_TYPE_CHILD
-EDGE_TYPE_FORWARD = graphLib.EDGE_TYPE_FORWARD
-EDGE_TYPE_PARENT = graphLib.EDGE_TYPE_PARENT
-EDGE_TYPE_BACK = graphLib.EDGE_TYPE_BACK
-EDGE_TYPE_CROSS = graphLib.EDGE_TYPE_CROSS
-EDGE_TYPE_TREE = graphLib.EDGE_TYPE_TREE
+VERTEX_VISITED_MASK = graphLib.VERTEX_VISITED_MASK
+VERTEX_MARKED_MASK = graphLib.VERTEX_MARKED_MASK
+
+EDGE_VISITED_MASK = graphLib.EDGE_VISITED_MASK
+EDGE_MARKED_MASK = graphLib.EDGE_MARKED_MASK
+
+EDGE_TYPE_MASK = graphLib.EDGE_TYPE_MASK
 EDGE_TYPE_NOTDEFINED = graphLib.EDGE_TYPE_NOTDEFINED
+EDGE_TYPE_TREE = graphLib.EDGE_TYPE_TREE
+EDGE_TYPE_PARENT = graphLib.EDGE_TYPE_PARENT
+EDGE_TYPE_CHILD = graphLib.EDGE_TYPE_CHILD
+EDGE_TYPE_BACK = graphLib.EDGE_TYPE_BACK
+EDGE_TYPE_FORWARD = graphLib.EDGE_TYPE_FORWARD
+EDGE_TYPE_CROSS = graphLib.EDGE_TYPE_CROSS
+
+EDGEFLAG_INVERTED_MASK = graphLib.EDGEFLAG_INVERTED_MASK
 
 EDGEFLAG_DIRECTION_INONLY = graphLib.EDGEFLAG_DIRECTION_INONLY
 EDGEFLAG_DIRECTION_OUTONLY = graphLib.EDGEFLAG_DIRECTION_OUTONLY
+EDGEFLAG_DIRECTION_MASK = graphLib.EDGEFLAG_DIRECTION_MASK
 
+DEFAULT_EDGE_CAPACITY_FACTOR = graphLib.DEFAULT_EDGE_CAPACITY_FACTOR
 AT_EDGE_CAPACITY_LIMIT = graphLib.AT_EDGE_CAPACITY_LIMIT
+
 
 WRITE_ADJLIST = graphLib.WRITE_ADJLIST
 WRITE_ADJMATRIX = graphLib.WRITE_ADJMATRIX
 WRITE_G6 = graphLib.WRITE_G6
 WRITE_GRAPHML = graphLib.WRITE_GRAPHML
 
+GRAPHFLAGS_ZEROBASEDIO = graphLib.GRAPHFLAGS_ZEROBASEDIO
+
+
+DFSUTILS_NAME = graphLib.DFSUTILS_NAME
+GRAPHFLAGS_EXTENDEDWITH_DFSUTILS = graphLib.GRAPHFLAGS_EXTENDEDWITH_DFSUTILS
+
+GRAPHFLAGS_DFSNUMBERED = graphLib.GRAPHFLAGS_DFSNUMBERED
+GRAPHFLAGS_SORTEDBYDFI = graphLib.GRAPHFLAGS_SORTEDBYDFI
+GRAPHFLAGS_LOWPOINTSCOMPUTED = graphLib.GRAPHFLAGS_LOWPOINTSCOMPUTED
+
+DFSMODE_UNDIRECTED = graphLib.DFSMODE_UNDIRECTED
+DFSMODE_DIRECTED = graphLib.DFSMODE_DIRECTED
+
+GRAPHFLAGS_DFSNUMBERED_DIRECTED = graphLib.GRAPHFLAGS_DFSNUMBERED_DIRECTED
+
+
+PLANARITY_NAME = graphLib.PLANARITY_NAME
+GRAPHFLAGS_EXTENDEDWITH_PLANARITY = graphLib.GRAPHFLAGS_EXTENDEDWITH_PLANARITY
+
+NONEMBEDDABLE = graphLib.NONEMBEDDABLE
 
 EMBEDFLAGS_PLANAR = graphLib.EMBEDFLAGS_PLANAR
 EMBEDFLAGS_DRAWPLANAR = graphLib.EMBEDFLAGS_DRAWPLANAR
@@ -48,6 +78,34 @@ EMBEDFLAGS_OUTERPLANAR = graphLib.EMBEDFLAGS_OUTERPLANAR
 EMBEDFLAGS_SEARCHFORK23 = graphLib.EMBEDFLAGS_SEARCHFORK23
 EMBEDFLAGS_SEARCHFORK33 = graphLib.EMBEDFLAGS_SEARCHFORK33
 EMBEDFLAGS_SEARCHFORK4 = graphLib.EMBEDFLAGS_SEARCHFORK4
+
+MINORTYPE_NONE = graphLib.MINORTYPE_NONE
+MINORTYPE_A = graphLib.MINORTYPE_A
+MINORTYPE_B = graphLib.MINORTYPE_B
+MINORTYPE_C = graphLib.MINORTYPE_C
+MINORTYPE_D = graphLib.MINORTYPE_D
+MINORTYPE_E = graphLib.MINORTYPE_E
+MINORTYPE_E1 = graphLib.MINORTYPE_E1
+MINORTYPE_E2 = graphLib.MINORTYPE_E2
+MINORTYPE_E3 = graphLib.MINORTYPE_E3
+MINORTYPE_E4 = graphLib.MINORTYPE_E4
+MINORTYPE_E5 = graphLib.MINORTYPE_E5
+MINORTYPE_E6 = graphLib.MINORTYPE_E6
+MINORTYPE_E7 = graphLib.MINORTYPE_E7
+
+
+OUTERPLANARITY_NAME = graphLib.OUTERPLANARITY_NAME
+GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY = (
+    graphLib.GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY
+)
+
+DRAWPLANAR_NAME = graphLib.DRAWPLANAR_NAME
+
+K23SEARCH_NAME = graphLib.K23SEARCH_NAME
+
+K33SEARCH_NAME = graphLib.K33SEARCH_NAME
+
+K4SEARCH_NAME = graphLib.K4SEARCH_NAME
 
 
 cdef class Graph:
@@ -290,7 +348,9 @@ cdef class Graph:
         """
         return graphLib.gp_GetVertexDegree(self._theGraph, v)
 
-    def gp_IsNeighborDirected(self, int u, int v, unsigned direction) -> int:
+    def gp_IsNeighborDirected(
+        self, int u, int v, unsigned int direction
+    ) -> int:
         """Checks if an edge in a given direction exists between two vertices.
 
         Args:
@@ -305,7 +365,7 @@ cdef class Graph:
         """
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
-    def gp_FindDirectedEdge(self, int u, int v, unsigned direction) -> int:
+    def gp_FindDirectedEdge(self, int u, int v, unsigned int direction) -> int:
         """Finds a directed edge between ``u`` and ``v``, if it exists.
 
         Args:
@@ -463,6 +523,38 @@ cdef class Graph:
 
         return result
 
+    def gp_DynamicInsertEdge(
+        self, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink
+    ) -> None:
+        """Inserts edge (``u``, ``v``) in specific adjacency lists positions, increasing edge capacity if needed.
+
+        Args:
+            u: index of a vertex in the graph.
+            e_u: new edge is added next to this edge in ``u``'s adjacency list.
+            e_ulink: ``0`` or ``1``; to which side of ``e_u`` to add new edge
+                (or which side of the adjacency list of ``u`` if ``e_u`` is
+                ``NIL``).
+            v: index of a vertex in the graph.
+            e_v: new edge is added next to this edge in ``v``'s adjacency list.
+            e_vlink: ``0`` or ``1``; to which side of ``e_v`` to add new edge
+                (or which side of the adjacency list of ``v`` if ``e_v`` is
+                ``NIL``).
+
+        Raises:
+            RuntimeError: if the C-layer ``graphLib`` version of this function
+                returns anything other than OK.
+        """
+        result = graphLib.gp_DynamicInsertEdge(
+            self._theGraph, u, e_u, e_ulink, v, e_v, e_vlink
+        )
+        if result != OK:
+            raise RuntimeError(
+                "gp_DynamicInsertEdge() failed: unable to insert edge (u, v) = "
+                f"({u}, {v}) adjacent to e_u = {e_u} by e_ulink = {e_ulink} in "
+                f"u's adjacency list and adjacent to e_v = {e_v} by e_vlink = "
+                f"{e_vlink} in ``v``'s adjacency list."
+            )
+
     def gp_DeleteEdge(self, int e) -> None:
         """Deletes the in-use edge with index ``e`` from the graph.
 
@@ -477,6 +569,32 @@ cdef class Graph:
         if result != OK:
             raise RuntimeError(
                 f"gp_DeleteEdge() failed: unable to delete edge e = {e}"
+            )
+
+    def gp_ClearEdgeDirectionFlags(self) -> None:
+        """Clears edge direction flags on each edge in the graph.
+
+        Raises:
+            RuntimeError: if the C-layer ``graphLib`` version of this function
+                fails.
+        """
+        if graphLib.gp_ClearEdgeDirectionFlags(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_ClearEdgeDirectionFlags() failed: unable to clear edge "
+                "direction flags on the graph."
+            )
+
+    def gp_TransposeDirectedGraph(self) -> None:
+        """Reverses every in-use directed edge in the graph.
+
+        Raises:
+            RuntimeError: if the C-layer ``graphLib`` version of this function
+                fails.
+        """
+        if graphLib.gp_TransposeDirectedGraph(self._theGraph) != OK:
+            raise RuntimeError(
+                "gp_TransposeDirectedGraph() failed: unable to reverse every "
+                "in-use directed edge."
             )
 
     def gp_HideEdge(self, int e) -> None:
@@ -591,11 +709,15 @@ cdef class Graph:
                 "hidden during an edge contraction or vertex identification."
             )
 
-    def gp_GetGraphFlags(self) -> int:
+    def gp_GetGraphFlags(self) -> unsigned:
         """Returns the graph-level flags.
 
         Returns:
-            An integer representing the graph-level flags.
+            An unsigned integer representing the graph-level flags. Use
+            bitwise-and with the following constants to determine whether the
+            given flag is set on the graph:
+
+                * **FIXME:** ENUMERATE ALL POSSIBLE VALUES
         """
         return graphLib.gp_GetGraphFlags(self._theGraph)
 
@@ -1531,7 +1653,7 @@ cdef class Graph:
             e: an in-use edge whose edge type you wish to set for the first time
                 to the given ``type``.
             type: one of ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``,
-                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, 
+                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``,
                 ``EDGE_TYPE_CROSS``, or ``EDGE_TYPE_TREE``.
 
         Raises:
@@ -1563,7 +1685,7 @@ cdef class Graph:
         Args:
             e: an in-use edge whose edge type you wish to reset to ``type``.
             type: one of ``EDGE_TYPE_CHILD``, ``EDGE_TYPE_FORWARD``,
-                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``, 
+                ``EDGE_TYPE_PARENT``, ``EDGE_TYPE_BACK``,
                 ``EDGE_TYPE_CROSS``, or ``EDGE_TYPE_TREE``.
 
         Raises:
@@ -1950,14 +2072,14 @@ cdef class Graph:
                 "gp_DepthFirstSearch() failed: unable to perform DFS on graph."
             )
 
-    def gp_DepthFirstSearchEx(self, unsigned mode) -> None:
+    def gp_DepthFirstSearchEx(self, unsigned int mode) -> None:
         """Performs a depth-first search (DFS) on the graph, based on the ``mode``.
 
         Gives vertices a value for their depth-first indexes (DFIs) and DFS
         parents, and gives edges a value for their type. See ``gp_GetParent()``,
         ``gp_GetIndex()``, and ``gp_GetEdgeType()``. The settings given depend
         on whether an undirected or directed depth-first search was performed.
-        Upon completion this method sets either ``GRAPHFLAGS_DFSNUMBERED`` or 
+        Upon completion this method sets either ``GRAPHFLAGS_DFSNUMBERED`` or
         ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``, depending on the ``mode``. The
         undirected DFS is performed by ``gp_DepthFirstSearch()``.
 
@@ -1979,19 +2101,19 @@ cdef class Graph:
     def gp_SortVertices(self) -> None:
         """Sorts the vertices in ascending order according to their DFIs.
 
-        This method rearranges the vertices according to their depth-first 
+        This method rearranges the vertices according to their depth-first
         index values, in linear time. The DFIs are set based on a prior call
         of ``gp_DepthFirstSearch()`` or ``gp_DepthFirstSearchEx()``, which
         set ``GRAPHFLAGS_DFSNUMBERED`` or ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``.
-        If neither graph flag is set, then this method will begin by invoking 
+        If neither graph flag is set, then this method will begin by invoking
         ``gp_DepthFirstSearch()``.
 
         This method sets ``GRAPHFLAGS_SORTEDBYDFI`` and replaces the DFIs
-        in the index fields of vertices with their original array index 
-        positions prior to sorting. A second invocation of this method 
+        in the index fields of vertices with their original array index
+        positions prior to sorting. A second invocation of this method
         restores vertices to their original order, restores the DFI values
-        into the vertex index fields, and clears ``GRAPHFLAGS_SORTEDBYDFI``. 
-        
+        into the vertex index fields, and clears ``GRAPHFLAGS_SORTEDBYDFI``.
+
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
@@ -2032,6 +2154,23 @@ cdef class Graph:
                 "gp_ComputeLeastAncestors() failed."
             )
 
+    def gp_CountConnectedComponents(self) -> int:
+        """Counts the number of connected components identified by DFS tree roots.
+
+        Raises:
+            RuntimeError: if the C-layer ``graphLib`` version of this function
+                fails (i.e., returns -1)
+        """
+        num_connected_components = graphLib.gp_CountConnectedComponents(
+                self._theGraph
+            )
+        if num_connected_components == -1:
+            raise RuntimeError(
+                "gp_CountConnectedComponents() failed."
+            )
+
+        return num_connected_components
+
     def gp_GetParent(self, int v) -> int:
         """Gets the DFS parent of vertex ``v``, after depth-first search.
 
@@ -2058,6 +2197,26 @@ cdef class Graph:
             )
 
         return graphLib.gp_GetParent(self._theGraph, v)
+
+    def gp_GetVisitedIndex(self, int v) -> int:
+        """Gets the visited index of the given vertex v.
+
+        Args:
+            v: a vertex in the graph whose visited index you wish to obtain.
+
+        Returns:
+            The depth-first index if the vertex has been visited, or ``NIL`` if
+            the data member has not been set, such as by directed DFS.
+
+        Raises:
+            ValueError: if ``v`` is not a valid vertex.
+        """
+        if not self.gp_IsVertex(v):
+            raise ValueError(
+                f"gp_GetVisitedIndex() failed: invalid vertex v = {v}"
+            )
+
+        return graphLib.gp_GetVisitedIndex(self._theGraph, v)
 
     def gp_GetLeastAncestor(self, int v) -> int:
         """Gets the least ancestor of vertex ``v``, after least ancestors are computed.
@@ -2132,15 +2291,7 @@ cdef class Graph:
                 f"gp_IsDFSTreeRoot() failed: invalid vertex v = {v}"
             )
 
-        # FIXME: This EAPS macro call private gp_GetVertexParent() rather than
-        # public gp_GetParent(), so we implement it at this level for now and
-        # should switch to the commented-out call-through once it is fixed.
-        #
-        # if graphLib.gp_IsDFSTreeRoot(self._theGraph, v):
-        #     return TRUE
-        #
-        # return FALSE
-        if self.gp_IsNotVertex(self.gp_GetParent(v)):
+        if graphLib.gp_IsDFSTreeRoot(self._theGraph, v):
             return TRUE
 
         return FALSE
@@ -2168,15 +2319,7 @@ cdef class Graph:
                 f"gp_IsNotDFSTreeRoot() failed: invalid vertex v = {v}"
             )
 
-        # FIXME: This EAPS macro call private gp_GetVertexParent() rather than
-        # public gp_GetParent(), so we implement it at this level for now and
-        # should switch to the commented-out call-through once it is fixed.
-        #
-        # if graphLib.gp_IsNotDFSTreeRoot(self._theGraph, v):
-        #     return TRUE
-        #
-        # return FALSE
-        if not self.gp_IsDFSTreeRoot(v):
+        if graphLib.gp_IsNotDFSTreeRoot(self._theGraph, v):
             return TRUE
 
         return FALSE
@@ -2245,26 +2388,7 @@ cdef class Graph:
                 f"R = {R} for bicomp root."
             )
 
-        # FIXME: This EAPS macro call private gp_GetVertexParent() rather than
-        # public gp_GetParent(), so we implement it at this level for now and
-        # should switch to the commented-out call-through once it is fixed.
-        # return graphLib.gp_GetVertexFromBicompRoot(self._theGraph, R)
-
-        c = self.gp_GetDFSChildFromBicompRoot(R)
-        if not self.gp_IsVertex(c):
-            raise RuntimeError(
-                "gp_GetVertexFromBicompRoot() failed: invalid DFS child c = "
-                f"{c} for bicomp root R = {R}"
-            )
-
-        bicomp_root = self.gp_GetParent(c)
-        if bicomp_root == NIL:
-            raise RuntimeError(
-                f"gp_GetVertexFromBicompRoot() failed: c = {c} should not be "
-                "the root of the DFS tree."
-            )
-
-        return bicomp_root
+        return graphLib.gp_GetVertexFromBicompRoot(self._theGraph, R)
 
     def gp_IsBicompRoot(self, int v) -> int:
         """Determines whether a non-virtual or virtual vertex is a bicomp root.
@@ -2358,7 +2482,7 @@ cdef class Graph:
                 "Failed to extend graph with Planarity structures."
             )
 
-    def gp_Embed(self, int embedFlags) -> int:
+    def gp_Embed(self, unsigned int embedFlags) -> unsigned:
         """Embeds the graph or provides a minimal subgraph obstructing embedding.
 
         Modifies the graph to be either an embedding of the original graph or a
@@ -2415,6 +2539,53 @@ cdef class Graph:
             raise RuntimeError("Failed embed result integrity check.")
 
         return check_result
+
+    def gp_GetEmbedFlags(self) -> unsigned:
+        """Gets the ``embedFlags`` of the graph.
+
+        Returns:
+            The ``embedFlags`` of the graph, which are ``0`` if
+            :py:meth:`~planarity.full.graph.Graph.gp_Embed` has not yet been
+            called. After the embedding operation has been performed, use
+            bitwise-and with the following constants to determine which
+            embedding algorithm was requested:
+
+                * ``EMBEDFLAGS_PLANAR``
+                * ``EMBEDFLAGS_DRAWPLANAR``
+                * ``EMBEDFLAGS_OUTERPLANAR``
+                * ``EMBEDFLAGS_SEARCHFORK23``
+                * ``EMBEDFLAGS_SEARCHFORK33``
+                * ``EMBEDFLAGS_SEARCHFORK4``
+        """
+        return graphLib.gp_GetEmbedFlags(self._theGraph)
+
+    def gp_GetObstructionMinorType(self) -> unsigned:
+        """Gets the obstruction type if :py:meth:`~planarity.full.graph.Graph.gp_Embed` result is ``NONEMBEDDABLE``.
+
+        Returns:
+            If the graph has been found to be nonembeddable, use bitwise-and
+            with the following constants to determine the obstruction type(s):
+
+                * ``MINORTYPE_A``
+                * ``MINORTYPE_B``
+                * ``MINORTYPE_C``
+                * ``MINORTYPE_D``
+                * ``MINORTYPE_E``
+                * ``MINORTYPE_E1``
+                * ``MINORTYPE_E2``
+                * ``MINORTYPE_E3``
+                * ``MINORTYPE_E4``
+                * ``MINORTYPE_E5``
+                * ``MINORTYPE_E6``
+                * ``MINORTYPE_E7``
+
+            Otherwise, returns ``MINORTYPE_NONE`` if the graph is embeddable or
+            if :py:meth:`~planarity.full.graph.Graph.gp_Embed` has not yet been
+            run.
+        """
+        # TODO: Do we want to check that gp_Embed() has been called (i.e. check
+        # that the embed flags have been set)
+        return graphLib.gp_GetObstructionMinorType(self._theGraph)
 
     def gp_ExtendWith_Outerplanarity(self) -> None:
         """Dynamically subclasses the graph with the ``Outerplanarity`` extension.

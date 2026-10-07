@@ -52,15 +52,18 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_FindEdge(graphP theGraph, int u, int v)
     int gp_GetVertexDegree(graphP theGraph, int v)
 
-    int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned direction)
-    int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned direction)
+    int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned int direction)
+    int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned int direction)
     int gp_GetVertexInDegree(graphP theGraph, int v)
     int gp_GetVertexOutDegree(graphP theGraph, int v)
 
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_InsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink)
+    int gp_DynamicInsertEdge(graphP theGraph, int u, int e_u, int e_ulink, int v, int e_v, int e_vlink)
     int gp_DeleteEdge(graphP theGraph, int e)
+    int gp_ClearEdgeDirectionFlags(graphP theGraph)
+    int gp_TransposeDirectedGraph(graphP theGraph)
 
     void gp_HideEdge(graphP theGraph, int e)
     void gp_RestoreEdge(graphP theGraph, int e)
@@ -71,9 +74,8 @@ cdef extern from "../c/graphLib/graph.h":
     int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
     int gp_RestoreVertices(graphP theGraph)
 
-    int gp_GetGraphFlags(graphP theGraph)
-    
     int GRAPHFLAGS_DIRECTEDEDGEDETECTED
+    unsigned int gp_GetGraphFlags(graphP theGraph)
 
     int gp_GetFirstEdge(graphP theGraph, int v)
     int gp_GetLastEdge(graphP theGraph, int v)
@@ -145,12 +147,9 @@ cdef extern from "../c/graphLib/graph.h":
     void gp_SetEdgeMarked(graphP theGraph, int e)
 
     int EDGE_TYPE_MASK
-
-    int EDGE_TYPE_CHILD, EDGE_TYPE_FORWARD, EDGE_TYPE_PARENT, EDGE_TYPE_BACK
-
-    int EDGE_TYPE_CROSS
-
-    int EDGE_TYPE_NOTDEFINED, EDGE_TYPE_TREE
+    int EDGE_TYPE_NOTDEFINED
+    int EDGE_TYPE_TREE, EDGE_TYPE_PARENT, EDGE_TYPE_CHILD
+    int EDGE_TYPE_BACK, EDGE_TYPE_FORWARD, EDGE_TYPE_CROSS
 
     int gp_GetEdgeType(graphP theGraph, int e)
     void gp_ClearEdgeType(graphP theGraph, int e)
@@ -219,6 +218,8 @@ cdef extern from "../c/graphLib/io/g6-write-iterator.h":
     int g6_InitWriterWithString(G6WriteIteratorP theG6WriteIterator, char **pOutputString)
     int g6_InitWriterWithFileName(G6WriteIteratorP theG6WriteIterator, char *outputFileName)
 
+    void g6_SetOutputErrorFlag(G6WriteIteratorP theG6WriteIterator)
+
     int g6_WriteGraph(G6WriteIteratorP theG6WriteIterator)
 
     void g6_FreeWriter(G6WriteIteratorP *pG6WriteIterator)
@@ -232,31 +233,29 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
 
     int GRAPHFLAGS_EXTENDEDWITH_DFSUTILS
     int GRAPHFLAGS_DFSNUMBERED, GRAPHFLAGS_SORTEDBYDFI, GRAPHFLAGS_LOWPOINTSCOMPUTED
-    int DFSMODE_UNDIRECTED, DFSMODE_DIRECTED
     int GRAPHFLAGS_DFSNUMBERED_DIRECTED
 
+    int DFSMODE_UNDIRECTED, DFSMODE_DIRECTED
+
     int gp_DepthFirstSearch(graphP theGraph)
-    int gp_DepthFirstSearchEx(graphP theGraph, unsigned mode)
+    int gp_DepthFirstSearchEx(graphP theGraph, unsigned int mode)
+
     int gp_SortVertices(graphP theGraph)
     int gp_ComputeLowpoints(graphP theGraph)
     int gp_ComputeLeastAncestors(graphP theGraph)
 
+    int gp_CountConnectedComponents(graphP theGraph)
     int gp_GetParent(graphP theGraph, int v)
+    int gp_GetVisitedIndex(graphP theGraph, int v)
     int gp_GetLeastAncestor(graphP theGraph, int v)
     int gp_GetLowpoint(graphP theGraph, int v)
 
-    # FIXME: We fail to link due to issue where these macros call private
-    # gp_GetVertexParent() rather than public gp_GetParent()
-    # int gp_IsDFSTreeRoot(graphP theGraph, int v)
-    # int  gp_IsNotDFSTreeRoot(graphP theGraph, int v)
+    int gp_IsDFSTreeRoot(graphP theGraph, int v)
+    int  gp_IsNotDFSTreeRoot(graphP theGraph, int v)
 
     int  gp_GetBicompRootFromDFSChild(graphP theGraph, int c)
     int  gp_GetDFSChildFromBicompRoot(graphP theGraph, int R)
-
-    # FIXME: We fail to link due to issue where this macro calls private
-    # gp_GetVertexParent() rather than public gp_GetParent()
-    # int  gp_GetVertexFromBicompRoot(graphP theGraph, int R)
-
+    int  gp_GetVertexFromBicompRoot(graphP theGraph, int R)
     int  gp_IsBicompRoot(graphP theGraph, int v)
 
     int  gp_IsSeparatedDFSChild(graphP theGraph, int theChild)
@@ -276,12 +275,12 @@ cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
 
     int NONEMBEDDABLE
 
-    int gp_GetEmbedFlags(graphP theGraph)
+    unsigned int gp_GetEmbedFlags(graphP theGraph)
 
     int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR, EMBEDFLAGS_OUTERPLANAR
     int EMBEDFLAGS_SEARCHFORK23, EMBEDFLAGS_SEARCHFORK33, EMBEDFLAGS_SEARCHFORK4
 
-    unsigned gp_GetObstructionMinorType(graphP theGraph)
+    unsigned int gp_GetObstructionMinorType(graphP theGraph)
 
     int MINORTYPE_NONE, MINORTYPE_A, MINORTYPE_B, MINORTYPE_C, MINORTYPE_D, MINORTYPE_E
     int MINORTYPE_E1, MINORTYPE_E2, MINORTYPE_E3, MINORTYPE_E4

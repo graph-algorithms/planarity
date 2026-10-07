@@ -63,8 +63,8 @@ intersphinx_mapping = {
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 napoleon_include_init_with_doc = True
-napoleon_include_private_with_doc = True
-napoleon_include_special_with_doc = True
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = False
 napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_notes = False
 napoleon_use_admonition_for_references = False
@@ -79,7 +79,12 @@ napoleon_attr_annotations = True
 
 # Warn about all missing references
 nitpicky=True
-
+nitpick_ignore = [
+    ('py:class', 'unsigned'),
+    ('py:class', 'unsigned int'),
+    ('py:class', 'uint'),
+    ('py:class', 'cython.uint'),
+]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
