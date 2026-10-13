@@ -44,3 +44,45 @@ def test_long_degree_one_label_is_still_truncated(draw):
     assert len(truncated) == 1
     assert len(truncated[0]) < len(label)
     assert set(labels) - set(truncated) == {'b', 'c', 'd'}
+
+
+
+# Issue #99: label_type selects original labels or numeric vertex indexes.
+
+LABELED_EDGES = [('a', 'c'), ('a', 'd'), ('b', 'c'), ('b', 'd'), ('c', 'd')]
+
+
+def _label_positions():
+    return {text.get_position(): text.get_text() for text in plt.gca().texts}
+
+
+@pytest.mark.parametrize('label_type', ['default', 'label'])
+def test_label_type_shows_original_labels(draw, label_type):
+    draw(LABELED_EDGES, label_type=label_type)
+    assert set(_label_positions().values()) == {'a', 'b', 'c', 'd'}
+
+
+def test_label_type_index_shows_vertex_indexes(draw):
+    draw(LABELED_EDGES, label_type='index')
+    assert set(_label_positions().values()) == {'1', '2', '3', '4'}
+
+
+def test_label_type_index_matches_mapping_and_ascii():
+    # Each vertex keeps its position; only its label text changes, and the
+    # index shown is the one mapping() assigns and ascii() draws.
+    planarity.draw(LABELED_EDGES, label_type='label')
+    by_label = _label_positions()
+    plt.close('all')
+    planarity.draw(LABELED_EDGES, label_type='index')
+    by_index = _label_positions()
+    assert by_label.keys() == by_index.keys()
+
+    mapping = planarity.mapping(LABELED_EDGES)
+    for position, label in by_label.items():
+        assert mapping[int(by_index[position])] == label
+
+    text_drawing = planarity.ascii(LABELED_EDGES)
+    for index in by_index.values():
+        assert index in text_drawing
+
+

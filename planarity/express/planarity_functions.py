@@ -103,14 +103,15 @@ def ascii(graph) -> str:
     return planarity.PGraph(graph).ascii()
 
 
-def draw(graph, labels=True, outfileName=None, **kwargs):
+def draw(graph, labels=True, outfileName=None, label_type='default',
+         **kwargs):
     """Draws the graph with Matplotlib, if it is planar.
 
     Constructs a
     :py:class:`~planarity.express.planarity.PGraph`
     and calls its
     :py:meth:`~planarity.express.planarity.PGraph.draw` method with the
-    given ``labels`` and ``outfileName``.
+    given ``labels``, ``outfileName``, and ``label_type``.
 
     Args:
         graph: A graph specified in a format that may be converted to a
@@ -120,6 +121,18 @@ def draw(graph, labels=True, outfileName=None, **kwargs):
         outfileName (:obj:`str`): File to which to output a Matplotlib
             rendering of the planar graph. If not given, then the caller can
             call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+        label_type (:obj:`str`): Selects which text identifies each vertex
+            when ``labels`` is ``True`` :
+
+            * ``'default'`` - The current behavior, which is to show the
+                original labels given when the graph was converted to a
+                :py:class:`~planarity.express.planarity.PGraph`.
+            * ``'label'`` - Show the original labels.
+            * ``'index'`` - Show the numeric vertex indexes assigned by
+                the :py:class:`~planarity.express.planarity.PGraph`
+                (see :py:meth:`mapping`). 
+
+            Defaults to ``'default'``.
         **kwargs: Optional figure-level parameters forwarded to
             :py:meth:`~planarity.express.planarity.PGraph.draw`. Supported keys
             are:
@@ -148,11 +161,13 @@ def draw(graph, labels=True, outfileName=None, **kwargs):
         RuntimeError: if any embedding operation was performed other than
             the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
         RuntimeError: if the graph is non-planar.
+        ValueError: if ``label_type`` is not one of ``'default'``,
+            ``'label'``, or ``'index'``.
     """
     pgraph = planarity.PGraph(graph)
 
     try:
-        pgraph.draw(labels, outfileName, **kwargs)
+        pgraph.draw(labels, outfileName, label_type=label_type, **kwargs)
     except ImportError as import_error:
         raise ImportError(
             "Please install missing dependencies in your current environment "

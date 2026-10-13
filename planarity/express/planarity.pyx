@@ -485,7 +485,10 @@ cdef class PGraph:
         return py_bytes.decode('ascii')
 
 
-    def draw(self, bool labels=True, str outfileName=None, **kwargs) -> None:
+    def draw(
+        self, bool labels=True, str outfileName=None,
+        str label_type='default', **kwargs
+    ) -> None:
         """Draws the graph using Matplotlib, if it is planar.
 
         If the graph is planar, then it is drawn as a figure within
@@ -502,6 +505,18 @@ cdef class PGraph:
             outfileName (:obj:`str`): File to which to output a Matplotlib
                 rendering of the planar graph. If not given, then the caller can
                 call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+            label_type (:obj:`str`): Selects which text identifies each vertex
+                when ``labels`` is ``True`` :
+
+                * ``'default'`` - The current behavior, which is to show the
+                    original labels given when the graph was converted to a
+                    :py:class:`~planarity.express.planarity.PGraph`.
+                * ``'label'`` - Show the original labels.
+                * ``'index'`` - Show the numeric vertex indexes assigned by
+                    the :py:class:`~planarity.express.planarity.PGraph`
+                    (see :py:meth:`mapping`). 
+
+                Defaults to ``'default'``.
             **kwargs: Optional figure-level parameters to apply to the
                 current figure after it is cleared. Supported keys are:
 
@@ -539,7 +554,18 @@ cdef class PGraph:
             RuntimeError: if any embedding operation was performed other than
                 the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
             RuntimeError: if the graph is non-planar.
+            ValueError: if ``label_type`` is not one of ``'default'``,
+                ``'label'``, or ``'index'``.
         """
+        ##########################################################
+        # Validate arguments before doing any embedding or drawing
+        ##########################################################
+        valid_label_types = ('default', 'label', 'index')
+        if label_type not in valid_label_types:
+            raise ValueError(
+                f"planarity: '{label_type}' is not a supported draw() "
+                f"label_type. Supported options are: {valid_label_types}."
+            )
         ######################################################
         # Run the combinatorial planar graph drawing algorithm
         ######################################################
@@ -659,7 +685,10 @@ cdef class PGraph:
             for n, (x, y) in node_labels.items():
                 xb, xe = vertex_bounds[n]
                 box_width = xe - xb
-                full_label = str(n)
+                if label_type == 'index':
+                    full_label = str(self.nodemap[n])
+                else:
+                    full_label = str(n)
 
                 text_obj = plt.text(
                     x, y, full_label,
