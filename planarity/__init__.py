@@ -113,12 +113,6 @@ from .full.graph import Graph
 from .full.g6IterationUtils import G6ReadIterator, G6WriteIterator
 
 
-# Seed the random number generator in the C library so that the
-# random number and random graph generators will produce different
-# outputs on each run of a script.
-from .full import graphLib
-getattr(graphLib, "__seed_rng")()
-
 # NOTE: In the future, we could automatically generate the version number by
 # configuring setuptools-scm, but presently this seems simpler.
 __version__ = "1.0.1"
