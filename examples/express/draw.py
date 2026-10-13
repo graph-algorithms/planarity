@@ -15,9 +15,10 @@ P = planarity.PGraph(edgelist)
 try:
     P.draw(outfileName='K5.png')
 except Exception:
-    print("The graph cannot be drawn because it is non-planar.\n")
+    print("The graph K5 cannot be drawn because it is non-planar.\n")
 
 # Remove an edge so that the graph is now planar
+print("Now removing an edge.\n")
 edgelist.remove(('Athens', 'Beijing'))
 
 # How to test graph is planar before attempting to draw: create two PGraph, one
@@ -27,24 +28,35 @@ P1 = planarity.PGraph(edgelist)
 P2 = planarity.PGraph(edgelist)
 
 # Produce mapping of nodes to their original labels
+print("Here's a mapping of labels to indexes:")
 print(P2.mapping())
+print('\n')
 
 # Make text drawing
 if P1.is_planar():
+    print("K5 minus an edge is planar. Here's a text drawing of it:\n")
     planar_rendition = P2.ascii()
     print(planar_rendition)
 
     # Output Matplotlib rendering
+    print("Rendering image to K5-minus-edge.png")
     P2.draw(outfileName='K5-minus-edge.png',
             vertex_bordercolor='black', figsize=(4, 3))
 
+    print("Rendering with indexes for labels to K5-minus-edge.indexes.png")
+    P2 = planarity.PGraph(edgelist)
+    P2.draw(outfileName='K5-minus-edge.indexes.png',
+            vertex_bordercolor='black', figsize=(4, 3), label_type='index')
+
     # Verify fig_kwargs (#87): generate 300dpi and 600dpi variants
-    P3 = planarity.PGraph(edgelist)
-    P3.draw(outfileName='K5-minus-edge-300dpi.png', dpi=300,
+    print("Rendering 300dpi version to K5-minus-edge.300dpi.png")
+    P2 = planarity.PGraph(edgelist)
+    P2.draw(outfileName='K5-minus-edge-300dpi.png', dpi=300,
             vertex_bordercolor='black', figsize=(4, 3))
 
-    P4 = planarity.PGraph(edgelist)
-    P4.draw(outfileName='K5-minus-edge-600dpi.png', dpi=600,
+    print("Rendering 600dpi version to K5-minus-edge.600dpi.png")
+    P2 = planarity.PGraph(edgelist)
+    P2.draw(outfileName='K5-minus-edge-600dpi.png', dpi=600,
             vertex_bordercolor='black', figsize=(4, 3))
 else:
     print("The graph cannot be drawn because it is non-planar.")
