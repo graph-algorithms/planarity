@@ -169,7 +169,7 @@ def gp_GetRandomNumber(int NMin, int NMax) -> int:
     return cgraphLib.gp_GetRandomNumber(NMin, NMax)
 
 
-#NOTE: Using name mangling to hide this method from users who import planarity
+# NOTE: Using name mangling to hide this method from users who import planarity
 # Confirmed that with `import planarity`, `dir(planarity)` in an IDLE session
 # didn't include this method, and with `from planarity import *`, `dir()` didn't
 # include `__seed_rng()`.

@@ -93,3 +93,9 @@ pygments_style = 'sphinx'
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+
+# Resolves error "! LaTeX Error: Too deeply nested." pertaining to unorderd
+# lists
+latex_elements = {
+    "maxlistdepth": "7",
+}

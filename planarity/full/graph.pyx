@@ -601,7 +601,8 @@ cdef class Graph:
         """Hides the edge with index ``e`` from the adjacency list of the graph.
 
         The edge still exists in edge storage but has been unhooked from the
-        adjacency lists of its endpoint vertices. See ``gp_RestoreEdge()``.
+        adjacency lists of its endpoint vertices. See
+        :py:meth:`~planarity.full.graph.Graph.gp_RestoreEdge`.
 
         Args:
             e: index of the edge in the graph to hide.
@@ -717,7 +718,15 @@ cdef class Graph:
             bitwise-and with the following constants to determine whether the
             given flag is set on the graph:
 
-                * **FIXME:** ENUMERATE ALL POSSIBLE VALUES
+                * ``GRAPHFLAGS_DIRECTEDEDGEDETECTED``
+                * ``GRAPHFLAGS_EXTENDEDWITH_DFSUTILS``
+                * ``GRAPHFLAGS_DFSNUMBERED``
+                * ``GRAPHFLAGS_SORTEDBYDFI``
+                * ``GRAPHFLAGS_LOWPOINTSCOMPUTED``
+                * ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``
+                * ``GRAPHFLAGS_ZEROBASEDIO``
+                * ``GRAPHFLAGS_EXTENDEDWITH_PLANARITY``
+                * ``GRAPHFLAGS_EXTENDEDWITH_OUTERPLANARITY``
         """
         return graphLib.gp_GetGraphFlags(self._theGraph)
 
@@ -2055,11 +2064,14 @@ cdef class Graph:
         """Performs an undirected depth-first search (DFS) on the graph.
 
         Gives vertices a value for their depth first indexes (DFIs) and DFS
-        parents, and gives edges a value for their type. See ``gp_GetParent()``,
-        ``gp_GetIndex()``, and ``gp_GetEdgeType()``.
+        parents, and gives edges a value for their type. See
+        :py:meth:`~planarity.full.graph.Graph.gp_GetParent`,
+        :py:meth:`~planarity.full.graph.Graph.gp_GetIndex`, and
+        :py:meth:`~planarity.full.graph.Graph.gp_GetEdgeType`.
 
         This method sets ``GRAPHFLAGS_DFSNUMBERED``. This method also begins by
-        performing ``gp_ExtendWith_DFSUtils()``, if not already done.
+        performing C-layer ``gp_ExtendWith_DFSUtils()``, if not already done
+        by calling :py:meth:`~planarity.full.graph.Graph.gp_ExtendWith_DFSUtils`.
 
         This method clears ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``.
 
@@ -2076,15 +2088,19 @@ cdef class Graph:
         """Performs a depth-first search (DFS) on the graph, based on the ``mode``.
 
         Gives vertices a value for their depth-first indexes (DFIs) and DFS
-        parents, and gives edges a value for their type. See ``gp_GetParent()``,
-        ``gp_GetIndex()``, and ``gp_GetEdgeType()``. The settings given depend
-        on whether an undirected or directed depth-first search was performed.
+        parents, and gives edges a value for their type. See
+        :py:meth:`~planarity.full.graph.Graph.gp_GetParent`,
+        :py:meth:`~planarity.full.graph.Graph.gp_GetIndex`, and
+        :py:meth:`~planarity.full.graph.Graph.gp_GetEdgeType`. The settings
+        given depend on whether an undirected or directed depth-first search was
+        performed.
+
         Upon completion this method sets either ``GRAPHFLAGS_DFSNUMBERED`` or
         ``GRAPHFLAGS_DFSNUMBERED_DIRECTED``, depending on the ``mode``. The
-        undirected DFS is performed by ``gp_DepthFirstSearch()``.
+        undirected DFS is performed by C-layer ``gp_DepthFirstSearch()``.
 
-        This method also begins by performing ``gp_ExtendWith_DFSUtils()``,
-        if not already done.
+        This method also begins by performing C- layer
+        ``gp_ExtendWith_DFSUtils()``, if not already done.
 
         Args:
             mode: ``DFSMODE_DIRECTED`` or ``DFSMODE_UNDIRECTED``.
@@ -2128,7 +2144,7 @@ cdef class Graph:
 
         This method first performs ``gp_DepthFirstSearch()`` and
         ``gp_SortVertices()`` if they have not already been done.
-        This method sets GRAPHFLAGS_LOWPOINTSCOMPUTED.
+        This method sets ``GRAPHFLAGS_LOWPOINTSCOMPUTED``.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -2395,7 +2411,8 @@ cdef class Graph:
 
         This method essentially just returns whether ``v`` is a virtual vertex;
         it may not be in use in a separate biconnected component. To test if a
-        bicomp root is in use, please see ``gp_VirtualVertexInUse()``.
+        bicomp root is in use, please see
+        :py:meth:`~planarity.full.graph.Graph.gp_VirtualVertexInUse`.
 
         Args:
             v: a vertex in the graph which you wish to determine is the root
