@@ -2,6 +2,7 @@
 # cython: embedsignature=True
 
 """Wrapper for Boyer's (c) planarity algorithms."""
+cimport cython
 from libc.stdlib cimport free
 
 import typing
@@ -445,23 +446,35 @@ cdef class PGraph:
 
         return edges
 
-    def ascii(self) -> str:
-        """Produces an ASCII string rendition of the graph, if it is planar.
+    # This method is deprecated and will be removed in the next major release.
+    # It is retained at this time for backwards compatibility.
+    def ascii(self, str outfileName=None) -> str | None:
+        return self._draw_as_text(outfileName)
 
-        Returns:
-            The ASCII string rendition produced by the C-layer method
-            ``gp_DrawPlanar_RenderToString()``
-
-        Raises:
-            RuntimeError: if an error was encountered by C-layer methods
-                such as ``gp_Embed()`` or ``gp_DrawPlanar_RenderToString()``.
-            RuntimeError: if a prior invocation of this method already failed.
-            RuntimeError: if any embedding operation was performed other than
-                the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
-            RuntimeError: if the graph is non-planar.
-        """
+    # This is a non-public function, so the docstring has been converted to
+    # comments so that this function will not appear in the documentation.
+    # Produces an ASCII rendition of the graph, if it is planar.
+    #
+    # Args:
+    #     outfileName (str): Optional file or stream name to which to write text.
+    #
+    # Returns:
+    #     The ASCII string produced by gp_DrawPlanar_RenderToString() when no
+    #     outfileName is given, or None after gp_DrawPlanar_RenderToFile().
+    #
+    # Raises:
+    #     ValueError: if outfileName contains an embedded NUL.
+    #     RuntimeError: if a C-layer method such as gp_Embed() or a renderer fails.
+    #     RuntimeError: if a prior invocation of the embedding workflow failed.
+    #     RuntimeError: if an incompatible embedding operation was performed.
+    #     RuntimeError: if the graph is non-planar.
+    @cython.embedsignature(False)
+    def _draw_as_text(self, str outfileName=None) -> str | None:
         cdef int status
         cdef char* s = NULL
+
+        if outfileName is not None and '\0' in outfileName:
+            raise ValueError("planarity: outfileName must not contain a NUL.")
 
         self.embed_drawplanar()
 
@@ -472,6 +485,18 @@ cdef class PGraph:
                 "encountered in embedding workflow."
             )
 
+        if outfileName is not None:
+            encoded_filename = outfileName.encode('utf-8')
+            status = cplanarity.gp_DrawPlanar_RenderToFile(
+                self.theGraph, encoded_filename
+            )
+            if status != cplanarity.OK:
+                raise RuntimeError(
+                    "planarity: Call to gp_DrawPlanar_RenderToFile() failed "
+                    f"for '{outfileName}'."
+                )
+            return None
+
         status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &s)
         if status != cplanarity.OK:
             self._embedding_workflow_status = cplanarity.NOTOK
@@ -479,45 +504,51 @@ cdef class PGraph:
                 "planarity: Call to gp_DrawPlanar_RenderToString() failed."
             )
 
-        py_bytes = s[:]
-        free(s)
+        try:
+            py_bytes = s[:]
+        finally:
+            free(s)
 
         return py_bytes.decode('ascii')
 
 
     def draw(
         self, bool labels=True, str outfileName=None,
-        str label_type='default', **kwargs
-    ) -> None:
-        """Draws the graph using Matplotlib, if it is planar.
+        str label_type='default', str output_type='image/png', **kwargs
+    ) -> str | None:
+        """Draws a planar graph as an image or text.
 
-        If the graph is planar, then it is drawn as a figure within
-        Matplotlib and then saved to ``outfileName``, if given.
+        Image output uses Matplotlib, preserving the existing drawing behavior.
+        Text output uses the C renderer with numeric vertex indexes.
 
         Args:
-            labels (bool): If ``True``, vertex labels are rendered in the
+            labels (bool): If ``True``, vertex labels are rendered in the image
                 drawing. Otherwise, vertices are rendered unlabelled in the
                 drawing. If a label's rendered width would exceed its vertex's
                 own bounding rectangle, the label is truncated with a trailing
                 ``...`` so it stays within that rectangle (see Issue #91). The
                 vertex's geometry itself is never resized to accommodate a
                 label.
-            outfileName (:obj:`str`): File to which to output a Matplotlib
-                rendering of the planar graph. If not given, then the caller can
-                call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+            outfileName (:obj:`str`): File to which to output the rendering.
+                For text, ``'stdout'`` and ``'stderr'`` select those streams.
+                Without a filename, text is returned as a string; for images,
+                the caller can call
+                :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
             label_type (:obj:`str`): Selects which text identifies each vertex
                 when ``labels`` is ``True`` :
 
-                * ``'default'`` - The current behavior, which is to show the
-                    original labels given when the graph was converted to a
-                    :py:class:`~planarity.express.planarity.PGraph`.
+                * ``'default'`` - Show the original labels for images, or the
+                    numeric vertex indexes for ``output_type='text/plain'``.
                 * ``'label'`` - Show the original labels.
                 * ``'index'`` - Show the numeric vertex indexes assigned by
                     the :py:class:`~planarity.express.planarity.PGraph`
                     (see :py:meth:`mapping`). 
 
                 Defaults to ``'default'``.
-            **kwargs: Optional figure-level parameters to apply to the
+                Text output always uses indexes; ``'label'`` is unsupported.
+            output_type (:obj:`str`): ``'image/png'`` for image rendering, or
+                ``'text/plain'`` for text rendering. Defaults to ``'image/png'``.
+            **kwargs: Optional image-only figure-level parameters to apply to the
                 current figure after it is cleared. Supported keys are:
 
                 * ``figsize`` and ``dpi`` - Control figure size and
@@ -545,9 +576,16 @@ cdef class PGraph:
                 If no options are specified, Matplotlib's defaults are used to
                 render the plot.
 
+        Returns:
+            The text rendition when ``output_type='text/plain'`` and no
+            ``outfileName`` is given, or ``None`` otherwise.
+
         Raises:
             ValueError: if an unsupported keyword argument is given.
-            ImportError: if dependencies from Matplotlib fail to be imported.
+            ValueError: if ``output_type`` is unsupported, text output is
+                requested without index labels, or a text filename contains NUL.
+            ImportError: if dependencies from Matplotlib fail to be imported
+                for image output.
             RuntimeError: if an error was encountered by C-layer methods
                 such as ``gp_Embed()``.
             RuntimeError: if a prior invocation of this method already failed.
@@ -560,12 +598,42 @@ cdef class PGraph:
         ##########################################################
         # Validate arguments before doing any embedding or drawing
         ##########################################################
+        valid_output_types = ('image/png', 'text/plain')
+        if output_type not in valid_output_types:
+            raise ValueError(
+                f"planarity: '{output_type}' is not a supported draw() "
+                f"output_type. Supported options are: {valid_output_types}."
+            )
+
         valid_label_types = ('default', 'label', 'index')
         if label_type not in valid_label_types:
             raise ValueError(
                 f"planarity: '{label_type}' is not a supported draw() "
                 f"label_type. Supported options are: {valid_label_types}."
             )
+
+        if output_type == 'text/plain':
+            if label_type == 'default':
+                label_type = 'index'
+            if label_type != 'index':
+                raise ValueError(
+                    "planarity: text/plain output requires label_type='index'."
+                )
+            if kwargs:
+                raise ValueError(
+                    "planarity: text/plain output does not support image "
+                    "drawing keyword arguments."
+                )
+            return self._draw_as_text(outfileName)
+
+        return self._draw_as_image(labels, outfileName, label_type, **kwargs)
+
+    # Non-public image renderer; public options are documented by draw().
+    @cython.embedsignature(False)
+    def _draw_as_image(
+        self, bool labels=True, str outfileName=None,
+        str label_type='default', **kwargs
+    ) -> None:
         ######################################################
         # Run the combinatorial planar graph drawing algorithm
         ######################################################

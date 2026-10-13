@@ -68,6 +68,7 @@ cdef extern from "../c/graphLib/planarityRelated/graphOuterplanarity.h":
 cdef extern from "../c/graphLib/planarityRelated/graphDrawPlanar.h":
     int gp_ExtendWith_DrawPlanar(graphP theGraph)
     int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString)
+    int gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName)
 
     int gp_DrawPlanar_GetVertexPosition(graphP theEmbedding, int v)
     int gp_DrawPlanar_GetVertexStart(graphP theEmbedding, int v)
