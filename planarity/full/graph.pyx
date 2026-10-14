@@ -2007,8 +2007,10 @@ cdef class Graph:
             ValueError: if writeMode is not ``WRITE_ADJLIST``,
                 ``WRITE_ADJMATRIX``, ``WRITE_G6``, or ``WRITE_GRAPHML``.
             RuntimeError: if the C-layer ``graphLib`` version of this function
-                fails, if the ``outputString`` is ``NULL``, or if decoding the
-                bytes to produce the Python string fails.
+                fails.
+            RuntimeError: if the ``outputString`` is ``NULL``.
+            RuntimeError: if decoding the bytes to produce the Python string
+                fails.
         """
         if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6, WRITE_GRAPHML):
             raise ValueError(
@@ -2557,6 +2559,57 @@ cdef class Graph:
 
         return check_result
 
+    def gp_CountEmbeddingFaces(self) -> int:
+        """Traverses planar embedding to count all faces.
+
+        Returns:
+            The number of faces if the traversal succeeds and the face count
+            agrees with the extended Euler formula.
+
+        Raises:
+            RuntimeError: if C-layer ``graphLib`` version of this function
+                failed.
+        """
+        result = graphLib.gp_CountEmbeddingFaces(self._theGraph)
+
+        if result == -1:
+            raise RuntimeError(
+                "Underlying gp_CountEmbeddingFaces() reported failure."
+            )
+
+        return result
+
+    def gp_CreateEmbeddingFaceList(self) -> str:
+        """Returns a YAML string containing the face list of a planar embedding.
+
+        Returns:
+            A YAML string containing one face list section per connected
+            component of a planar embedding.
+
+        Raises:
+            RuntimeError: if the C-layer ``graphLib`` version of this function
+                failed.
+            RuntimeError: if decoding the bytes to produce the Python string
+                fails.
+        """
+        cdef char* faceList = NULL
+
+        result = graphLib.gp_CreateEmbeddingFaceList(self._theGraph, &faceList)
+        if result != OK:
+            raise RuntimeError(
+                "gp_CreateEmbeddingFaceList() failed: unable to create YAML "
+                "string containing embedding face list."
+            )
+
+        face_list_bytes = faceList[:]
+        free(faceList)
+        try:
+            return face_list_bytes.decode('ascii')
+        except Exception as string_conversion_error:
+            raise RuntimeError(
+                "Failed to convert C string to Python string."
+            ) from string_conversion_error
+
     def gp_GetEmbedFlags(self) -> unsigned:
         """Gets the ``embedFlags`` of the graph.
 
@@ -2676,6 +2729,8 @@ cdef class Graph:
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
+                fails.
+            RuntimeError: if decoding the bytes to produce the Python string
                 fails.
         """
         cdef char* renditionString = NULL

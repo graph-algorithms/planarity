@@ -273,6 +273,9 @@ cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
     int gp_Embed(graphP theGraph, unsigned int embedFlags)
     int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult)
 
+    int gp_CountEmbeddingFaces(graphP theGraph)
+    int gp_CreateEmbeddingFaceList(graphP theGraph, char **pFaceList)
+
     int NONEMBEDDABLE
 
     unsigned int gp_GetEmbedFlags(graphP theGraph)

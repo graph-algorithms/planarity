@@ -212,6 +212,9 @@ cdef int gp_Detach_Planarity(graphP theGraph)
 cdef int gp_Embed(graphP theGraph, unsigned int embedFlags)
 cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult)
 
+cdef int gp_CountEmbeddingFaces(graphP theGraph)
+cdef int gp_CreateEmbeddingFaceList(graphP theGraph, char **pFaceList)
+
 cdef unsigned int gp_GetEmbedFlags(graphP theGraph)
 
 cdef unsigned int gp_GetObstructionMinorType(graphP theGraph)

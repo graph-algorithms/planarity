@@ -791,6 +791,14 @@ cdef int gp_TestEmbedResultIntegrity(
     )
 
 
+cdef int gp_CountEmbeddingFaces(graphP theGraph):
+    return cgraphLib.gp_CountEmbeddingFaces(theGraph)
+
+
+cdef int gp_CreateEmbeddingFaceList(graphP theGraph, char **pFaceList):
+    return cgraphLib.gp_CreateEmbeddingFaceList(theGraph, pFaceList)
+
+
 cdef unsigned int gp_GetEmbedFlags(graphP theGraph):
     return cgraphLib.gp_GetEmbedFlags(theGraph)
 
