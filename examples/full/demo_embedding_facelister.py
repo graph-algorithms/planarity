@@ -10,23 +10,20 @@ Functions:
         infile: Path,
         outdir: Optional[Path],
         graph_output_mode: str,
-    ) -> None
+    ) -> int
 """
 #!/usr/bin/env python
 
 # STANDARD LIBRARY IMPORTS
 import argparse
 from pathlib import Path
-import re
 from typing import Optional
 
 # THIRD PARTY IMPORTS
 from planarity import (
     QUIETMODE_NONE,
     gp_SetQuietMode,
-    OK,
     NONEMBEDDABLE,
-    NOTOK,
     WRITE_ADJLIST,
     WRITE_ADJMATRIX,
     WRITE_G6,
@@ -38,10 +35,6 @@ from planarity import (
 # LOCAL IMPORTS
 from planarity_app_utils import (
     PLANARITY_PACKAGE_INFO,
-    PLANARITY_ALGORITHM_SPECIFIERS,
-    ALGORITHM_SPECIFIER_NAME_CORRESPONDENCE,
-    ALGORITHM_SPECIFIER_OUTPUT_CORRESPONDENCE,
-    EMBED_RESULT_NAME_CORRESPONDENCE,
     extend_graph,
 )
 
@@ -103,12 +96,6 @@ def write_embedding_facelist(
             f"Output directory '{outdir}' corresponds to a file."
         )
 
-    outdir = Path.joinpath(outdir, f"{infile.stem}")
-
-    Path.mkdir(outdir, parents=True, exist_ok=True)
-
-    outfile = Path.joinpath(outdir, f"{infile.stem}.p.out.txt")
-
     graph_for_embedding_check = Graph()
     graph_for_embedding = Graph()
 
@@ -131,8 +118,11 @@ def write_embedding_facelist(
             f"Failed embed integrity check on graph in '{infile}'."
         )
 
-    if embed_result == OK or embed_result == NONEMBEDDABLE:
-        graph_for_embedding.gp_Write(str(outfile), graph_output_mode)
+    outdir = Path.joinpath(outdir, f"{infile.stem}")
+    Path.mkdir(outdir, parents=True, exist_ok=True)
+
+    graph_outfile = Path.joinpath(outdir, f"{infile.stem}.p.out.txt")
+    graph_for_embedding.gp_Write(str(graph_outfile), graph_output_mode)
 
     if embed_result == NONEMBEDDABLE:
         print(
@@ -208,13 +198,13 @@ if __name__ == "__main__":
 
     print(PLANARITY_PACKAGE_INFO())
     mode = args.graphoutputmode
-    graph_output_mode = (WRITE_ADJLIST if mode == "a"
+    mode = (WRITE_ADJLIST if mode == "a"
                          else (WRITE_ADJMATRIX if mode == "m"
                                else (WRITE_G6 if mode == "g"
                                      else (WRITE_GRAPHML if mode == "x"
                                         else None))))
 
-    if not graph_output_mode:
+    if not mode:
         raise ValueError(
             f"Invalid argument for mode = {mode}; only accepted values are g "
             "(.g6), x (.graphml), a (Adjacency List), or m (Adjacency Matrix)."
@@ -223,7 +213,7 @@ if __name__ == "__main__":
     num_faces = write_embedding_facelist(
                                             infile=args.infile,
                                             outdir=args.outdir,
-                                            graph_output_mode=graph_output_mode,
+                                            graph_output_mode=mode,
                                     )
     if num_faces > 0:
         print(
