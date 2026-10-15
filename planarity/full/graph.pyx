@@ -349,7 +349,7 @@ cdef class Graph:
         return graphLib.gp_GetVertexDegree(self._theGraph, v)
 
     def gp_IsNeighborDirected(
-        self, int u, int v, unsigned int direction
+        self, int u, int v, int direction
     ) -> int:
         """Checks if an edge in a given direction exists between two vertices.
 
@@ -365,7 +365,7 @@ cdef class Graph:
         """
         return graphLib.gp_IsNeighborDirected(self._theGraph, u, v, direction)
 
-    def gp_FindDirectedEdge(self, int u, int v, unsigned int direction) -> int:
+    def gp_FindDirectedEdge(self, int u, int v, int direction) -> int:
         """Finds a directed edge between ``u`` and ``v``, if it exists.
 
         Args:
@@ -710,11 +710,11 @@ cdef class Graph:
                 "hidden during an edge contraction or vertex identification."
             )
 
-    def gp_GetGraphFlags(self) -> unsigned:
+    def gp_GetGraphFlags(self) -> int:
         """Returns the graph-level flags.
 
         Returns:
-            An unsigned integer representing the graph-level flags. Use
+            An integer representing the graph-level flags. Use
             bitwise-and with the following constants to determine whether the
             given flag is set on the graph:
 
@@ -2086,7 +2086,7 @@ cdef class Graph:
                 "gp_DepthFirstSearch() failed: unable to perform DFS on graph."
             )
 
-    def gp_DepthFirstSearchEx(self, unsigned int mode) -> None:
+    def gp_DepthFirstSearchEx(self, int mode) -> None:
         """Performs a depth-first search (DFS) on the graph, based on the ``mode``.
 
         Gives vertices a value for their depth-first indexes (DFIs) and DFS
@@ -2501,7 +2501,7 @@ cdef class Graph:
                 "Failed to extend graph with Planarity structures."
             )
 
-    def gp_Embed(self, unsigned int embedFlags) -> unsigned:
+    def gp_Embed(self, int embedFlags) -> int:
         """Embeds the graph or provides a minimal subgraph obstructing embedding.
 
         Modifies the graph to be either an embedding of the original graph or a
@@ -2610,7 +2610,7 @@ cdef class Graph:
                 "Failed to convert C string to Python string."
             ) from string_conversion_error
 
-    def gp_GetEmbedFlags(self) -> unsigned:
+    def gp_GetEmbedFlags(self) -> int:
         """Gets the ``embedFlags`` of the graph.
 
         Returns:
@@ -2629,7 +2629,7 @@ cdef class Graph:
         """
         return graphLib.gp_GetEmbedFlags(self._theGraph)
 
-    def gp_GetObstructionMinorType(self) -> unsigned:
+    def gp_GetObstructionMinorType(self) -> int:
         """Gets the obstruction type if :py:meth:`~planarity.full.graph.Graph.gp_Embed` result is ``NONEMBEDDABLE``.
 
         Returns:

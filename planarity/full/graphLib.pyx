@@ -283,13 +283,13 @@ cdef int gp_GetVertexDegree(graphP theGraph, int v):
 
 
 cdef int gp_IsNeighborDirected(
-    graphP theGraph, int u, int v, unsigned int direction
+    graphP theGraph, int u, int v, int direction
 ):
     return cgraphLib.gp_IsNeighborDirected(theGraph, u, v, direction)
 
 
 cdef int gp_FindDirectedEdge(
-    graphP theGraph, int u, int v, unsigned int direction
+    graphP theGraph, int u, int v, int direction
 ):
     return cgraphLib.gp_FindDirectedEdge(theGraph, u, v, direction)
 
@@ -364,7 +364,7 @@ cdef int gp_RestoreVertices(graphP theGraph):
     return cgraphLib.gp_RestoreVertices(theGraph)
 
 
-cdef unsigned int gp_GetGraphFlags(graphP theGraph):
+cdef int gp_GetGraphFlags(graphP theGraph):
     return cgraphLib.gp_GetGraphFlags(theGraph)
 
 
@@ -702,7 +702,7 @@ cdef int gp_DepthFirstSearch(graphP theGraph):
     return cgraphLib.gp_DepthFirstSearch(theGraph)
 
 
-cdef int gp_DepthFirstSearchEx(graphP theGraph, unsigned int mode):
+cdef int gp_DepthFirstSearchEx(graphP theGraph, int mode):
     return cgraphLib.gp_DepthFirstSearchEx(theGraph, mode)
 
 
@@ -779,7 +779,7 @@ cdef int gp_Detach_Planarity(graphP theGraph):
     return cgraphLib.gp_Detach_Planarity(theGraph)
 
 
-cdef int gp_Embed(graphP theGraph, unsigned int embedFlags):
+cdef int gp_Embed(graphP theGraph, int embedFlags):
     return cgraphLib.gp_Embed(theGraph, embedFlags)
 
 
@@ -799,11 +799,11 @@ cdef int gp_CreateEmbeddingFaceList(graphP theGraph, char **pFaceList):
     return cgraphLib.gp_CreateEmbeddingFaceList(theGraph, pFaceList)
 
 
-cdef unsigned int gp_GetEmbedFlags(graphP theGraph):
+cdef int gp_GetEmbedFlags(graphP theGraph):
     return cgraphLib.gp_GetEmbedFlags(theGraph)
 
 
-cdef unsigned int gp_GetObstructionMinorType(graphP theGraph):
+cdef int gp_GetObstructionMinorType(graphP theGraph):
     return cgraphLib.gp_GetObstructionMinorType(theGraph)
 
 

@@ -33,8 +33,8 @@ cdef int gp_IsNeighbor(graphP theGraph, int u, int v)
 cdef int gp_FindEdge(graphP theGraph, int u, int v)
 cdef int gp_GetVertexDegree(graphP theGraph, int v)
 
-cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, unsigned int direction)
-cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, unsigned int direction)
+cdef int gp_IsNeighborDirected(graphP theGraph, int u, int v, int direction)
+cdef int gp_FindDirectedEdge(graphP theGraph, int u, int v, int direction)
 cdef int gp_GetVertexInDegree(graphP theGraph, int v)
 cdef int gp_GetVertexOutDegree(graphP theGraph, int v)
 
@@ -55,7 +55,7 @@ cdef int gp_ContractEdge(graphP theGraph, int e)
 cdef int gp_IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
 cdef int gp_RestoreVertices(graphP theGraph)
 
-cdef unsigned int gp_GetGraphFlags(graphP theGraph)
+cdef int gp_GetGraphFlags(graphP theGraph)
 
 cdef int gp_GetFirstEdge(graphP theGraph, int v)
 cdef int gp_GetLastEdge(graphP theGraph, int v)
@@ -182,7 +182,7 @@ cdef int gp_ExtendWith_DFSUtils(graphP theGraph)
 cdef int gp_Detach_DFSUtils(graphP theGraph)
 
 cdef int gp_DepthFirstSearch(graphP theGraph)
-cdef int gp_DepthFirstSearchEx(graphP theGraph, unsigned int mode)
+cdef int gp_DepthFirstSearchEx(graphP theGraph, int mode)
 cdef int gp_SortVertices(graphP theGraph)
 cdef int gp_ComputeLowpoints(graphP theGraph)
 cdef int gp_ComputeLeastAncestors(graphP theGraph)
@@ -209,15 +209,15 @@ cdef int gp_IsNotSeparatedDFSChild(graphP theGraph, int theChild)
 cdef int gp_ExtendWith_Planarity(graphP theGraph)
 cdef int gp_Detach_Planarity(graphP theGraph)
 
-cdef int gp_Embed(graphP theGraph, unsigned int embedFlags)
+cdef int gp_Embed(graphP theGraph, int embedFlags)
 cdef int gp_TestEmbedResultIntegrity(graphP theGraph, graphP origGraph, int embedResult)
 
 cdef int gp_CountEmbeddingFaces(graphP theGraph)
 cdef int gp_CreateEmbeddingFaceList(graphP theGraph, char **pFaceList)
 
-cdef unsigned int gp_GetEmbedFlags(graphP theGraph)
+cdef int gp_GetEmbedFlags(graphP theGraph)
 
-cdef unsigned int gp_GetObstructionMinorType(graphP theGraph)
+cdef int gp_GetObstructionMinorType(graphP theGraph)
 
 
 # Surfaced from planarity/c/graphLib/planarityRelated/graphOuterplanarity.h
