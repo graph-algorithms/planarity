@@ -61,6 +61,19 @@ from .full.graphLib import (
     WRITE_GRAPHML,
     GRAPHFLAGS_ZEROBASEDIO,
 )
+
+# Surfaced from planarity/c/graphLib/graphDFSUtils.h
+from .full.graphLib import (
+    DFSUTILS_NAME,
+    GRAPHFLAGS_EXTENDEDWITH_DFSUTILS,
+    GRAPHFLAGS_DFSNUMBERED,
+    GRAPHFLAGS_SORTEDBYDFI,
+    GRAPHFLAGS_LOWPOINTSCOMPUTED,
+    GRAPHFLAGS_DFSNUMBERED_DIRECTED,
+    DFSMODE_UNDIRECTED,
+    DFSMODE_DIRECTED,
+)
+
 # Surfaced from planarity/c/graphLib/planarityRelated/graphPlanarity.h
 from .full.graphLib import (
     PLANARITY_NAME,

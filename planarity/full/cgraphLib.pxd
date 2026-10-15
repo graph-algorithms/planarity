@@ -280,7 +280,8 @@ cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
 
     int gp_GetEmbedFlags(graphP theGraph)
 
-    int EMBEDFLAGS_PLANAR, EMBEDFLAGS_DRAWPLANAR, EMBEDFLAGS_OUTERPLANAR
+    int EMBEDFLAGS_PLANAR, EMBEDFLAGS_OUTERPLANAR
+    int EMBEDFLAGS_DRAWPLANAR
     int EMBEDFLAGS_SEARCHFORK23, EMBEDFLAGS_SEARCHFORK33, EMBEDFLAGS_SEARCHFORK4
 
     int gp_GetObstructionMinorType(graphP theGraph)
