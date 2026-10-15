@@ -3,8 +3,6 @@ import planarity
 
 __all__ = [
     'kuratowski_subgraph',
-    'networkx_graph',
-    'pgraph_graph',
     ]
 
 
@@ -42,42 +40,3 @@ def kuratowski_subgraph(graph):
     pgraph = planarity.PGraph(graph)
     edges = pgraph.kuratowski_edges()
     return nx.Graph(edges)
-
-
-def networkx_graph(pgraph):
-    """Builds a :external+networkx:py:class:`networkx.Graph` from a :py:class:`~planarity.express.planarity.PGraph`.
-
-    Args:
-        pgraph: A :py:class:`~planarity.express.planarity.PGraph` to convert to
-            a A :external+networkx:py:class:`networkx.Graph`.
-
-    Returns:
-        A :external+networkx:py:class:`networkx.Graph` built from a
-        :py:class:`~planarity.express.planarity.PGraph`.
-
-    Raises:
-        ImportError: On failure to import ``NetworkX``.
-    """
-    try:
-        import networkx as nx
-    except ImportError:
-        raise ImportError("NetworkX required to convert to a networkx.Graph")
-    graph = nx.Graph()
-    graph.add_nodes_from(pgraph.nodes(include_drawplanar_vertex_info=True))
-    graph.add_edges_from(pgraph.edges(include_drawplanar_edge_info=True))
-    return graph
-
-
-def pgraph_graph(graph):
-    """Builds a :py:class:`~planarity.express.planarity.PGraph` from the graph.
-
-    Args:
-        graph: A graph specified in a format that may be converted to a
-            :py:class:`~planarity.express.planarity.PGraph`, including a
-            :external+networkx:py:class:`networkx.Graph`.
-
-    Returns:
-        A :py:class:`~planarity.express.planarity.PGraph` representing the same
-        graph as the input ``graph``.
-    """
-    return planarity.PGraph(graph)
