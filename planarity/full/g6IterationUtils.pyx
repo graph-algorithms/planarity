@@ -280,8 +280,7 @@ cdef class G6WriteIterator:
         .. Note::
             This method ensures that when an error is encountered (either by the
             writer or during some process that outputs graphs using the writer),
-            we clean up any output. See
-            `EAPS PR #313 <https://github.com/graph-algorithms/edge-addition-planarity-suite/pull/313>`__.
+            we clean up any output.
         """
         graphLib.g6_SetOutputErrorFlag(self._g6WriteIterator)
 

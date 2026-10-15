@@ -122,7 +122,7 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
         label_type (:obj:`str`): Selects which text identifies each vertex
             when ``labels`` is ``True``:
 
-            - ``'default'``: The current behaviour, which is to show the
+            - ``'default'``: The current behavior, which is to show the
                 original labels given when the graph was converted to a
                 :py:class:`~planarity.express.planarity.PGraph`.
             - ``'label'``: Show the original labels.

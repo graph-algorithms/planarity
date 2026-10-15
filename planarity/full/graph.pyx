@@ -572,7 +572,7 @@ cdef class Graph:
             )
 
     def gp_ClearEdgeDirectionFlags(self) -> None:
-        """Clears edge direction flags on each edge in the graph.
+        """Makes the graph undirected.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -581,11 +581,11 @@ cdef class Graph:
         if graphLib.gp_ClearEdgeDirectionFlags(self._theGraph) != OK:
             raise RuntimeError(
                 "gp_ClearEdgeDirectionFlags() failed: unable to clear edge "
-                "direction flags on the graph."
+                "direction flags on the graph (i.e., to make graph undirected)."
             )
 
     def gp_TransposeDirectedGraph(self) -> None:
-        """Reverses every in-use directed edge in the graph.
+        """Reverses the direction of every in-use directed edge in the graph.
 
         Raises:
             RuntimeError: if the C-layer ``graphLib`` version of this function
@@ -593,8 +593,8 @@ cdef class Graph:
         """
         if graphLib.gp_TransposeDirectedGraph(self._theGraph) != OK:
             raise RuntimeError(
-                "gp_TransposeDirectedGraph() failed: unable to reverse every "
-                "in-use directed edge."
+                "gp_TransposeDirectedGraph() failed: unable to reverse the "
+                "direction of every in-use directed edge."
             )
 
     def gp_HideEdge(self, int e) -> None:

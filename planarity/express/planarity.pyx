@@ -498,8 +498,7 @@ cdef class PGraph:
                 drawing. Otherwise, vertices are rendered unlabelled in the
                 drawing. If a label's rendered width would exceed its vertex's
                 own bounding rectangle, the label is truncated with a trailing
-                ``...`` so it stays within that rectangle (see
-                `Planarity Issue #91 <https://github.com/graph-algorithms/planarity/issues/91>`__).
+                ``...`` so it stays within that rectangle.
                 The vertex's geometry itself is never resized to accommodate a
                 label.
             outfileName (:obj:`str`): File to which to output a Matplotlib
@@ -508,7 +507,7 @@ cdef class PGraph:
             label_type (:obj:`str`): Selects which text identifies each vertex
                 when ``labels`` is ``True`` :
 
-                - ``'default'``: The current behaviour, which is to show the
+                - ``'default'``: The current behavior, which is to show the
                     original labels given when the graph was converted to a
                     :py:class:`~planarity.express.planarity.PGraph`.
                 - ``'label'``: Show the original labels.
