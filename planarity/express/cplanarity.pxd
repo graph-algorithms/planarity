@@ -47,6 +47,7 @@ cdef extern from "../c/graphLib/io/graphIO.h":
     int WRITE_G6
     int WRITE_GRAPHML
     int gp_Write(graphP theGraph, char *FileName, int Mode)
+    int gp_Read(graphP theGraph, char *fileName)
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
