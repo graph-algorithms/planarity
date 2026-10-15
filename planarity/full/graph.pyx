@@ -2653,8 +2653,6 @@ cdef class Graph:
             if :py:meth:`~planarity.full.graph.Graph.gp_Embed` has not yet been
             run.
         """
-        # TODO: Do we want to check that gp_Embed() has been called (i.e. check
-        # that the embed flags have been set)
         return graphLib.gp_GetObstructionMinorType(self._theGraph)
 
     def gp_ExtendWith_Outerplanarity(self) -> None:
