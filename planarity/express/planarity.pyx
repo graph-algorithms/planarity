@@ -2,6 +2,7 @@
 # cython: embedsignature=True
 
 """Wrapper for Boyer's (c) planarity algorithms."""
+cimport cython
 from libc.stdlib cimport free
 
 import typing
@@ -736,6 +737,86 @@ cdef class PGraph:
                 transparent=transparent,
                 facecolor='none' if transparent else fig.get_facecolor(),
             )
+
+    def read(self, str path) -> None:
+        """Populates the graph from the file at ``path``.
+
+        Supports reading in formats: adjacency list, adjacency matrix,
+        graph6, and LEDA.
+
+        The graph's contents are replaced only if the file is read
+        successfully; a failed read leaves the graph unchanged.
+
+        The vertex labels are the graph's internal vertex indexes, i.e., 1
+        through N for a graph of order N, rather than any labels found in the
+        file.
+
+        Args:
+            path (str): Path from which to read graph. Pass ``'stdin'`` to
+                read from the stdin stream.
+        Raises:
+            ValueError: if ``path`` contains an embedded NUL or cannot be
+                encoded as UTF-8.
+            RuntimeError: if the C-layer ``gp_Read()`` failed.
+        """
+        cdef PGraph fresh
+
+        fresh = PGraph._from_path(path)
+
+        # gp_Free() frees the old graph and clears self.theGraph; ownership of
+        # the new graph passes to self by clearing the reference that fresh
+        # would otherwise free.
+        cplanarity.gp_Free(&self.theGraph)
+        self.theGraph = fresh.theGraph
+        fresh.theGraph = NULL
+
+        self.nodemap = fresh.nodemap
+        self.reverse_nodemap = fresh.reverse_nodemap
+        self._embedding_workflow_status = fresh._embedding_workflow_status
+
+    # Non-public constructor used by read() and the functional read(); public
+    # behavior and errors are documented by read(). The generated Cython
+    # signature docstring is disabled so that Sphinx's
+    # napoleon_include_private_with_doc setting does not publish this private
+    # member.
+    @cython.embedsignature(False)
+    @classmethod
+    def _from_path(cls, str path):
+        cdef int status
+        cdef bytes bpath
+        cdef cplanarity.graphP graph = NULL
+        cdef PGraph pg
+
+        if '\0' in path:
+            raise ValueError("planarity: path must not contain a NUL.")
+
+        # The path is encoded before the C graph is allocated, and the Python
+        # owner of that graph is created before it is allocated, so that a
+        # failure at any point cannot leave an unowned C graph behind.
+        bpath = path.encode()
+        pg = cls.__new__(cls)
+
+        graph = cplanarity.gp_New()
+        if graph == NULL:
+            raise RuntimeError("planarity: Failed to initialize graph")
+
+        status = cplanarity.gp_Read(graph, bpath)
+        if status != cplanarity.OK:
+            cplanarity.gp_Free(&graph)
+            raise RuntimeError(
+                "planarity: gp_Read() failed; unable to read graph from "
+                f"'{path}'."
+            )
+
+        pg.theGraph = graph
+        vertices = range(
+            cplanarity.gp_LowerBoundVertices(graph),
+            cplanarity.gp_UpperBoundVertices(graph),
+        )
+        pg.nodemap = {v: v for v in vertices}
+        pg.reverse_nodemap = dict(pg.nodemap)
+        pg._embedding_workflow_status = cplanarity.OK
+        return pg
 
     def write(
         self, str path='stdout', int writeMode=cplanarity.WRITE_ADJLIST
