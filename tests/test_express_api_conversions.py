@@ -170,3 +170,21 @@ class TestConvertToNetworkX:
         assert dict(K.nodes(data=True)) == dict(H.nodes(data=True))
         assert sorted(sorted(e) for e in K.edges()) \
             == sorted(sorted(e) for e in H.edges())
+
+    def test_drawplanar_info_is_preserved(self):
+        # Drawing data only exists once the graph has been embedded, so the
+        # equality check above cannot see a dropped include_drawplanar flag.
+        G = nx.path_graph(4)
+        P = planarity.convert_to_pgraph(G)
+        P.embed_drawplanar()
+        expected_nodes = dict(P.nodes(include_drawplanar_vertex_info=True))
+        expected_edges = {
+            frozenset(e[:2]): e[2]
+            for e in P.edges(include_drawplanar_edge_info=True)}
+        assert any(expected_nodes.values())
+        assert any(expected_edges.values())
+        for H in (planarity.convert_from_pgraph(P, 'networkx'),
+                  planarity.networkx_graph(P)):
+            assert dict(H.nodes(data=True)) == expected_nodes
+            assert {frozenset(e[:2]): e[2] for e in H.edges(data=True)} \
+                == expected_edges
