@@ -198,7 +198,8 @@ def read(path: str) -> planarity.PGraph:
         populated from the file.
 
     Raises:
-        ValueError: if ``path`` contains an embedded NUL.
+        ValueError: if ``path`` contains an embedded NUL or cannot be
+            encoded as UTF-8.
         RuntimeError: if the C-layer ``gp_Read()`` failed.
     """
     return planarity.PGraph._from_path(path)

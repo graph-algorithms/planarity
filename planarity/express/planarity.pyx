@@ -757,7 +757,8 @@ cdef class PGraph:
             path (str): Path from which to read graph. Pass ``'stdin'`` to
                 read from the stdin stream.
         Raises:
-            ValueError: if ``path`` contains an embedded NUL.
+            ValueError: if ``path`` contains an embedded NUL or cannot be
+                encoded as UTF-8.
             RuntimeError: if the C-layer ``gp_Read()`` failed.
         """
         cdef PGraph fresh
@@ -784,17 +785,23 @@ cdef class PGraph:
     @classmethod
     def _from_path(cls, str path):
         cdef int status
+        cdef bytes bpath
         cdef cplanarity.graphP graph = NULL
         cdef PGraph pg
 
         if '\0' in path:
             raise ValueError("planarity: path must not contain a NUL.")
 
+        # The path is encoded before the C graph is allocated, and the Python
+        # owner of that graph is created before it is allocated, so that a
+        # failure at any point cannot leave an unowned C graph behind.
+        bpath = path.encode()
+        pg = cls.__new__(cls)
+
         graph = cplanarity.gp_New()
         if graph == NULL:
             raise RuntimeError("planarity: Failed to initialize graph")
 
-        bpath = path.encode()
         status = cplanarity.gp_Read(graph, bpath)
         if status != cplanarity.OK:
             cplanarity.gp_Free(&graph)
@@ -803,7 +810,6 @@ cdef class PGraph:
                 f"'{path}'."
             )
 
-        pg = cls.__new__(cls)
         pg.theGraph = graph
         vertices = range(
             cplanarity.gp_LowerBoundVertices(graph),

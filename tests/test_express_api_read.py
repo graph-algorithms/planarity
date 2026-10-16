@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 
 import planarity
@@ -23,6 +25,10 @@ LEDA_EDGE = ('LEDA.GRAPH\n'
              '|{B}|\n'
              '1\n'
              '1 2 0 |{e}|\n')
+# Declares a 59-vertex graph while carrying two of the 286 encoding
+# characters that order requires.
+INVALID_G6_TRUNCATED = '>>graph6<<zzz\n'
+SURROGATE_PATH = '\udcff'
 
 
 class TestRead:
@@ -131,9 +137,21 @@ class TestRead:
         with pytest.raises(RuntimeError):
             planarity.read(str(fname))
 
+    def test_read_malformed_g6_file_raises(self, tmp_path):
+        # The C-level reader detects the bad encoding, and gp_Read() has to
+        # report that failure rather than hand back the declared graph.
+        fname = tmp_path / 'truncated.g6'
+        fname.write_text(INVALID_G6_TRUNCATED, encoding='utf-8')
+        with pytest.raises(RuntimeError):
+            planarity.read(str(fname))
+
     def test_read_nul_path_raises(self):
         with pytest.raises(ValueError):
             planarity.read('graph\0.txt')
+
+    def test_read_unencodable_path_raises_value_error(self):
+        with pytest.raises(UnicodeEncodeError):
+            planarity.read(SURROGATE_PATH)
 
     def test_read_method_replaces_graph_contents(self, tmp_path):
         P = planarity.PGraph([(10, 20)])
@@ -153,6 +171,24 @@ class TestRead:
         assert sorted(P.edges()) == [(10, 20)]
         assert P.mapping() == {1: 10, 2: 20}
         assert P.is_planar() is True
+
+    def test_read_method_malformed_g6_leaves_graph_unchanged(self, tmp_path):
+        P = planarity.PGraph([(10, 20)])
+        assert P.is_planar() is True
+        fname = tmp_path / 'truncated.g6'
+        fname.write_text(INVALID_G6_TRUNCATED, encoding='utf-8')
+        with pytest.raises(RuntimeError):
+            P.read(str(fname))
+        assert sorted(P.edges()) == [(10, 20)]
+        assert P.mapping() == {1: 10, 2: 20}
+        assert P.is_planar() is True
+
+    def test_read_method_unencodable_path_leaves_graph_unchanged(self):
+        P = planarity.PGraph([(10, 20)])
+        with pytest.raises(UnicodeEncodeError):
+            P.read(SURROGATE_PATH)
+        assert sorted(P.edges()) == [(10, 20)]
+        assert P.mapping() == {1: 10, 2: 20}
 
     def test_read_method_recovers_after_failed_read(self, tmp_path):
         P = planarity.PGraph([(10, 20)])
@@ -180,3 +216,25 @@ class TestRead:
         # Sphinx's napoleon_include_private_with_doc setting does not
         # publish the private factory.
         assert planarity.PGraph._from_path.__doc__ is None
+
+    def test_failed_reads_do_not_accumulate_memory(self):
+        # The C graph is allocated only after the steps that can raise, so a
+        # path that cannot be encoded must not cost memory per failure. A
+        # leaked graph is roughly a kilobyte, so tens of thousands of
+        # failures would add tens of megabytes.
+        resource = pytest.importorskip('resource')
+
+        def max_rss_kib():
+            peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+            # Linux reports kilobytes, macOS reports bytes.
+            return peak if sys.platform != 'darwin' else peak // 1024
+
+        def failing_reads(count):
+            for _ in range(count):
+                with pytest.raises(UnicodeEncodeError):
+                    planarity.read(SURROGATE_PATH)
+
+        failing_reads(5000)
+        settled = max_rss_kib()
+        failing_reads(30000)
+        assert max_rss_kib() - settled < 4096
