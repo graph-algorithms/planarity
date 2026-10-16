@@ -446,6 +446,7 @@ cdef class PGraph:
 
         return edges
 
+
     # This method is deprecated and will be removed in the next major release.
     # It is retained at this time for backwards compatibility.
     def ascii(self, str outfileName=None) -> str | None:
@@ -464,9 +465,11 @@ cdef class PGraph:
     #
     # Raises:
     #     ValueError: if outfileName contains an embedded NUL.
-    #     RuntimeError: if a C-layer method such as gp_Embed() or a renderer fails.
-    #     RuntimeError: if a prior invocation of the embedding workflow failed.
-    #     RuntimeError: if an incompatible embedding operation was performed.
+    #     RuntimeError: if a C-layer method such as gp_Embed() or rendering to
+    #          string or to file fails..
+    #     RuntimeError: if a prior invocation of this method already failed.
+    #     RuntimeError: if an incompatible embedding operation, i.e., anything
+    #          other than EMBEDFLAGS_DRAWPLANAR, was performed.
     #     RuntimeError: if the graph is non-planar.
     @cython.embedsignature(False)
     def _draw_as_text(self, str outfileName=None) -> str | None:
@@ -511,7 +514,6 @@ cdef class PGraph:
 
         return py_bytes.decode('ascii')
 
-
     def draw(
         self, bool labels=True, str outfileName=None,
         str label_type='default', str output_type='image/png', **kwargs
@@ -526,8 +528,8 @@ cdef class PGraph:
                 drawing. Otherwise, vertices are rendered unlabelled in the
                 drawing. If a label's rendered width would exceed its vertex's
                 own bounding rectangle, the label is truncated with a trailing
-                ``...`` so it stays within that rectangle (see Issue #91). The
-                vertex's geometry itself is never resized to accommodate a
+                ``...`` so it stays within that rectangle.
+                The vertex's geometry itself is never resized to accommodate a
                 label.
             outfileName (:obj:`str`): File to which to output the rendering.
                 For text, ``'stdout'`` and ``'stderr'`` select those streams.
@@ -537,12 +539,13 @@ cdef class PGraph:
             label_type (:obj:`str`): Selects which text identifies each vertex
                 when ``labels`` is ``True`` :
 
-                * ``'default'`` - Show the original labels for images, or the
-                    numeric vertex indexes for ``output_type='text/plain'``.
-                * ``'label'`` - Show the original labels.
-                * ``'index'`` - Show the numeric vertex indexes assigned by
-                    the :py:class:`~planarity.express.planarity.PGraph`
-                    (see :py:meth:`mapping`). 
+                - ``'default'``: Show the original labels from the input graph
+                    for ``output_type='img/png'``, or the numeric vertex indexes
+                    for ``output_type='text/plain'``.
+                - ``'label'``: Show the original labels.
+                - ``'index'``: Show the numeric vertex indexes assigned by
+                    the :py:class:`~planarity.express.planarity.PGraph` (see
+                    :py:meth:`~planarity.express.planarity.PGraph.mapping`).
 
                 Defaults to ``'default'``.
                 Text output always uses indexes; ``'label'`` is unsupported.
@@ -551,25 +554,24 @@ cdef class PGraph:
             **kwargs: Optional image-only figure-level parameters to apply to the
                 current figure after it is cleared. Supported keys are:
 
-                * ``figsize`` and ``dpi`` - Control figure size and
-                    resolution.
-                * ``pad_inches`` - The image is saved with a tight bounding
+                - ``figsize`` and ``dpi``: Control figure size and resolution.
+                - ``pad_inches``: The image is saved with a tight bounding
                     box (``bbox_inches="tight"``), where ``pad_inches``
                     gives the padding, in inches, around the drawing. If not
                     given, ``pad_inches`` defaults to 0.1, while a value of
                     0.0 causes the drawing to extend to the borders of the
                     image.
-                * ``facecolor`` - Sets the figure background (default
+                - ``facecolor``: Sets the figure background (default
                     ``'#ffffff'``).
-                * ``vertex_facecolor`` and ``vertex_bordercolor`` set vertex
+                - ``vertex_facecolor`` and ``vertex_bordercolor`` set vertex
                     rectangle colors; omitted values use Matplotlib's patch
                     defaults.
-                * ``vertex_label_facecolor`` and ``vertex_label_bordercolor`` -
+                - ``vertex_label_facecolor`` and ``vertex_label_bordercolor``:
                     Set label rectangle colors (defaults ``'white'`` and
                     ``'black'``).
-                * ``edge_linecolor`` - Set edge colors (default Matplotlib line
+                - ``edge_linecolor``: Set edge colors (default Matplotlib line
                     color).
-                * ``transparent`` (default ``False``) makes the figure and axes
+                - ``transparent`` (default ``False``) makes the figure and axes
                     backgrounds transparent when saving to ``outfileName``; it
                     does not remove matching colors from vertices or labels.
 
@@ -644,7 +646,7 @@ cdef class PGraph:
                 "planarity: Unable to draw() graph due to error encountered in "
                 "embedding workflow."
             )
-        
+
         ###############################
         # Prepare for graphic rendering
         ###############################

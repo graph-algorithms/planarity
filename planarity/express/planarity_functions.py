@@ -103,9 +103,7 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
          output_type='image/png', **kwargs) -> str | None:
     """Draws a planar graph as an image or text.
 
-    Constructs a
-    :py:class:`~planarity.express.planarity.PGraph`
-    and calls its
+    Constructs a :py:class:`~planarity.express.planarity.PGraph` and calls its
     :py:meth:`~planarity.express.planarity.PGraph.draw` method with the
     given ``labels``, ``outfileName``, ``label_type``, and ``output_type``.
 
@@ -120,14 +118,15 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
             the caller can call
             :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
         label_type (:obj:`str`): Selects which text identifies each vertex
-            when ``labels`` is ``True`` :
+            when ``labels`` is ``True``:
 
-            * ``'default'`` - Show the original labels for images, or the
-                numeric vertex indexes for ``output_type='text/plain'``.
-            * ``'label'`` - Show the original labels.
-            * ``'index'`` - Show the numeric vertex indexes assigned by
+            - ``'default'``: Show the original labels from the input graph for
+                ``output_type='img/png'``, or the numeric vertex indexes for
+                ``output_type='text/plain'``.
+            - ``'label'``: Show the original labels.
+            - ``'index'``: Show the numeric vertex indexes assigned by
                 the :py:class:`~planarity.express.planarity.PGraph`
-                (see :py:meth:`mapping`). 
+                (see :py:meth:`~planarity.express.planarity.PGraph.mapping`).
 
             Defaults to ``'default'``.
             Text output always uses indexes; ``'label'`` is unsupported.
@@ -137,13 +136,13 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
             :py:meth:`~planarity.express.planarity.PGraph.draw`. Supported keys
             are:
 
-            * ``figsize`` and ``dpi``
-            * ``pad_inches``
-            * ``facecolor``
-            * ``vertex_facecolor`` and ``vertex_bordercolor``
-            * ``vertex_label_facecolor`` and ``vertex_label_bordercolor``
-            * ``edge_linecolor``
-            * ``transparent``
+            - ``figsize`` and ``dpi``
+            - ``pad_inches``
+            - ``facecolor``
+            - ``vertex_facecolor`` and ``vertex_bordercolor``
+            - ``vertex_label_facecolor`` and ``vertex_label_bordercolor``
+            - ``edge_linecolor``
+            - ``transparent``
 
             Please see the :py:meth:`~planarity.express.planarity.PGraph.draw`
             documentation for more information and for default values.
