@@ -2,7 +2,6 @@
 # cython: embedsignature=True
 
 """Wrapper for Boyer's (c) planarity algorithms."""
-cimport cython
 from libc.stdlib cimport free
 
 import typing
@@ -446,73 +445,40 @@ cdef class PGraph:
 
         return edges
 
-
-    # This method is deprecated and will be removed in the next major release.
-    # It is retained at this time for backwards compatibility.
     def ascii(self, str outfileName=None) -> str | None:
-        return self._draw_as_text(outfileName)
+        """Produces an ASCII rendition of the graph, if it is planar.
 
-    # This is a non-public function, so the docstring has been converted to
-    # comments so that this function will not appear in the documentation.
-    # Produces an ASCII rendition of the graph, if it is planar.
-    #
-    # Args:
-    #     outfileName (str): Optional file or stream name to which to write text.
-    #
-    # Returns:
-    #     The ASCII string produced by gp_DrawPlanar_RenderToString() when no
-    #     outfileName is given, or None after gp_DrawPlanar_RenderToFile().
-    #
-    # Raises:
-    #     ValueError: if outfileName contains an embedded NUL.
-    #     RuntimeError: if a C-layer method such as gp_Embed() or rendering to
-    #          string or to file fails..
-    #     RuntimeError: if a prior invocation of this method already failed.
-    #     RuntimeError: if an incompatible embedding operation, i.e., anything
-    #          other than EMBEDFLAGS_DRAWPLANAR, was performed.
-    #     RuntimeError: if the graph is non-planar.
-    @cython.embedsignature(False)
-    def _draw_as_text(self, str outfileName=None) -> str | None:
-        cdef int status
-        cdef char* s = NULL
+        Calls :py:meth:`~planarity.express.planarity.PGraph.draw` with
+        ``label_type='index'`` and ``output_type='text/plain'`.
 
-        if outfileName is not None and '\0' in outfileName:
-            raise ValueError("planarity: outfileName must not contain a NUL.")
+        Args:
+            outfileName (str): Optional file or stream name to which to write
+                text.
 
-        self.embed_drawplanar()
+        Returns:
+            The ASCII string produced by ``gp_DrawPlanar_RenderToString()`` when
+            no ``outfileName`` is given, or ``None`` after calling
+            ``gp_DrawPlanar_RenderToFile()``.
 
-        if self._embedding_workflow_status != cplanarity.OK:
-            self._embedding_workflow_status = cplanarity.NOTOK
-            raise RuntimeError(
-                "planarity: Unable to produce planar rendition due to error "
-                "encountered in embedding workflow."
-            )
+        Raises:
+            ValueError: if ``outfileName`` contains ``NUL``.
+            RuntimeError: if a C-layer method such as ``gp_Embed()`` or
+                rendering to string or to file fails.
+            RuntimeError: if a prior invocation of this method already failed.
+            RuntimeError: if an incompatible embedding operation, i.e.,
+                 anything other than ``EMBEDFLAGS_DRAWPLANAR``, was performed.
+            RuntimeError: if the graph is non-planar.
 
-        if outfileName is not None:
-            encoded_filename = outfileName.encode('utf-8')
-            status = cplanarity.gp_DrawPlanar_RenderToFile(
-                self.theGraph, encoded_filename
-            )
-            if status != cplanarity.OK:
-                raise RuntimeError(
-                    "planarity: Call to gp_DrawPlanar_RenderToFile() failed "
-                    f"for '{outfileName}'."
-                )
-            return None
+        .. deprecated:: 1.1.0
+            Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
+           ``label_type='index'`` and ``output_type='text/plain'` instead.
 
-        status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &s)
-        if status != cplanarity.OK:
-            self._embedding_workflow_status = cplanarity.NOTOK
-            raise RuntimeError(
-                "planarity: Call to gp_DrawPlanar_RenderToString() failed."
-            )
-
-        try:
-            py_bytes = s[:]
-        finally:
-            free(s)
-
-        return py_bytes.decode('ascii')
+        """
+        return self.draw(
+            outfileName=outfileName,
+            label_type='index',
+            output_type='text/plain'
+        )
 
     def draw(
         self, bool labels=True, str outfileName=None,
@@ -584,8 +550,12 @@ cdef class PGraph:
 
         Raises:
             ValueError: if an unsupported keyword argument is given.
-            ValueError: if ``output_type`` is unsupported, text output is
-                requested without index labels, or a text filename contains NUL.
+            ValueError: if ``output_type`` is neither ``'image/png'`` nor
+                ``'text/plain'``.
+            ValueError: if text output is requested without index labels
+                (i.e., if ``output_type='text/plain'`` and ``label_type`` is not
+                set to ``'index'``).
+            ValueError: if a text filename contains NUL.
             ImportError: if dependencies from Matplotlib fail to be imported
                 for image output.
             RuntimeError: if an error was encountered by C-layer methods
@@ -630,14 +600,58 @@ cdef class PGraph:
 
         return self._draw_as_image(labels, outfileName, label_type, **kwargs)
 
-    # Non-public image renderer; public options are documented by draw().
-    @cython.embedsignature(False)
+    def _draw_as_text(self, str outfileName=None) -> str | None:
+        # This is a non-public function, so once ascii() has been removed, copy
+        # that docstring into this hash-led comment.
+        cdef int status
+        cdef char* s = NULL
+
+        if outfileName is not None and '\0' in outfileName:
+            raise ValueError("planarity: outfileName must not contain a NUL.")
+
+        self.embed_drawplanar()
+
+        if self._embedding_workflow_status != cplanarity.OK:
+            self._embedding_workflow_status = cplanarity.NOTOK
+            raise RuntimeError(
+                "planarity: Unable to produce planar rendition due to error "
+                "encountered in embedding workflow."
+            )
+
+        if outfileName is not None:
+            encoded_filename = outfileName.encode('utf-8')
+            status = cplanarity.gp_DrawPlanar_RenderToFile(
+                self.theGraph, encoded_filename
+            )
+            if status != cplanarity.OK:
+                raise RuntimeError(
+                    "planarity: Call to gp_DrawPlanar_RenderToFile() failed "
+                    f"for '{outfileName}'."
+                )
+            return None
+
+        status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &s)
+        if status != cplanarity.OK:
+            self._embedding_workflow_status = cplanarity.NOTOK
+            raise RuntimeError(
+                "planarity: Call to gp_DrawPlanar_RenderToString() failed."
+            )
+
+        try:
+            py_bytes = s[:]
+        finally:
+            free(s)
+
+        return py_bytes.decode('ascii')
+
     def _draw_as_image(
         self, bool labels=True, str outfileName=None,
         str label_type='default', **kwargs
     ) -> None:
+        # Non-public image renderer; public options are documented by draw().
+
         ######################################################
-        # Run the combinatorial planar graph drawing algorithm
+        # Run the planar graph drawing algorithm
         ######################################################
         self.embed_drawplanar()
         if self._embedding_workflow_status != cplanarity.OK:

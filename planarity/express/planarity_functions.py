@@ -73,30 +73,45 @@ def kuratowski_edges(graph):
     return planarity.PGraph(graph).kuratowski_edges()
 
 
-# This function is deprecated and will be removed in the next major release.
-# It is retained at this time for backwards compatibility.
-# Produces an ASCII rendition of the graph, if it is planar.
-#
-# Constructs a PGraph and calls draw() with text output and index labels.
-#
-# Args:
-#     graph: A graph specified in a format that may be converted to a PGraph.
-#     outfileName (str): Optional file or stream name to which to write text.
-#
-# Returns:
-#     The ASCII string rendition without a filename, or None after writing it.
-#
-# Raises:
-#     ValueError: if the given graph is already a PGraph.
-#     ValueError: if a text filename contains an embedded NUL.
-#     RuntimeError: if the graph could not be converted to a PGraph.
-#     RuntimeError: if a C-layer method such as gp_Embed() or a renderer fails.
-#     RuntimeError: if a prior invocation of the embedding workflow failed.
-#     RuntimeError: if an incompatible embedding operation was performed.
-#     RuntimeError: if the graph is non-planar.
 def ascii(graph, outfileName=None) -> str | None:
-    return draw(graph, outfileName=outfileName, output_type='text/plain',
-                label_type='index')
+    """Produces an ASCII rendition of the graph, if it is planar.
+
+    Constructs a :py:class:`~planarity.express.planarity.PGraph` and calls
+    :py:meth:`~planarity.express.planarity_functions.draw` with
+    ``label_type='index'`` and ``output_type='text/plain'``.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.express.planarity.PGraph`.
+        outfileName (str): Optional file or stream name to which to write
+            text.
+
+    Returns:
+        The ASCII string if no ``outfileName`` is given, or ``None`` after
+        writing to file.
+
+    Raises:
+        ValueError: if the given graph is already a
+            :py:class:`~planarity.express.planarity.PGraph`.
+        ValueError: if ``outfileName`` contains ``NUL``.
+        RuntimeError: if a C-layer method such as ``gp_Embed()`` or rendering
+            to string or to file fails.
+        RuntimeError: if a prior invocation of this method already failed.
+        RuntimeError: if an incompatible embedding operation, i.e.,
+            anything other than ``EMBEDFLAGS_DRAWPLANAR``, was performed.
+        RuntimeError: if the graph is non-planar.
+
+    .. deprecated:: 1.1.0
+        Use :py:meth:`~planarity.express.planarity_functions.draw` with
+        ``label_type='index'`` and ``output_type='text/plain'` instead.
+
+    """
+    return draw(
+        graph=graph,
+        outfileName=outfileName,
+        label_type='index',
+        output_type='text/plain'
+    )
 
 
 def draw(graph, labels=True, outfileName=None, label_type='default',
@@ -155,12 +170,16 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
         ValueError: if the given graph is already a
             :py:class:`~planarity.express.planarity.PGraph`.
         ValueError: if an unsupported keyword argument is given.
-        ValueError: if ``output_type`` is unsupported, text output is requested
-            without index labels, or a text filename contains NUL.
-        RuntimeError: if the graph couldn't be converted to a
-            :py:class:`~planarity.express.planarity.PGraph`.
+        ValueError: if ``output_type`` is neither ``'image/png'`` nor
+                ``'text/plain'``.
+        ValueError: if text output is requested without index labels
+            (i.e., if ``output_type='text/plain'`` and ``label_type`` is not
+            set to ``'index'``).
+        ValueError: if a text filename contains ``NUL``.
         ImportError: if dependencies from Matplotlib fail to be imported for
             image output.
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.express.planarity.PGraph`.
         RuntimeError: if an error was encountered by C-layer methods
             such as ``gp_Embed()``.
         RuntimeError: if a prior invocation of this method already failed.
