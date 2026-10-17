@@ -203,10 +203,25 @@ def test_draw_pad_inches_controls_output_padding(draw, tmp_path):
 
 
 def test_draw_text():
-    # ascii() is going to be deprecated in favor of calling draw() (#94),
-    # so its rendering test lives with the drawing tests until then.
-    e = ([1,2],)
-    P = planarity.PGraph(e)
-    s = P.ascii()#.decode()
-    assert s == '1\n|\n2\n \n'
+    graph = planarity.PGraph(([1, 2],))
+    assert graph.draw(output_type='text/plain', label_type='index') == '1\n|\n2\n \n'
 
+
+def test_explicit_image_type_preserves_default_png(draw, tmp_path):
+    default_output = tmp_path / 'default.png'
+    explicit_output = tmp_path / 'explicit.png'
+    assert draw(outfileName=str(default_output)) is None
+    assert draw(outfileName=str(explicit_output), output_type='image/png') is None
+    with Image.open(default_output) as default, Image.open(explicit_output) as explicit:
+        assert explicit.size == default.size
+        assert explicit.convert('RGBA').tobytes() == default.convert('RGBA').tobytes()
+
+
+def test_graph_can_switch_between_text_and_image(tmp_path):
+    graph = planarity.PGraph(EDGES)
+    text = graph.draw(output_type='text/plain', label_type='index')
+    output = tmp_path / 'graph.png'
+    assert graph.draw(outfileName=str(output)) is None
+    with Image.open(output) as image:
+        assert image.format == 'PNG'
+    assert graph.draw(output_type='text/plain', label_type='index') == text

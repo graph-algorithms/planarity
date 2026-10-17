@@ -73,65 +73,81 @@ def kuratowski_edges(graph):
     return planarity.PGraph(graph).kuratowski_edges()
 
 
-def ascii(graph) -> str:
-    """Produces an ASCII string rendition of the graph, if it is planar.
+def ascii(graph, outfileName=None) -> str | None:
+    """Produces an ASCII rendition of the graph, if it is planar.
 
-    Constructs a
-    :py:class:`~planarity.express.planarity.PGraph`
-    and calls its
-    :py:meth:`~planarity.express.planarity.PGraph.ascii` method.
+    Constructs a :py:class:`~planarity.express.planarity.PGraph` and calls
+    :py:meth:`~planarity.express.planarity_functions.draw` with
+    ``label_type='index'`` and ``output_type='text/plain'``.
 
     Args:
         graph: A graph specified in a format that may be converted to a
             :py:class:`~planarity.express.planarity.PGraph`.
+        outfileName (str): Optional file or stream name to which to write
+            text.
 
     Returns:
-        An ASCII string rendition of a planar graph.
+        The ASCII string if no ``outfileName`` is given, or ``None`` after
+        writing to file.
 
     Raises:
         ValueError: if the given graph is already a
             :py:class:`~planarity.express.planarity.PGraph`.
-        RuntimeError: if the graph couldn't be converted to a
-            :py:class:`~planarity.express.planarity.PGraph`.
-        RuntimeError: if an error was encountered by C-layer methods
-            such as ``gp_Embed()`` or ``gp_DrawPlanar_RenderToString()``.
+        ValueError: if ``outfileName`` contains ``NUL``.
+        RuntimeError: if a C-layer method such as ``gp_Embed()`` or rendering
+            to string or to file fails.
         RuntimeError: if a prior invocation of this method already failed.
-        RuntimeError: if any embedding operation was performed other than
-            the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
+        RuntimeError: if an incompatible embedding operation, i.e.,
+            anything other than ``EMBEDFLAGS_DRAWPLANAR``, was performed.
         RuntimeError: if the graph is non-planar.
+
+    .. deprecated:: 1.1.0
+        Use :py:meth:`~planarity.express.planarity_functions.draw` with
+        ``label_type='index'`` and ``output_type='text/plain'` instead.
+
     """
-    return planarity.PGraph(graph).ascii()
+    return draw(
+        graph=graph,
+        outfileName=outfileName,
+        label_type='index',
+        output_type='text/plain'
+    )
 
 
 def draw(graph, labels=True, outfileName=None, label_type='default',
-         **kwargs):
-    """Draws the graph with Matplotlib, if it is planar.
+         output_type='image/png', **kwargs) -> str | None:
+    """Draws a planar graph as an image or text.
 
     Constructs a :py:class:`~planarity.express.planarity.PGraph` and calls its
     :py:meth:`~planarity.express.planarity.PGraph.draw` method with the
-    given ``labels``, ``outfileName``, and ``label_type``.
+    given ``labels``, ``outfileName``, ``label_type``, and ``output_type``.
 
     Args:
         graph: A graph specified in a format that may be converted to a
             :py:class:`~planarity.express.planarity.PGraph`.
-        labels (bool): If ``True``, vertex labels are rendered in the drawing.
+        labels (bool): If ``True``, vertex labels are rendered in the image.
             Otherwise, vertices are rendered unlabelled in the drawing.
-        outfileName (:obj:`str`): File to which to output a Matplotlib
-            rendering of the planar graph. If not given, then the caller can
-            call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+        outfileName (:obj:`str`): File to which to output the rendering.
+            For text, ``'stdout'`` and ``'stderr'`` select those streams.
+            Without a filename, text is returned as a string; for images,
+            the caller can call
+            :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
         label_type (:obj:`str`): Selects which text identifies each vertex
             when ``labels`` is ``True``:
 
-            - ``'default'``: The current behavior, which is to show the
-                original labels given when the graph was converted to a
-                :py:class:`~planarity.express.planarity.PGraph`.
+            - ``'default'``: Show the original labels from the input graph for
+                ``output_type='img/png'``, or the numeric vertex indexes for
+                ``output_type='text/plain'``.
             - ``'label'``: Show the original labels.
             - ``'index'``: Show the numeric vertex indexes assigned by
                 the :py:class:`~planarity.express.planarity.PGraph`
                 (see :py:meth:`~planarity.express.planarity.PGraph.mapping`).
 
             Defaults to ``'default'``.
-        **kwargs: Optional figure-level parameters forwarded to
+            Text output always uses indexes; ``'label'`` is unsupported.
+        output_type (:obj:`str`): ``'image/png'`` for image rendering, or
+            ``'text/plain'`` for text rendering. Defaults to ``'image/png'``.
+        **kwargs: Optional image-only figure-level parameters forwarded to
             :py:meth:`~planarity.express.planarity.PGraph.draw`. Supported keys
             are:
 
@@ -146,13 +162,24 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
             Please see the :py:meth:`~planarity.express.planarity.PGraph.draw`
             documentation for more information and for default values.
 
+    Returns:
+        The text rendition when ``output_type='text/plain'`` and no
+        ``outfileName`` is given, or ``None`` otherwise.
+
     Raises:
         ValueError: if the given graph is already a
             :py:class:`~planarity.express.planarity.PGraph`.
         ValueError: if an unsupported keyword argument is given.
+        ValueError: if ``output_type`` is neither ``'image/png'`` nor
+                ``'text/plain'``.
+        ValueError: if text output is requested without index labels
+            (i.e., if ``output_type='text/plain'`` and ``label_type`` is not
+            set to ``'index'``).
+        ValueError: if a text filename contains ``NUL``.
+        ImportError: if dependencies from Matplotlib fail to be imported for
+            image output.
         RuntimeError: if the graph couldn't be converted to a
             :py:class:`~planarity.express.planarity.PGraph`.
-        ImportError: if dependencies from Matplotlib fail to be imported.
         RuntimeError: if an error was encountered by C-layer methods
             such as ``gp_Embed()``.
         RuntimeError: if a prior invocation of this method already failed.
@@ -165,7 +192,8 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
     pgraph = planarity.PGraph(graph)
 
     try:
-        pgraph.draw(labels, outfileName, label_type=label_type, **kwargs)
+        return pgraph.draw(labels, outfileName, label_type=label_type,
+                           output_type=output_type, **kwargs)
     except ImportError as import_error:
         raise ImportError(
             "Please install missing dependencies in your current environment "
