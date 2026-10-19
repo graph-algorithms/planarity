@@ -48,7 +48,7 @@ In [9]: print(planarity.mapping(edgelist))
 
 In [10]: # Draw the graph as text
 
-In [11]: print(planarity.draw(edgelist, output_type='text/plain', label_type='index'))
+In [11]: print(planarity.draw(edgelist, label_type='index', output_type='text/plain'))
 ```
 <pre>
 ----1----

@@ -81,8 +81,9 @@ def test_label_type_index_matches_mapping_and_text_drawing():
     for position, label in by_label.items():
         assert mapping[int(by_index[position])] == label
 
-    text_drawing = planarity.draw(LABELED_EDGES, output_type='text/plain',
-                                  label_type='index')
+    text_drawing = planarity.draw(
+        LABELED_EDGES, label_type='index', output_type='text/plain',
+    )
     for index in by_index.values():
         assert index in text_drawing
 
