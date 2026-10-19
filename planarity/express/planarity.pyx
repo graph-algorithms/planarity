@@ -446,10 +446,16 @@ cdef class PGraph:
         return edges
 
     def ascii(self, str outfileName=None) -> str | None:
-        """Produces an ASCII rendition of the graph, if it is planar.
+        """[DEPRECATED] Produces an ASCII rendition of the graph, if it is planar.
+
+        .. version-deprecated:: 1.1.0
+            Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
+           ``label_type='index'`` and ``output_type='text/plain'`` instead.
+            Refer to :external+python:ref:`warning-suppress` to
+            suppress the :external+python:py:func:`warnings.warn` function.
 
         Calls :py:meth:`~planarity.express.planarity.PGraph.draw` with
-        ``label_type='index'`` and ``output_type='text/plain'`.
+        ``label_type='index'`` and ``output_type='text/plain'``.
 
         Args:
             outfileName (str): Optional file or stream name to which to write
@@ -468,12 +474,14 @@ cdef class PGraph:
             RuntimeError: if an incompatible embedding operation, i.e.,
                  anything other than ``EMBEDFLAGS_DRAWPLANAR``, was performed.
             RuntimeError: if the graph is non-planar.
-
-        .. deprecated:: 1.1.0
-            Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
-           ``label_type='index'`` and ``output_type='text/plain'` instead.
-
         """
+        import warnings
+        warnings.warn(
+            "PGraph's ascii() method is deprecated; please call PGraph's "
+            "draw() method with label_type='index' and "
+            "output_type='text/plain' instead.", category=DeprecationWarning
+        )
+
         return self.draw(
             outfileName=outfileName,
             label_type='index',

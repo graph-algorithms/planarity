@@ -74,7 +74,13 @@ def kuratowski_edges(graph):
 
 
 def ascii(graph, outfileName=None) -> str | None:
-    """Produces an ASCII rendition of the graph, if it is planar.
+    """[DEPRECATED] Produces an ASCII rendition of the graph, if it is planar.
+
+    .. version-deprecated:: 1.1.0
+        Use :py:meth:`~planarity.express.planarity_functions.draw` with
+        ``label_type='index'`` and ``output_type='text/plain'`` instead.
+        Refer to :external+python:ref:`warning-suppress` to suppress the
+        :external+python:py:func:`warnings.warn` function.
 
     Constructs a :py:class:`~planarity.express.planarity.PGraph` and calls
     :py:meth:`~planarity.express.planarity_functions.draw` with
@@ -100,12 +106,13 @@ def ascii(graph, outfileName=None) -> str | None:
         RuntimeError: if an incompatible embedding operation, i.e.,
             anything other than ``EMBEDFLAGS_DRAWPLANAR``, was performed.
         RuntimeError: if the graph is non-planar.
-
-    .. deprecated:: 1.1.0
-        Use :py:meth:`~planarity.express.planarity_functions.draw` with
-        ``label_type='index'`` and ``output_type='text/plain'` instead.
-
     """
+    import warnings
+    warnings.warn(
+        "The Express API's ascii() function is deprecated; please call draw() "
+        "with label_type='index' and output_type='text/plain' instead.",
+        category=DeprecationWarning
+    )
     return draw(
         graph=graph,
         outfileName=outfileName,
