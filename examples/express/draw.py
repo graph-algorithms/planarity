@@ -35,28 +35,46 @@ print('\n')
 # Make text drawing
 if P1.is_planar():
     print("K5 minus an edge is planar. Here's a text drawing of it:\n")
-    planar_rendition = P2.draw(output_type='text/plain', label_type='index')
+    planar_rendition = P2.draw(
+        label_type='index',
+        output_type='text/plain',
+    )
     print(planar_rendition)
 
     # Output Matplotlib rendering
     print("Rendering image to K5-minus-edge.png")
-    P2.draw(outfileName='K5-minus-edge.png',
-            vertex_bordercolor='black', figsize=(4, 3))
+    P2.draw(
+        outfileName='K5-minus-edge.png',
+        figsize=(4, 3),
+        vertex_bordercolor='black',
+    )
 
     print("Rendering with indexes for labels to K5-minus-edge.indexes.png")
     P2 = planarity.PGraph(edgelist)
-    P2.draw(outfileName='K5-minus-edge.indexes.png',
-            vertex_bordercolor='black', figsize=(4, 3), label_type='index')
+    P2.draw(
+        outfileName='K5-minus-edge.indexes.png',
+        label_type='index',
+        figsize=(4, 3),
+        vertex_bordercolor='black',
+    )
 
     # Verify fig_kwargs (#87): generate 300dpi and 600dpi variants
     print("Rendering 300dpi version to K5-minus-edge.300dpi.png")
     P2 = planarity.PGraph(edgelist)
-    P2.draw(outfileName='K5-minus-edge-300dpi.png', dpi=300,
-            vertex_bordercolor='black', figsize=(4, 3))
+    P2.draw(
+        outfileName='K5-minus-edge-300dpi.png',
+        figsize=(4, 3),
+        dpi=300,
+        vertex_bordercolor='black',
+    )
 
     print("Rendering 600dpi version to K5-minus-edge.600dpi.png")
     P2 = planarity.PGraph(edgelist)
-    P2.draw(outfileName='K5-minus-edge-600dpi.png', dpi=600,
-            vertex_bordercolor='black', figsize=(4, 3))
+    P2.draw(
+        outfileName='K5-minus-edge-600dpi.png',
+        figsize=(4, 3),
+        dpi=600,
+        vertex_bordercolor='black',
+    )
 else:
     print("The graph cannot be drawn because it is non-planar.")
