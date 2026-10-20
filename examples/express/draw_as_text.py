@@ -13,8 +13,8 @@ edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
 P = planarity.PGraph(edgelist)
 try:
     planar_rendition = P.draw(
+        output_type='text/plain',
         label_type='index',
-        output_type='text/plain'
     )
 except Exception:
     print("The graph cannot be drawn because it is non-planar.\n")
@@ -28,8 +28,8 @@ edgelist.remove(('a','b'))
 P = planarity.PGraph(edgelist)
 print(P.mapping())
 planar_rendition = P.draw(
+    output_type='text/plain',
     label_type='index',
-    output_type='text/plain'
 )
 print(planar_rendition)
 
@@ -45,8 +45,8 @@ print(P2.mapping())
 # Make text drawing
 if P1.is_planar():
     planar_rendition = P2.draw(
-        label_type='index',
         output_type='text/plain',
+        label_type='index',
     )
     print(planar_rendition)
 else:

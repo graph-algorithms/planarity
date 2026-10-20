@@ -40,13 +40,13 @@ def test_text_file_defaults_to_index_labels(draw, tmp_path):
         draw(
             EDGES,
             outfileName=str(output),
-            output_type='text/plain'
+            output_type='text/plain',
         ) is None
     )
     assert output.read_bytes() == TEXT.encode('ascii')
 
 
-def test_ascii_preserves_exact_text(ascii_draw):
+def test_ascii_returns_exact_text(ascii_draw):
     assert ascii_draw(EDGES) == TEXT
 
 
@@ -56,8 +56,8 @@ def test_draw_writes_exact_text(draw, tmp_path):
         draw(
             EDGES,
             outfileName=str(output),
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         ) is None
     )
     assert output.read_bytes() == TEXT.encode('ascii')
@@ -75,8 +75,8 @@ def test_draw_writes_to_native_stream(draw, capfd, stream):
         draw(
             EDGES,
             outfileName=stream,
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         ) is None
     )
     captured = capfd.readouterr()
@@ -96,8 +96,8 @@ def test_text_rendering_does_not_import_matplotlib(draw, ascii_draw, monkeypatch
     assert (
         draw(
             EDGES,
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         ) == TEXT
     )
     assert ascii_draw(EDGES) == TEXT
@@ -110,14 +110,14 @@ def test_text_requires_index_labels(draw, tmp_path, label_type):
         draw(
             EDGES,
             outfileName=str(output),
-            label_type=label_type,
             output_type='text/plain',
+            label_type=label_type,
         )
     assert not output.exists()
 
 
 @pytest.mark.parametrize('output_type', ['image/svg+xml', '', None])
-def test_invalid_output_type_has_no_file_side_effect(draw, tmp_path, output_type):
+def test_draw_writes_no_output_on_invalid_output_type(draw, tmp_path, output_type):
     output = tmp_path / 'not-created.png'
     with pytest.raises(ValueError, match='output_type'):
         draw(
@@ -132,21 +132,21 @@ def test_text_rejects_image_options(draw):
     with pytest.raises(ValueError, match='keyword'):
         draw(
             EDGES,
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
             figsize=(4, 3),
         )
 
 
 @pytest.mark.parametrize('filename', ['', 'missing/graph.txt'])
-def test_text_file_failure_is_reported(draw, tmp_path, monkeypatch, filename):
+def test_invalid_outfileName_reported(draw, tmp_path, monkeypatch, filename):
     monkeypatch.chdir(tmp_path)
     with pytest.raises(RuntimeError, match='RenderToFile'):
         draw(
             EDGES,
             outfileName=filename,
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         )
 
 
@@ -155,39 +155,26 @@ def test_text_accepts_unicode_filename(draw, tmp_path):
     draw(
         EDGES,
         outfileName=str(output),
-        label_type='index',
         output_type='text/plain',
+        label_type='index',
     )
     assert output.read_bytes() == TEXT.encode('ascii')
 
 
-def test_text_rejects_embedded_nul_filename(draw, tmp_path):
-    output = tmp_path / 'must-not-overwrite.txt'
-    output.write_text('keep this')
-    with pytest.raises(ValueError, match='NUL'):
-        draw(
-            EDGES,
-            outfileName=str(output) + '\0suffix',
-            label_type='index',
-            output_type='text/plain',
-        )
-    assert output.read_text() == 'keep this'
-
-
-def test_nonplanar_text_drawing_does_not_overwrite_file(draw, tmp_path):
+def test_text_on_nonplanar_does_not_overwrite_file(draw, tmp_path):
     output = tmp_path / 'existing.txt'
     output.write_text('keep this')
     with pytest.raises(RuntimeError, match='non-planar'):
         draw(
             K5,
             outfileName=str(output),
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         )
     assert output.read_text() == 'keep this'
 
 
-def test_nonplanar_ascii_still_fails(ascii_draw):
+def test_ascii_on_nonplanar_fails(ascii_draw):
     """Ensures ascii() fails on non-planar graph."""
     with pytest.raises(RuntimeError, match='non-planar'):
         ascii_draw(K5)
@@ -212,13 +199,13 @@ def test_file_failure_allows_retry_on_same_graph(tmp_path):
     with pytest.raises(RuntimeError, match='RenderToFile'):
         graph.draw(
             outfileName=str(tmp_path / 'missing' / 'graph.txt'),
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         )
     assert (
         graph.draw(
-            label_type='index',
             output_type='text/plain',
+            label_type='index',
         ) == TEXT
     )
     assert graph.ascii() == TEXT

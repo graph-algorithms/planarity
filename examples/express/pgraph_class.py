@@ -20,7 +20,7 @@ edgelist.remove((0,1))
 P=planarity.PGraph(edgelist)
 print(
     P.draw(
-        label_type='index',
         output_type='text/plain',
+        label_type='index',
     )
 )

@@ -450,12 +450,12 @@ cdef class PGraph:
 
         .. version-deprecated:: 1.1.0
             Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
-           ``label_type='index'`` and ``output_type='text/plain'`` instead.
+           ``output_type='text/plain'`` and ``label_type='index'`` instead.
             Refer to :external+python:ref:`warning-suppress` to
             suppress the :external+python:py:func:`warnings.warn` function.
 
         Calls :py:meth:`~planarity.express.planarity.PGraph.draw` with
-        ``label_type='index'`` and ``output_type='text/plain'``.
+        ``output_type='text/plain'`` and ``label_type='index'``.
 
         Args:
             outfileName (str): Optional file or stream name to which to write
@@ -467,7 +467,7 @@ cdef class PGraph:
             ``gp_DrawPlanar_RenderToFile()``.
 
         Raises:
-            ValueError: if ``outfileName`` contains ``NUL``.
+            ValueError: if ``outfileName`` contains a null byte.
             RuntimeError: if a C-layer method such as ``gp_Embed()`` or
                 rendering to string or to file fails.
             RuntimeError: if a prior invocation of this method already failed.
@@ -475,22 +475,27 @@ cdef class PGraph:
                  anything other than ``EMBEDFLAGS_DRAWPLANAR``, was performed.
             RuntimeError: if the graph is non-planar.
         """
-        import warnings
         warnings.warn(
             "PGraph's ascii() method is deprecated; please call PGraph's "
-            "draw() method with label_type='index' and "
-            "output_type='text/plain' instead.", category=DeprecationWarning
+            "draw() method with output_type='text/plain' and "
+            "label_type='index' instead. Please refer to the Python "
+            "warnings docs for how to suppress this DeprecationWarning.",
+            category=DeprecationWarning
         )
 
         return self.draw(
             outfileName=outfileName,
+            output_type='text/plain',
             label_type='index',
-            output_type='text/plain'
         )
 
     def draw(
-        self, bool labels=True, str outfileName=None,
-        str label_type='default', str output_type='image/png', **kwargs
+        self,
+        str outfileName=None,
+        str output_type='image/png',
+        bool labels=True,
+        str label_type='default',
+        **kwargs
     ) -> str | None:
         """Draws a planar graph as an image or text.
 
@@ -498,6 +503,13 @@ cdef class PGraph:
         Text output uses the C renderer with numeric vertex indexes.
 
         Args:
+            outfileName (:obj:`str`): File to which to output the rendering.
+                For text, ``'stdout'`` and ``'stderr'`` select those streams.
+                Without a filename, text is returned as a string; for images,
+                the caller can call
+                :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
+            output_type (:obj:`str`): ``'image/png'`` for image rendering, or
+                ``'text/plain'`` for text rendering. Default is ``'image/png'``.
             labels (bool): If ``True``, vertex labels are rendered in the image
                 drawing. Otherwise, vertices are rendered unlabelled in the
                 drawing. If a label's rendered width would exceed its vertex's
@@ -505,11 +517,6 @@ cdef class PGraph:
                 ``...`` so it stays within that rectangle.
                 The vertex's geometry itself is never resized to accommodate a
                 label.
-            outfileName (:obj:`str`): File to which to output the rendering.
-                For text, ``'stdout'`` and ``'stderr'`` select those streams.
-                Without a filename, text is returned as a string; for images,
-                the caller can call
-                :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
             label_type (:obj:`str`): Selects which text identifies each vertex
                 when ``labels`` is ``True`` :
 
@@ -523,8 +530,6 @@ cdef class PGraph:
 
                 Defaults to ``'default'``.
                 Text output always uses indexes; ``'label'`` is unsupported.
-            output_type (:obj:`str`): ``'image/png'`` for image rendering, or
-                ``'text/plain'`` for text rendering. Defaults to ``'image/png'``.
             **kwargs: Optional image-only figure-level parameters to apply to the
                 current figure after it is cleared. Supported keys are:
 
@@ -557,13 +562,15 @@ cdef class PGraph:
             ``outfileName`` is given, or ``None`` otherwise.
 
         Raises:
-            ValueError: if an unsupported keyword argument is given.
             ValueError: if ``output_type`` is neither ``'image/png'`` nor
                 ``'text/plain'``.
+            ValueError: if a text filename contains a null byte.
+            ValueError: if ``label_type`` is not one of ``'default'``,
+                ``'label'``, or ``'index'``.
             ValueError: if text output is requested without index labels
                 (i.e., if ``output_type='text/plain'`` and ``label_type`` is not
                 set to ``'index'``).
-            ValueError: if a text filename contains NUL.
+            ValueError: if an unsupported keyword argument is given.
             ImportError: if dependencies from Matplotlib fail to be imported
                 for image output.
             RuntimeError: if an error was encountered by C-layer methods
@@ -572,8 +579,6 @@ cdef class PGraph:
             RuntimeError: if any embedding operation was performed other than
                 the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
             RuntimeError: if the graph is non-planar.
-            ValueError: if ``label_type`` is not one of ``'default'``,
-                ``'label'``, or ``'index'``.
         """
         ##########################################################
         # Validate arguments before doing any embedding or drawing
@@ -583,6 +588,12 @@ cdef class PGraph:
             raise ValueError(
                 f"planarity: '{output_type}' is not a supported draw() "
                 f"output_type. Supported options are: {valid_output_types}."
+            )
+
+        if outfileName is not None and '\0' in outfileName:
+            raise ValueError(
+                "planarity: failed to draw text, as outfileName contained a "
+                "null byte."
             )
 
         valid_label_types = ('default', 'label', 'index')
@@ -604,18 +615,20 @@ cdef class PGraph:
                     "planarity: text/plain output does not support image "
                     "drawing keyword arguments."
                 )
-            return self._draw_as_text(outfileName)
+            return self._draw_as_text(outfileName=outfileName)
 
-        return self._draw_as_image(labels, outfileName, label_type, **kwargs)
+        return self._draw_as_image(
+            outfileName=outfileName,
+            labels=labels,
+            label_type=label_type,
+            **kwargs
+        )
 
     def _draw_as_text(self, str outfileName=None) -> str | None:
         # This is a non-public function, so once ascii() has been removed, copy
         # that docstring into this hash-led comment.
         cdef int status
         cdef char* s = NULL
-
-        if outfileName is not None and '\0' in outfileName:
-            raise ValueError("planarity: outfileName must not contain a NUL.")
 
         self.embed_drawplanar()
 
@@ -653,8 +666,11 @@ cdef class PGraph:
         return py_bytes.decode('ascii')
 
     def _draw_as_image(
-        self, bool labels=True, str outfileName=None,
-        str label_type='default', **kwargs
+        self,
+        str outfileName=None,
+        bool labels=True,
+        str label_type='default',
+        **kwargs
     ) -> None:
         # Non-public image renderer; public options are documented by draw().
 

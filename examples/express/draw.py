@@ -36,8 +36,8 @@ print('\n')
 if P1.is_planar():
     print("K5 minus an edge is planar. Here's a text drawing of it:\n")
     planar_rendition = P2.draw(
-        label_type='index',
         output_type='text/plain',
+        label_type='index',
     )
     print(planar_rendition)
 
