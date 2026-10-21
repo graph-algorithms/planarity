@@ -1,8 +1,9 @@
 import sys
+from unittest import SkipTest
+
+import pytest
 
 import planarity
-import pytest
-from unittest import SkipTest
 
 # K5 is non-planar and dense enough that each supported adjacency format is
 # fully populated, so conversions are exercised in both directions.
@@ -40,6 +41,7 @@ k5_formats = {
 # format cannot.
 with_isolate_dictofdicts = {0: {1: {}}, 1: {0: {}}, 2: {}}
 with_isolate_dictofsets = {0: {1}, 1: {0}, 2: set()}
+with_isolate_dictoflists = {0: [1], 1: [0], 2: []}
 
 
 def normalize(graph):
@@ -101,6 +103,8 @@ class TestConvertFromPGraph:
             == with_isolate_dictofsets
         assert planarity.convert_from_pgraph(P, 'dictofdicts') \
             == with_isolate_dictofdicts
+        assert planarity.convert_from_pgraph(P, 'dictoflists') \
+            == with_isolate_dictoflists
         # The edge list representation has no way to carry the isolated
         # vertex, so it only holds the single edge.
         assert normalize(planarity.convert_from_pgraph(P, 'edgelist')) \
@@ -147,12 +151,12 @@ class TestConvertFromPGraph:
 
 class TestConvertToNetworkX:
     @classmethod
-    def setup_class(self):
+    def setup_class(cls):
         try:
-            global nx
-            import networkx as nx
-        except ImportError:
-            raise SkipTest('networkx not available.')
+            global nx  # pylint: disable=global-statement
+            import networkx as nx  # pylint: disable=import-outside-toplevel
+        except ImportError as networkx_import_error:
+            raise SkipTest('networkx not available.') from networkx_import_error
 
     def test_networkx_and_preserved_alias_agree(self):
         G = nx.Graph()
