@@ -1,16 +1,23 @@
-import planarity
+import pytest
+
 from unittest import SkipTest
 
-class TestPlanarityNetworkX:
+try:
+    import networkx as nx
+    TEST_ENV_HAS_NETWORKX = True
+except ImportError:
+    TEST_ENV_HAS_NETWORKX = False
 
+import planarity
+
+
+@pytest.mark.skipif(
+    not TEST_ENV_HAS_NETWORKX,
+    reason="networkx is not installed."
+)
+class TestPlanarityNetworkX:
     @classmethod
     def setup_class(self):
-        try:
-            global nx
-            import networkx as nx
-        except ImportError:
-            raise SkipTest('networkx not available.')
-
         self.planar=[]
         self.planar.extend([nx.path_graph(5),
                             nx.complete_graph(4)])
@@ -27,8 +34,10 @@ class TestPlanarityNetworkX:
     def test_is_planar_unions(self):
         try:
             from itertools import combinations,product
-        except ImportError:
-            raise SkipTest('itertools.combinations not found')
+        except ImportError as itertools_import_error:
+            raise SkipTest(
+                'itertools.combinations not found'
+            ) from itertools_import_error
 
         for (G1,G2) in combinations(self.planar,2):
             G=nx.disjoint_union(G1,G2)
