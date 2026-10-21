@@ -48,7 +48,7 @@ In [9]: print(planarity.mapping(edgelist))
 
 In [10]: # Draw the graph as text
 
-In [11]: print(planarity.ascii(edgelist))
+In [11]: print(planarity.draw(edgelist, output_type='text/plain', label_type='index'))
 ```
 <pre>
 ----1----
@@ -64,7 +64,7 @@ In [11]: print(planarity.ascii(edgelist))
 
 ```python
 In [12]: planarity.draw(edgelist, outfileName='K5-minus-edge.png',
-                        vertex_bordercolor='black', figsize=(4,3), dpi=100)
+                        figsize=(4,3), dpi=100, vertex_bordercolor='black')
 ```
 ![K_5-minus-edge](https://raw.githubusercontent.com/graph-algorithms/planarity/master/examples/express/output/K5-minus-edge.png?updated=20260921
 "Matplotlib render of $K_5$-minus-edge")

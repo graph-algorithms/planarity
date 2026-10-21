@@ -84,6 +84,11 @@ packages = [
 [tool.setuptools.dynamic]
 version = {attr = "planarity.__version__"}
 
+[tool.pytest]
+filterwarnings = [
+    'ignore::DeprecationWarning',
+]
+
 [project.urls]
 Homepage = "https://github.com/graph-algorithms/planarity"
 Documentation = "https://github.com/graph-algorithms/planarity/wiki"

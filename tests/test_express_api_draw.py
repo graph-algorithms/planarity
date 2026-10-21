@@ -67,8 +67,13 @@ def test_png_background_and_transparency(draw, tmp_path, transparent):
     output = tmp_path / 'colors.png'
     # A user's savefig style must not override an explicit draw() facecolor.
     matplotlib.rcParams['savefig.facecolor'] = 'red'
-    draw(outfileName=str(output), facecolor='#abcdef', transparent=transparent,
-         figsize=(4, 3), dpi=100)
+    draw(
+        outfileName=str(output),
+        figsize=(4, 3),
+        dpi=100,
+        facecolor='#abcdef',
+        transparent=transparent,
+    )
     with Image.open(output) as image:
         # The tight bounding box (Issue #100) crops the saved image to the
         # drawing plus pad_inches, so it is strictly smaller than the
@@ -86,10 +91,17 @@ def test_png_background_and_transparency(draw, tmp_path, transparent):
 
 
 def test_color_controls_combine_without_labels(draw, tmp_path):
-    draw(labels=False, outfileName=str(tmp_path / 'no-labels.png'),
-         facecolor='white', transparent=True, vertex_facecolor='yellow',
-         vertex_bordercolor='black', vertex_label_facecolor='pink',
-         vertex_label_bordercolor='green', edge_linecolor='red')
+    draw(
+        outfileName=str(tmp_path / 'no-labels.png'),
+        labels=False,
+        facecolor='white',
+        vertex_facecolor='yellow',
+        vertex_bordercolor='black',
+        vertex_label_facecolor='pink',
+        vertex_label_bordercolor='green',
+        edge_linecolor='red',
+        transparent=True,
+    )
     assert not plt.gca().texts
     vertices = next(c for c in plt.gca().collections if isinstance(c, PatchCollection))
     assert tuple(vertices.get_facecolors()[0]) == pytest.approx(to_rgba('yellow'))
@@ -159,7 +171,11 @@ def _assert_pad_inches(draw, tmp_path, pad_inches):
     # EDGES is K5 minus an edge, drawn here on the custom 4x3 figure. The
     # padding has to come out right on a caller-chosen figure size, not
     # only on the default one.
-    draw(outfileName=str(output), pad_inches=pad_inches, figsize=(4, 3))
+    draw(
+        outfileName=str(output),
+        figsize=(4, 3),
+        pad_inches=pad_inches,
+    )
     with Image.open(output) as saved:
         image = saved.convert('RGBA')
         width, height = image.size
@@ -203,10 +219,47 @@ def test_draw_pad_inches_controls_output_padding(draw, tmp_path):
 
 
 def test_draw_text():
-    # ascii() is going to be deprecated in favor of calling draw() (#94),
-    # so its rendering test lives with the drawing tests until then.
-    e = ([1,2],)
-    P = planarity.PGraph(e)
-    s = P.ascii()#.decode()
-    assert s == '1\n|\n2\n \n'
+    graph = planarity.PGraph(([1, 2],))
+    assert (
+        graph.draw(
+            output_type='text/plain',
+            label_type='index',
+        ) == '1\n|\n2\n \n'
+    )
 
+
+def test_explicit_image_type_preserves_default_png(draw, tmp_path):
+    default_output = tmp_path / 'default.png'
+    explicit_output = tmp_path / 'explicit.png'
+    assert draw(outfileName=str(default_output)) is None
+    assert (
+        draw(
+            outfileName=str(explicit_output),
+            output_type='image/png',
+        ) is None
+    )
+    with Image.open(default_output) as default, Image.open(explicit_output) as explicit:
+        assert explicit.size == default.size
+        assert explicit.convert('RGBA').tobytes() == default.convert('RGBA').tobytes()
+
+
+def test_graph_can_switch_between_text_and_image(tmp_path):
+    graph = planarity.PGraph(EDGES)
+    text = graph.draw(output_type='text/plain', label_type='index')
+    output = tmp_path / 'graph.png'
+    assert graph.draw(outfileName=str(output)) is None
+    with Image.open(output) as image:
+        assert image.format == 'PNG'
+    assert graph.draw(output_type='text/plain', label_type='index') == text
+
+
+def test_draw_rejects_null_byte_in_outfileName(draw, tmp_path):
+    output = tmp_path / 'must-not-overwrite.txt'
+    output.write_text('keep this')
+    with pytest.raises(ValueError, match='null'):
+        draw(
+            outfileName=str(output) + '\0suffix',
+            output_type='text/plain',
+            label_type='index',
+        )
+    assert output.read_text() == 'keep this'

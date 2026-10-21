@@ -18,4 +18,9 @@ print(P.kuratowski_edges())
 
 edgelist.remove((0,1))
 P=planarity.PGraph(edgelist)
-print(P.ascii())
+print(
+    P.draw(
+        output_type='text/plain',
+        label_type='index',
+    )
+)
