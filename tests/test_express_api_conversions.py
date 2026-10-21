@@ -1,9 +1,15 @@
 import sys
-from unittest import SkipTest
 
 import pytest
 
+try:
+    import networkx as nx
+    TEST_ENV_HAS_NETWORKX = True
+except ImportError:
+    TEST_ENV_HAS_NETWORKX = False
+
 import planarity
+
 
 # K5 is non-planar and dense enough that each supported adjacency format is
 # fully populated, so conversions are exercised in both directions.
@@ -148,16 +154,11 @@ class TestConvertFromPGraph:
         with pytest.raises(ImportError, match='NetworkX required'):
             planarity.networkx_graph(P)
 
-
+@pytest.mark.skipif(
+    not TEST_ENV_HAS_NETWORKX,
+    reason="networkx is not installed"
+)
 class TestConvertToNetworkX:
-    @classmethod
-    def setup_class(cls):
-        try:
-            global nx  # pylint: disable=global-statement
-            import networkx as nx  # pylint: disable=import-outside-toplevel
-        except ImportError as networkx_import_error:
-            raise SkipTest('networkx not available.') from networkx_import_error
-
     def test_networkx_and_preserved_alias_agree(self):
         G = nx.Graph()
         G.add_edge(100, 200)

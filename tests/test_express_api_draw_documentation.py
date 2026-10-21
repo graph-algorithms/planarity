@@ -4,9 +4,16 @@ from io import StringIO
 from pathlib import Path
 
 import pytest
-from sphinx.application import Sphinx
+try:
+    from sphinx.application import Sphinx
+    TEST_ENV_HAS_SPHINX = True
+except ImportError as sphinx_import_error:
+    TEST_ENV_HAS_SPHINX = False
 
-
+@pytest.mark.skipif(
+    not TEST_ENV_HAS_SPHINX,
+    reason="sphinx is not installed in the test environment."
+)
 # Sphinx 9's own Napoleon extension still uses this deprecated options API.
 @pytest.mark.filterwarnings(
     'ignore:The mapping interface for autodoc options objects is deprecated'
