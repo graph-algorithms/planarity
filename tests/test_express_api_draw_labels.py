@@ -67,9 +67,9 @@ def test_label_type_index_shows_vertex_indexes(draw):
     assert set(_label_positions().values()) == {'1', '2', '3', '4'}
 
 
-def test_label_type_index_matches_mapping_and_ascii():
+def test_label_type_index_matches_mapping_and_text_drawing():
     # Each vertex keeps its position; only its label text changes, and the
-    # index shown is the one mapping() assigns and ascii() draws.
+    # index shown is the one mapping() assigns and the text renderer draws.
     planarity.draw(LABELED_EDGES, label_type='label')
     by_label = _label_positions()
     plt.close('all')
@@ -81,8 +81,12 @@ def test_label_type_index_matches_mapping_and_ascii():
     for position, label in by_label.items():
         assert mapping[int(by_index[position])] == label
 
-    text_drawing = planarity.ascii(LABELED_EDGES)
+    text_drawing = planarity.draw(
+        LABELED_EDGES,
+        output_type='text/plain',
+        label_type='index',
+    )
+    assert text_drawing is not None
     for index in by_index.values():
         assert index in text_drawing
-
 

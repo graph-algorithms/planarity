@@ -12,7 +12,10 @@ edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
 # Once can use a try-except-else to handle non-planar graphs.
 P = planarity.PGraph(edgelist)
 try:
-    planar_rendition = P.ascii()
+    planar_rendition = P.draw(
+        output_type='text/plain',
+        label_type='index',
+    )
 except Exception:
     print("The graph cannot be drawn because it is non-planar.\n")
 else:
@@ -24,7 +27,10 @@ edgelist.remove(('a','b'))
 # The basic workflow for text drawing of a planar graph.
 P = planarity.PGraph(edgelist)
 print(P.mapping())
-planar_rendition = P.ascii()
+planar_rendition = P.draw(
+    output_type='text/plain',
+    label_type='index',
+)
 print(planar_rendition)
 
 # How to test graph is planar before attempting to draw: create two PGraph, one
@@ -38,7 +44,10 @@ print(P2.mapping())
 
 # Make text drawing
 if P1.is_planar():
-    planar_rendition = P2.ascii()
+    planar_rendition = P2.draw(
+        output_type='text/plain',
+        label_type='index',
+    )
     print(planar_rendition)
 else:
     print("The graph cannot be drawn because it is non-planar.")
