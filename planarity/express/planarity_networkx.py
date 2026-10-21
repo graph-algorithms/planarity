@@ -3,7 +3,7 @@ import planarity
 
 __all__ = [
     'kuratowski_subgraph',
-    ]
+]
 
 
 def kuratowski_subgraph(graph):
@@ -33,9 +33,11 @@ def kuratowski_subgraph(graph):
         ImportError: On failure to import ``NetworkX``.
     """
     try:
-        import networkx as nx
-    except ImportError:
-        raise ImportError("NetworkX required for kuratowski_subgraph()")
+        import networkx as nx # pylint: disable=import-outside-toplevel
+    except ImportError as networkx_import_error:
+        raise ImportError(
+            "NetworkX required for kuratowski_subgraph()"
+        ) from networkx_import_error
 
     pgraph = planarity.PGraph(graph)
     edges = pgraph.kuratowski_edges()

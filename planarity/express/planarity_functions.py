@@ -16,7 +16,7 @@ __all__ = [
     'convert_from_pgraph',
     'pgraph_graph',
     'networkx_graph'
-    ]
+]
 
 
 def is_planar(graph):
@@ -82,14 +82,14 @@ def ascii(graph, outfileName=None) -> str | None:
     """[DEPRECATED] Produces an ASCII rendition of the graph, if it is planar.
 
     .. version-deprecated:: 1.1.0
-        Use :py:meth:`~planarity.express.planarity_functions.draw` with
+        Use :py:func:`~planarity.express.planarity_functions.draw` with
         ``output_type='text/plain'`` and ``label_type='index'`` instead.
         Refer to :external+python:ref:`warning-suppress` to suppress the
         :external+python:py:func:`warnings.warn` function.
 
-    Constructs a :py:class:`~planarity.express.planarity.PGraph` and calls
-    :py:meth:`~planarity.express.planarity_functions.draw` with
-    ``output_type='text/plain'`` and ``label_type='index'``.
+    Calls :py:func:`~planarity.express.planarity_functions.draw` with the
+    given ``outfileName``, ``output_type='text/plain'``, and
+    ``label_type='index'``.
 
     Args:
         graph: A graph specified in a format that may be converted to a
@@ -342,9 +342,11 @@ def convert_from_pgraph(pgraph, to_type):
     """
     if to_type == 'networkx':
         try:
-            import networkx as nx
-        except ImportError:
-            raise ImportError("NetworkX required to convert to a networkx.Graph")
+            import networkx as nx # pylint: disable=import-outside-toplevel
+        except ImportError as networkx_import_error:
+            raise ImportError(
+                "NetworkX required to convert to a networkx.Graph"
+            ) from networkx_import_error
         graph = nx.Graph()
         graph.add_nodes_from(pgraph.nodes(include_drawplanar_vertex_info=True))
         graph.add_edges_from(pgraph.edges(include_drawplanar_edge_info=True))
@@ -384,13 +386,58 @@ def convert_from_pgraph(pgraph, to_type):
     return graph
 
 
-# This function is being preserved for backwards compatibility, but Express API
-# users should call convert_to_pgraph() instead.
 def pgraph_graph(graph):
+    """[DEPRECATED] Builds a :py:class:`~planarity.express.planarity.PGraph` from the graph.
+
+    .. version-deprecated:: 1.1.0
+        Use :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`
+        instead.
+        Refer to :external+python:ref:`warning-suppress` to suppress the
+        :external+python:py:func:`warnings.warn` function.
+
+    Args:
+        graph: A graph specified in a format that may be converted to a
+            :py:class:`~planarity.express.planarity.PGraph`, including a
+            :external+networkx:py:class:`networkx.Graph`.
+
+    Returns:
+        A :py:class:`~planarity.express.planarity.PGraph` representing the same
+        graph as the input ``graph``.
+    """
+    warnings.warn(
+        "The Express API's pgraph_graph() function is deprecated; please call "
+        "convert_to_pgraph() instead. Please refer to the Python warnings docs "
+        "for how to suppress this DeprecationWarning.",
+        category=DeprecationWarning
+    )
     return planarity.PGraph(graph)
 
 
-# This function is being preserved for backwards compatibility, but Express API
-# users should call convert_from_pgraph() instead.
 def networkx_graph(pgraph):
+    """[DEPRECATED] Builds a :external+networkx:py:class:`networkx.Graph` from a :py:class:`~planarity.express.planarity.PGraph`.
+
+    .. version-deprecated:: 1.1.0
+        Use :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`
+        with ``to_type='networkx'`` instead.
+        Refer to :external+python:ref:`warning-suppress` to suppress the
+        :external+python:py:func:`warnings.warn` function.
+
+    Args:
+        pgraph: A :py:class:`~planarity.express.planarity.PGraph` to convert to
+            a A :external+networkx:py:class:`networkx.Graph`.
+
+    Returns:
+        A :external+networkx:py:class:`networkx.Graph` built from a
+        :py:class:`~planarity.express.planarity.PGraph`.
+
+    Raises:
+        ImportError: On failure to import ``NetworkX``.
+    """
+    warnings.warn(
+        "The Express API's networkx_graph() function is deprecated; please "
+        "call convert_from_pgraph() with to_type='networkx' instead. Please "
+        "refer to the Python warnings docs for how to suppress this "
+        "DeprecationWarning.",
+        category=DeprecationWarning
+    )
     return convert_from_pgraph(pgraph, to_type='networkx')
