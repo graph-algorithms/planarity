@@ -12,6 +12,8 @@ from .full.graphLib import (
 from .full.graphLib import (
     gp_GetQuietMode,
     gp_SetQuietMode,
+)
+from .full.graphLib import (
     gp_GetRandomNumber,
 )
 
@@ -30,6 +32,7 @@ from .full.graphLib import (
 
 # Surfaced from planarity/c/graphLib/graph.h
 from .full.graphLib import (
+    GRAPHFLAGS_DIRECTEDEDGEDETECTED,
     VERTEX_VISITED_MASK,
     VERTEX_MARKED_MASK,
     EDGE_VISITED_MASK,
@@ -39,6 +42,7 @@ from .full.graphLib import (
     EDGE_TYPE_FORWARD,
     EDGE_TYPE_PARENT,
     EDGE_TYPE_BACK,
+    EDGE_TYPE_CROSS,
     EDGE_TYPE_NOTDEFINED,
     EDGE_TYPE_TREE,
     EDGEFLAG_INVERTED_MASK,
@@ -57,6 +61,19 @@ from .full.graphLib import (
     WRITE_GRAPHML,
     GRAPHFLAGS_ZEROBASEDIO,
 )
+
+# Surfaced from planarity/c/graphLib/graphDFSUtils.h
+from .full.graphLib import (
+    DFSUTILS_NAME,
+    GRAPHFLAGS_EXTENDEDWITH_DFSUTILS,
+    GRAPHFLAGS_DFSNUMBERED,
+    GRAPHFLAGS_SORTEDBYDFI,
+    GRAPHFLAGS_LOWPOINTSCOMPUTED,
+    GRAPHFLAGS_DFSNUMBERED_DIRECTED,
+    DFSMODE_UNDIRECTED,
+    DFSMODE_DIRECTED,
+)
+
 # Surfaced from planarity/c/graphLib/planarityRelated/graphPlanarity.h
 from .full.graphLib import (
     PLANARITY_NAME,
@@ -108,13 +125,6 @@ from .full.graphLib import (
 from .full.graph import Graph
 from .full.g6IterationUtils import G6ReadIterator, G6WriteIterator
 
-# Seed the random number generator in the C library so that the
-# random number and random graph generators will produce different
-# outputs on each run of a script.
-from .full.graphLib import (
-    seed_rng,
-)
-seed_rng()
 
 # NOTE: In the future, we could automatically generate the version number by
 # configuring setuptools-scm, but presently this seems simpler.
