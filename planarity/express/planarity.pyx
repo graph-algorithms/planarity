@@ -861,9 +861,15 @@ cdef class PGraph:
             writeMode (int): Format to write the graph. Defaults to
                 ``WRITE_ADJLIST``.
         Raises:
+            ValueError: if ``path`` contains a null byte.
             RuntimeError: if the C-layer ``gp_Write()`` failed.
         """
         cdef int status
+
+        if '\0' in path:
+            raise ValueError(
+                "planarity: write() path must not contain a null byte."
+            )
 
         bpath = path.encode()
         status = cplanarity.gp_Write(

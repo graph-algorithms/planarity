@@ -1931,12 +1931,21 @@ cdef class Graph:
                 read.
 
         Raises:
+            ValueError: if ``fileName`` contains a null byte.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
         """
+        cdef bytes encoded
+        cdef const char *encodedFileName
+
+        if '\0' in fileName:
+            raise ValueError(
+                "gp_Read() fileName must not contain a null byte."
+            )
+
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = fileName.encode('utf-8')
-        cdef const char *encodedFileName = encoded
+        encoded = fileName.encode('utf-8')
+        encodedFileName = encoded
 
         result = graphLib.gp_Read(self._theGraph, encodedFileName)
         if result != OK:
@@ -1974,17 +1983,26 @@ cdef class Graph:
         Raises:
             ValueError: if ``writeMode`` is not ``WRITE_ADJLIST``,
                 ``WRITE_ADJMATRIX``, ``WRITE_G6``, or ``WRITE_GRAPHML``.
+            ValueError: if ``fileName`` contains a null byte.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
         """
+        cdef bytes encoded
+        cdef const char *encodedFileName
+
         if writeMode not in (WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_G6, WRITE_GRAPHML):
             raise ValueError(
                 f"gp_Write() failed: invalid writeMode = {writeMode}"
             )
 
+        if '\0' in fileName:
+            raise ValueError(
+                "gp_Write() fileName must not contain a null byte."
+            )
+
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = fileName.encode('utf-8')
-        cdef const char *encodedFileName = encoded
+        encoded = fileName.encode('utf-8')
+        encodedFileName = encoded
 
         result = graphLib.gp_Write(self._theGraph, encodedFileName, writeMode)
         if result != OK:
@@ -2700,12 +2718,22 @@ cdef class Graph:
                 rendition of the planar graph embedding.
 
         Raises:
+            ValueError: if ``theFileName`` contains a null byte.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
         """
+        cdef bytes encoded
+        cdef const char *encodedFileName
+
+        if '\0' in theFileName:
+            raise ValueError(
+                "gp_DrawPlanar_RenderToFile() theFileName must not contain a "
+                "null byte."
+            )
+
         # Convert Python str to UTF-8 encoded bytes, and then to const char *
-        cdef bytes encoded = theFileName.encode('utf-8')
-        cdef const char *encodedFileName = encoded
+        encoded = theFileName.encode('utf-8')
+        encodedFileName = encoded
 
         result = graphLib.gp_DrawPlanar_RenderToFile(
             self._theGraph, encodedFileName
