@@ -61,6 +61,29 @@ class TestPlanarityFullFileNames:
         )
 
     @pytest.mark.parametrize('exists', [False, True])
+    def test_gp_Write_checks_writeMode_before_fileName(
+        self, graph, tmp_path, exists
+    ):
+        output = tmp_path / 'graph.txt'
+        if exists:
+            output.write_bytes(b'keep this')
+
+        with pytest.raises(
+            ValueError, match=r'^gp_Write\(\) failed: invalid writeMode = 999$'
+        ):
+            graph.gp_Write(str(output) + '\0suffix', 999)
+
+        if exists:
+            assert output.read_bytes() == b'keep this'
+        else:
+            assert not output.exists()
+
+        graph.gp_Write(str(output), planarity.WRITE_ADJLIST)
+        assert output.read_text(encoding='utf-8') == graph.gp_WriteToString(
+            planarity.WRITE_ADJLIST
+        )
+
+    @pytest.mark.parametrize('exists', [False, True])
     def test_gp_DrawPlanar_RenderToFile_rejects_null_byte_in_theFileName(
         self, graph, tmp_path, exists
     ):
