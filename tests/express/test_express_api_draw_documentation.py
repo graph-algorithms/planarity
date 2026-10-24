@@ -27,7 +27,7 @@ def test_private_renderers_are_not_in_public_html(tmp_path):
         '   :members:\n',
         encoding='utf-8',
     )
-    config = Path(__file__).resolve().parents[1] / 'doc' / 'source'
+    config = Path(__file__).resolve().parents[2] / 'doc' / 'source'
     output = tmp_path / 'html'
     app = Sphinx(
         srcdir=str(source),
