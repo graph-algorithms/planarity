@@ -2,7 +2,6 @@
 # cython: embedsignature=True
 
 """Wrapper for Boyer's (c) planarity algorithms."""
-cimport cython
 from libc.stdlib cimport free
 
 import typing
@@ -861,11 +860,14 @@ cdef class PGraph:
         through N for a graph of order N, rather than any labels found in the
         file.
 
+        On Windows, paths containing non-ASCII characters may not be found if
+        the system file name code page is not UTF-8.
+
         Args:
             path (str): Path from which to read graph. Pass ``'stdin'`` to
                 read from the stdin stream.
         Raises:
-            ValueError: if ``path`` contains an embedded NUL or cannot be
+            ValueError: if ``path`` contains a null byte or cannot be
                 encoded as UTF-8.
             RuntimeError: if the C-layer ``gp_Read()`` failed.
         """
@@ -884,33 +886,42 @@ cdef class PGraph:
         self.reverse_nodemap = fresh.reverse_nodemap
         self._embedding_workflow_status = fresh._embedding_workflow_status
 
-    # Non-public constructor used by read() and the functional read(); public
-    # behavior and errors are documented by read(). The generated Cython
-    # signature docstring is disabled so that Sphinx's
-    # napoleon_include_private_with_doc setting does not publish this private
-    # member.
-    @cython.embedsignature(False)
     @classmethod
     def _from_path(cls, str path):
+        """Construct a graph from a file for the method and functional read APIs.
+
+        Args:
+            path (str): Path to the input file, or ``'stdin'`` for standard input.
+
+        Raises:
+            ValueError: if ``path`` contains a null byte.
+            UnicodeEncodeError: if ``path`` cannot be encoded as UTF-8.
+            RuntimeError: if graph allocation or the C-layer ``gp_Read()`` fails.
+
+        Returns:
+            PGraph: A new graph populated from the input file.
+        """
         cdef int status
         cdef bytes bpath
+        cdef const char *encodedInputFileName
         cdef cplanarity.graphP graph = NULL
         cdef PGraph pg
 
         if '\0' in path:
-            raise ValueError("planarity: path must not contain a NUL.")
+            raise ValueError("planarity: read() path must not contain a null byte.")
 
         # The path is encoded before the C graph is allocated, and the Python
         # owner of that graph is created before it is allocated, so that a
         # failure at any point cannot leave an unowned C graph behind.
-        bpath = path.encode()
+        bpath = path.encode('utf-8')
+        encodedInputFileName = bpath
         pg = cls.__new__(cls)
 
         graph = cplanarity.gp_New()
         if graph == NULL:
             raise RuntimeError("planarity: Failed to initialize graph")
 
-        status = cplanarity.gp_Read(graph, bpath)
+        status = cplanarity.gp_Read(graph, encodedInputFileName)
         if status != cplanarity.OK:
             cplanarity.gp_Free(&graph)
             raise RuntimeError(

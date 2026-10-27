@@ -240,6 +240,9 @@ def read(path: str) -> planarity.PGraph:
     i.e., 1 through N for a graph of order N, rather than any labels found in
     the file.
 
+    On Windows, paths containing non-ASCII characters may not be found if
+    the system file name code page is not UTF-8.
+
     Args:
         path (str): Path from which to read graph. Pass ``'stdin'`` to read
             from the stdin stream.
@@ -250,7 +253,7 @@ def read(path: str) -> planarity.PGraph:
         populated from the file.
 
     Raises:
-        ValueError: if ``path`` contains an embedded NUL or cannot be
+        ValueError: if ``path`` contains a null byte or cannot be
             encoded as UTF-8.
         RuntimeError: if the C-layer ``gp_Read()`` failed.
     """

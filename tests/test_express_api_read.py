@@ -31,7 +31,8 @@ INVALID_G6_TRUNCATED = '>>graph6<<zzz\n'
 SURROGATE_PATH = '\udcff'
 
 
-class TestRead:
+# Keep the read cases together so failures are reported under the same API.
+class TestRead:  # pylint: disable=too-many-public-methods
     def test_read_adjlist(self, tmp_path):
         fname = tmp_path / 'triangle.adjlist'
         fname.write_text(ADJLIST_TRIANGLE, encoding='utf-8')
@@ -40,6 +41,22 @@ class TestRead:
         assert P.nodes() == [1, 2, 3]
         assert sorted(P.edges()) == [(1, 2), (1, 3), (2, 3)]
         assert P.is_planar() is True
+
+    @pytest.mark.skipif(
+        sys.platform == 'win32',
+        reason='The C reader may not accept UTF-8 paths on Windows.',
+    )
+    @pytest.mark.parametrize('read_method', [False, True])
+    def test_read_utf8_filename(self, tmp_path, read_method):
+        fname = tmp_path / 'đồ-thị.adjlist'
+        fname.write_text(ADJLIST_TRIANGLE, encoding='utf-8')
+        if read_method:
+            graph = planarity.PGraph([(10, 20)])
+            graph.read(str(fname))
+        else:
+            graph = planarity.read(str(fname))
+        assert graph.nodes() == [1, 2, 3]
+        assert sorted(graph.edges()) == [(1, 2), (1, 3), (2, 3)]
 
     def test_read_adjlist_round_trip(self, tmp_path):
         edges = [(1, 2), (1, 3), (2, 3)]
@@ -145,9 +162,22 @@ class TestRead:
         with pytest.raises(RuntimeError):
             planarity.read(str(fname))
 
-    def test_read_nul_path_raises(self):
-        with pytest.raises(ValueError):
-            planarity.read('graph\0.txt')
+    @pytest.mark.parametrize('read_method', [False, True])
+    def test_read_rejects_null_byte_in_path(self, tmp_path, read_method):
+        fname = tmp_path / 'triangle.adjlist'
+        fname.write_text(ADJLIST_TRIANGLE, encoding='utf-8')
+        graph = planarity.PGraph([(10, 20)]) if read_method else None
+
+        with pytest.raises(ValueError, match='null byte'):
+            if read_method:
+                graph.read(str(fname) + '\0suffix')
+            else:
+                planarity.read(str(fname) + '\0suffix')
+
+        assert fname.read_text(encoding='utf-8') == ADJLIST_TRIANGLE
+        if read_method:
+            assert graph.edges() == [(10, 20)]
+            assert graph.mapping() == {1: 10, 2: 20}
 
     def test_read_unencodable_path_raises_value_error(self):
         with pytest.raises(UnicodeEncodeError):
@@ -210,12 +240,6 @@ class TestRead:
         assert P.nodes() == [1, 2, 3, 4, 5]
         assert P.is_planar() is False
         assert len(P.kuratowski_edges()) > 0
-
-    def test_private_read_factory_has_no_docstring(self):
-        # The generated Cython signature docstring is suppressed so that
-        # Sphinx's napoleon_include_private_with_doc setting does not
-        # publish the private factory.
-        assert planarity.PGraph._from_path.__doc__ is None
 
     def test_failed_reads_do_not_accumulate_memory(self):
         # The C graph is allocated only after the steps that can raise, so a
