@@ -249,6 +249,7 @@ def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
             :py:class:`~planarity.express.planarity.PGraph`.
         RuntimeError: if the graph couldn't be converted to a
             :py:class:`~planarity.express.planarity.PGraph`.
+        ValueError: if ``path`` contains a null byte.
         RuntimeError: if the C-layer ``gp_Write()`` failed.
     """
     planarity.PGraph(graph).write(path, writeMode)
