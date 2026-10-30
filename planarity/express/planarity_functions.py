@@ -10,6 +10,7 @@ __all__ = [
     'kuratowski_edges',
     'ascii',
     'draw',
+    'read',
     'write',
     'mapping',
     'convert_to_pgraph',
@@ -225,6 +226,38 @@ def draw(
             "Please install missing dependencies in your current environment "
             "and retry."
         ) from import_error
+
+
+def read(path: str) -> planarity.PGraph:
+    """Reads a graph from the file at ``path``.
+
+    Constructs a
+    :py:class:`~planarity.express.planarity.PGraph`
+    populated from the contents of the file rather than from an input graph.
+
+    Supports reading in formats: adjacency list, adjacency matrix, graph6,
+    and LEDA. The vertex labels are the graph's internal vertex indexes,
+    i.e., 1 through N for a graph of order N, rather than any labels found in
+    the file.
+
+    On Windows, paths containing non-ASCII characters may not be found if
+    the system file name code page is not UTF-8.
+
+    Args:
+        path (str): Path from which to read graph. Pass ``'stdin'`` to read
+            from the stdin stream.
+
+    Returns:
+        A new
+        :py:class:`~planarity.express.planarity.PGraph`
+        populated from the file.
+
+    Raises:
+        ValueError: if ``path`` contains a null byte or cannot be
+            encoded as UTF-8.
+        RuntimeError: if the C-layer ``gp_Read()`` failed.
+    """
+    return planarity.PGraph._from_path(path)
 
 
 def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
