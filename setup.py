@@ -21,13 +21,13 @@ extensions = [
         name="planarity.express.planarity",
         sources=express_sourcefiles,
         include_dirs=['planarity/c/graphLib'],
-        # extra_compile_args=["-DDEBUG"], # Uncomment if you want to see debugNOTOK() statements
+        # extra_compile_args=["-DDEBUG", "-DUSE_0BASEDARRAYS"], # Uncomment if you want to see debugNOTOK() statements
     ),
     Extension(
         name="planarity.full.graphLib",
         sources=graphLib_sourcefiles,
         include_dirs=["planarity/c/graphLib"],
-        # extra_compile_args=["-DDEBUG"], # Uncomment if you want to see debugNOTOK() statements
+        # extra_compile_args=["-DDEBUG", "-DUSE_0BASEDARRAYS"], # Uncomment if you want to see debugNOTOK() statements
     ),
     Extension(
         name="planarity.full.g6IterationUtils",

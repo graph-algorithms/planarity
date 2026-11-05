@@ -1000,7 +1000,7 @@ cdef class PGraph:
         is_zero_based_input = graph_flags & cplanarity.GRAPHFLAGS_ZEROBASEDIO
         order = cplanarity.gp_GetN(self.theGraph)
         input_index_lower_bound = 0 if is_zero_based_input else 1
-        input_index_upper_bound = order if is_zero_based_input else (order + 1)
+        input_index_upper_bound = order + input_index_lower_bound
         input_vertex_indexes = range(
             input_index_lower_bound,
             input_index_upper_bound
