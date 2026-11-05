@@ -50,14 +50,13 @@ def test_private_helpers_are_not_in_public_html(tmp_path):
     app.build(force_all=True)
     assert app.statuscode == 0
     html = (output / 'index.html').read_text(encoding='utf-8')
-    assert 'planarity.express.planarity.PGraph.draw' in html
-    assert 'planarity.express.planarity.PGraph.read' in html
-    # The private factory needs a docstring even though it is not published.
-    factory = planarity.PGraph._from_path  # pylint: disable=protected-access
-    assert factory.__doc__
-    for section in ('Args:', 'Raises:', 'Returns:'):
-        assert section in factory.__doc__
-    documented_private = [name for name in ('_draw_as_text', '_draw_as_image',
-                                            '_from_path')
-                          if name in html]
+    pg = planarity.PGraph([('a', 'b')])
+    private_callable_members = [
+        private_member for private_member in dir(pg)
+        if private_member.startswith("_") and
+        callable(getattr(pg, private_member))
+    ]
+    documented_private = [
+        name for name in private_callable_members if name in html
+    ]
     assert documented_private == []

@@ -253,11 +253,13 @@ def read(path: str) -> planarity.PGraph:
         populated from the file.
 
     Raises:
-        ValueError: if ``path`` contains a null byte or cannot be
-            encoded as UTF-8.
+        ValueError: if ``path`` contains a null byte.
+        ValueError: if ``path`` cannot be encoded as ``UTF-8`` bytes.
         RuntimeError: if the C-layer ``gp_Read()`` failed.
     """
-    return planarity.PGraph._from_path(path)
+    pg = planarity.PGraph()
+    pg.read(path)
+    return pg
 
 
 def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
@@ -278,6 +280,9 @@ def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
             ``WRITE_ADJLIST``.
 
     Raises:
+        RuntimeError: if C-layer graph datastructure is uninitialized.
+        ValueError: if ``path`` contains a null byte.
+        ValueError: if ``path`` cannot be encoded as ``UTF-8`` bytes.
         ValueError: if the given graph is already a
             :py:class:`~planarity.express.planarity.PGraph`.
         RuntimeError: if the graph couldn't be converted to a
@@ -285,7 +290,6 @@ def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
         RuntimeError: if the C-layer ``gp_Write()`` failed.
     """
     planarity.PGraph(graph).write(path, writeMode)
-
 
 
 def mapping(graph) -> dict[int, typing.Any]:
