@@ -2,6 +2,8 @@
 
 import builtins
 
+import sys
+import os
 import pytest
 
 import planarity
@@ -43,7 +45,7 @@ def test_text_file_defaults_to_index_labels(draw, tmp_path):
             output_type='text/plain',
         ) is None
     )
-    assert output.read_bytes() == TEXT.encode('ascii')
+    assert output.read_bytes() == TEXT.replace("\n", os.linesep).encode('ascii')
 
 
 def test_ascii_returns_exact_text(ascii_draw):
@@ -60,13 +62,13 @@ def test_draw_writes_exact_text(draw, tmp_path):
             label_type='index',
         ) is None
     )
-    assert output.read_bytes() == TEXT.encode('ascii')
+    assert output.read_bytes() == TEXT.replace("\n", os.linesep).encode('ascii')
 
 
 def test_ascii_writes_exact_text(ascii_draw, tmp_path):
     output = tmp_path / 'legacy.txt'
     assert ascii_draw(EDGES, outfileName=str(output)) is None
-    assert output.read_bytes() == TEXT.encode('ascii')
+    assert output.read_bytes() == TEXT.replace("\n", os.linesep).encode('ascii')
 
 
 @pytest.mark.parametrize('stream', ['stdout', 'stderr'])
@@ -150,6 +152,10 @@ def test_invalid_outfileName_reported(draw, tmp_path, monkeypatch, filename):
         )
 
 
+@pytest.mark.skipif(
+    sys.platform == 'win32',
+    reason='The C reader may not accept UTF-8 paths on Windows.',
+)
 def test_text_accepts_unicode_filename(draw, tmp_path):
     output = tmp_path / 'đồ-thị.txt'
     draw(
