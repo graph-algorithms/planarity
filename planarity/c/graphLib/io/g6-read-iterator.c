@@ -715,10 +715,12 @@ int _g6_ReadGraphFromStrOrFile(graphP theGraph, strOrFileP *pInputContainer)
         return NOTOK;
     }
 
-    if (g6_ReadGraph(theG6ReadIterator) != OK)
+    int RetVal = g6_ReadGraph(theG6ReadIterator);
+
+    if (RetVal != OK)
         gp_ErrorMessage("Unable to read graph from .g6 read iterator.");
 
     g6_FreeReader((&theG6ReadIterator));
 
-    return OK;
+    return RetVal;
 }

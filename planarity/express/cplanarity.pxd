@@ -14,8 +14,12 @@ cdef extern from "../c/graphLib/graph.h":
 
     void gp_Free(graphP *pGraph)
 
+    int gp_GetN(graphP theGraph)
+
     int gp_AddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
     int gp_DynamicAddEdge(graphP theGraph, int u, int ulink, int v, int vlink)
+
+    int gp_GetGraphFlags(graphP theGraph)
 
     int gp_GetFirstEdge(graphP theGraph, int v)
     int gp_GetLastEdge(graphP theGraph, int v)
@@ -42,11 +46,12 @@ cdef extern from "../c/graphLib/graphDFSUtils.h":
 
 
 cdef extern from "../c/graphLib/io/graphIO.h":
-    int WRITE_ADJLIST
-    int WRITE_ADJMATRIX
-    int WRITE_G6
-    int WRITE_GRAPHML
+    int gp_Read(graphP theGraph, const char *fileName)
     int gp_Write(graphP theGraph, char *FileName, int Mode)
+
+    int WRITE_ADJLIST, WRITE_ADJMATRIX, WRITE_DEBUGINFO, WRITE_G6, WRITE_GRAPHML
+
+    int GRAPHFLAGS_ZEROBASEDIO
 
 
 cdef extern from "../c/graphLib/planarityRelated/graphPlanarity.h":
