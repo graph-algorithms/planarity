@@ -235,13 +235,8 @@ def read(path: str) -> planarity.PGraph:
     :py:class:`~planarity.express.planarity.PGraph`
     populated from the contents of the file rather than from an input graph.
 
-    Supports reading in formats: adjacency list, adjacency matrix, graph6,
-    and LEDA. The vertex labels are the graph's internal vertex indexes,
-    i.e., 1 through N for a graph of order N, rather than any labels found in
-    the file.
-
-    On Windows, paths containing non-ASCII characters may not be found if
-    the system file name code page is not UTF-8.
+    Supports reading graphs from several file formats, including 
+    adjacency list, adjacency matrix, and graph6.
 
     Args:
         path (str): Path from which to read graph. Pass ``'stdin'`` to read
