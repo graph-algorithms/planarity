@@ -935,7 +935,7 @@ cdef class PGraph:
     def read(self, str path) -> None:
         """Populates the graph from the file at ``path``.
 
-        Supports reading graphs from several file formats, including 
+        Supports reading graphs from several file formats, including
         adjacency list, adjacency matrix, and graph6.
 
         Args:

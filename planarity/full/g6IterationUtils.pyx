@@ -94,11 +94,21 @@ cdef class G6ReadIterator:
             infileName: a string containing the name of the input file.
 
         Raises:
+            ValueError: if ``infileName`` contains a null byte.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
         """
-        cdef bytes encoded = infileName.encode('utf-8')
-        cdef const char *encodedInfileName = encoded
+        cdef bytes encoded
+        cdef const char *encodedInfileName
+
+        if '\0' in infileName:
+            raise ValueError(
+                "g6_InitReaderWithFileName() infileName must not contain a "
+                "null byte."
+            )
+
+        encoded = infileName.encode('utf-8')
+        encodedInfileName = encoded
 
         result = graphLib.g6_InitReaderWithFileName(
             self._g6ReadIterator, encodedInfileName
@@ -259,11 +269,21 @@ cdef class G6WriteIterator:
             outfileName: a string containing the name of the output file.
 
         Raises:
+            ValueError: if ``outfileName`` contains a null byte.
             RuntimeError: if the C-layer ``graphLib`` version of this function
                 fails.
         """
-        cdef bytes encoded = outfileName.encode('utf-8')
-        cdef const char *encodedOutputFileName = encoded
+        cdef bytes encoded
+        cdef const char *encodedOutputFileName
+
+        if '\0' in outfileName:
+            raise ValueError(
+                "g6_InitWriterWithFileName() outfileName must not contain a "
+                "null byte."
+            )
+
+        encoded = outfileName.encode('utf-8')
+        encodedOutputFileName = encoded
 
         result = graphLib.g6_InitWriterWithFileName(
             self._g6WriteIterator, encodedOutputFileName
