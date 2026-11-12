@@ -1,9 +1,10 @@
-"""Keep the private drawing helpers out of the public API documentation."""
+"""Keep private helpers out of the public API documentation."""
 
 from io import StringIO
 from pathlib import Path
 
 import pytest
+import planarity
 try:
     from sphinx.application import Sphinx
     TEST_ENV_HAS_SPHINX = True
@@ -18,7 +19,7 @@ except ImportError as sphinx_import_error:
 @pytest.mark.filterwarnings(
     'ignore:The mapping interface for autodoc options objects is deprecated'
 )
-def test_private_renderers_are_not_in_public_html(tmp_path):
+def test_private_helpers_are_not_in_public_html(tmp_path):
     source = tmp_path / 'source'
     source.mkdir()
     (source / 'index.rst').write_text(
@@ -49,7 +50,13 @@ def test_private_renderers_are_not_in_public_html(tmp_path):
     app.build(force_all=True)
     assert app.statuscode == 0
     html = (output / 'index.html').read_text(encoding='utf-8')
-    assert 'planarity.express.planarity.PGraph.draw' in html
-    documented_private = [name for name in ('_draw_as_text', '_draw_as_image')
-                          if name in html]
+    pg = planarity.PGraph([('a', 'b')])
+    private_callable_members = [
+        private_member for private_member in dir(pg)
+        if private_member.startswith("_") and
+        callable(getattr(pg, private_member))
+    ]
+    documented_private = [
+        name for name in private_callable_members if name in html
+    ]
     assert documented_private == []

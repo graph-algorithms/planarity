@@ -9,9 +9,12 @@ import warnings
 
 from planarity.express cimport cplanarity
 
-
 cdef class PGraph:
     """Wraps a C-layer graph data structure instance and retains node label data from the caller.
+
+    .. Note::
+        This Cython class is marked as ``final``, and therefore cannot be
+        subclassed.
 
     Attributes:
         theGraph: The C-layer graph data structure instance wrapped by the
@@ -39,23 +42,49 @@ cdef class PGraph:
     cdef dict reverse_nodemap
     cdef int _embedding_workflow_status
 
-    def __init__(self, graph):
+    def __cinit__(self):
+        """Allocate C-layer graph datastructure."""
+        self.theGraph = cplanarity.gp_New()
+        if self.theGraph == NULL:
+            raise MemoryError(
+                "planarity: Failed to allocate C-layer graph datastructure."
+            )
+
+    def __init__(self, graph=None):
         """Initialize :py:class:`~planarity.express.planarity.PGraph` from an input graph.
 
         Args:
-            graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
+            graph (None | networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
                 Input graph to use to populate the C-layer graph data structure
-                instance.
+                instance. If ``None`` supplied, the C-layer graph datastructure
+                allocated by ``__cinit__()``, as well as the
+                :py:attr:`~planarity.express.planarity.PGraph.nodemap` and
+                :py:attr:`~planarity.express.planarity.PGraph.reverse_nodemap`,
+                must be populated by a call to
+                :py:meth:`~planarity.express.planarity.PGraph.read`.
 
         Raises:
             ValueError: if the given graph is already a
                 :py:class:`~planarity.express.planarity.PGraph`.
             RuntimeError: if the graph couldn't be converted to a
                 :py:class:`~planarity.express.planarity.PGraph`.
-            RuntimeError: if an error was encountered by C-layer methods such
-                as ``gp_New()``, ``gp_EnsureVertexCapacity()``, or
-                ``gp_DynamicAddEdge()``.
+            RuntimeError: if an error was encountered by the C-layer functions
+                ``gp_EnsureVertexCapacity()`` or ``gp_DynamicAddEdge()``.
         """
+        cdef int status
+
+        # NOTE: To distinguish between an OK result for the embedding operation
+        # and not having yet performed the embedding operation, you must call
+        # gp_GetEmbedFlags(); if the flags are nonzero, then the embedding
+        # operation has previously been performed, and you must discern what
+        # should be done based on the workflow status.
+        self._embedding_workflow_status = cplanarity.OK
+
+        if graph is None:
+            self.nodemap = dict()
+            self.reverse_nodemap = dict()
+            return
+
         if isinstance(graph, PGraph):
             raise ValueError(
                 "Initializing a PGraph with a PGraph is not supported at this "
@@ -98,16 +127,30 @@ cdef class PGraph:
             edges = graph
 
         n = len(nodes)
-        # NOTE: This presumes 1-based arrays; however, this can only be changed
-        # if you add -DUSE_0BASEDARRAYS to the extra_compile_args of the express
-        # planarity extension in setup.py.
-        self.nodemap = dict(zip(nodes, range(1, n+1)))
-        self.reverse_nodemap = dict(zip(range(1, n+1), nodes))
-        self.theGraph = cplanarity.gp_New()
-        cdef int status
         status = cplanarity.gp_EnsureVertexCapacity(self.theGraph, n)
         if status != cplanarity.OK:
             raise RuntimeError("planarity: Failed to initialize graph")
+
+        vertex_lower_bound = cplanarity.gp_LowerBoundVertices(self.theGraph)
+        vertex_upper_bound = cplanarity.gp_UpperBoundVertices(self.theGraph)
+        self.nodemap = dict(
+            zip(
+                nodes,
+                range(
+                    vertex_lower_bound,
+                    vertex_upper_bound
+                )
+            )
+        )
+        self.reverse_nodemap = dict(
+            zip(
+                range(
+                    vertex_lower_bound,
+                    vertex_upper_bound
+                ),
+                nodes
+            )
+        )
 
         # add the edges and check return
         seen = set()
@@ -124,7 +167,6 @@ cdef class PGraph:
                 )
 
                 if status != cplanarity.OK:
-                    cplanarity.gp_Free(&self.theGraph)
                     raise RuntimeError(
                         f"planarity: Failed to add edge ({u}, {v})."
                     )
@@ -134,21 +176,31 @@ cdef class PGraph:
                 # TODO: Might need to update this in the future with multigraphs
                 warnings.warn(f"planarity: Ignoring parallel edge {u}-{v}")
 
-        # NOTE: To distinguish between an OK result for the embedding operation
-        # and not having yet performed the embedding operation, you must call
-        # gp_GetEmbedFlags(); if the flags are nonzero, then the embedding
-        # operation has previously been performed, and you must discern what
-        # should be done based on the workflow status.
-        self._embedding_workflow_status = cplanarity.OK
-
     def __dealloc__(self):
         if self.theGraph != NULL:
             cplanarity.gp_Free(&self.theGraph)
+
+    def is_graph_initialized(self) -> bool:
+        """Determines if graph has been initialized by polling ``gp_GetN()``.
+
+        Returns:
+            ``True`` if the graph has been initialized, either upon
+            :py:class:`~planarity.express.planarity.PGraph`'s initialization, or
+            after :py:meth:`~planarity.express.planarity.PGraph.read`. If the
+            pointer to the underlying C-layer graph datastructure is ``NULL``,
+            or if ``cplanarity.gp_GetN()`` returns 0, returns ``False``.
+        """
+        if self.theGraph == NULL or cplanarity.gp_GetN(self.theGraph) == 0:
+            return False
+
+        return True
+
 
     def embed_planar(self) -> None:
         """Performs the ``PLANAR`` embed operation, if not yet performed.
 
         Raises:
+            RuntimeError: If C-layer graph datastructure is uninitialized.
             RuntimeError: if an error was encountered by C-layer methods such
                 as ``gp_Embed()``.
             RuntimeError: if a prior invocation of this method already failed.
@@ -157,6 +209,12 @@ cdef class PGraph:
         """
         cdef int status
         cdef int embedFlags
+
+        if not self.is_graph_initialized():
+            raise RuntimeError(
+                "planarity: Unable to perform embedding operation on an "
+                "uninitialized graph."
+            )
 
         embedFlags = cplanarity.gp_GetEmbedFlags(self.theGraph)
         if (
@@ -206,6 +264,7 @@ cdef class PGraph:
         """Performs the ``DRAWPLANAR`` embed operation, if not yet performed.
 
         Raises:
+            RuntimeError: If C-layer graph datastructure is uninitialized.
             RuntimeError: if an error was encountered by C-layer methods such
                 as ``gp_Embed()``.
             RuntimeError: if the given graph is non-planar
@@ -215,6 +274,12 @@ cdef class PGraph:
         """
         cdef int status
         cdef int embedFlags
+
+        if not self.is_graph_initialized():
+            raise RuntimeError(
+                "planarity: Unable to perform embedding operation on an "
+                "uninitialized graph."
+            )
 
         embedFlags = cplanarity.gp_GetEmbedFlags(self.theGraph)
         if embedFlags == cplanarity.EMBEDFLAGS_DRAWPLANAR:
@@ -274,6 +339,7 @@ cdef class PGraph:
             ``True`` if the graph is planar, or ``False`` if not.
 
         Raises:
+            RuntimeError: If C-layer graph datastructure is uninitialized.
             RuntimeError: if an error was encountered by C-layer methods such
                 as ``gp_Embed()``.
             RuntimeError: if a prior invocation of this method already failed.
@@ -295,6 +361,7 @@ cdef class PGraph:
             if it is non-planar, or an empty list if it is planar.
 
         Raises:
+            RuntimeError: If C-layer graph datastructure is uninitialized.
             RuntimeError: if an error was encountered by C-layer methods such
                 as ``gp_Embed()``.
             RuntimeError: if a prior invocation of this method already failed.
@@ -322,7 +389,15 @@ cdef class PGraph:
             second element is a dictionary providing the values for
             ``vertex_position``, ``vertex_start``, and ``vertex_end`` from the
             ``DrawPlanar`` context.
+
+        Raises:
+            RuntimeError: If C-layer graph datastructure is uninitialized.
         """
+        if not self.is_graph_initialized():
+            raise RuntimeError(
+                "planarity: Unable to fetch nodes of an uninitialized graph."
+            )
+
         vertex_lower_bound = cplanarity.gp_LowerBoundVertices(self.theGraph)
         vertex_upper_bound = cplanarity.gp_UpperBoundVertices(self.theGraph)
         r = self.reverse_nodemap
@@ -387,7 +462,15 @@ cdef class PGraph:
             the final element being a dictionary providing the values for
             ``edge_position``, ``edge_start``, and ``edge_end`` from the
             ``DrawPlanar`` context.
+
+        Raises:
+            RuntimeError: if C-layer graph datastructure is uninitialized.
         """
+        if not self.is_graph_initialized():
+            raise RuntimeError(
+                "planarity: Unable to fetch edges of an uninitialized graph."
+            )
+
         edges = []
         r = self.reverse_nodemap
         vertex_lower_bound = cplanarity.gp_LowerBoundVertices(self.theGraph)
@@ -468,6 +551,7 @@ cdef class PGraph:
 
         Raises:
             ValueError: if ``outfileName`` contains a null byte.
+            RuntimeError: if C-layer graph datastructure is uninitialized.
             RuntimeError: if a C-layer method such as ``gp_Embed()`` or
                 rendering to string or to file fails.
             RuntimeError: if a prior invocation of this method already failed.
@@ -571,6 +655,7 @@ cdef class PGraph:
                 (i.e., if ``output_type='text/plain'`` and ``label_type`` is not
                 set to ``'index'``).
             ValueError: if an unsupported keyword argument is given.
+            RuntimeError: if C-layer graph datastructure is uninitialized.
             ImportError: if dependencies from Matplotlib fail to be imported
                 for image output.
             RuntimeError: if an error was encountered by C-layer methods
@@ -847,6 +932,94 @@ cdef class PGraph:
                 facecolor='none' if transparent else fig.get_facecolor(),
             )
 
+    def read(self, str path) -> None:
+        """Populates the graph from the file at ``path``.
+
+        Supports reading graphs from several file formats, including
+        adjacency list, adjacency matrix, and graph6.
+
+        Args:
+            path (str): Path from which to read graph. Pass ``'stdin'`` to
+                read from the stdin stream.
+        Raises:
+            RuntimeError: if the :py:class:`~planarity.express.planarity.PGraph`
+                has already been populated, either during initialization or by a
+                previous invocation of
+                :py:meth:`~planarity.express.planarity.PGraph.read`.
+            ValueError: if ``path`` contains a null byte.
+            ValueError: if ``path`` cannot be encoded as ``UTF-8`` bytes.
+            RuntimeError: if the C-layer ``gp_Read()`` failed.
+        """
+        cdef int status
+        cdef int graph_flags
+        cdef int is_zero_based_input
+        cdef int order
+        cdef bytes bpath
+        cdef const char *encodedInputFileName
+
+        if self.is_graph_initialized() or self.nodemap or self.reverse_nodemap:
+            raise RuntimeError(
+                "planarity: Unable to read graph into PGraph, as it has "
+                "already been populated."
+            )
+
+        if '\0' in path:
+            raise ValueError(
+                "planarity: read() path must not contain a null byte."
+            )
+
+        try:
+            bpath = path.encode('utf-8')
+        except UnicodeEncodeError as path_encode_error:
+            raise ValueError(
+                "planarity: graph read failed due to error encountered while "
+                f"encoding path to input graph: '{path}'"
+            ) from path_encode_error
+
+        encodedInputFileName = bpath
+
+        status = cplanarity.gp_Read(self.theGraph, encodedInputFileName)
+        if status != cplanarity.OK:
+            raise RuntimeError(
+                "planarity: C-layer call to gp_Read() failed for infile "
+                f"'{path}'"
+            )
+
+        graph_flags = cplanarity.gp_GetGraphFlags(self.theGraph)
+        is_zero_based_input = graph_flags & cplanarity.GRAPHFLAGS_ZEROBASEDIO
+        order = cplanarity.gp_GetN(self.theGraph)
+        input_index_lower_bound = 0 if is_zero_based_input else 1
+        input_index_upper_bound = order + input_index_lower_bound
+        input_vertex_indexes = range(
+            input_index_lower_bound,
+            input_index_upper_bound
+        )
+        graph_index_lower_bound = cplanarity.gp_LowerBoundVertices(self.theGraph)
+        graph_index_upper_bound = cplanarity.gp_UpperBoundVertices(self.theGraph)
+        graph_vertex_indexes = range(
+            graph_index_lower_bound,
+            graph_index_upper_bound
+        )
+
+        if len(input_vertex_indexes) != len(graph_vertex_indexes):
+            raise RuntimeError(
+                "planarity: C-layer graph representation does not match "
+                "expected structure from the input file."
+            )
+
+        self.nodemap = dict(
+            zip(
+                input_vertex_indexes,
+                graph_vertex_indexes
+            )
+        )
+        self.reverse_nodemap = dict(
+            zip(
+                graph_vertex_indexes,
+                input_vertex_indexes
+            )
+        )
+
     def write(
         self, str path='stdout', int writeMode=cplanarity.WRITE_ADJLIST
     ) -> None:
@@ -861,19 +1034,36 @@ cdef class PGraph:
             writeMode (int): Format to write the graph. Defaults to
                 ``WRITE_ADJLIST``.
         Raises:
+            RuntimeError: if C-layer graph datastructure is uninitialized.
             ValueError: if ``path`` contains a null byte.
+            ValueError: if ``path`` cannot be encoded as ``UTF-8`` bytes.
             RuntimeError: if the C-layer ``gp_Write()`` failed.
         """
         cdef int status
+        cdef bytes bpath
+        cdef const char *encodedOutputFileName
+
+        if not self.is_graph_initialized():
+            raise RuntimeError(
+                "planarity: Unable to write uninitialized graph."
+            )
 
         if '\0' in path:
             raise ValueError(
                 "planarity: write() path must not contain a null byte."
             )
 
-        bpath = path.encode()
+        try:
+            bpath = path.encode('utf-8')
+        except UnicodeEncodeError as path_encode_error:
+            raise ValueError(
+                "planarity: graph write failed due to error encountered while "
+                f"encoding path to which to output graph: '{path}'"
+            ) from path_encode_error
+
+        encodedOutputFileName = bpath
         status = cplanarity.gp_Write(
-            self.theGraph, bpath, writeMode
+            self.theGraph, encodedOutputFileName, writeMode
         )
         if status != cplanarity.OK:
             raise RuntimeError(
@@ -889,5 +1079,17 @@ cdef class PGraph:
             :py:class:`~planarity.express.planarity.PGraph` initialization,
             and their original labels provided to
             :py:class:`~planarity.express.planarity.PGraph` initialization.
+
+        Raises:
+            RuntimeError: if C-layer graph datastructure is uninitialized.
         """
+        if (
+            not self.is_graph_initialized() or
+            not self.nodemap or
+            not self.reverse_nodemap
+        ):
+            raise RuntimeError(
+                "planarity: uninitialized graph does not have a mapping."
+            )
+
         return self.reverse_nodemap

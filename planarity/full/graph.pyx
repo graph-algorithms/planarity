@@ -116,7 +116,6 @@ cdef class Graph:
     """
     def __cinit__(self):
         """Allocates the underlying C-layer graph data structure with gp_New()."""
-        global global_id_count
         self._theGraph = graphLib.gp_New()
         if self._theGraph == NULL:
             raise MemoryError("gp_New() failed.")

@@ -10,6 +10,7 @@ __all__ = [
     'kuratowski_edges',
     'ascii',
     'draw',
+    'read',
     'write',
     'mapping',
     'convert_to_pgraph',
@@ -227,6 +228,35 @@ def draw(
         ) from import_error
 
 
+def read(path: str) -> planarity.PGraph:
+    """Reads a graph from the file at ``path``.
+
+    Constructs a
+    :py:class:`~planarity.express.planarity.PGraph`
+    populated from the contents of the file rather than from an input graph.
+
+    Supports reading graphs from several file formats, including 
+    adjacency list, adjacency matrix, and graph6.
+
+    Args:
+        path (str): Path from which to read graph. Pass ``'stdin'`` to read
+            from the stdin stream.
+
+    Returns:
+        A new
+        :py:class:`~planarity.express.planarity.PGraph`
+        populated from the file.
+
+    Raises:
+        ValueError: if ``path`` contains a null byte.
+        ValueError: if ``path`` cannot be encoded as ``UTF-8`` bytes.
+        RuntimeError: if the C-layer ``gp_Read()`` failed.
+    """
+    pg = planarity.PGraph()
+    pg.read(path)
+    return pg
+
+
 def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
     """Writes the graph to ``path``.
 
@@ -245,6 +275,9 @@ def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
             ``WRITE_ADJLIST``.
 
     Raises:
+        RuntimeError: if C-layer graph datastructure is uninitialized.
+        ValueError: if ``path`` contains a null byte.
+        ValueError: if ``path`` cannot be encoded as ``UTF-8`` bytes.
         ValueError: if the given graph is already a
             :py:class:`~planarity.express.planarity.PGraph`.
         RuntimeError: if the graph couldn't be converted to a
@@ -253,7 +286,6 @@ def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
         RuntimeError: if the C-layer ``gp_Write()`` failed.
     """
     planarity.PGraph(graph).write(path, writeMode)
-
 
 
 def mapping(graph) -> dict[int, typing.Any]:
