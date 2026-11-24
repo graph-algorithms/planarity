@@ -570,7 +570,8 @@ cdef class PGraph:
         """[DEPRECATED] Produces an ASCII rendition of the graph, if it is planar.
 
         .. version-deprecated:: 1.1.0
-            Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
+            This method will be removed in the next major version release,
+            2.0.0. Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
            ``output_type='text/plain'`` and ``label_type='index'`` instead.
             Refer to :external+python:ref:`warning-suppress` to
             suppress the :external+python:py:func:`warnings.warn` function.
