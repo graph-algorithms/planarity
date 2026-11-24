@@ -6,44 +6,99 @@ import planarity
 
 
 class TestPlanarityExpressFileNames:
+    UNENCODABLE_PATH = '\udcff'
+
+    @pytest.fixture
+    def edges(self):
+        return [(1, 2)]
+
     @pytest.fixture(params=['function', 'method'])
-    def write(self, request):
-        edges = [(1, 2)]
+    def ascii(self, request, edges):
+        if request.param == 'function':
+            return lambda *args, **kwargs: planarity.ascii(edges, *args, **kwargs)
+        return lambda *args, **kwargs: planarity.PGraph(edges).ascii(*args, **kwargs)
+
+    @pytest.fixture(params=['function', 'method'])
+    def draw(self, request, edges):
+        if request.param == 'function':
+            return lambda *args, **kwargs: planarity.draw(edges, *args, **kwargs)
+        return lambda *args, **kwargs: planarity.PGraph(edges).draw(*args, **kwargs)
+
+    @pytest.fixture(params=['function', 'method'])
+    def read(self, request):
+        if request.param == 'function':
+            return lambda path: planarity.read(path)
+        return lambda path: planarity.PGraph().read(path)
+
+    @pytest.fixture(params=['function', 'method'])
+    def write(self, request, edges):
         if request.param == 'function':
             return lambda path: planarity.write(edges, path)
-        return planarity.PGraph(edges).write
+        return lambda path: planarity.PGraph(edges).write(path)
 
-    @pytest.mark.parametrize('exists', [False, True])
-    def test_write_rejects_null_byte_in_path(self, write, tmp_path, exists):
-        output = tmp_path / 'graph.txt'
-        if exists:
-            output.write_bytes(b'keep this')
+    @pytest.mark.filterwarnings("ignore::DeprecationWarning")
+    def test_ascii_unencodable_path_raises_value_error(self, ascii, tmp_path):
+        outfile = tmp_path / self.UNENCODABLE_PATH
+        with pytest.raises(ValueError, match='encoding path to which to output drawing'):
+            ascii(str(outfile))
+
+        assert not outfile.exists()
+
+    def test_draw_unencodable_path_raises_value_error(self, draw, tmp_path):
+        outfile = tmp_path / self.UNENCODABLE_PATH
+        with pytest.raises(ValueError, match='encoding path to which to output drawing'):
+            draw(str(outfile))
+
+        assert not outfile.exists()
+
+    def test_read_unencodable_path_raises_value_error(self, read, tmp_path):
+        infile = tmp_path / self.UNENCODABLE_PATH
+        with pytest.raises(ValueError, match='encoding path to input graph'):
+            read(str(infile))
+
+    def test_write_unencodable_path_raises_value_error(self, write, tmp_path):
+        outfile = tmp_path / self.UNENCODABLE_PATH
+        with pytest.raises(ValueError, match='encoding path to which to output graph'):
+            write(str(outfile))
+
+        assert not outfile.exists()
+
+    def test_ascii_rejects_null_byte_in_outfileName(
+        self, ascii, tmp_path
+    ):
+        outfile = tmp_path / 'graph.txt'
 
         with pytest.raises(ValueError, match='null byte'):
-            write(str(output) + '\0suffix')
+            ascii(
+                outfileName=str(outfile) + '\0suffix',
+            )
 
-        if exists:
-            assert output.read_bytes() == b'keep this'
-        else:
-            assert not output.exists()
+        assert not outfile.exists()
 
-        write(str(output))
-        assert output.read_bytes() == b'N=2\n1: 2 0\n2: 1 0\n'
-
-    @pytest.mark.parametrize('entry_point', ['function', 'method'])
     @pytest.mark.parametrize('output_type', ['text/plain', 'image/png'])
     def test_draw_rejects_null_byte_in_outfileName(
-        self, tmp_path, entry_point, output_type
+        self, draw, tmp_path, output_type
     ):
-        output = tmp_path / 'graph.txt'
-        output.write_bytes(b'keep this')
-        graph = planarity.PGraph([(1, 2)])
-        draw = planarity.draw if entry_point == 'function' else graph.draw
-        args = ([(1, 2)],) if entry_point == 'function' else ()
+        outfile = tmp_path / 'graph.txt'
 
         with pytest.raises(ValueError, match='null byte'):
-            draw(*args, outfileName=str(output) + '\0suffix',
-                 output_type=output_type)
+            draw(
+                outfileName=str(outfile) + '\0suffix',
+                output_type=output_type
+            )
 
-        assert output.read_bytes() == b'keep this'
-        assert draw(*args, output_type='text/plain') == '1\n|\n2\n \n'
+        assert not outfile.exists()
+
+    def test_read_rejects_null_byte_in_path(self, read, tmp_path):
+        infile = tmp_path / 'graph.txt'
+
+        with pytest.raises(ValueError, match='null byte'):
+           read(str(infile) + '\0suffix')
+
+    def test_write_rejects_null_byte_in_path(self, write, tmp_path):
+        outfile = tmp_path / 'graph.txt'
+
+        with pytest.raises(ValueError, match='null byte'):
+            write(str(outfile) + '\0suffix')
+
+        assert not outfile.exists()

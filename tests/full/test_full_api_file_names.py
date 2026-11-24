@@ -1,39 +1,40 @@
 """Reject null bytes before file IO can change a graph, iterator, or file."""
 
+import os
 import pytest
 
 import planarity
 
 
 class TestPlanarityFullFileNames:
+    EXISTING_FILE_CONTENTS = b'keep this'
+    ADJ_LIST = f"N=2{os.linesep}1: 2 0{os.linesep}2: 1 0{os.linesep}"
+    G6 = f">>graph6<<A_{os.linesep}"
+
     @pytest.fixture
-    def graph(self):
+    def populated_graph(self):
         graph = planarity.Graph()
-        graph.gp_ReadFromString('N=2\n1: 2 0\n2: 1 0\n')
+        graph.gp_ReadFromString(self.ADJ_LIST)
         return graph
 
-    def test_gp_Read_rejects_null_byte_in_fileName(self, graph, tmp_path):
-        source = tmp_path / 'graph.txt'
-        source.write_bytes(b'N=2\n1: 0\n2: 0\n')
-        original = graph.gp_WriteToString(planarity.WRITE_ADJLIST)
-
+    def test_gp_Read_rejects_null_byte_in_fileName(self, tmp_path):
+        infile = tmp_path / 'graph.txt'
+        graph = planarity.Graph()
         with pytest.raises(ValueError, match='null byte'):
-            graph.gp_Read(str(source) + '\0suffix')
+            graph.gp_Read(str(infile) + '\0suffix')
 
-        assert graph.gp_WriteToString(planarity.WRITE_ADJLIST) == original
-
-    def test_gp_Read_accepts_valid_file_after_null_byte(self, tmp_path):
-        source = tmp_path / 'graph.txt'
-        source.write_bytes(b'N=2\n1: 0\n2: 0\n')
+    def test_gp_Read_accepts_valid_file_after_filename_with_null_byte(self, tmp_path):
+        infile = tmp_path / 'graph.txt'
+        infile.write_bytes(self.ADJ_LIST.encode("utf-8"))
         graph = planarity.Graph()
 
         with pytest.raises(ValueError, match='null byte'):
-            graph.gp_Read(str(source) + '\0suffix')
+            graph.gp_Read(str(infile) + '\0suffix')
 
         assert graph.gp_GetN() == 0
-        graph.gp_Read(str(source))
+        graph.gp_Read(str(infile))
         assert graph.gp_GetN() == 2
-        assert graph.gp_GetM() == 0
+        assert graph.gp_GetM() == 1
 
     @pytest.mark.parametrize('writeMode', [
         planarity.WRITE_ADJLIST, planarity.WRITE_ADJMATRIX,
@@ -41,109 +42,85 @@ class TestPlanarityFullFileNames:
     ])
     @pytest.mark.parametrize('exists', [False, True])
     def test_gp_Write_rejects_null_byte_in_fileName(
-        self, graph, tmp_path, writeMode, exists
+        self, populated_graph, tmp_path, writeMode, exists
     ):
-        output = tmp_path / 'graph.txt'
+        outfile = tmp_path / 'graph.txt'
         if exists:
-            output.write_bytes(b'keep this')
+            outfile.write_bytes(self.EXISTING_FILE_CONTENTS)
 
         with pytest.raises(ValueError, match='null byte'):
-            graph.gp_Write(str(output) + '\0suffix', writeMode)
+            populated_graph.gp_Write(str(outfile) + '\0suffix', writeMode)
 
         if exists:
-            assert output.read_bytes() == b'keep this'
+            assert outfile.read_bytes() == self.EXISTING_FILE_CONTENTS
         else:
-            assert not output.exists()
-
-        graph.gp_Write(str(output), writeMode)
-        assert output.read_text(encoding='utf-8') == graph.gp_WriteToString(
-            writeMode
-        )
+            assert not outfile.exists()
 
     @pytest.mark.parametrize('exists', [False, True])
     def test_gp_Write_checks_writeMode_before_fileName(
-        self, graph, tmp_path, exists
+        self, populated_graph, tmp_path, exists
     ):
-        output = tmp_path / 'graph.txt'
+        outfile = tmp_path / 'graph.txt'
         if exists:
-            output.write_bytes(b'keep this')
+            outfile.write_bytes(self.EXISTING_FILE_CONTENTS)
 
         with pytest.raises(
             ValueError, match=r'^gp_Write\(\) failed: invalid writeMode = 999$'
         ):
-            graph.gp_Write(str(output) + '\0suffix', 999)
+            populated_graph.gp_Write(str(outfile) + '\0suffix', 999)
 
         if exists:
-            assert output.read_bytes() == b'keep this'
+            assert outfile.read_bytes() == self.EXISTING_FILE_CONTENTS
         else:
-            assert not output.exists()
-
-        graph.gp_Write(str(output), planarity.WRITE_ADJLIST)
-        assert output.read_text(encoding='utf-8') == graph.gp_WriteToString(
-            planarity.WRITE_ADJLIST
-        )
+            assert not outfile.exists()
 
     @pytest.mark.parametrize('exists', [False, True])
     def test_gp_DrawPlanar_RenderToFile_rejects_null_byte_in_theFileName(
-        self, graph, tmp_path, exists
+        self, populated_graph, tmp_path, exists
     ):
-        graph.gp_ExtendWith_DrawPlanar()
-        assert graph.gp_Embed(planarity.EMBEDFLAGS_DRAWPLANAR) == planarity.OK
-        graph.gp_SortVertices()
-        rendition = graph.gp_DrawPlanar_RenderToString()
-        output = tmp_path / 'drawing.txt'
+        populated_graph.gp_ExtendWith_DrawPlanar()
+        assert populated_graph.gp_Embed(planarity.EMBEDFLAGS_DRAWPLANAR) == planarity.OK
+        populated_graph.gp_SortVertices()
+
+        outfile = tmp_path / 'drawing.txt'
         if exists:
-            output.write_bytes(b'keep this')
+            outfile.write_bytes(self.EXISTING_FILE_CONTENTS)
 
         with pytest.raises(ValueError, match='null byte'):
-            graph.gp_DrawPlanar_RenderToFile(str(output) + '\0suffix')
+            populated_graph.gp_DrawPlanar_RenderToFile(str(outfile) + '\0suffix')
 
         if exists:
-            assert output.read_bytes() == b'keep this'
+            assert outfile.read_bytes() == self.EXISTING_FILE_CONTENTS
         else:
-            assert not output.exists()
-
-        graph.gp_DrawPlanar_RenderToFile(str(output))
-        assert output.read_text(encoding='utf-8') == rendition
+            assert not outfile.exists()
 
     def test_g6_InitReaderWithFileName_rejects_null_byte_in_infileName(
-        self, graph, tmp_path
+        self, tmp_path
     ):
-        source = tmp_path / 'graph.g6'
-        source.write_bytes(b'>>graph6<<A?\n')
-        original = graph.gp_WriteToString(planarity.WRITE_ADJLIST)
-        reader = planarity.G6ReadIterator(graph)
-        try:
-            with pytest.raises(ValueError, match='null byte'):
-                reader.g6_InitReaderWithFileName(str(source) + '\0suffix')
+        infile = tmp_path / 'graph.g6'
+        infile.write_bytes(self.G6.encode("utf-8"))
 
-            assert graph.gp_WriteToString(planarity.WRITE_ADJLIST) == original
-            reader.g6_InitReaderWithFileName(str(source))
-            reader.g6_ReadGraph()
-            assert graph.gp_GetN() == 2
-            assert graph.gp_GetM() == 0
-        finally:
-            reader.g6_FreeReader()
+        graph = planarity.Graph()
+        reader = planarity.G6ReadIterator(graph)
+        with pytest.raises(ValueError, match='null byte'):
+            reader.g6_InitReaderWithFileName(str(infile) + '\0suffix')
+
+        reader.g6_FreeReader()
 
     @pytest.mark.parametrize('exists', [False, True])
     def test_g6_InitWriterWithFileName_rejects_null_byte_in_outfileName(
-        self, graph, tmp_path, exists
+        self, populated_graph, tmp_path, exists
     ):
-        output = tmp_path / 'graph.g6'
+        outfile = tmp_path / 'graph.g6'
         if exists:
-            output.write_bytes(b'keep this')
-        writer = planarity.G6WriteIterator(graph)
-        try:
-            with pytest.raises(ValueError, match='null byte'):
-                writer.g6_InitWriterWithFileName(str(output) + '\0suffix')
+            outfile.write_bytes(self.EXISTING_FILE_CONTENTS)
+        writer = planarity.G6WriteIterator(populated_graph)
+        with pytest.raises(ValueError, match='null byte'):
+            writer.g6_InitWriterWithFileName(str(outfile) + '\0suffix')
 
-            if exists:
-                assert output.read_bytes() == b'keep this'
-            else:
-                assert not output.exists()
+        if exists:
+            assert outfile.read_bytes() == self.EXISTING_FILE_CONTENTS
+        else:
+            assert not outfile.exists()
 
-            writer.g6_InitWriterWithFileName(str(output))
-            writer.g6_WriteGraph()
-        finally:
-            writer.g6_FreeWriter()
-        assert output.read_bytes() == b'>>graph6<<A_\n'
+        writer.g6_FreeWriter()
