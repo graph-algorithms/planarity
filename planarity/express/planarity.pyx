@@ -686,7 +686,7 @@ cdef class PGraph:
         Raises:
             ValueError: if ``output_type`` is neither ``'image/png'`` nor
                 ``'text/plain'``.
-            ValueError: if a text filename contains a null byte.
+            ValueError: if the ``outfileName`` filename contains a null byte.
             ValueError: if ``label_type`` is not one of ``'default'``,
                 ``'label'``, or ``'index'``.
             ValueError: if text output is requested without index labels
@@ -697,11 +697,14 @@ cdef class PGraph:
             ImportError: if dependencies from Matplotlib fail to be imported
                 for image output.
             RuntimeError: if an error was encountered by C-layer methods
-                such as ``gp_Embed()``.
+                such as ``gp_Embed()``, ``gp_DrawPlanar_RenderToFile()``, or
+                ``gp_DrawPlanar_RenderToString()``.
             RuntimeError: if a prior invocation of this method already failed.
             RuntimeError: if any embedding operation was performed other than
                 the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
             RuntimeError: if the graph is non-planar.
+            ValueError: if the ``outfileName``cannot be encoded as ``UTF-8``
+                bytes.
         """
         ##########################################################
         # Validate arguments before doing any embedding or drawing
@@ -713,11 +716,19 @@ cdef class PGraph:
                 f"output_type. Supported options are: {valid_output_types}."
             )
 
-        if outfileName is not None and '\0' in outfileName:
-            raise ValueError(
-                "planarity: failed to draw text, as outfileName contained a "
-                "null byte."
-            )
+        if outfileName is not None:
+            if '\0' in outfileName:
+                raise ValueError(
+                    "planarity: failed to draw text, as outfileName contained "
+                    "a null byte."
+                )
+            try:
+                outfileName.encode('utf-8')
+            except UnicodeEncodeError as path_encode_error:
+                raise ValueError(
+                    "planarity: draw failed due to error encountered while "
+                    f"encoding path to which to output drawing: '{outfileName}'"
+                ) from path_encode_error
 
         valid_label_types = ('default', 'label', 'index')
         if label_type not in valid_label_types:
@@ -751,7 +762,9 @@ cdef class PGraph:
         # This is a non-public function, so once ascii() has been removed, copy
         # that docstring into this hash-led comment.
         cdef int status
-        cdef char* s = NULL
+        cdef bytes bpath
+        cdef const char *encodedOutputFileName
+        cdef char *renditionString = NULL
 
         self._embed_drawplanar()
 
@@ -763,9 +776,18 @@ cdef class PGraph:
             )
 
         if outfileName is not None:
-            encoded_filename = outfileName.encode('utf-8')
+            try:
+                bpath = outfileName.encode('utf-8')
+            except UnicodeEncodeError as path_encode_error:
+                raise ValueError(
+                    "planarity: failed to draw graph as text due to error "
+                    "encountered while encoding path to which to output "
+                    f"drawing: '{outfileName}'"
+                ) from path_encode_error
+
+            encodedOutputFileName = bpath
             status = cplanarity.gp_DrawPlanar_RenderToFile(
-                self.theGraph, encoded_filename
+                self.theGraph, encodedOutputFileName
             )
             if status != cplanarity.OK:
                 raise RuntimeError(
@@ -774,7 +796,7 @@ cdef class PGraph:
                 )
             return None
 
-        status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &s)
+        status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &renditionString)
         if status != cplanarity.OK:
             self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
@@ -782,9 +804,9 @@ cdef class PGraph:
             )
 
         try:
-            py_bytes = s[:]
+            py_bytes = renditionString[:]
         finally:
-            free(s)
+            free(renditionString)
 
         return py_bytes.decode('ascii')
 
@@ -973,7 +995,7 @@ cdef class PGraph:
     def read(self, str path) -> None:
         """Populates the graph from the file at ``path``.
 
-        Supports reading graphs from several file formats, including 
+        Supports reading graphs from several file formats, including
         adjacency list, adjacency matrix, and graph6.
 
         Args:

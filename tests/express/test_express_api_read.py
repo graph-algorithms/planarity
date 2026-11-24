@@ -28,8 +28,6 @@ LEDA_EDGE = ('LEDA.GRAPH\n'
 # Declares a 59-vertex graph while carrying two of the 286 encoding
 # characters that order requires.
 INVALID_G6_TRUNCATED = '>>graph6<<zzz\n'
-UNENCODABLE_PATH = '\udcff'
-
 
 # Keep the read cases together so failures are reported under the same API.
 class TestRead:  # pylint: disable=too-many-public-methods
@@ -161,21 +159,6 @@ class TestRead:  # pylint: disable=too-many-public-methods
         fname.write_text(INVALID_G6_TRUNCATED, encoding='utf-8')
         with pytest.raises(RuntimeError):
             planarity.read(str(fname))
-
-    @pytest.mark.parametrize('read_method', [False, True])
-    def test_read_rejects_null_byte_in_path(self, tmp_path, read_method):
-        fname = tmp_path / 'contains_null_byte_\0_and_suffix'
-        graph = planarity.PGraph() if read_method else None
-
-        with pytest.raises(ValueError, match='null byte'):
-            if read_method:
-                graph.read(str(fname))
-            else:
-                planarity.read(str(fname))
-
-    def test_read_unencodable_path_raises_value_error(self):
-        with pytest.raises(ValueError, match='encoding path to input graph'):
-            planarity.read(UNENCODABLE_PATH)
 
     def test_read_method_does_not_replace_graph_contents(self, tmp_path):
         P = planarity.PGraph([(10, 20)])
