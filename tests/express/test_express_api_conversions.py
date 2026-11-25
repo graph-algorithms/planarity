@@ -181,7 +181,7 @@ class TestConvertToNetworkX:
         # equality check above cannot see a dropped include_drawplanar flag.
         G = nx.path_graph(4)
         P = planarity.convert_to_pgraph(G)
-        P._embed_drawplanar()
+        P.embed_drawplanar()
         expected_nodes = dict(P.nodes(include_drawplanar_vertex_info=True))
         expected_edges = {
             frozenset(e[:2]): e[2]

@@ -235,7 +235,7 @@ def read(path: str) -> planarity.PGraph:
     :py:class:`~planarity.express.planarity.PGraph`
     populated from the contents of the file rather than from an input graph.
 
-    Supports reading graphs from several file formats, including 
+    Supports reading graphs from several file formats, including
     adjacency list, adjacency matrix, and graph6.
 
     Args:

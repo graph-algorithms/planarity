@@ -197,14 +197,23 @@ cdef class PGraph:
 
 
     def embed_planar(self) -> None:
-        """[DEPRECATED] Performs the ``PLANAR`` embed operation, if not yet performed.
+        """Performs the ``PLANAR`` embed operation, if not yet performed.
 
-        .. version-deprecated:: 1.1.0
-            This method is not a public API and will be removed in the next
-            major version release, 2.0.0. Public methods such as
-            ``is_planar()`` call it as needed.
-            Refer to :external+python:ref:`warning-suppress` to
-            suppress the :external+python:py:func:`warnings.warn` function.
+        .. note::
+            If a user has a graph in any format we support (such as a
+            :external+networkx:py:class:`networkx.Graph`), then the user can call
+            :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`,
+            then invoke :py:meth:`~planarity.express.planarity.PGraph.embed_planar`
+            to perform the embedding operation, call
+            :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`
+            to get back to their original format.
+
+            If the graph is not embeddable, then the user receives a graph in
+            their desired format that only contains a minimal non-planar
+            subgraph. If the graph is planar, and the user's desired output
+            format supports the preservation of adjacency list order, then the
+            user has the reasonable expectation that the output will include the
+            rotation scheme that expresses the combinatorial planar embedding.
 
         Raises:
             RuntimeError: If C-layer graph datastructure is uninitialized.
@@ -214,18 +223,6 @@ cdef class PGraph:
             RuntimeError: if any embedding operation other than PLANAR has been
                 performed on the graph.
         """
-        warnings.warn(
-            "PGraph's embed_planar() method is deprecated and will be "
-            "removed in version 2.0.0. Please refer to the Python "
-            "warnings docs for how to suppress this "
-            "DeprecationWarning.",
-            category=DeprecationWarning
-        )
-        self._embed_planar()
-
-    # NOTE: Package private; not part of the public API.
-    def _embed_planar(self) -> None:
-        """Performs the embed operation for ``embed_planar()``; package private."""
         cdef int status
         cdef int embedFlags
 
@@ -280,14 +277,28 @@ cdef class PGraph:
             )
 
     def embed_drawplanar(self) -> None:
-        """[DEPRECATED] Performs the ``DRAWPLANAR`` embed operation, if not yet performed.
+        """Performs the ``DRAWPLANAR`` embed operation, if not yet performed.
 
-        .. version-deprecated:: 1.1.0
-            This method is not a public API and will be removed in the next
-            major version release, 2.0.0. Public methods such as
-            ``draw()`` call it as needed.
-            Refer to :external+python:ref:`warning-suppress` to
-            suppress the :external+python:py:func:`warnings.warn` function.
+        .. note::
+            If a user has a graph in any format we support (such as a
+            :external+networkx:py:class:`networkx.Graph`), first determine
+            whether the graph is planar by calling
+            :py:func:`~planarity.express.planarity_functions.is_planar`.
+
+            Only if the graph is planar should the user call
+            :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`,
+            and then invoke the method
+            `:py:meth:`~planarity.express.planarity.PGraph.embed_drawplanar`
+            method to produce the embedding and generate the visibility
+            representation data, i.e., the vertex and edge positions and ranges
+            of a visibility representation.
+
+            Finally, the user may call
+            :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`
+            to get back to their original format. In the case of a
+            :external+networkx:py:class:`networkx.Graph`, the conversion back
+            from :py:class:`~planarity.express.planarity.PGraph` includes the
+            planar drawing information.
 
         Raises:
             RuntimeError: If C-layer graph datastructure is uninitialized.
@@ -298,18 +309,6 @@ cdef class PGraph:
             RuntimeError: if any embedding operation other than ``DRAWPLANAR``
                 has been performed on the graph.
         """
-        warnings.warn(
-            "PGraph's embed_drawplanar() method is deprecated and will be "
-            "removed in version 2.0.0. Please refer to the Python "
-            "warnings docs for how to suppress this "
-            "DeprecationWarning.",
-            category=DeprecationWarning
-        )
-        self._embed_drawplanar()
-
-    # NOTE: Package private; not part of the public API.
-    def _embed_drawplanar(self) -> None:
-        """Performs the embed operation for ``embed_drawplanar()``; package private."""
         cdef int status
         cdef int embedFlags
 
@@ -384,7 +383,7 @@ cdef class PGraph:
             RuntimeError: if any embedding operation was performed other than
                 the one indicated by ``EMBEDFLAGS_PLANAR``.
         """
-        self._embed_planar()
+        self.embed_planar()
         if self._embedding_workflow_status == cplanarity.OK:
             return True
 
@@ -767,7 +766,7 @@ cdef class PGraph:
         cdef const char *encodedOutputFileName
         cdef char *renditionString = NULL
 
-        self._embed_drawplanar()
+        self.embed_drawplanar()
 
         if self._embedding_workflow_status != cplanarity.OK:
             self._embedding_workflow_status = cplanarity.NOTOK
@@ -823,7 +822,7 @@ cdef class PGraph:
         ######################################################
         # Run the planar graph drawing algorithm
         ######################################################
-        self._embed_drawplanar()
+        self.embed_drawplanar()
         if self._embedding_workflow_status != cplanarity.OK:
             self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
