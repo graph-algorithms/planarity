@@ -199,6 +199,20 @@ cdef class PGraph:
     def embed_planar(self) -> None:
         """Performs the ``PLANAR`` embed operation, if not yet performed.
 
+        .. note::
+            If a user has a graph in any format we support (such as a
+            :external+networkx:py:class:`networkx.Graph`), then the user can call
+            :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`,
+            then invoke this function to perform the embedding operation, and
+            then get the results by calling
+            :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`.
+
+            If the graph is not planar, then the converted graph would contain
+            only a minimal non-planar subgraph. If the graph is planar, and the 
+            user's desired conversion format supports the preservation of 
+            adjacency list order, then the converted graph would include the
+            rotation scheme that expresses the combinatorial planar embedding.
+
         Raises:
             RuntimeError: If C-layer graph datastructure is uninitialized.
             RuntimeError: if an error was encountered by C-layer methods such
@@ -262,6 +276,22 @@ cdef class PGraph:
 
     def embed_drawplanar(self) -> None:
         """Performs the ``DRAWPLANAR`` embed operation, if not yet performed.
+
+        .. note::
+            If a user has a graph in any format we support (such as a
+            :external+networkx:py:class:`networkx.Graph`), first determine
+            whether the graph is planar by calling
+            :py:func:`~planarity.express.planarity_functions.is_planar`.
+
+            Given a planar graph, a user can first call
+            :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`,
+            and then invoke this method to produce the planar embedding and 
+            planar drawing, i.e., the vertex and edge positions and ranges
+            of a visibility representation. The user may then get these results
+            by calling 
+            :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`
+            to convert to a format that supports storing the planar embedding 
+            and planar drawing information.
 
         Raises:
             RuntimeError: If C-layer graph datastructure is uninitialized.
@@ -532,7 +562,8 @@ cdef class PGraph:
         """[DEPRECATED] Produces an ASCII rendition of the graph, if it is planar.
 
         .. version-deprecated:: 1.1.0
-            Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
+            This method will be removed in the next major version release,
+            2.0.0. Use :py:meth:`~planarity.express.planarity.PGraph.draw` with
            ``output_type='text/plain'`` and ``label_type='index'`` instead.
             Refer to :external+python:ref:`warning-suppress` to
             suppress the :external+python:py:func:`warnings.warn` function.
