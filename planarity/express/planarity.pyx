@@ -203,16 +203,14 @@ cdef class PGraph:
             If a user has a graph in any format we support (such as a
             :external+networkx:py:class:`networkx.Graph`), then the user can call
             :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`,
-            then invoke :py:meth:`~planarity.express.planarity.PGraph.embed_planar`
-            to perform the embedding operation, call
-            :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`
-            to get back to their original format.
+            then invoke this function to perform the embedding operation, and
+            then get the results by calling
+            :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`.
 
-            If the graph is not embeddable, then the user receives a graph in
-            their desired format that only contains a minimal non-planar
-            subgraph. If the graph is planar, and the user's desired output
-            format supports the preservation of adjacency list order, then the
-            user has the reasonable expectation that the output will include the
+            If the graph is not planar, then the converted graph would contain
+            only a minimal non-planar subgraph. If the graph is planar, and the 
+            user's desired conversion format supports the preservation of 
+            adjacency list order, then the converted graph would include the
             rotation scheme that expresses the combinatorial planar embedding.
 
         Raises:
@@ -285,20 +283,15 @@ cdef class PGraph:
             whether the graph is planar by calling
             :py:func:`~planarity.express.planarity_functions.is_planar`.
 
-            Only if the graph is planar should the user call
+            Given a planar graph, a user can first call
             :py:func:`~planarity.express.planarity_functions.convert_to_pgraph`,
-            and then invoke the method
-            `:py:meth:`~planarity.express.planarity.PGraph.embed_drawplanar`
-            method to produce the embedding and generate the visibility
-            representation data, i.e., the vertex and edge positions and ranges
-            of a visibility representation.
-
-            Finally, the user may call
+            and then invoke this method to produce the planar embedding and 
+            planar drawing, i.e., the vertex and edge positions and ranges
+            of a visibility representation. The user may then get these results
+            by calling 
             :py:func:`~planarity.express.planarity_functions.convert_from_pgraph`
-            to get back to their original format. In the case of a
-            :external+networkx:py:class:`networkx.Graph`, the conversion back
-            from :py:class:`~planarity.express.planarity.PGraph` includes the
-            planar drawing information.
+            to convert to a format that supports storing the planar embedding 
+            and planar drawing information.
 
         Raises:
             RuntimeError: If C-layer graph datastructure is uninitialized.
